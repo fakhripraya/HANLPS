@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../python-clean-architecture-example"
+		},
+		{
+			"path": "../Langchain-Full-Course"
+		}
+	],
+	"settings": {}
+}
