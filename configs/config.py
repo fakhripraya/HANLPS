@@ -1,13 +1,10 @@
 """ Configuration file
 """
 
-
 import os
 from dotenv import load_dotenv
 
-
 load_dotenv()
-
 
 DB_USER = os.getenv("DATABASE_USER")
 DB_PASS = os.getenv("DATABASE_PASSWORD")

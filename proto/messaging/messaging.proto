@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service Messaging {
+  rpc TextMessaging (MessageRequest) returns (MessageResponse);
+}
+
+message MessageRequest {
+  string content = 1;
+}
+
+message MessageResponse {
+  string result = 1;
+}
