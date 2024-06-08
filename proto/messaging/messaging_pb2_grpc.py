@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import messaging_pb2 as messaging__pb2
+from messaging import messaging_pb2 as messaging_dot_messaging__pb2
 
 GRPC_GENERATED_VERSION = '1.64.1'
 GRPC_VERSION = grpc.__version__
@@ -20,7 +20,7 @@ except ImportError:
 if _version_not_supported:
     warnings.warn(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in messaging_pb2_grpc.py depends on'
+        + f' but the generated code in messaging/messaging_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -41,8 +41,8 @@ class MessagingStub(object):
         """
         self.textMessaging = channel.unary_unary(
                 '/Messaging/textMessaging',
-                request_serializer=messaging__pb2.MessageRequest.SerializeToString,
-                response_deserializer=messaging__pb2.MessageResponse.FromString,
+                request_serializer=messaging_dot_messaging__pb2.MessageRequest.SerializeToString,
+                response_deserializer=messaging_dot_messaging__pb2.MessageResponse.FromString,
                 _registered_method=True)
 
 
@@ -60,8 +60,8 @@ def add_MessagingServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'textMessaging': grpc.unary_unary_rpc_method_handler(
                     servicer.textMessaging,
-                    request_deserializer=messaging__pb2.MessageRequest.FromString,
-                    response_serializer=messaging__pb2.MessageResponse.SerializeToString,
+                    request_deserializer=messaging_dot_messaging__pb2.MessageRequest.FromString,
+                    response_serializer=messaging_dot_messaging__pb2.MessageResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -89,8 +89,8 @@ class Messaging(object):
             request,
             target,
             '/Messaging/textMessaging',
-            messaging__pb2.MessageRequest.SerializeToString,
-            messaging__pb2.MessageResponse.FromString,
+            messaging_dot_messaging__pb2.MessageRequest.SerializeToString,
+            messaging_dot_messaging__pb2.MessageResponse.FromString,
             options,
             channel_credentials,
             insecure,

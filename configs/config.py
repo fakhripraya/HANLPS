@@ -6,4 +6,4 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-INSECURE_PORT = os.getenv("INSECURE_PORT")
+INSECURE_PORT = str(os.getenv("INSECURE_PORT"))

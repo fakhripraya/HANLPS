@@ -7,5 +7,5 @@ from src.infra.logger.logger_default import LoggerDefault
 
 logger = LoggerDefault()
 if __name__ == "__main__":
-    grpc_memory_app = create_grpc_memory_app(logger)
+    create_grpc_memory_app(logger)
     

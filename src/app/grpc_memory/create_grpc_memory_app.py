@@ -16,7 +16,7 @@ def create_grpc_memory_app(logger: LoggerInterface) -> None:
     try:
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
         handler.add_MessagingServicer_to_server(MessagingServicer(), server)
-        server.add_insecure_port(str(INSECURE_PORT))
+        server.add_insecure_port(INSECURE_PORT)
         
         server.start()
         logger.log_info("GRPC server started on port 50051")
