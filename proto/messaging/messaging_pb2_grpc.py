@@ -39,8 +39,8 @@ class MessagingStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.TextMessaging = channel.unary_unary(
-                '/Messaging/TextMessaging',
+        self.textMessaging = channel.unary_unary(
+                '/Messaging/textMessaging',
                 request_serializer=messaging__pb2.MessageRequest.SerializeToString,
                 response_deserializer=messaging__pb2.MessageResponse.FromString,
                 _registered_method=True)
@@ -49,7 +49,7 @@ class MessagingStub(object):
 class MessagingServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def TextMessaging(self, request, context):
+    def textMessaging(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -58,8 +58,8 @@ class MessagingServicer(object):
 
 def add_MessagingServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'TextMessaging': grpc.unary_unary_rpc_method_handler(
-                    servicer.TextMessaging,
+            'textMessaging': grpc.unary_unary_rpc_method_handler(
+                    servicer.textMessaging,
                     request_deserializer=messaging__pb2.MessageRequest.FromString,
                     response_serializer=messaging__pb2.MessageResponse.SerializeToString,
             ),
@@ -75,7 +75,7 @@ class Messaging(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def TextMessaging(request,
+    def textMessaging(request,
             target,
             options=(),
             channel_credentials=None,
@@ -88,7 +88,7 @@ class Messaging(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/Messaging/TextMessaging',
+            '/Messaging/textMessaging',
             messaging__pb2.MessageRequest.SerializeToString,
             messaging__pb2.MessageResponse.FromString,
             options,
