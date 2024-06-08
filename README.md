@@ -27,3 +27,12 @@ pre-commit install
 ```
 python main.py
 ```
+
+# To install dependency
+
+```
+pip install <package>
+pip freeze > requirements.txt
+
+these can install the package aswell as immediately write it in the requirement.txt file
+```
