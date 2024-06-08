@@ -36,3 +36,9 @@ pip freeze > requirements.txt
 
 these can install the package aswell as immediately write it in the requirement.txt file
 ```
+
+# To generate proto files
+
+```
+python -m grpc_tools.protoc -I=proto --python_out=proto --grpc_python_out=proto your/proto/path/your_new_service.proto
+```
