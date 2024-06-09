@@ -7,7 +7,7 @@ from interactor.validations.messaging_validator \
     import MessagingInputDtoValidator
 from src.interactor.errors.error_classes import FieldValueNotPermittedException
 
-def test_create_profession_validator_valid_data(
+def test_messaging_validator_valid_data(
         mocker,
         fixture_messaging_developer
 ):
