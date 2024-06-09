@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-from messaging import messaging_pb2 as messaging_dot_messaging__pb2
+import messaging_pb2 as messaging__pb2
 
 GRPC_GENERATED_VERSION = '1.64.1'
 GRPC_VERSION = grpc.__version__
@@ -20,7 +20,7 @@ except ImportError:
 if _version_not_supported:
     warnings.warn(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in messaging/messaging_pb2_grpc.py depends on'
+        + f' but the generated code in messaging_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -30,7 +30,7 @@ if _version_not_supported:
     )
 
 
-class MessagingStub(object):
+class MessagingServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -40,13 +40,13 @@ class MessagingStub(object):
             channel: A grpc.Channel.
         """
         self.textMessaging = channel.unary_unary(
-                '/Messaging/textMessaging',
-                request_serializer=messaging_dot_messaging__pb2.MessageRequest.SerializeToString,
-                response_deserializer=messaging_dot_messaging__pb2.MessageResponse.FromString,
+                '/MessagingService/textMessaging',
+                request_serializer=messaging__pb2.MessageRequest.SerializeToString,
+                response_deserializer=messaging__pb2.MessageResponse.FromString,
                 _registered_method=True)
 
 
-class MessagingServicer(object):
+class MessagingServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def textMessaging(self, request, context):
@@ -56,22 +56,22 @@ class MessagingServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_MessagingServicer_to_server(servicer, server):
+def add_MessagingServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'textMessaging': grpc.unary_unary_rpc_method_handler(
                     servicer.textMessaging,
-                    request_deserializer=messaging_dot_messaging__pb2.MessageRequest.FromString,
-                    response_serializer=messaging_dot_messaging__pb2.MessageResponse.SerializeToString,
+                    request_deserializer=messaging__pb2.MessageRequest.FromString,
+                    response_serializer=messaging__pb2.MessageResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'Messaging', rpc_method_handlers)
+            'MessagingService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('Messaging', rpc_method_handlers)
+    server.add_registered_method_handlers('MessagingService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class Messaging(object):
+class MessagingService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -88,9 +88,9 @@ class Messaging(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/Messaging/textMessaging',
-            messaging_dot_messaging__pb2.MessageRequest.SerializeToString,
-            messaging_dot_messaging__pb2.MessageResponse.FromString,
+            '/MessagingService/textMessaging',
+            messaging__pb2.MessageRequest.SerializeToString,
+            messaging__pb2.MessageResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -3,9 +3,9 @@
 
 import grpc
 import sys
-sys.path.append("./proto/messaging")
+sys.path.append("./proto")
 from configs.config import INSECURE_PORT
-from proto.messaging import messaging_pb2_grpc as handler
+from proto import messaging_pb2_grpc as handler
 from concurrent import futures
 from src.app.grpc_memory.servicer.messaging_servicer import MessagingServicer
 from src.interactor.interfaces.logger.logger import LoggerInterface
@@ -15,7 +15,7 @@ def create_grpc_memory_app(logger: LoggerInterface) -> None:
     """
     try:
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-        handler.add_MessagingServicer_to_server(MessagingServicer(), server)
+        handler.add_MessagingServiceServicer_to_server(MessagingServicer(logger), server)
         server.add_insecure_port(INSECURE_PORT)
         
         server.start()
