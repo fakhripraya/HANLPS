@@ -1,6 +1,7 @@
 import openai
 from langchain.llms import OpenAI
 from langchain.chains import LLMChain
+from langchain.embeddings.openai import OpenAIEmbeddings
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.domain.constants import OPENAI, HUGGING_FACE
 
@@ -16,7 +17,8 @@ class LangchainAPI(LangchainAPIInterface):
         elif llm_type == HUGGING_FACE:
             openai.api_key = api_key
             client = openai
-
+        
+        client.embeddings(openai_api_key = api_key)
         self._client = client
 
     def receive_prompt(self, prompt) -> None:

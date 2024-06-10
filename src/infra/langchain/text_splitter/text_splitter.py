@@ -1,27 +1,12 @@
-""" This module is responsible for messaging usecase.
+""" This module is responsible for document text splitter.
 """
 
-from typing import Dict
-from src.interactor.dtos.messaging_dtos \
-    import MessagingInputDto, MessagingOutputDto
-from src.interactor.interfaces.presenters.message_presenter \
-    import MessagingPresenterInterface
-from src.interactor.interfaces.repositories.messaging_repository \
-    import MessagingRepositoryInterface
-from src.interactor.validations.messaging_validator \
-    import MessagingInputDtoValidator
-from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.interactor.errors.error_classes import ItemNotCreatedException
-
-class MessagingUseCase():
+class LangchainTextSplitter():
     """ This class is responsible for everything needed to do the messaging flow
     """
 
     def __init__(
             self,
-            presenter: MessagingPresenterInterface,
-            repository: MessagingRepositoryInterface,
-            logger: LoggerInterface
     ):
         self.presenter = presenter
         self.repository = repository
