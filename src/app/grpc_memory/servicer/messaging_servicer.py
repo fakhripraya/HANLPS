@@ -8,8 +8,9 @@ class MessagingServicer(messaging_pb2_grpc.MessagingServiceServicer):
         self.logger = logger
         
     def textMessaging(self, request, context):
-        controller = MessagingController(self.logger)
-        controller.get_message(request)
-        result = controller.execute()
-        end_result = str(result)
+        # TODO: CONTROLLERNYA BLM BENER, BENERIN 
+        # controller = MessagingController(self.logger)
+        # controller.get_message(request)
+        # result = controller.execute()
+        end_result = "Received: " + request.content
         return messaging.MessageResponse(result=end_result)
