@@ -1,6 +1,6 @@
 """ This module is responsible for loading external document.
 """
-from langchain.document_loaders import DirectoryLoader
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
 
 class LangchainDocumentLoader():
     """ This class is responsible for loading external document
@@ -8,10 +8,17 @@ class LangchainDocumentLoader():
 
     def __init__(
             self,
+            extension,
             directory_path,
             glob
     ):
-        self._loader = DirectoryLoader(directory_path, glob=glob and "**/*.pdf")
+        loader
+        if extension == "pdf":
+            loader = DirectoryLoader(directory_path, glob=glob and "**/*.pdf")
+        elif extension == "txt":
+            loader = TextLoader(directory_path)
+
+        self._loader = loader
 
     def execute(
             self,

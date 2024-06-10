@@ -1,11 +1,12 @@
 import openai
-from langchain.llms import OpenAI
-from langchain.chains import LLMChain
-from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_community.embeddings import OpenAIEmbeddings
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
+from src.infra.langchain.document_loader.document_loader import LangchainDocumentLoader
+from src.infra.langchain.text_splitter.text_splitter import LangchainTextSplitter
+from src.infra.vector_db.api import WeaviateAPI
 from src.domain.constants import OPENAI, HUGGING_FACE
 
-class LangchainAPI(LangchainAPIInterface):
+class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     """ LangchainAPI class.
     """
 
@@ -19,8 +20,16 @@ class LangchainAPI(LangchainAPIInterface):
             openai.api_key = api_key
             client = openai
 
-        client.embeddings(openai_api_key = api_key)
+        loader = LangchainDocumentLoader('../../../pdfs', "**/*.pdf")
+        data = loader.execute()
+
+        text_splitter = LangchainTextSplitter(1000,0)
+        docs = text_splitter.execute(data)
+        
+        embeddings = OpenAIEmbeddings(openai_api_key = api_key)
+        
         self._client = client
+        WeaviateAPI.__init__(self, docs, embeddings)
 
     def receive_prompt(self, prompt) -> None:
         """ 
