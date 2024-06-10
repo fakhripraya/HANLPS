@@ -10,6 +10,7 @@ class LangchainAPI(LangchainAPIInterface):
     """
 
     def __init__(self, llm_type, api_key) -> None: 
+        # TODO: Implement weaviate here
         client 
         if llm_type == OPENAI:
             openai.api_key = api_key
@@ -17,7 +18,7 @@ class LangchainAPI(LangchainAPIInterface):
         elif llm_type == HUGGING_FACE:
             openai.api_key = api_key
             client = openai
-        
+
         client.embeddings(openai_api_key = api_key)
         self._client = client
 
