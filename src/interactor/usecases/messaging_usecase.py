@@ -44,6 +44,9 @@ class MessagingUseCase():
             self.logger.log_error(f"Error: {e}")
             raise
 
+        #TODO: langchain logic here
+
+        #TODO: Store chat here
         message = self.repository.create(
             input_dto.content,
         )

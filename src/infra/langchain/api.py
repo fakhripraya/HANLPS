@@ -9,19 +9,45 @@ class LangchainAPI(LangchainAPIInterface):
     """
 
     def __init__(self, llm_type, api_key) -> None: 
-        llm 
+        client 
         if llm_type == OPENAI:
             openai.api_key = api_key
-            llm = openai
+            client = openai
         elif llm_type == HUGGING_FACE:
             openai.api_key = api_key
-            llm = openai
+            client = openai
 
-        self._llm_api = llm
+        self._client = client
 
-    def analyze_prompt(self, chat_message) -> None:
+    def receive_prompt(self, prompt) -> None:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
         :param chat_message: chat message to be analyzed.
         """
+
+    def analyze_prompt(self, prompt) -> None:
+        """ 
+        Analyze prompt, define whether the prompt is a direct
+        command, a simple chat, etc.
+        :param chat_message: chat message to be analyzed.
+        """
+
+    def feedback_prompt(self, prompt) -> None:
+        """ 
+        Feedback the prompt, process the prompt with the LLM
+        :param chat_message: chat message to be analyzed.
+        """
+
+    def respond(self, messages, client) -> None:
+        """ 
+        Respond the receiving prompt with the processed feedback
+        command, a simple chat, etc.
+        :param chat_message: chat message to be analyzed.
+        """
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=messages,
+            temperature=1,
+        )
+        return response.choices[0].message.content
