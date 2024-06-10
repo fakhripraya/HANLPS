@@ -43,3 +43,8 @@ these can install the package aswell as immediately write it in the requirement.
 ```
 python -m grpc_tools.protoc -I=proto --python_out=proto --grpc_python_out=proto your/proto/path/your_new_service.proto
 ```
+
+# Dependencies
+
+grpcio grpcio-tools python-dotenv openai langchain langchain_community weaviate-client
+langchain-weaviate cerberus unstructured pytest tiktoken

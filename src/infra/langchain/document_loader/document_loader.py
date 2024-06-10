@@ -12,7 +12,7 @@ class LangchainDocumentLoader():
             directory_path,
             glob
     ):
-        loader
+        loader = None
         if extension == "pdf":
             loader = DirectoryLoader(directory_path, glob=glob and "**/*.pdf")
         elif extension == "txt":

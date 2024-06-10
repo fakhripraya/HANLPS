@@ -12,6 +12,7 @@ from src.interactor.validations.messaging_validator \
     import MessagingInputDtoValidator
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.interactor.errors.error_classes import ItemNotCreatedException
+from src.infra.langchain.api import LangchainAPI
 
 class MessagingUseCase():
     """ This class is responsible for everything needed to do the messaging flow
@@ -19,13 +20,15 @@ class MessagingUseCase():
 
     def __init__(
             self,
+            logger: LoggerInterface,
             presenter: MessagingPresenterInterface,
             repository: MessagingRepositoryInterface,
-            logger: LoggerInterface
+            llm: LangchainAPI
     ):
+        self.logger = logger
         self.presenter = presenter
         self.repository = repository
-        self.logger = logger
+        self.llm = llm
 
     def execute(
             self,

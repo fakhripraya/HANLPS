@@ -8,6 +8,20 @@ class LangchainAPIInterface(ABC):
     """
 
     @abstractmethod
+    def create_open_ai_llm(self, api_key: str) -> None:
+        """ 
+        Create OpenAI LLM and register it as dependency
+        :param api_key: the OpenAi api key
+        """
+    
+    @abstractmethod
+    def create_huggingface_llm(self, api_key: str) -> None:
+        """ 
+        Create Huggingface LLM and register it as dependency
+        :param api_key: the Huggingface api key
+        """
+
+    @abstractmethod
     def receive_prompt(self, prompt:str) -> None:
         """ 
         Analyze prompt, define whether the prompt is a direct

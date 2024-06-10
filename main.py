@@ -2,10 +2,11 @@
 """
 
 from src.app.grpc_memory.create_grpc_memory_app \
-    import create_grpc_memory_app
+    import GRPCMemoryApp
 from src.infra.logger.logger_default import LoggerDefault
 
 logger = LoggerDefault()
 if __name__ == "__main__":
-    create_grpc_memory_app(logger)
+    app = GRPCMemoryApp(logger)
+    app.create_server()
     

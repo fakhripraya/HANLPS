@@ -12,15 +12,37 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
 
     def __init__(self, llm_type, api_key) -> None: 
         # TODO: Implement weaviate here
-        client 
         if llm_type == OPENAI:
-            openai.api_key = api_key
-            client = openai
+            self.create_open_ai_llm(api_key)
         elif llm_type == HUGGING_FACE:
-            openai.api_key = api_key
-            client = openai
+            self.create_huggingface_llm(api_key)
 
-        loader = LangchainDocumentLoader('../../../pdfs', "**/*.pdf")
+    def create_open_ai_llm(self, api_key) -> None:
+        """ 
+        Create OpenAI LLM and register it as dependency
+        :param api_key: the OpenAi api key
+        """
+        openai.api_key = api_key
+        client = openai
+        loader = LangchainDocumentLoader("pdf", 'pdfs', "**/*.pdf")
+        data = loader.execute()
+
+        text_splitter = LangchainTextSplitter(1000,0)
+        docs = text_splitter.execute(data)
+        
+        embeddings = OpenAIEmbeddings(openai_api_key = api_key)
+        
+        self._client = client
+        WeaviateAPI.__init__(self, docs, embeddings)
+
+    def create_huggingface_llm(self, api_key) -> None:
+        """ 
+        Create Huggingface LLM and register it as dependency
+        :param api_key: the Huggingface api key
+        """
+        openai.api_key = api_key
+        client = openai
+        loader = LangchainDocumentLoader("pdf", 'pdfs', "**/*.pdf")
         data = loader.execute()
 
         text_splitter = LangchainTextSplitter(1000,0)
@@ -33,29 +55,28 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
 
     def receive_prompt(self, prompt) -> None:
         """ 
-        Analyze prompt, define whether the prompt is a direct
-        command, a simple chat, etc.
-        :param chat_message: chat message to be analyzed.
+        Receive prompt, receive the prompt from the client app
+        :param prompt: chat message to be analyzed.
         """
 
     def analyze_prompt(self, prompt) -> None:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
-        :param chat_message: chat message to be analyzed.
+        :param prompt: chat message to be analyzed.
         """
 
     def feedback_prompt(self, prompt) -> None:
         """ 
         Feedback the prompt, process the prompt with the LLM
-        :param chat_message: chat message to be analyzed.
+        :param prompt: chat message to be analyzed.
         """
 
     def respond(self, messages, client) -> None:
         """ 
         Respond the receiving prompt with the processed feedback
         command, a simple chat, etc.
-        :param chat_message: chat message to be analyzed.
+        :param prompt: chat message to be analyzed.
         """
         response = client.chat.completions.create(
             model="gpt-4",

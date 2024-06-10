@@ -10,12 +10,14 @@ from src.interactor.interfaces.controller.messaging_controller_interface \
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.app.grpc_memory.presenters.messaging_presenter import \
     MessagingPresenter
+from src.infra.langchain.api import LangchainAPI
 
 class MessagingController(MessagingControllerInterface):
     """ Create Messaging Controller Class
     """
-    def __init__(self, logger: LoggerInterface):
+    def __init__(self, logger: LoggerInterface, llm: LangchainAPI):
         self.logger = logger
+        self.llm = llm
         self.input_dto: MessagingInputDto
 
     def get_message(self, grpc_message) -> None:
@@ -35,7 +37,7 @@ class MessagingController(MessagingControllerInterface):
         """
         repository = MessagingInMemoryRepository()
         presenter = MessagingPresenter()
-        use_case = MessagingUseCase(presenter, repository, self.logger)
+        use_case = MessagingUseCase(self.logger, presenter, repository, self.llm)
         try:
             result = use_case.execute(self.input_dto)
             return result
