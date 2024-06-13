@@ -1,5 +1,5 @@
 import openai
-from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.infra.langchain.document_loader.document_loader import LangchainDocumentLoader
 from src.infra.langchain.text_splitter.text_splitter import LangchainTextSplitter
