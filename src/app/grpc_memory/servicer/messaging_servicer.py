@@ -15,5 +15,5 @@ class MessagingServicer(messaging_pb2_grpc.MessagingServiceServicer):
         controller.get_message(request)
         result = controller.execute()
         print(result)
-        end_result = "Received: "
+        end_result = result['content']
         return messaging.MessageResponse(result=end_result)
