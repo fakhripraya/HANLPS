@@ -22,7 +22,7 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def receive_prompt(self, prompt:str) -> None:
+    def receive_prompt(self, prompt:str) -> str:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
@@ -30,7 +30,7 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def analyze_prompt(self, prompt:str) -> None:
+    def analyze_prompt(self, prompt:str) -> str:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
@@ -38,14 +38,14 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def feedback_prompt(self, prompt:str) -> None:
+    def feedback_prompt(self, prompt:str) -> str:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param chat_message: chat message to be analyzed.
         """
 
     @abstractmethod
-    def respond(self, messages:str) -> None:
+    def respond(self, prompt:str) -> str:
         """ 
         Respond the receiving prompt with the processed feedback
         command, a simple chat, etc.

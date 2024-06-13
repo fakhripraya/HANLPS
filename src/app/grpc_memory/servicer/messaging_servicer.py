@@ -1,4 +1,4 @@
-from proto import messaging_pb2_grpc, messaging_pb2 as messaging
+from protofile import messaging_pb2_grpc, messaging_pb2 as messaging
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.langchain.api import LangchainAPI
 from src.app.grpc_memory.controller.messaging_controller import MessagingController
@@ -15,5 +15,5 @@ class MessagingServicer(messaging_pb2_grpc.MessagingServiceServicer):
         controller.get_message(request)
         result = controller.execute()
         print(result)
-        end_result = "Received: "
+        end_result = result['content']
         return messaging.MessageResponse(result=end_result)
