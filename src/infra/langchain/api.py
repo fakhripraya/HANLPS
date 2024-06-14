@@ -4,7 +4,7 @@ from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.infra.langchain.document_loader.document_loader import LangchainDocumentLoader
 from src.infra.langchain.text_splitter.text_splitter import LangchainTextSplitter
 from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
-from src.infra.vector_db.api import WeaviateAPI
+from src.infra.weaviate.api import WeaviateAPI
 from src.domain.constants import OPENAI, HUGGING_FACE
 
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
