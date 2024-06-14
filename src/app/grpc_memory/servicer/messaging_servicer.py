@@ -10,10 +10,8 @@ class MessagingServicer(messaging_pb2_grpc.MessagingServiceServicer):
         self.llm = llm
         
     def textMessaging(self, request, context):
-        # TODO: CONTROLLERNYA BLM BENER, BENERIN 
         controller = MessagingController(self.logger, self.llm)
         controller.get_message(request)
         result = controller.execute()
-        print(result)
         end_result = result['content']
         return messaging.MessageResponse(result=end_result)

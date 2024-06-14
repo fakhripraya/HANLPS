@@ -25,17 +25,17 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         """
         openai.api_key = api_key
         client = openai
-        # loader = LangchainDocumentLoader("pdf", 'pdfs', "**/*.pdf")
-        # data = loader.execute()
+        loader = LangchainDocumentLoader("pdf", 'pdfs', "**/*.pdf")
+        data = loader.execute()
 
-        # text_splitter = LangchainTextSplitter(1000,0)
-        # docs = text_splitter.execute(data)
+        text_splitter = LangchainTextSplitter(1000,0)
+        docs = text_splitter.execute(data)
         
-        # embeddings = OpenAIEmbeddings(openai_api_key = api_key)
+        embeddings = OpenAIEmbeddings(openai_api_key = api_key)
         
         self._client = client
         self._prompt_parser = PromptParser()
-        # WeaviateAPI.__init__(self, docs, embeddings)
+        WeaviateAPI.__init__(self, docs, embeddings)
 
     def create_huggingface_llm(self, api_key) -> None:
         """ 
@@ -44,17 +44,17 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         """
         openai.api_key = api_key
         client = openai
-        # loader = LangchainDocumentLoader("pdf", 'pdfs', "**/*.pdf")
-        # data = loader.execute()
+        loader = LangchainDocumentLoader("pdf", 'pdfs', "**/*.pdf")
+        data = loader.execute()
 
-        # text_splitter = LangchainTextSplitter(1000,0)
-        # docs = text_splitter.execute(data)
+        text_splitter = LangchainTextSplitter(1000,0)
+        docs = text_splitter.execute(data)
         
-        # embeddings = OpenAIEmbeddings(openai_api_key = api_key)
+        embeddings = OpenAIEmbeddings(openai_api_key = api_key)
         
         self._client = client
         self._prompt_parser = PromptParser()
-        # WeaviateAPI.__init__(self, docs, embeddings)
+        WeaviateAPI.__init__(self, docs, embeddings)
 
     def receive_prompt(self, prompt) -> str:
         """ 

@@ -17,7 +17,7 @@ services:
     restart: on-failure:0
     environment:
       CLIP_INFERENCE_API: 'http://multi2vec-clip:8080'
-      OPENAI_APIKEY: $OPENAI_API_KEY
+      OPENAI_APIKEY: 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
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
