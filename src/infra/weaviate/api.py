@@ -16,9 +16,5 @@ class WeaviateAPI(WeaviateAPIInterface):
         } 
 
         self._weaviate_client = weaviate_lib.connect_to_local(headers=headers)
-        # self._vectorstore = WeaviateVectorStore.from_documents(docs, embeddings, client=self._weaviate_client)
-        try:
-            print("something")
-        finally:
-            self._weaviate_client.close()
+        self._vectorstore = WeaviateVectorStore.from_documents(docs, embeddings, client=self._weaviate_client)
         

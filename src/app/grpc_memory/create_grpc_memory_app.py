@@ -37,5 +37,8 @@ class GRPCMemoryApp:
 
     def stop_server(self):
         """Stop the GRPC server."""
+        if self.llm._weaviate_client:
+            self.llm._weaviate_client.close()
         if self.grpc_server:
             self.grpc_server.stop(0)
+        
