@@ -13,48 +13,36 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
 
     def __init__(self, llm_type, api_key) -> None: 
         # TODO: Implement weaviate here
+        self._api_key = api_key
         if llm_type == OPENAI:
-            self.create_open_ai_llm(api_key)
+            self.create_open_ai_llm()
         elif llm_type == HUGGING_FACE:
-            self.create_huggingface_llm(api_key)
+            self.create_huggingface_llm()
 
-    def create_open_ai_llm(self, api_key) -> None:
+    def create_open_ai_llm(self) -> None:
         """ 
         Create OpenAI LLM and register it as dependency
         :param api_key: the OpenAi api key
         """
-        openai.api_key = api_key
+        openai.api_key = self._api_key
         client = openai
         loader = LangchainDocumentLoader("pdf", 'pdfs', "**/*.pdf")
         data = loader.execute()
 
-        text_splitter = LangchainTextSplitter(1000,0)
+        text_splitter = LangchainTextSplitter(128,0)
         docs = text_splitter.execute(data)
         
-        embeddings = OpenAIEmbeddings(openai_api_key = api_key)
+        embeddings = OpenAIEmbeddings(openai_api_key = self._api_key)
         
         self._client = client
         self._prompt_parser = PromptParser()
         WeaviateAPI.__init__(self, docs, embeddings)
 
-    def create_huggingface_llm(self, api_key) -> None:
+    def create_huggingface_llm(self) -> None:
         """ 
         Create Huggingface LLM and register it as dependency
         :param api_key: the Huggingface api key
         """
-        openai.api_key = api_key
-        client = openai
-        loader = LangchainDocumentLoader("pdf", 'pdfs', "**/*.pdf")
-        data = loader.execute()
-
-        text_splitter = LangchainTextSplitter(1000,0)
-        docs = text_splitter.execute(data)
-        
-        embeddings = OpenAIEmbeddings(openai_api_key = api_key)
-        
-        self._client = client
-        self._prompt_parser = PromptParser()
-        WeaviateAPI.__init__(self, docs, embeddings)
 
     def receive_prompt(self, prompt) -> str:
         """ 
