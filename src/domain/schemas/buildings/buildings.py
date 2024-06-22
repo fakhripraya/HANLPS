@@ -1,23 +1,26 @@
 import weaviate.classes as wvc
 from weaviate.client import WeaviateClient
+from src.domain.constants import BUILDINGS_COLLECTION_NAME
+from src.interactor.interfaces.logger.logger import LoggerInterface
 
-def create_buildings_vectordb_schema(client: WeaviateClient) -> None:
-    collection_name = "Buildings"
+def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInterface) -> None:
+    collection_name = BUILDINGS_COLLECTION_NAME
     if not client.collections.exists(collection_name):
         new_collection = client.collections.create(
             name=collection_name,
             vectorizer_config=[
-                wvc.config.Configure.NamedVectors.text2vec_openai(
-                    name="text_based_vect", source_properties=[
-                        "property_title",
-                        "property_address",
-                        "property_description",
-                        "latitude",
-                        "longitude"
+                wvc.config.Configure.NamedVectors.multi2vec_clip(
+                    name="buildings_text_image_vector",
+                    image_fields=[
+                        wvc.config.Multi2VecField(name="image_embedding", weight=0.5)
+                    ],
+                    text_fields=[
+                        wvc.config.Multi2VecField(name="property_title", weight=0.1),
+                        wvc.config.Multi2VecField(name="property_address", weight=0.1),
+                        wvc.config.Multi2VecField(name="property_description", weight=0.1),
+                        wvc.config.Multi2VecField(name="latitude", weight=0.1),
+                        wvc.config.Multi2VecField(name="longitude", weight=0.1),
                     ]
-                ),
-                wvc.config.Configure.NamedVectors.text2vec_openai(
-                    name="img_based_vect", source_properties=["image_embedding"]
                 )
             ],
             generative_config=wvc.config.Configure.Generative.openai(),
@@ -80,15 +83,15 @@ def create_buildings_vectordb_schema(client: WeaviateClient) -> None:
                     data_type=wvc.config.DataType.DATE,
                 ),
             ],
-            vector_index_config=wvc.config.Configure.VectorIndex.hnsw(
-                distance_metric=wvc.config.VectorDistances.COSINE,
-                quantizer=wvc.config.Configure.VectorIndex.Quantizer.pq(segments=192),
-            ),
-            inverted_index_config=wvc.config.Configure.inverted_index(
-                index_null_state=True,
-                index_property_length=True,
-                index_timestamps=True,
-            ),
+            # vector_index_config=wvc.config.Configure.VectorIndex.hnsw(
+            #     distance_metric=wvc.config.VectorDistances.COSINE,
+            #     quantizer=wvc.config.Configure.VectorIndex.Quantizer.pq(segments=192),
+            # ),
+            # inverted_index_config=wvc.config.Configure.inverted_index(
+            #     index_null_state=True,
+            #     index_property_length=True,
+            #     index_timestamps=True,
+            # ),
         )
         
-        print(new_collection)
+        logger.log_info(f"Successfully create collection: {new_collection}")

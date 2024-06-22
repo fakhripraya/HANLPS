@@ -15,7 +15,7 @@ from src.infra.langchain.api import LangchainAPI
 class GRPCMemoryApp:
     def __init__(self, logger: LoggerInterface):
         self.logger = logger
-        self.llm = LangchainAPI(OPENAI, OPENAI_API_KEY)
+        self.llm = LangchainAPI(OPENAI, OPENAI_API_KEY, self.logger)
         self.grpc_server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
         # register grpc handler

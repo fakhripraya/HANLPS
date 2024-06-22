@@ -11,22 +11,19 @@ class LangchainAPIInterface(ABC):
     def create_open_ai_llm(self, api_key: str) -> None:
         """ 
         Create OpenAI LLM and register it as dependency
-        :param api_key: the OpenAi api key
         """
     
     @abstractmethod
     def create_huggingface_llm(self, api_key: str) -> None:
         """ 
         Create Huggingface LLM and register it as dependency
-        :param api_key: the Huggingface api key
         """
 
     @abstractmethod
     def receive_prompt(self, prompt:str) -> str:
         """ 
-        Analyze prompt, define whether the prompt is a direct
-        command, a simple chat, etc.
-        :param chat_message: chat message to be analyzed.
+        Receive prompt, receive the prompt from the client app
+        :param prompt: chat message to be analyzed.
         """
 
     @abstractmethod
@@ -34,14 +31,14 @@ class LangchainAPIInterface(ABC):
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
-        :param chat_message: chat message to be analyzed.
+        :param prompt: chat message to be analyzed.
         """
 
     @abstractmethod
     def feedback_prompt(self, prompt:str) -> str:
         """ 
         Feedback the prompt, process the prompt with the LLM
-        :param chat_message: chat message to be analyzed.
+        :param prompt: chat message to be analyzed.
         """
 
     @abstractmethod
@@ -49,6 +46,6 @@ class LangchainAPIInterface(ABC):
         """ 
         Respond the receiving prompt with the processed feedback
         command, a simple chat, etc.
-        :param chat_message: chat message to be analyzed.
+        :param prompt: chat message to be analyzed.
         """
     

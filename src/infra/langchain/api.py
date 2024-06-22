@@ -1,19 +1,18 @@
 import openai
-from langchain_openai import OpenAIEmbeddings
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
-from src.infra.langchain.document_loader.document_loader import LangchainDocumentLoader
-from src.infra.langchain.text_splitter.text_splitter import LangchainTextSplitter
 from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
 from src.infra.weaviate.api import WeaviateAPI
+from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.domain.constants import OPENAI, HUGGING_FACE
 
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     """ LangchainAPI class.
     """
 
-    def __init__(self, llm_type, api_key) -> None: 
+    def __init__(self, llm_type: str, api_key: str, logger: LoggerInterface) -> None: 
         # TODO: Implement weaviate here
         self._api_key = api_key
+        self._logger = logger
         if llm_type == OPENAI:
             self.create_open_ai_llm()
         elif llm_type == HUGGING_FACE:
@@ -22,26 +21,17 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     def create_open_ai_llm(self) -> None:
         """ 
         Create OpenAI LLM and register it as dependency
-        :param api_key: the OpenAi api key
         """
         openai.api_key = self._api_key
         client = openai
-        loader = LangchainDocumentLoader("pdf", 'pdfs', "**/*.pdf")
-        data = loader.execute()
-
-        text_splitter = LangchainTextSplitter(128,0)
-        docs = text_splitter.execute(data)
-        
-        embeddings = OpenAIEmbeddings(openai_api_key = self._api_key)
         
         self._client = client
         self._prompt_parser = PromptParser()
-        WeaviateAPI.__init__(self, docs, embeddings)
+        WeaviateAPI.__init__(self, self._logger)
 
     def create_huggingface_llm(self) -> None:
         """ 
         Create Huggingface LLM and register it as dependency
-        :param api_key: the Huggingface api key
         """
 
     def receive_prompt(self, prompt) -> str:

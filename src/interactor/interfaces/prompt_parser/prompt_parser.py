@@ -8,7 +8,7 @@ class PromptParserInterface(ABC):
 
     @abstractmethod
     def execute(self, input: str) -> str:
-        """ Parse the incoming prompt?.
+        """ Parse the incoming prompt.
         :param prompt: Prompt to be parse.
         :return: output
         """
