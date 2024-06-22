@@ -48,7 +48,7 @@ class MessagingUseCase():
             raise
 
         #TODO: langchain logic here
-        output = self.llm.analyze_prompt(input_dto.content)
+        output = self.llm.receive_prompt(input_dto.content)
 
         #TODO: Store chat here
         message = self.repository.create(

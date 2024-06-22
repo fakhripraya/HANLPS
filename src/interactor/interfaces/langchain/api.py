@@ -45,11 +45,10 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def feedback_prompt(self, prompt:str, templates: dict[list[str], Any]) -> str:
+    def feedback_prompt(self, prompt:str) -> str:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
-        :param templates: list of prompt templates.
         """
 
     @abstractmethod
