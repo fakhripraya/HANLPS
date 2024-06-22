@@ -1,7 +1,6 @@
 """ This module is responsible for weaviate schemas management
 """
 from src.domain.schemas.buildings.buildings import create_buildings_vectordb_schema
-from src.domain.schemas.messages.messages import create_messages_vectordb_schema
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from weaviate.client import WeaviateClient
 
@@ -23,4 +22,3 @@ class WeaviateSchemasManagement():
         """ This method is responsible for schemas creation
         """
         create_buildings_vectordb_schema(client=self._weaviate_client, logger=self._logger)
-        create_messages_vectordb_schema(client=self._weaviate_client, logger=self._logger)

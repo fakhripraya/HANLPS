@@ -8,8 +8,8 @@ class WeaviateAPIInterface(ABC):
     """
     
     @abstractmethod
-    def create_new_messages_tenant(self, tenant: str) -> None:
+    def load_buildings_from_document(self) -> None:
         """ 
-        Create new tenant for messages collection
-        :param tenant: tenant name.
+        Load and insert new objects of building and insert it to db from document pdf
+        :param doc_ext: document file extension.
         """

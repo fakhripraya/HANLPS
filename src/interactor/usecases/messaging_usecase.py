@@ -13,8 +13,6 @@ from src.interactor.validations.messaging_validator \
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.interactor.errors.error_classes import ItemNotCreatedException
 from src.infra.langchain.api import LangchainAPI
-from src.domain.constants import OPENAI
-from configs.config import OPENAI_API_KEY
 
 class MessagingUseCase():
     """ This class is responsible for everything needed to do the messaging flow
@@ -50,12 +48,10 @@ class MessagingUseCase():
             raise
 
         #TODO: langchain logic here
-        llm_api = LangchainAPI(OPENAI, OPENAI_API_KEY)
-        output = llm_api.analyze_prompt(input_dto.content)
+        output = self.llm.analyze_prompt(input_dto.content)
 
         #TODO: Store chat here
         message = self.repository.create(
-            # input_dto.content,
             output,
         )
         if message is None:

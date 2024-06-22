@@ -2,6 +2,8 @@
 """
 
 from abc import ABC, abstractmethod
+from langchain_core.chat_history import BaseChatMessageHistory
+from pyparsing import Any
 
 class LangchainAPIInterface(ABC):
     """ LangchainAPIInterface class provides an interface for langchain API.
@@ -17,6 +19,14 @@ class LangchainAPIInterface(ABC):
     def create_huggingface_llm(self, api_key: str) -> None:
         """ 
         Create Huggingface LLM and register it as dependency
+        """
+        
+    @abstractmethod
+    def get_session_history(self, session_id) -> BaseChatMessageHistory:
+        """ Get message history by session id
+
+        :param session_id: session id
+        :return: BaseChatMessageHistory
         """
 
     @abstractmethod
@@ -35,10 +45,11 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def feedback_prompt(self, prompt:str) -> str:
+    def feedback_prompt(self, prompt:str, templates: dict[list[str], Any]) -> str:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
+        :param templates: list of prompt templates.
         """
 
     @abstractmethod
