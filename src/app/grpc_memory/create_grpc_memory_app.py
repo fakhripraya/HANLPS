@@ -27,6 +27,8 @@ class GRPCMemoryApp:
             return OPENAI
         elif(LLM_USED == str(HUGGING_FACE)):
             return HUGGING_FACE
+        else:
+            raise Exception("Invalid LLM type")
 
     def create_server(self):
         """Create the GRPC server and start it."""
