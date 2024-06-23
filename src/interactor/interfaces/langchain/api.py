@@ -3,7 +3,6 @@
 
 from abc import ABC, abstractmethod
 from langchain_core.chat_history import BaseChatMessageHistory
-from pyparsing import Any
 
 class LangchainAPIInterface(ABC):
     """ LangchainAPIInterface class provides an interface for langchain API.

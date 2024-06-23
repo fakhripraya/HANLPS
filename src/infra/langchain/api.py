@@ -6,6 +6,7 @@ from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
 from src.infra.weaviate.api import WeaviateAPI
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.domain.constants import OPENAI, HUGGING_FACE
+from configs.config import ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER
 from src.domain.prompt_templates import chat_template, analyzer_template
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -107,7 +108,14 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             input_messages_key="input",
             history_messages_key="history",
         )
-        result = with_message_history.invoke({"input": prompt})
+        result = with_message_history.invoke(
+            {
+                "input": prompt,
+                "service_pic_number": SERVICE_PIC_NUMBER,
+                "advertising_pic_number": ADVERTISING_PIC_NUMBER
+            },
+            config={"configurable": {"session_id": "abc123"}}
+        )
         output = self.respond(result)
         
         return output
