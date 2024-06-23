@@ -8,8 +8,7 @@ class WeaviateAPIInterface(ABC):
     """
     
     @abstractmethod
-    def load_buildings_from_document(self) -> None:
+    def load_buildings_from_document_csv(self) -> None:
         """ 
-        Load and insert new objects of building and insert it to db from document pdf
-        :param doc_ext: document file extension.
+        Load and insert new objects of building and insert it to db from document csv
         """

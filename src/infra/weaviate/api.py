@@ -38,9 +38,9 @@ class WeaviateAPI(WeaviateAPIInterface):
                 self._weaviate_client.close()
             logger.log_critical(f"Failed to start weaviate client, ERROR: {e}")
             
-    def load_buildings_from_document(self) -> None:
+    def load_buildings_from_document_csv(self) -> None:
         """ 
-        Load and insert new objects of building and insert it to db from document pdf
+        Load and insert new objects of building and insert it to db from document csv
         """
         #TODO: This has not finished
         # migrate data object
