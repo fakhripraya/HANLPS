@@ -4,22 +4,29 @@
 import grpc
 import sys
 sys.path.append("./protofile")
-from configs.config import INSECURE_PORT, OPENAI_API_KEY
+from configs.config import INSECURE_PORT, OPENAI_API_KEY, LLM_USED
 from protofile import messaging_pb2_grpc as handler
 from concurrent import futures
 from src.app.grpc_memory.servicer.messaging_servicer import MessagingServicer
-from src.domain.constants import OPENAI
+from src.domain.constants import OPENAI, HUGGING_FACE
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.langchain.api import LangchainAPI
 
 class GRPCMemoryApp:
     def __init__(self, logger: LoggerInterface):
         self.logger = logger
-        self.llm = LangchainAPI(OPENAI, OPENAI_API_KEY, self.logger)
+        self.llm = LangchainAPI(self.define_llm_type(), OPENAI_API_KEY, self.logger)
         self.grpc_server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
         # register grpc handler
         handler.add_MessagingServiceServicer_to_server(MessagingServicer(self.logger, self.llm), self.grpc_server)
+
+    def define_llm_type(self):
+        """define llm type"""
+        if(LLM_USED == str(OPENAI)):
+            return OPENAI
+        elif(LLM_USED == str(HUGGING_FACE)):
+            return HUGGING_FACE
 
     def create_server(self):
         """Create the GRPC server and start it."""

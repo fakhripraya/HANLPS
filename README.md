@@ -47,4 +47,4 @@ python -m grpc_tools.protoc -I=proto --python_out=proto --grpc_python_out=proto 
 # Dependencies
 
 grpcio grpcio-tools python-dotenv openai langchain langchain_community weaviate-client
-langchain-weaviate cerberus unstructured pytest tiktoken
+langchain-weaviate langchain_huggingface cerberus unstructured pytest tiktoken

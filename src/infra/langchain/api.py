@@ -6,7 +6,7 @@ from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
 from src.infra.weaviate.api import WeaviateAPI
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.domain.constants import OPENAI, HUGGING_FACE
-from configs.config import ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER, OPENAI_MODEL
+from configs.config import ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER, OPENAI_MODEL, HUGGINGFACE_MODEL
 from src.domain.prompt_templates import chat_template, analyzer_template
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -14,6 +14,7 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_openai.chat_models import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
+from langchain_huggingface import HuggingFacePipeline
     
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     """ LangchainAPI class.
@@ -47,6 +48,18 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         """ 
         Create Huggingface LLM and register it as dependency
         """
+        # NOTE 
+        # doesn't support Bahasa Indonesia 
+        client = HuggingFacePipeline.from_model_id(
+            model_id=HUGGINGFACE_MODEL,
+            task="text-generation",
+            pipeline_kwargs={
+                "max_new_tokens": 100,
+                "top_k": 50,
+                "temperature": 0.1,
+            },
+        )
+        self._client = client
 
     def get_session_history(self, session_id) -> BaseChatMessageHistory:
         """ Get message history by session id
