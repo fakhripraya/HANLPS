@@ -59,7 +59,7 @@ class WeaviateAPI(WeaviateAPIInterface):
                 uuid = buildings_collection.data.insert({
                     "property_title": doc.page_content,
                     "property_address": doc.page_content,
-                    "property_description": doc.page_content,
+                    "property_detail": doc.page_content,
                     "latitude": doc.page_content,
                     "longitude": doc.page_content,
                     "housing_price": doc.page_content,
@@ -67,6 +67,7 @@ class WeaviateAPI(WeaviateAPIInterface):
                     "owner_whatsapp": doc.page_content,
                     "owner_phone_number": doc.page_content,
                     "owner_email": doc.page_content,
+                    "image_url": doc.page_content,
                     "created_at": doc.page_content,
                 })
                 
