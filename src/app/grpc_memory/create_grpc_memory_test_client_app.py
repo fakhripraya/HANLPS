@@ -1,8 +1,8 @@
 import grpc
 import sys
-sys.path.append("./proto")
+sys.path.append("./protofile")
 from configs.config import INSECURE_PORT
-from proto import messaging_pb2_grpc, messaging_pb2 as messaging
+from protofile import messaging_pb2_grpc, messaging_pb2 as messaging
 from src.interactor.interfaces.logger.logger import LoggerInterface
 
 def create_grpc_memory_test_client_app(logger: LoggerInterface):

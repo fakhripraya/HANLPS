@@ -10,20 +10,15 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
             name=collection_name,
             vectorizer_config=[
                 wvc.config.Configure.NamedVectors.multi2vec_clip(
-                    name="buildings_text_image_vector",
-                    image_fields=[
-                        wvc.config.Multi2VecField(name="image_embedding", weight=0.5)
-                    ],
+                    name="buildings_text_vector",
                     text_fields=[
                         wvc.config.Multi2VecField(name="property_title", weight=0.1),
-                        wvc.config.Multi2VecField(name="property_address", weight=0.1),
-                        wvc.config.Multi2VecField(name="property_description", weight=0.1),
-                        wvc.config.Multi2VecField(name="latitude", weight=0.1),
-                        wvc.config.Multi2VecField(name="longitude", weight=0.1),
+                        wvc.config.Multi2VecField(name="property_address", weight=0.3),
+                        wvc.config.Multi2VecField(name="property_description", weight=0.4),
+                        wvc.config.Multi2VecField(name="housing_price", weight=0.2),
                     ]
                 )
             ],
-            generative_config=wvc.config.Configure.Generative.openai(),
             properties=[
                 wvc.config.Property(
                     name="property_title",
@@ -41,23 +36,13 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
                     tokenization=wvc.config.Tokenization.WHITESPACE 
                 ),
                 wvc.config.Property(
-                    name="latitude",
-                    data_type=wvc.config.DataType.TEXT,
-                ),
-                wvc.config.Property(
-                    name="longitude",
-                    data_type=wvc.config.DataType.TEXT,
-                ),
-                wvc.config.Property(
                     name="housing_price",
                     data_type=wvc.config.DataType.NUMBER,
-                    vectorize_property_name=False,
                 ),
                 wvc.config.Property(
                     name="owner_name",
                     data_type=wvc.config.DataType.TEXT,
                     vectorize_property_name=False,
-                    tokenization=wvc.config.Tokenization.WHITESPACE
                 ),
                 wvc.config.Property(
                     name="owner_whatsapp",
@@ -75,12 +60,9 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
                     vectorize_property_name=False,
                 ),
                 wvc.config.Property(
-                    name="image_embedding",
-                    data_type=wvc.config.DataType.BLOB,
-                ),
-                wvc.config.Property(
-                    name="created_at",
-                    data_type=wvc.config.DataType.DATE,
+                    name="image_url",
+                    data_type=wvc.config.DataType.TEXT,
+                    vectorize_property_name=False,
                 ),
             ],
             # vector_index_config=wvc.config.Configure.VectorIndex.hnsw(

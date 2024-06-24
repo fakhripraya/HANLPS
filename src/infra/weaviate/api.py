@@ -14,14 +14,18 @@ class WeaviateAPI(WeaviateAPIInterface):
     """ WeaviateAPI class.
     """
 
-    def __init__(self, logger: LoggerInterface) -> None: 
+    def __init__(self, with_generative: bool, logger: LoggerInterface) -> None: 
         try:
+            self._weaviate_client = None
             self._logger = logger
             # connect Weaviate Cluster
             self._logger.log_info("Initializing Weaviate client")
-            self._weaviate_client = weaviate_lib.connect_to_local(headers={
-                "X-OpenAI-Api-Key": OPENAI_API_KEY
-            })
+            
+            if(with_generative):
+                self.connect_with_openai()
+            else:
+                self._weaviate_client = weaviate_lib.connect_to_local()
+            
             self._logger.log_info("Weaviate client successfully connected")
             
             # init schemas
@@ -32,11 +36,22 @@ class WeaviateAPI(WeaviateAPIInterface):
             schema = WeaviateSchemasManagement(self._weaviate_client, self._logger)
             schema.create_collections()
 
+            # load initial documents
+            self.load_buildings_from_document_csv()
+            
             self._logger.log_info("Weaviate client successfully initialized")
         except Exception as e:
             if self._weaviate_client is not None:
                 self._weaviate_client.close()
             logger.log_critical(f"Failed to start weaviate client, ERROR: {e}")
+            
+    def connect_with_openai(self) -> None:
+        """ 
+        Connect the weaviate instance with open ai generative module
+        """
+        self._weaviate_client = weaviate_lib.connect_to_local(headers={
+            "X-OpenAI-Api-Key": OPENAI_API_KEY
+         })
             
     def load_buildings_from_document_csv(self) -> None:
         """ 
@@ -46,35 +61,32 @@ class WeaviateAPI(WeaviateAPIInterface):
         # migrate data object
         try:
             self._logger.log_info(f"Loading documents")
-            loader = LangchainDocumentLoader("pdf", 'pdfs', "**/*.pdf")
-            data = loader.execute()
+            loader = LangchainDocumentLoader("csv", './csvs/sheet.csv', "**/*.csv")
+            docs = loader.execute()
 
-            text_splitter = LangchainTextSplitter(128,0)
-            docs = text_splitter.execute(data)
+            # text_splitter = LangchainTextSplitter(128,0)
+            # docs = text_splitter.execute(data)
             
-            count = 0
-            self._logger.log_info(f"{count}/{len(docs)} Loaded")
+            self._logger.log_info(f"0/{len(docs)} Loaded")
             buildings_collection =  self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-            for doc in docs:
+            for idx, doc in enumerate(docs):
+                if(idx == 0): continue
                 uuid = buildings_collection.data.insert({
-                    "property_title": doc.page_content,
-                    "property_address": doc.page_content,
-                    "property_detail": doc.page_content,
-                    "latitude": doc.page_content,
-                    "longitude": doc.page_content,
-                    "housing_price": doc.page_content,
-                    "owner_name": doc.page_content,
-                    "owner_whatsapp": doc.page_content,
-                    "owner_phone_number": doc.page_content,
-                    "owner_email": doc.page_content,
-                    "image_url": doc.page_content,
-                    "created_at": doc.page_content,
+                    "property_title": doc["property_title"],
+                    "property_address": doc["property_address"],
+                    "property_description": doc["property_description"],
+                    "housing_price": float(doc["housing_price"]),
+                    "owner_name": doc["owner_name"],
+                    "owner_whatsapp": doc["owner_whatsapp"],
+                    "owner_phone_number": doc["owner_phone_number"],
+                    "owner_email": doc["owner_email"],
+                    "image_url": doc["image_url"],
                 })
                 
-                count += 1
                 self._logger.log_info(f"[{uuid}]: Document Loaded")
-                self._logger.log_info(f"{count}/{len(docs)} Loaded")
+                self._logger.log_info(f"{idx+1}/{len(docs)} Loaded")
                 
             self._logger.log_info("Successfully load documents")
         except Exception as e: 
             self._logger.log_exception(f"Failed to load documents, ERROR: {e}")
+            raise Exception(e)

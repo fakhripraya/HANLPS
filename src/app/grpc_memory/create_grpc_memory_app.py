@@ -8,7 +8,7 @@ from configs.config import INSECURE_PORT, OPENAI_API_KEY, LLM_USED
 from protofile import messaging_pb2_grpc as handler
 from concurrent import futures
 from src.app.grpc_memory.servicer.messaging_servicer import MessagingServicer
-from src.domain.constants import OPENAI, HUGGING_FACE
+from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.langchain.api import LangchainAPI
 
@@ -27,6 +27,8 @@ class GRPCMemoryApp:
             return OPENAI
         elif(LLM_USED == str(HUGGING_FACE)):
             return HUGGING_FACE
+        elif(LLM_USED == str(GEMINI)):
+            return GEMINI
         else:
             raise Exception("Invalid LLM type")
 

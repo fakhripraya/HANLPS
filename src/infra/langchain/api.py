@@ -5,8 +5,9 @@ from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
 from src.infra.weaviate.api import WeaviateAPI
 from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.domain.constants import OPENAI, HUGGING_FACE
-from configs.config import ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER, OPENAI_MODEL, HUGGINGFACE_MODEL
+from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI
+from configs.config import ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER, \
+    OPENAI_MODEL, HUGGINGFACE_MODEL, GEMINI_MODEL, GEMINI_API_KEY
 from src.domain.prompt_templates import chat_template, analyzer_template
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -15,6 +16,7 @@ from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_openai.chat_models import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_huggingface import HuggingFacePipeline
+from langchain_google_genai import ChatGoogleGenerativeAI
     
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     """ LangchainAPI class.
@@ -29,21 +31,42 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             self.create_open_ai_llm()
         elif llm_type == HUGGING_FACE:
             self.create_huggingface_llm()
-
-    def create_open_ai_llm(self) -> None:
-        """ 
-        Create OpenAI LLM and register it as dependency
-        """
-        client = ChatOpenAI(model=OPENAI_MODEL, api_key=self._api_key)
-        WeaviateAPI.__init__(self, self._logger)
+        elif llm_type == GEMINI:
+            self.create_gemini_llm()
+        else:
+            raise Exception("No LLM Found")
         
-        self._client = client
+        WeaviateAPI.__init__(self, False, self._logger)
+        
         self._prompt_parser = PromptParser(self._client)
         self._templates = {
             "analyzer_template": [analyzer_template],
             "chat_template": chat_template
         }
 
+    def create_open_ai_llm(self) -> None:
+        """ 
+        Create OpenAI LLM and register it as dependency
+        """
+        client = ChatOpenAI(model=OPENAI_MODEL, api_key=self._api_key)
+        self._client = client
+        
+    def create_gemini_llm(self) -> None:
+        """ 
+        Create Gemini LLM and register it as dependency
+        """
+        baseUrl = 'https://generativelanguage.googleapis.com'
+        version = 'v1beta'
+        client = ChatGoogleGenerativeAI(
+            model=GEMINI_MODEL,
+            google_api_key=GEMINI_API_KEY,
+            temperature=0,
+            baseUrl=baseUrl,
+            max_retries=0,
+            version=version
+        )
+        self._client = client
+        
     def create_huggingface_llm(self) -> None:
         """ 
         Create Huggingface LLM and register it as dependency
