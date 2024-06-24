@@ -57,7 +57,6 @@ class WeaviateAPI(WeaviateAPIInterface):
         """ 
         Load and insert new objects of building and insert it to db from document csv
         """
-        #TODO: This has not finished
         # migrate data object
         try:
             self._logger.log_info(f"Loading documents")
