@@ -9,14 +9,30 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
         new_collection = client.collections.create(
             name=collection_name,
             vectorizer_config=[
-                wvc.config.Configure.NamedVectors.multi2vec_clip(
-                    name="buildings_text_vector",
-                    text_fields=[
-                        wvc.config.Multi2VecField(name="property_title", weight=0.1),
-                        wvc.config.Multi2VecField(name="property_address", weight=0.3),
-                        wvc.config.Multi2VecField(name="property_description", weight=0.4),
-                        wvc.config.Multi2VecField(name="housing_price", weight=0.2),
-                    ]
+                # wvc.config.Configure.NamedVectors.text2vec_transformers(
+                #     name="buildings_text_vector",
+                #     text_fields=[
+                #         wvc.config.Multi2VecField(name="property_title", weight=0.1),
+                #         wvc.config.Multi2VecField(name="property_address", weight=0.3),
+                #         wvc.config.Multi2VecField(name="property_description", weight=0.4),
+                #         wvc.config.Multi2VecField(name="housing_price", weight=0.2),
+                #     ]
+                # )
+                # Set a named vector
+                wvc.config.Configure.NamedVectors.text2vec_transformers(  # Use the "text2vec-cohere" vectorizer
+                    name="property_title", source_properties=["property_title"]       # Set the source property(ies)
+                ),
+                # Set another named vector
+                wvc.config.Configure.NamedVectors.text2vec_transformers(  # Use the "text2vec-openai" vectorizer
+                    name="property_address", source_properties=["property_address"]         # Set the source property(ies)
+                ),
+                # Set another named vector
+                wvc.config.Configure.NamedVectors.text2vec_transformers(  # Use the "text2vec-openai" vectorizer
+                    name="property_description", source_properties=["property_description"] # Set the source property(ies)
+                ),
+                # Set another named vector
+                wvc.config.Configure.NamedVectors.text2vec_transformers(  # Use the "text2vec-openai" vectorizer
+                    name="housing_price", source_properties=["housing_price"] # Set the source property(ies)
                 )
             ],
             properties=[

@@ -10,7 +10,13 @@ class WeaviateAPIInterface(ABC):
     @abstractmethod
     def connect_with_openai(self) -> None:
         """ 
-        Connect the weaviate instance with open ai generative module
+        Connect the weaviate instance with openai module
+        """
+    
+    @abstractmethod
+    def connect_with_google(self) -> None:
+        """ 
+        Connect the weaviate instance with google module
         """
     
     @abstractmethod

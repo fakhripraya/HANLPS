@@ -2,13 +2,13 @@
 """
 
 import weaviate as weaviate_lib
-from configs.config import OPENAI_API_KEY
+from configs.config import OPENAI_API_KEY, GEMINI_API_KEY
 from src.interactor.interfaces.weaviate.api import WeaviateAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.weaviate.schema.schema import WeaviateSchemasManagement
 from src.infra.langchain.document_loader.document_loader import LangchainDocumentLoader
-from src.infra.langchain.text_splitter.text_splitter import LangchainTextSplitter
 from src.domain.constants import BUILDINGS_COLLECTION_NAME
+from weaviate.classes.query import MetadataQuery
 
 class WeaviateAPI(WeaviateAPIInterface):
     """ WeaviateAPI class.
@@ -39,6 +39,18 @@ class WeaviateAPI(WeaviateAPIInterface):
             # load initial documents
             self.load_buildings_from_document_csv()
             
+            search = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
+            response = search.query.near_text(
+                query="kak cariin aku kost bintaro murah dong",
+                limit=5,
+                return_metadata=MetadataQuery(distance=True,certainty=True)
+            )
+
+            for o in response.objects:
+                print(o.properties)
+                print(o.metadata.distance)
+                print(o.metadata.certainty)
+            
             self._logger.log_info("Weaviate client successfully initialized")
         except Exception as e:
             if self._weaviate_client is not None:
@@ -47,10 +59,18 @@ class WeaviateAPI(WeaviateAPIInterface):
             
     def connect_with_openai(self) -> None:
         """ 
-        Connect the weaviate instance with open ai generative module
+        Connect the weaviate instance with openai module
         """
         self._weaviate_client = weaviate_lib.connect_to_local(headers={
             "X-OpenAI-Api-Key": OPENAI_API_KEY
+         })
+    
+    def connect_with_google(self) -> None:
+        """ 
+        Connect the weaviate instance with google module
+        """
+        self._weaviate_client = weaviate_lib.connect_to_local(headers={
+             "X-Google-Studio-Api-Key": GEMINI_API_KEY,
          })
             
     def load_buildings_from_document_csv(self) -> None:
@@ -66,7 +86,7 @@ class WeaviateAPI(WeaviateAPIInterface):
             # text_splitter = LangchainTextSplitter(128,0)
             # docs = text_splitter.execute(data)
             
-            self._logger.log_info(f"0/{len(docs)} Loaded")
+            self._logger.log_info(f"0/{len(docs)-1} Loaded")
             buildings_collection =  self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
             for idx, doc in enumerate(docs):
                 if(idx == 0): continue
@@ -83,7 +103,7 @@ class WeaviateAPI(WeaviateAPIInterface):
                 })
                 
                 self._logger.log_info(f"[{uuid}]: Document Loaded")
-                self._logger.log_info(f"{idx+1}/{len(docs)} Loaded")
+                self._logger.log_info(f"{idx}/{len(docs)-1} Loaded")
                 
             self._logger.log_info("Successfully load documents")
         except Exception as e: 
