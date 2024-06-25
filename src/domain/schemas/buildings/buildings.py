@@ -18,38 +18,61 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
                 #         wvc.config.Multi2VecField(name="housing_price", weight=0.2),
                 #     ]
                 # )
-                # Set a named vector
-                wvc.config.Configure.NamedVectors.text2vec_transformers(  # Use the "text2vec-cohere" vectorizer
-                    name="property_title", source_properties=["property_title"]       # Set the source property(ies)
+                # wvc.config.Configure.NamedVectors.text2vec_transformers( 
+                #     name="property_details", source_properties=[
+                #         "property_title",
+                #         "property_address",
+                #         "property_description",
+                #         "housing_price",
+                #     ]
+                # ),
+                wvc.config.Configure.NamedVectors.text2vec_transformers( 
+                    name="property_details", source_properties=[
+                        "property_title",
+                        "property_address",
+                        "property_description",
+                        "housing_price"
+                    ]
                 ),
-                # Set another named vector
-                wvc.config.Configure.NamedVectors.text2vec_transformers(  # Use the "text2vec-openai" vectorizer
-                    name="property_address", source_properties=["property_address"]         # Set the source property(ies)
+                wvc.config.Configure.NamedVectors.text2vec_transformers( 
+                    name="property_title", source_properties=[
+                        "property_title",
+                    ]
                 ),
-                # Set another named vector
-                wvc.config.Configure.NamedVectors.text2vec_transformers(  # Use the "text2vec-openai" vectorizer
-                    name="property_description", source_properties=["property_description"] # Set the source property(ies)
+                wvc.config.Configure.NamedVectors.text2vec_transformers( 
+                    name="property_address", source_properties=[
+                        "property_address",
+                    ]
                 ),
-                # Set another named vector
-                wvc.config.Configure.NamedVectors.text2vec_transformers(  # Use the "text2vec-openai" vectorizer
-                    name="housing_price", source_properties=["housing_price"] # Set the source property(ies)
-                )
+                wvc.config.Configure.NamedVectors.text2vec_transformers( 
+                    name="property_description", source_properties=[
+                        "property_description",
+                    ]
+                ),
+                wvc.config.Configure.NamedVectors.text2vec_transformers( 
+                    name="housing_price", source_properties=[
+                        "housing_price",
+                    ]
+                ),
             ],
             properties=[
                 wvc.config.Property(
                     name="property_title",
                     data_type=wvc.config.DataType.TEXT,
-                    tokenization=wvc.config.Tokenization.WHITESPACE 
+                    tokenization=wvc.config.Tokenization.WHITESPACE,
+                    index_searchable=True
                 ),
                 wvc.config.Property(
                     name="property_address",
                     data_type=wvc.config.DataType.TEXT,
-                    tokenization=wvc.config.Tokenization.WHITESPACE 
+                    tokenization=wvc.config.Tokenization.WHITESPACE,
+                    index_searchable=True 
                 ),
                 wvc.config.Property(
                     name="property_description",
                     data_type=wvc.config.DataType.TEXT,
-                    tokenization=wvc.config.Tokenization.WHITESPACE 
+                    tokenization=wvc.config.Tokenization.WHITESPACE,
+                    index_searchable=True 
                 ),
                 wvc.config.Property(
                     name="housing_price",

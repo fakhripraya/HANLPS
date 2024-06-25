@@ -7,7 +7,7 @@ from src.infra.weaviate.api import WeaviateAPI
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI
 from configs.config import ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER, \
-    OPENAI_MODEL, HUGGINGFACE_MODEL, GEMINI_MODEL, GEMINI_API_KEY
+    OPENAI_MODEL, HUGGINGFACE_MODEL, GEMINI_MODEL, GEMINI_API_KEY, USE_MODULE
 from src.domain.prompt_templates import chat_template, analyzer_template
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -17,7 +17,10 @@ from langchain_openai.chat_models import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
 from langchain_huggingface import HuggingFacePipeline
 from langchain_google_genai import ChatGoogleGenerativeAI
-    
+from src.domain.constants import BUILDINGS_COLLECTION_NAME
+from weaviate.classes.query import MetadataQuery
+from weaviate.classes.query import Filter
+
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     """ LangchainAPI class.
     """
@@ -36,8 +39,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         else:
             raise Exception("No LLM Found")
         
-        WeaviateAPI.__init__(self, False, self._logger)
-        
         self._prompt_parser = PromptParser(self._client)
         self._templates = {
             "analyzer_template": [analyzer_template],
@@ -50,6 +51,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         """
         client = ChatOpenAI(model=OPENAI_MODEL, api_key=self._api_key)
         self._client = client
+        WeaviateAPI.__init__(self, OPENAI if int(USE_MODULE) == 1 else None, self._logger)
         
     def create_gemini_llm(self) -> None:
         """ 
@@ -66,6 +68,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             version=version
         )
         self._client = client
+        WeaviateAPI.__init__(self, GEMINI if int(USE_MODULE) == 1 else None, self._logger)
         
     def create_huggingface_llm(self) -> None:
         """ 
@@ -83,6 +86,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             },
         )
         self._client = client
+        WeaviateAPI.__init__(self, HUGGING_FACE if int(USE_MODULE) == 1 else None, self._logger)
 
     def get_session_history(self, session_id) -> BaseChatMessageHistory:
         """ Get message history by session id
@@ -109,6 +113,28 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param prompt: chat message to be analyzed.
         """
         result = self._prompt_parser.execute(prompt, self._templates)
+        
+        if bool(result) is True:
+            buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
+            response = buildings_collection.query.hybrid(
+                query="kosan yang kamar mandi dalam dan parkiran motor harga 1.5 min",
+                target_vector="property_description",
+                filters=(
+                    Filter.all_of([
+                        Filter.by_property("housing_price").greater_than(300),
+                        Filter.by_property("housing_price").less_than(700),
+                        Filter.by_property("housing_price").equal(700),
+                    ])
+                ),
+                limit=2,
+                return_metadata=MetadataQuery(distance=True,certainty=True)
+            )
+
+            for o in response.objects:
+                print(o.properties)
+                print(o.metadata.distance)
+                print(o.metadata.certainty)
+        
         output = self.feedback_prompt(prompt)
         
         return output

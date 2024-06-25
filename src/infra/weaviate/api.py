@@ -3,26 +3,28 @@
 
 import weaviate as weaviate_lib
 from configs.config import OPENAI_API_KEY, GEMINI_API_KEY
+from src.domain.constants import OPENAI, GEMINI
 from src.interactor.interfaces.weaviate.api import WeaviateAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.weaviate.schema.schema import WeaviateSchemasManagement
 from src.infra.langchain.document_loader.document_loader import LangchainDocumentLoader
 from src.domain.constants import BUILDINGS_COLLECTION_NAME
-from weaviate.classes.query import MetadataQuery
 
 class WeaviateAPI(WeaviateAPIInterface):
     """ WeaviateAPI class.
     """
 
-    def __init__(self, with_generative: bool, logger: LoggerInterface) -> None: 
+    def __init__(self, with_generative: str | None, logger: LoggerInterface) -> None: 
         try:
             self._weaviate_client = None
             self._logger = logger
             # connect Weaviate Cluster
             self._logger.log_info("Initializing Weaviate client")
-            
-            if(with_generative):
+
+            if(with_generative == OPENAI):
                 self.connect_with_openai()
+            elif(with_generative == GEMINI):
+                self.connect_with_google()
             else:
                 self._weaviate_client = weaviate_lib.connect_to_local()
             
@@ -38,18 +40,6 @@ class WeaviateAPI(WeaviateAPIInterface):
 
             # load initial documents
             self.load_buildings_from_document_csv()
-            
-            search = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-            response = search.query.near_text(
-                query="kak cariin aku kost bintaro murah dong",
-                limit=5,
-                return_metadata=MetadataQuery(distance=True,certainty=True)
-            )
-
-            for o in response.objects:
-                print(o.properties)
-                print(o.metadata.distance)
-                print(o.metadata.certainty)
             
             self._logger.log_info("Weaviate client successfully initialized")
         except Exception as e:
