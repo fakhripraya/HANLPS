@@ -26,7 +26,7 @@ class WeaviateAPI(WeaviateAPIInterface):
             elif(with_generative == GEMINI):
                 self.connect_with_google()
             else:
-                self._weaviate_client = weaviate_lib.connect_to_local()
+                self.connect_locally()
             
             self._logger.log_info("Weaviate client successfully connected")
             
@@ -47,6 +47,12 @@ class WeaviateAPI(WeaviateAPIInterface):
                 self._weaviate_client.close()
             logger.log_critical(f"Failed to start weaviate client, ERROR: {e}")
             
+    def connect_locally(self) -> None:
+        """ 
+        Connect the weaviate instance locally
+        """
+        self._weaviate_client = weaviate_lib.connect_to_local()
+    
     def connect_with_openai(self) -> None:
         """ 
         Connect the weaviate instance with openai module
@@ -59,6 +65,8 @@ class WeaviateAPI(WeaviateAPIInterface):
         """ 
         Connect the weaviate instance with google module
         """
+        
+        # Currently has bug to use this header, only vertex is avail for now
         self._weaviate_client = weaviate_lib.connect_to_local(headers={
              "X-Google-Studio-Api-Key": GEMINI_API_KEY,
          })

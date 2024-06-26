@@ -8,6 +8,12 @@ class WeaviateAPIInterface(ABC):
     """
     
     @abstractmethod
+    def connect_locally(self) -> None:
+        """ 
+        Connect the weaviate instance locally
+        """
+    
+    @abstractmethod
     def connect_with_openai(self) -> None:
         """ 
         Connect the weaviate instance with openai module
