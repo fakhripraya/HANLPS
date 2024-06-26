@@ -1,28 +1,33 @@
 """ Module for LangchainAPI
 """
 
-from src.interactor.interfaces.langchain.api import LangchainAPIInterface
+# Standard and third-party libraries
+import json
+
+# Source-specific imports
+from configs.config import (
+    ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER,
+    OPENAI_MODEL, HUGGINGFACE_MODEL, GEMINI_MODEL,
+    GEMINI_API_KEY, USE_MODULE
+)
+from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDINGS_COLLECTION_NAME
+from src.domain.prompt_templates import chat_template, analyzer_template, filter_analyzer_template
+from src.domain.pydantic_models.rent_price_filter.rent_price_filter import RentPriceFilter
 from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
 from src.infra.weaviate.api import WeaviateAPI
+from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI
-from configs.config import ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER, \
-    OPENAI_MODEL, HUGGINGFACE_MODEL, GEMINI_MODEL, GEMINI_API_KEY, USE_MODULE
-from src.domain.prompt_templates import chat_template, analyzer_template, filter_analyzer_template
+
+# Langchain and related libraries
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
+from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_openai.chat_models import ChatOpenAI
-from langchain_core.output_parsers import StrOutputParser
 from langchain_huggingface import HuggingFacePipeline
 from langchain_google_genai import ChatGoogleGenerativeAI
-from src.domain.constants import BUILDINGS_COLLECTION_NAME
-from weaviate.classes.query import MetadataQuery
-from weaviate.classes.query import Filter
-from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import PydanticOutputParser
-from src.domain.pydantic_models.rent_price_filter.rent_price_filter import RentPriceFilter
+from weaviate.classes.query import MetadataQuery, Filter
 
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     """ LangchainAPI class.
@@ -48,7 +53,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 PromptTemplate(
                     template=filter_analyzer_template,
                     input_variables=["prompts"],
-                    partial_variables={"format_instructions": PydanticOutputParser(pydantic_object=RentPriceFilter).get_format_instructions()},
+                    partial_variables={"format_instructions": JsonOutputParser(pydantic_object=RentPriceFilter).get_format_instructions()},
                 ),
             ],
             "analyzer_template": [
@@ -131,27 +136,43 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         # using string to avoid truthy context of boolean
         if result == "True":
             templates = self._templates["filter_analyzer_template"]
-            result2: RentPriceFilter = self._prompt_parser.execute(prompt, templates)
-            print(result2)
-            print(result2)
-            # buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-            # response = buildings_collection.query.hybrid(
-            #     query="kosan yang kamar mandi dalam dan parkiran motor harga 1.5 min",
-            #     target_vector="property_description",
-            #     filters=(
-            #         Filter.all_of([
-            #             Filter.by_property("housing_price").greater_than(300),
-            #             Filter.by_property("housing_price").less_than(700),
-            #         ])
-            #     ),
-            #     limit=2,
-            #     return_metadata=MetadataQuery(distance=True,certainty=True)
-            # )
+            result: str = self._prompt_parser.execute(prompt, templates)
+            print(result)
+            
+            json_result = result.strip("`").strip("json").strip()
+            data_dict = json.loads(json_result)
+            rent_price_filter = RentPriceFilter(**data_dict)
 
-            # for o in response.objects:
-            #     print(o.properties)
-            #     print(o.metadata.distance)
-            #     print(o.metadata.certainty)
+            filter_array: list
+            if(rent_price_filter.filter_type == "GREATER_THAN"):
+               filter_array = [
+                    Filter.by_property("housing_price").greater_than(rent_price_filter.greater_than_price),
+                ]
+            elif(rent_price_filter.filter_type == "LESS_THAN"):
+                filter_array = [
+                    Filter.by_property("housing_price").less_than(rent_price_filter.less_than_price),
+                ]
+            elif(rent_price_filter.filter_type == "AROUND"):
+                filter_array = [
+                    Filter.by_property("housing_price").greater_than(rent_price_filter.greater_than_price),
+                    Filter.by_property("housing_price").less_than(rent_price_filter.less_than_price),
+                ]
+
+            buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
+            response = buildings_collection.query.near_text(
+                query="kos",
+                target_vector="property_description",
+                filters=(
+                    Filter.all_of(filter_array)
+                ),
+                limit=2,
+                return_metadata=MetadataQuery(distance=True,certainty=True)
+            )
+
+            for o in response.objects:
+                print(o.properties)
+                print(o.metadata.distance)
+                print(o.metadata.certainty)
         
         output = self.feedback_prompt(prompt)
         
