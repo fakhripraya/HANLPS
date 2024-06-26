@@ -8,7 +8,7 @@ class PromptParserInterface(ABC):
     """
 
     @abstractmethod
-    def execute(self, input: str, templates: dict[list[str], Any]) -> bool:
+    def execute(self, input: str, templates: dict[list[str], Any]) -> str:
         """ Parse the incoming prompt.
         :param prompt: Prompt to be parse.
         :return: output

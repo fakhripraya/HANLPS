@@ -8,7 +8,7 @@ from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI
 from configs.config import ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER, \
     OPENAI_MODEL, HUGGINGFACE_MODEL, GEMINI_MODEL, GEMINI_API_KEY, USE_MODULE
-from src.domain.prompt_templates import chat_template, analyzer_template
+from src.domain.prompt_templates import chat_template, analyzer_template, filter_analyzer_template
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_community.chat_message_histories import ChatMessageHistory
@@ -20,6 +20,9 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from src.domain.constants import BUILDINGS_COLLECTION_NAME
 from weaviate.classes.query import MetadataQuery
 from weaviate.classes.query import Filter
+from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import PydanticOutputParser
+from src.domain.pydantic_models.rent_price_filter.rent_price_filter import RentPriceFilter
 
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     """ LangchainAPI class.
@@ -41,7 +44,16 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         
         self._prompt_parser = PromptParser(self._client)
         self._templates = {
-            "analyzer_template": [analyzer_template],
+            "filter_analyzer_template": [
+                PromptTemplate(
+                    template=filter_analyzer_template,
+                    input_variables=["prompts"],
+                    partial_variables={"format_instructions": PydanticOutputParser(pydantic_object=RentPriceFilter).get_format_instructions()},
+                ),
+            ],
+            "analyzer_template": [
+                ChatPromptTemplate.from_template(analyzer_template),
+            ],
             "chat_template": chat_template
         }
 
@@ -112,28 +124,34 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         command, a simple chat, etc.
         :param prompt: chat message to be analyzed.
         """
-        result = self._prompt_parser.execute(prompt, self._templates)
+        templates = self._templates["analyzer_template"]
+        result: str = self._prompt_parser.execute(prompt, templates)
+        result = result.strip()
         
-        if bool(result) is True:
-            buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-            response = buildings_collection.query.hybrid(
-                query="kosan yang kamar mandi dalam dan parkiran motor harga 1.5 min",
-                target_vector="property_description",
-                filters=(
-                    Filter.all_of([
-                        Filter.by_property("housing_price").greater_than(300),
-                        Filter.by_property("housing_price").less_than(700),
-                        Filter.by_property("housing_price").equal(700),
-                    ])
-                ),
-                limit=2,
-                return_metadata=MetadataQuery(distance=True,certainty=True)
-            )
+        # using string to avoid truthy context of boolean
+        if result == "True":
+            templates = self._templates["filter_analyzer_template"]
+            result2: RentPriceFilter = self._prompt_parser.execute(prompt, templates)
+            print(result2)
+            print(result2)
+            # buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
+            # response = buildings_collection.query.hybrid(
+            #     query="kosan yang kamar mandi dalam dan parkiran motor harga 1.5 min",
+            #     target_vector="property_description",
+            #     filters=(
+            #         Filter.all_of([
+            #             Filter.by_property("housing_price").greater_than(300),
+            #             Filter.by_property("housing_price").less_than(700),
+            #         ])
+            #     ),
+            #     limit=2,
+            #     return_metadata=MetadataQuery(distance=True,certainty=True)
+            # )
 
-            for o in response.objects:
-                print(o.properties)
-                print(o.metadata.distance)
-                print(o.metadata.certainty)
+            # for o in response.objects:
+            #     print(o.properties)
+            #     print(o.metadata.distance)
+            #     print(o.metadata.certainty)
         
         output = self.feedback_prompt(prompt)
         
