@@ -11,15 +11,18 @@ from configs.config import (
     GEMINI_API_KEY, USE_MODULE
 )
 from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDINGS_COLLECTION_NAME
-from src.domain.prompt_templates import chat_template, analyzer_template, filter_analyzer_template
-from src.domain.pydantic_models.rent_price_filter.rent_price_filter import RentPriceFilter
+from src.domain.prompt_templates import chat_template, analyzer_template, filter_analyzer_template, reask_template
+from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
 from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
 from src.infra.weaviate.api import WeaviateAPI
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
+from src.infra.weaviate.schema.collections.buildings.buildings import append_housing_price_filters, \
+    append_property_address_filters
 
 # Langchain and related libraries
 from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_core.runnables import Runnable
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from langchain_community.chat_message_histories import ChatMessageHistory
@@ -53,13 +56,14 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 PromptTemplate(
                     template=filter_analyzer_template,
                     input_variables=["prompts"],
-                    partial_variables={"format_instructions": JsonOutputParser(pydantic_object=RentPriceFilter).get_format_instructions()},
+                    partial_variables={"format_instructions": JsonOutputParser(pydantic_object=BuildingsFilter).get_format_instructions()},
                 ),
             ],
             "analyzer_template": [
                 ChatPromptTemplate.from_template(analyzer_template),
             ],
-            "chat_template": chat_template
+            "chat_template": chat_template,
+            "reask_template": reask_template,
         }
 
     def create_open_ai_llm(self) -> None:
@@ -120,20 +124,13 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         Receive prompt, receive the prompt from the client app
         :param prompt: chat message to be analyzed.
         """
-        output = self.analyze_prompt(prompt)
-        return output
-
-    def analyze_prompt(self, prompt) -> str:
-        """ 
-        Analyze prompt, define whether the prompt is a direct
-        command, a simple chat, etc.
-        :param prompt: chat message to be analyzed.
-        """
+        #TODO: change with chatprompttemplate
         templates = self._templates["analyzer_template"]
         result: str = self._prompt_parser.execute(prompt, templates)
         result = result.strip()
         
         # using string to avoid truthy context of boolean
+        print(result)
         if result == "True":
             templates = self._templates["filter_analyzer_template"]
             result: str = self._prompt_parser.execute(prompt, templates)
@@ -141,53 +138,63 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             
             json_result = result.strip("`").strip("json").strip()
             data_dict = json.loads(json_result)
-            rent_price_filter = RentPriceFilter(**data_dict)
+            buildings_filter = BuildingsFilter(**data_dict)
+            print(buildings_filter)
 
-            filter_array: list
-            if(rent_price_filter.filter_type == "GREATER_THAN"):
-               filter_array = [
-                    Filter.by_property("housing_price").greater_than(rent_price_filter.greater_than_price),
-                ]
-            elif(rent_price_filter.filter_type == "LESS_THAN"):
-                filter_array = [
-                    Filter.by_property("housing_price").less_than(rent_price_filter.less_than_price),
-                ]
-            elif(rent_price_filter.filter_type == "AROUND"):
-                filter_array = [
-                    Filter.by_property("housing_price").greater_than(rent_price_filter.greater_than_price),
-                    Filter.by_property("housing_price").less_than(rent_price_filter.less_than_price),
-                ]
-
-            buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-            response = buildings_collection.query.near_text(
-                query="kos",
-                target_vector="property_description",
-                filters=(
-                    Filter.all_of(filter_array)
-                ),
-                limit=2,
-                return_metadata=MetadataQuery(distance=True,certainty=True)
-            )
-
-            for o in response.objects:
-                print(o.properties)
-                print(o.metadata.distance)
-                print(o.metadata.certainty)
+            filter_array: list = []
+            filter_array = append_housing_price_filters(buildings_filter, filter_array)
+            filter_array = append_property_address_filters(buildings_filter, filter_array)
+            
+            output = self.analyze_prompt(prompt, filter_array)
+            return output
         
+        return self.feedback_prompt(prompt, True)
+
+    def analyze_prompt(self, prompt, filter_array) -> str:
+        """ 
+        Analyze prompt, define whether the prompt is a direct
+        command, a simple chat, etc.
+        :param prompt: chat message to be analyzed.
+        :param filter_array: filters that needed for prompt analysis.
+        """
+        buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
+        print(filter_array)
+        response = buildings_collection.query.near_text(
+            query=prompt,
+            target_vector="property_details",
+            filters=Filter.all_of(filter_array) if filter_array else None,
+            limit=2,
+            return_metadata=MetadataQuery(distance=True,certainty=True)
+        )
+        
+        # if the len of the object is 0, reask the user about the prompt
+        print(response)
+        if(len(response.objects) == 0):
+            output = self.feedback_prompt(prompt, True)
+            return output
+
+        print("ga masuk")
+        for o in response.objects:
+            print(o.properties)
+            print(o.metadata.distance)
+            print(o.metadata.certainty)
+            
         output = self.feedback_prompt(prompt)
         
         return output
 
-    def feedback_prompt(self, prompt) -> str:
+    def feedback_prompt(self, prompt, reask = False) -> str:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
+        :param reask: reask flag.
         """
+        print(reask)
         template = ChatPromptTemplate.from_messages(
             [
                 (
                     "system",
-                    self._templates["chat_template"],
+                   self._templates["reask_template"] if reask else self._templates["chat_template"]
                 ),
                 MessagesPlaceholder(variable_name="history"),
                 ("human", "{input}"),
@@ -200,7 +207,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             input_messages_key="input",
             history_messages_key="history",
         )
-        result = with_message_history.invoke(
+        result: Runnable = with_message_history.invoke(
             {
                 "input": prompt,
                 "service_pic_number": SERVICE_PIC_NUMBER,

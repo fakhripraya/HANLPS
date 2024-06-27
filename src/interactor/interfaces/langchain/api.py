@@ -41,18 +41,20 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def analyze_prompt(self, prompt:str) -> str:
+    def analyze_prompt(self, prompt:str, filter_array:list) -> str:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
         :param prompt: chat message to be analyzed.
+        :param filter_array: filters that needed for prompt analysis.
         """
 
     @abstractmethod
-    def feedback_prompt(self, prompt:str) -> str:
+    def feedback_prompt(self, prompt:str, reask:bool) -> str:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
+        :param reask: reask flag.
         """
 
     @abstractmethod
