@@ -2,7 +2,7 @@ from langchain_core.pydantic_v1 import BaseModel, Field, root_validator
 
 class BuildingsFilter(BaseModel):
     building_title: str | None = Field(description="The title of the building, if applicable")
-    building_address: str | None = Field(description="The building address, if applicable")
+    building_address: str | None = Field(description="The building location whether its a province, city, district, street, etc. If applicable.")
     is_asking_for_pricing: bool = Field(description="define whether the prompt is asking for pricing or not")
     filter_type: str | None = Field(description="Type of price filter (LESS_THAN, GREATER_THAN, AROUND)")
     less_than_price: float | None = Field(description="The maximum rent price, if applicable.")

@@ -2,7 +2,7 @@
 """
 
 from dataclasses import dataclass, asdict
-from src.domain.entities.message import Message
+from src.domain.entities.message.message import Message
 
 @dataclass
 class MessagingInputDto:

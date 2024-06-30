@@ -4,7 +4,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 from src.domain.value_objects import MessageId
-from src.domain.entities.message import Message
+from src.domain.entities.message.message import Message
 
 class MessagingRepositoryInterface(ABC):
     """ This class is the interface for the MessagingRepository

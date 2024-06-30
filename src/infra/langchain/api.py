@@ -11,20 +11,27 @@ from configs.config import (
     GEMINI_API_KEY, USE_MODULE
 )
 from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDINGS_COLLECTION_NAME
-from src.domain.prompt_templates import chat_template, analyzer_template, filter_analyzer_template, reask_template
+from src.domain.prompt_templates import (
+    chat_template,
+    analyzer_template,
+    filter_analyzer_template,
+    reask_template,
+    building_found_template
+)
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
 from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
 from src.infra.weaviate.api import WeaviateAPI
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.infra.weaviate.schema.collections.buildings.buildings import append_housing_price_filters, \
-    append_property_address_filters
+from src.infra.weaviate.schema.collections.buildings.buildings import append_housing_price_filters
+from src.domain.entities.building.building import Building
 
 # Langchain and related libraries
+from langchain_core.prompts.chat import SystemMessagePromptTemplate
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.runnables import Runnable
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
-from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
+from langchain_core.output_parsers import StrOutputParser
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_openai.chat_models import ChatOpenAI
@@ -53,17 +60,14 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         self._prompt_parser = PromptParser(self._client)
         self._templates = {
             "filter_analyzer_template": [
-                PromptTemplate(
-                    template=filter_analyzer_template,
-                    input_variables=["prompts"],
-                    partial_variables={"format_instructions": JsonOutputParser(pydantic_object=BuildingsFilter).get_format_instructions()},
-                ),
+                ChatPromptTemplate.from_template(filter_analyzer_template),
             ],
             "analyzer_template": [
                 ChatPromptTemplate.from_template(analyzer_template),
             ],
             "chat_template": chat_template,
             "reask_template": reask_template,
+            "building_found_template": building_found_template,
         }
 
     def create_open_ai_llm(self) -> None:
@@ -124,33 +128,56 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         Receive prompt, receive the prompt from the client app
         :param prompt: chat message to be analyzed.
         """
-        #TODO: change with chatprompttemplate
+        conversation = None
+        if "abc123" in self._store:
+            conversation = self._store["abc123"]
+            print(conversation)
+            
         templates = self._templates["analyzer_template"]
-        result: str = self._prompt_parser.execute(prompt, templates)
+        result: str = self._prompt_parser.execute(
+            {"prompts": prompt, "conversations": conversation if conversation else ""},
+            templates
+        )
         result = result.strip()
         
         # using string to avoid truthy context of boolean
-        print(result)
+        print(f"Is asking for boarding house: {result}\n")
         if result == "True":
             templates = self._templates["filter_analyzer_template"]
-            result: str = self._prompt_parser.execute(prompt, templates)
-            print(result)
+            result: str = self._prompt_parser.execute(
+                {"prompts": prompt, "conversations": conversation if conversation else ""},
+                templates
+            )
+            print(f"Filters: {result}\n")
             
             json_result = result.strip("`").strip("json").strip()
             data_dict = json.loads(json_result)
             buildings_filter = BuildingsFilter(**data_dict)
-            print(buildings_filter)
+            print(f"Filters in Pydantic: {buildings_filter}\n")
 
             filter_array: list = []
             filter_array = append_housing_price_filters(buildings_filter, filter_array)
-            filter_array = append_property_address_filters(buildings_filter, filter_array)
+            print(f"Filters array: {filter_array}\n")
             
-            output = self.analyze_prompt(prompt, filter_array)
+            building_instance = None
+            building_query = None
+            if(buildings_filter.building_title is not None or buildings_filter.building_address is not None):
+                building_instance  = Building(
+                    building_title=buildings_filter.building_title,
+                    building_address=buildings_filter.building_address
+                )
+                building_dict = building_instance.to_dict()
+                building_query = str(building_dict)
+                
+            building_query = prompt if building_query is None else building_query            
+            print(f"Query: {building_query}\n")
+            
+            output = self.analyze_prompt(prompt, filter_array, building_query)
             return output
         
         return self.feedback_prompt(prompt, True)
 
-    def analyze_prompt(self, prompt, filter_array) -> str:
+    def analyze_prompt(self, prompt, filter_array, query = "") -> str:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
@@ -158,63 +185,74 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param filter_array: filters that needed for prompt analysis.
         """
         buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-        print(filter_array)
         response = buildings_collection.query.near_text(
-            query=prompt,
-            target_vector="property_details",
-            filters=Filter.all_of(filter_array) if filter_array else None,
+            query=query,
+            target_vector="building_details",
+            filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
             limit=2,
             return_metadata=MetadataQuery(distance=True,certainty=True)
         )
         
         # if the len of the object is 0, reask the user about the prompt
-        print(response)
         if(len(response.objects) == 0):
-            output = self.feedback_prompt(prompt, True)
+            output = self.feedback_prompt(prompt, reask=True)
             return output
 
-        print("ga masuk")
         for o in response.objects:
             print(o.properties)
             print(o.metadata.distance)
             print(o.metadata.certainty)
             
-        output = self.feedback_prompt(prompt)
-        
+        #TODO: format message into chat prompt template
+        output = self.feedback_prompt(prompt, found=response.objects)
         return output
 
-    def feedback_prompt(self, prompt, reask = False) -> str:
+    def feedback_prompt(self, prompt, reask = False, found = None) -> str:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
         :param reask: reask flag.
         """
-        print(reask)
-        template = ChatPromptTemplate.from_messages(
-            [
-                (
-                    "system",
-                   self._templates["reask_template"] if reask else self._templates["chat_template"]
-                ),
-                MessagesPlaceholder(variable_name="history"),
-                ("human", "{input}"),
-            ]
+        print(f"Is reask for something is necessary: {reask}")
+        print(f"Is search found: {found}")
+        
+        template = self._templates["reask_template"] if reask else self._templates["chat_template"]
+        template = self._templates["building_found_template"] if found else self._templates["chat_template"]
+        input_variables = ["prompts","result"] if found else ["prompts","service_pic_number","advertising_pic_number"]
+        runnable_input = {
+                "prompts": prompt,
+                "result": found,
+            } if found else {
+                "prompts": prompt,
+                "service_pic_number": SERVICE_PIC_NUMBER,
+                "advertising_pic_number": ADVERTISING_PIC_NUMBER
+            }
+        
+        print(f"Input variable: {input_variables}")
+        
+        system_message = SystemMessagePromptTemplate(
+            prompt=PromptTemplate(
+                template=template,
+                input_variables=input_variables
+            )
         )
+        template = ChatPromptTemplate.from_messages([
+            system_message,
+            MessagesPlaceholder(variable_name="history"),
+            ("human", "{prompts}"),
+        ])
         chain = template | self._client | StrOutputParser()
         with_message_history = RunnableWithMessageHistory(
             chain,
             self.get_session_history,
-            input_messages_key="input",
+            input_messages_key="prompts",
             history_messages_key="history",
         )
         result: Runnable = with_message_history.invoke(
-            {
-                "input": prompt,
-                "service_pic_number": SERVICE_PIC_NUMBER,
-                "advertising_pic_number": ADVERTISING_PIC_NUMBER
-            },
+            runnable_input,
             config={"configurable": {"session_id": "abc123"}}
         )
+        print(f"AI Result: {result}")
         output = self.respond(result)
         
         return output

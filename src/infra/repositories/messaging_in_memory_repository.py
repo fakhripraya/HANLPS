@@ -4,7 +4,7 @@
 from typing import Dict
 import copy
 import uuid
-from src.domain.entities.message import Message
+from src.domain.entities.message.message import Message
 from src.interactor.interfaces.repositories.messaging_repository \
     import MessagingRepositoryInterface
 from src.domain.value_objects import MessageId

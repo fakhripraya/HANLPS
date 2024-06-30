@@ -25,9 +25,9 @@ class LangchainDocumentLoader():
                     "delimiter": ",",
                     "quotechar": '"',
                     "fieldnames": [
-                        "property_title",
-                        "property_address",
-                        "property_description",
+                        "building_title",
+                        "building_address",
+                        "building_description",
                         "housing_price",
                         "owner_name",
                         "owner_whatsapp",

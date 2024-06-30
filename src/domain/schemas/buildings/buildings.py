@@ -9,44 +9,27 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
         new_collection = client.collections.create(
             name=collection_name,
             vectorizer_config=[
-                # wvc.config.Configure.NamedVectors.text2vec_transformers(
-                #     name="buildings_text_vector",
-                #     text_fields=[
-                #         wvc.config.Multi2VecField(name="property_title", weight=0.1),
-                #         wvc.config.Multi2VecField(name="property_address", weight=0.3),
-                #         wvc.config.Multi2VecField(name="property_description", weight=0.4),
-                #         wvc.config.Multi2VecField(name="housing_price", weight=0.2),
-                #     ]
-                # )
-                # wvc.config.Configure.NamedVectors.text2vec_transformers( 
-                #     name="property_details", source_properties=[
-                #         "property_title",
-                #         "property_address",
-                #         "property_description",
-                #         "housing_price",
-                #     ]
-                # ),
                 wvc.config.Configure.NamedVectors.text2vec_transformers( 
-                    name="property_details", source_properties=[
-                        "property_title",
-                        "property_address",
-                        "property_description",
+                    name="building_details", source_properties=[
+                        "building_title",
+                        "building_address",
+                        "building_description",
                         "housing_price"
                     ]
                 ),
                 wvc.config.Configure.NamedVectors.text2vec_transformers( 
-                    name="property_title", source_properties=[
-                        "property_title",
+                    name="building_title", source_properties=[
+                        "building_title",
                     ]
                 ),
                 wvc.config.Configure.NamedVectors.text2vec_transformers( 
-                    name="property_address", source_properties=[
-                        "property_address",
+                    name="building_address", source_properties=[
+                        "building_address",
                     ]
                 ),
                 wvc.config.Configure.NamedVectors.text2vec_transformers( 
-                    name="property_description", source_properties=[
-                        "property_description",
+                    name="building_description", source_properties=[
+                        "building_description",
                     ]
                 ),
                 wvc.config.Configure.NamedVectors.text2vec_transformers( 
@@ -57,19 +40,19 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
             ],
             properties=[
                 wvc.config.Property(
-                    name="property_title",
+                    name="building_title",
                     data_type=wvc.config.DataType.TEXT,
                     tokenization=wvc.config.Tokenization.WHITESPACE,
                     index_searchable=True
                 ),
                 wvc.config.Property(
-                    name="property_address",
+                    name="building_address",
                     data_type=wvc.config.DataType.TEXT,
                     tokenization=wvc.config.Tokenization.WHITESPACE,
                     index_searchable=True 
                 ),
                 wvc.config.Property(
-                    name="property_description",
+                    name="building_description",
                     data_type=wvc.config.DataType.TEXT,
                     tokenization=wvc.config.Tokenization.WHITESPACE,
                     index_searchable=True 
@@ -104,15 +87,6 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
                     vectorize_property_name=False,
                 ),
             ],
-            # vector_index_config=wvc.config.Configure.VectorIndex.hnsw(
-            #     distance_metric=wvc.config.VectorDistances.COSINE,
-            #     quantizer=wvc.config.Configure.VectorIndex.Quantizer.pq(segments=192),
-            # ),
-            # inverted_index_config=wvc.config.Configure.inverted_index(
-            #     index_null_state=True,
-            #     index_property_length=True,
-            #     index_timestamps=True,
-            # ),
         )
         
         logger.log_info(f"Successfully create collection: {new_collection}")

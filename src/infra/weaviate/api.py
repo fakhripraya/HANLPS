@@ -89,9 +89,9 @@ class WeaviateAPI(WeaviateAPIInterface):
             for idx, doc in enumerate(docs):
                 if(idx == 0): continue
                 uuid = buildings_collection.data.insert({
-                    "property_title": doc["property_title"],
-                    "property_address": doc["property_address"],
-                    "property_description": doc["property_description"],
+                    "building_title": doc["building_title"],
+                    "building_address": doc["building_address"],
+                    "building_description": doc["building_description"],
                     "housing_price": float(doc["housing_price"]),
                     "owner_name": doc["owner_name"],
                     "owner_whatsapp": doc["owner_whatsapp"],
