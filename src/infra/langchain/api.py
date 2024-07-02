@@ -130,12 +130,15 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         """
         conversation = None
         if "abc123" in self._store:
-            conversation = self._store["abc123"]
+            conversation_history = self._store["abc123"]
             print(conversation)
-            
+            conversation = conversation_history
+        else:
+            conversation = ""
+        
         templates = self._templates["analyzer_template"]
         result: str = self._prompt_parser.execute(
-            {"prompts": prompt, "conversations": conversation if conversation else ""},
+            {"prompts": prompt, "conversations": conversation},
             templates
         )
         result = result.strip()
@@ -145,7 +148,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         if result == "True":
             templates = self._templates["filter_analyzer_template"]
             result: str = self._prompt_parser.execute(
-                {"prompts": prompt, "conversations": conversation if conversation else ""},
+                {"prompts": prompt, "conversations": conversation},
                 templates
             )
             print(f"Filters: {result}\n")
@@ -213,6 +216,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param prompt: chat message to be analyzed.
         :param reask: reask flag.
         """
+        output = None
         print(f"Is reask for something is necessary: {reask}")
         print(f"Is search found: {found}")
         
@@ -229,31 +233,47 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             }
         
         print(f"Input variable: {input_variables}")
-        
         system_message = SystemMessagePromptTemplate(
             prompt=PromptTemplate(
                 template=template,
                 input_variables=input_variables
             )
         )
-        template = ChatPromptTemplate.from_messages([
-            system_message,
-            MessagesPlaceholder(variable_name="history"),
-            ("human", "{prompts}"),
-        ])
-        chain = template | self._client | StrOutputParser()
-        with_message_history = RunnableWithMessageHistory(
-            chain,
-            self.get_session_history,
-            input_messages_key="prompts",
-            history_messages_key="history",
-        )
-        result: Runnable = with_message_history.invoke(
-            runnable_input,
-            config={"configurable": {"session_id": "abc123"}}
-        )
-        print(f"AI Result: {result}")
-        output = self.respond(result)
+        
+        conversation = None
+        if "abc123" not in self._store:
+            conversation = ChatMessageHistory()
+        else: 
+            conversation: ChatMessageHistory = self._store["abc123"]
+        
+        if(found):
+            conversation.add_user_message(prompt)
+            # TODO: Make a template based on found
+            conversation.add_ai_message(f"Nemu nih beberapa: {found}")
+            self._store["abc123"] = conversation
+            output = self.respond("") 
+        else:
+            template = ChatPromptTemplate.from_messages([
+                system_message,
+                MessagesPlaceholder(variable_name="history"),
+                ("human", "{prompts}"),
+            ])
+            
+            chain = template | self._client | StrOutputParser()
+            with_message_history = RunnableWithMessageHistory(
+                chain,
+                self.get_session_history,
+                input_messages_key="prompts",
+                history_messages_key="history",
+            )
+            result: Runnable = with_message_history.invoke(
+                runnable_input,
+                config={"configurable": {"session_id": "abc123"}}
+            )
+            output = self.respond(result) 
+        
+        conversation: ChatMessageHistory = self._store["abc123"]
+        print(f"Convo History: {conversation}")
         
         return output
 
