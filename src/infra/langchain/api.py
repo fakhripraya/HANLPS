@@ -148,12 +148,20 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 {"prompts": prompt, "conversations": conversation if conversation else ""},
                 templates
             )
-            print(f"Filters: {result}\n")
             
-            json_result = result.strip("`").strip("json").strip()
+            print(f"Filters: {result}\n")
+            json_result = result.strip("`").strip("json").strip("`").strip()
+            print(f"Stripped: {json_result}\n")
+            
             data_dict = json.loads(json_result)
             buildings_filter = BuildingsFilter(**data_dict)
             print(f"Filters in Pydantic: {buildings_filter}\n")
+            
+            if(
+                buildings_filter.building_address is None and
+                buildings_filter.less_than_price is None and
+                buildings_filter.greater_than_price is None
+            ): return self.feedback_prompt(prompt, True)
 
             filter_array: list = []
             filter_array = append_housing_price_filters(buildings_filter, filter_array)
@@ -175,7 +183,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             output = self.analyze_prompt(prompt, filter_array, building_query)
             return output
         
-        return self.feedback_prompt(prompt, True)
+        return self.feedback_prompt(prompt)
 
     def analyze_prompt(self, prompt, filter_array, query = "") -> str:
         """ 
@@ -194,8 +202,9 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         )
         
         # if the len of the object is 0, reask the user about the prompt
+        # TODO: give object not found template
         if(len(response.objects) == 0):
-            output = self.feedback_prompt(prompt, reask=True)
+            output = self.feedback_prompt(prompt, True)
             return output
 
         for o in response.objects:
@@ -229,18 +238,19 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             }
         
         print(f"Input variable: {input_variables}")
-        
         system_message = SystemMessagePromptTemplate(
             prompt=PromptTemplate(
                 template=template,
                 input_variables=input_variables
             )
         )
+        
         template = ChatPromptTemplate.from_messages([
             system_message,
             MessagesPlaceholder(variable_name="history"),
             ("human", "{prompts}"),
         ])
+        
         chain = template | self._client | StrOutputParser()
         with_message_history = RunnableWithMessageHistory(
             chain,
@@ -248,13 +258,14 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             input_messages_key="prompts",
             history_messages_key="history",
         )
+        
         result: Runnable = with_message_history.invoke(
             runnable_input,
             config={"configurable": {"session_id": "abc123"}}
         )
+        
         print(f"AI Result: {result}")
         output = self.respond(result)
-        
         return output
 
     def respond(self, prompt) -> str:
