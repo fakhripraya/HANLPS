@@ -1,6 +1,7 @@
 """ This module is responsible for messaging usecase.
 """
 
+import json
 from typing import Dict
 from src.interactor.dtos.messaging_dtos \
     import MessagingInputDto, MessagingOutputDto
@@ -41,23 +42,27 @@ class MessagingUseCase():
         """
 
         validator = MessagingInputDtoValidator(input_dto.to_dict())
-        try:
-            validator.validate()
-        except Exception as e:
-            self.logger.log_error(f"Error: {e}")
-            raise
-
-        #TODO: langchain logic here
-        output = self.llm.receive_prompt(input_dto.content)
-
-        #TODO: Store chat here
-        message = self.repository.create(
-            output,
-        )
-        if message is None:
-            self.logger.log_exception("Message creation failed")
-            raise ItemNotCreatedException(input_dto.content, "Message")
+        validator.validate()
         
-        output_dto = MessagingOutputDto(message)
+        message_output = self.llm.receive_prompt(input_dto.content)
+        message = self.repository.create(
+            input=message_output.input,
+            output= message_output.output,
+            output_content= message_output.output_content,
+        )
+        
+        if message is None:
+            self.logger.log_error("Message creation failed")
+            raise ItemNotCreatedException(input_dto.content, "Message")
+
+        buildings_dict = [building.to_dict() for building in (message_output.output_content or [])]
+        buildings_json = json.dumps(buildings_dict)
+        
+        output_dto = MessagingOutputDto(
+            input=message_output.input,
+            output=message_output.output,
+            output_content=buildings_json
+        )
+        
         presenter_response = self.presenter.present(output_dto)
         return presenter_response

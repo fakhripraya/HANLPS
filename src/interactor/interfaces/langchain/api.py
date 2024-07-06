@@ -2,7 +2,11 @@
 """
 
 from abc import ABC, abstractmethod
+from typing import Any, List
 from langchain_core.chat_history import BaseChatMessageHistory
+from langchain_core.runnables import Runnable
+from src.domain.entities.building.building import Building
+from src.domain.entities.message.message import Message
 
 class LangchainAPIInterface(ABC):
     """ LangchainAPIInterface class provides an interface for langchain API.
@@ -34,14 +38,14 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def receive_prompt(self, prompt:str) -> str:
+    def receive_prompt(self, prompt: str) -> Message:
         """ 
         Receive prompt, receive the prompt from the client app
         :param prompt: chat message to be analyzed.
         """
 
     @abstractmethod
-    def analyze_prompt(self, prompt:str, filter_array:list) -> str:
+    def analyze_prompt(self, prompt: str, filter_array: list) -> Message:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
@@ -50,7 +54,7 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def feedback_prompt(self, prompt:str, reask:bool) -> str:
+    def feedback_prompt(self, prompt: str, reask: bool, found: List[Building] | None) -> Message:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
@@ -58,7 +62,7 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def respond(self, prompt:str) -> str:
+    def respond(self, template: Any, input_variables: list[str], runnable_input: dict[str, Any], session_id: str) -> Any | Runnable:
         """ 
         Respond the receiving prompt with the processed feedback
         command, a simple chat, etc.

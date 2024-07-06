@@ -38,8 +38,5 @@ class MessagingController(MessagingControllerInterface):
         repository = MessagingInMemoryRepository()
         presenter = MessagingPresenter()
         use_case = MessagingUseCase(self.logger, presenter, repository, self.llm)
-        try:
-            result = use_case.execute(self.input_dto)
-            return result
-        except Exception:
-            raise
+        result = use_case.execute(self.input_dto)
+        return result

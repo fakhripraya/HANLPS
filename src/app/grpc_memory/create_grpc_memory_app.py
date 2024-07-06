@@ -5,7 +5,7 @@ import grpc
 import sys
 sys.path.append("./protofile")
 from configs.config import INSECURE_PORT, OPENAI_API_KEY, LLM_USED
-from protofile import messaging_pb2_grpc as handler
+from protofile.messaging.proto import messaging_pb2_grpc as handler
 from concurrent import futures
 from src.app.grpc_memory.servicer.messaging_servicer import MessagingServicer
 from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI

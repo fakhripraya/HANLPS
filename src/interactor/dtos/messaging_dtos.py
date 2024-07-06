@@ -17,4 +17,6 @@ class MessagingInputDto:
 @dataclass
 class MessagingOutputDto:
     """ Output Dto for messaging """
-    message: Message
+    input: str
+    output: str
+    output_content: str | None

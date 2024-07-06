@@ -3,14 +3,16 @@
 
 
 from dataclasses import dataclass, asdict
-from src.domain.value_objects import MessageId
+from typing import List
+from src.domain.entities.building.building import Building
 
 @dataclass
 class Message:
     """ Definition of the Message entity
     """
-    message_id: MessageId
-    content: str
+    input: str
+    output: str
+    output_content: List[Building] | None
 
     @classmethod
     def from_dict(cls, data):

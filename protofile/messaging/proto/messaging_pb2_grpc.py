@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import messaging_pb2 as messaging__pb2
+from . import messaging_pb2 as messaging__pb2
 
 GRPC_GENERATED_VERSION = '1.64.1'
 GRPC_VERSION = grpc.__version__

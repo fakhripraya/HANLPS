@@ -2,8 +2,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional
-from src.domain.value_objects import MessageId
+from typing import List, Optional
 from src.domain.entities.message.message import Message
 
 class MessagingRepositoryInterface(ABC):
@@ -11,25 +10,16 @@ class MessagingRepositoryInterface(ABC):
     """
 
     @abstractmethod
-    def get(self, message_id: MessageId) -> Optional[Message]:
-        """ Get a Message by id
-
-        :param profession_id: MessageId
-        :return: Message
-        """
-
-    @abstractmethod
-    def create(self, content: str) -> Optional[Message]:
+    def create(
+        self,
+        input: str,
+        output: str,
+        output_content: List[str] | None,
+    ) -> Optional[Message]:
         """ Create a Message
 
-        :param content: Message content
+        :param input: Input message
+        :param output: Output message
+        :param output_content: Output message content
         :return: MessageId
-        """
-
-    @abstractmethod
-    def update(self, message: Message) -> Optional[Message]:
-        """ Update a Message
-
-        :param Profession: Message
-        :return: Message
         """

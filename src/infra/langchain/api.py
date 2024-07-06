@@ -2,7 +2,9 @@
 """
 
 # Standard and third-party libraries
+import ast
 import json
+from typing import List
 
 # Source-specific imports
 from configs.config import (
@@ -10,6 +12,7 @@ from configs.config import (
     OPENAI_MODEL, HUGGINGFACE_MODEL, GEMINI_MODEL,
     GEMINI_API_KEY, USE_MODULE
 )
+from src.domain.entities.message.message import Message
 from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDINGS_COLLECTION_NAME
 from src.domain.prompt_templates import (
     chat_template,
@@ -123,7 +126,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             self._store[session_id] = ChatMessageHistory()
         return self._store[session_id]
 
-    def receive_prompt(self, prompt) -> str:
+    def receive_prompt(self, prompt) -> Message:
         """ 
         Receive prompt, receive the prompt from the client app
         :param prompt: chat message to be analyzed.
@@ -156,12 +159,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             data_dict = json.loads(json_result)
             buildings_filter = BuildingsFilter(**data_dict)
             print(f"Filters in Pydantic: {buildings_filter}\n")
-            
-            if(
-                buildings_filter.building_address is None and
-                buildings_filter.less_than_price is None and
-                buildings_filter.greater_than_price is None
-            ): return self.feedback_prompt(prompt, True)
 
             filter_array: list = []
             filter_array = append_housing_price_filters(buildings_filter, filter_array)
@@ -172,7 +169,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             if(buildings_filter.building_title is not None or buildings_filter.building_address is not None):
                 building_instance  = Building(
                     building_title=buildings_filter.building_title,
-                    building_address=buildings_filter.building_address
+                    building_address=buildings_filter.building_address,
+                    building_description=buildings_filter.building_facility
                 )
                 building_dict = building_instance.to_dict()
                 building_query = str(building_dict)
@@ -185,7 +183,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         
         return self.feedback_prompt(prompt)
 
-    def analyze_prompt(self, prompt, filter_array, query = "") -> str:
+    def analyze_prompt(self, prompt, filter_array, query = "") -> Message:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
@@ -202,21 +200,24 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         )
         
         # if the len of the object is 0, reask the user about the prompt
-        # TODO: give object not found template
         if(len(response.objects) == 0):
             output = self.feedback_prompt(prompt, True)
             return output
-
-        for o in response.objects:
-            print(o.properties)
-            print(o.metadata.distance)
-            print(o.metadata.certainty)
             
-        #TODO: format message into chat prompt template
-        output = self.feedback_prompt(prompt, found=response.objects)
+        building_list: List[Building] = []
+        for obj in response.objects:
+            print(f"Found object: {obj.properties}")
+            print(f"Object distance: {obj.metadata.distance}")
+            print(f"Object certainty: {obj.metadata.certainty}")
+            data_dict = ast.literal_eval(str(obj.properties))
+            building_instance = Building.from_dict(data_dict)
+            building_list.append(building_instance)
+            
+            
+        output = self.feedback_prompt(prompt, found=building_list)
         return output
 
-    def feedback_prompt(self, prompt, reask = False, found = None) -> str:
+    def feedback_prompt(self, prompt, reask = False, found = None) -> Message:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
@@ -226,17 +227,32 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         print(f"Is search found: {found}")
         
         template = self._templates["reask_template"] if reask else self._templates["chat_template"]
-        template = self._templates["building_found_template"] if found else self._templates["chat_template"]
-        input_variables = ["prompts","result"] if found else ["prompts","service_pic_number","advertising_pic_number"]
+        if found:
+            template = self._templates["building_found_template"]
+
+        input_variables = ["prompts", "service_pic_number", "advertising_pic_number" , "result"]
         runnable_input = {
-                "prompts": prompt,
-                "result": found,
-            } if found else {
-                "prompts": prompt,
-                "service_pic_number": SERVICE_PIC_NUMBER,
-                "advertising_pic_number": ADVERTISING_PIC_NUMBER
-            }
-        
+            "prompts": prompt,
+            "service_pic_number": SERVICE_PIC_NUMBER,
+            "advertising_pic_number": ADVERTISING_PIC_NUMBER
+        }
+
+        if found:
+            runnable_input["result"] = found
+            
+        output = self.respond(template, input_variables, runnable_input, "abc123")
+        return Message(
+            input=prompt,
+            output=output,
+            output_content=found
+        )
+
+    def respond(self, template, input_variables, runnable_input, session_id) -> str:
+        """ 
+        Respond the receiving prompt with the processed feedback
+        command, a simple chat, etc.
+        :param prompt: chat message to be analyzed.
+        """
         print(f"Input variable: {input_variables}")
         system_message = SystemMessagePromptTemplate(
             prompt=PromptTemplate(
@@ -261,17 +277,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         
         result: Runnable = with_message_history.invoke(
             runnable_input,
-            config={"configurable": {"session_id": "abc123"}}
+            config={"configurable": {"session_id": session_id}}
         )
         
         print(f"AI Result: {result}")
-        output = self.respond(result)
-        return output
-
-    def respond(self, prompt) -> str:
-        """ 
-        Respond the receiving prompt with the processed feedback
-        command, a simple chat, etc.
-        :param prompt: chat message to be analyzed.
-        """
-        return prompt
+        return result

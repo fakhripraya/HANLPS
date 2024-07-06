@@ -16,6 +16,7 @@ class MessagingPresenter(MessagingPresenterInterface):
         :return: Dict
         """
         return {
-                    "message_id": output_dto.message.message_id,
-                    "content": output_dto.message.content,
+            "input": output_dto.input,
+            "output": output_dto.output,
+            "output_content": output_dto.output_content,
         }
