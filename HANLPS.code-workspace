@@ -11,6 +11,12 @@
 		},
 		{
 			"path": "../forefront-hermes"
+		},
+		{
+			"path": "../forefront-olympus"
+		},
+		{
+			"path": "../Cosine"
 		}
 	],
 	"settings": {}
