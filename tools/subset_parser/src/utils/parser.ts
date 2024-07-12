@@ -8,17 +8,18 @@ import {
 } from "../domain/models";
 
 const getData = async (
-  paginationToken?: string
+  paginationToken?: string | undefined
 ): Promise<MasterModel | undefined> => {
   let data: MasterModel | undefined = undefined;
   try {
     console.log(chalk.green("Fetch data"));
-    const token =
-      paginationToken ||
-      "HE0zBBwpShYYZQpSAFQDQwFDB0VVQkFBSlQQZhRUPE0GWRNBF24MWUhBXkNRHA8JMB0tHxtQFX1JM2U3HiMUEgIlA0EWFAIiByZNUigePickIVNmLjUvMT02FRAxMixcEysCLDsxSh1QNCohEykdNjA-BQYKHkdCRyNQQz4BFQAHBAUsB1BNVUBGUUYYVi1ZC2smLQdAHFZ9XVBSX1wMRxZWCmoRRgJKBlszDFsnEQAcCA";
+    console.log(chalk.green(`Token: ${paginationToken}`));
+    const token = paginationToken
+      ? `&pagination_token=${paginationToken}`
+      : "";
 
     const res = await axios.get(
-      `https://instagram-scraper-api2.p.rapidapi.com/v1.2/posts?username_or_id_or_url=jktinfokost&pagination_token=${token}&url_embed_safe=true`,
+      `https://instagram-scraper-api2.p.rapidapi.com/v1.2/posts?username_or_id_or_url=jktinfokost${token}&url_embed_safe=true`,
       {
         headers: {
           Accept: "application/json",
@@ -52,27 +53,33 @@ const getData = async (
       console.error(chalk.red("Error:", error.message));
     }
     console.error(chalk.red("Error config:", error.config));
+    return undefined;
   }
 };
 
 const getFix = async (
   howManyTimes = 10
 ): Promise<BuildingModel[]> => {
+  console.log(chalk.green("Get fix object"));
   let fixData: BuildingModel[] = [];
-  let token: string | undefined;
+  let token: string | undefined = undefined;
 
   console.log(chalk.green("Start loop on getFix"));
   for (let i = 1; i <= howManyTimes; i++) {
-    const data = await getData(token);
-    if (!data) continue;
+    const object: MasterModel | undefined = await getData(
+      token
+    );
+    if (!object) continue;
 
-    token = data.paginationToken;
+    console.log(object.pagination_token);
+    console.log(object.data ? true : false);
+    token = object.pagination_token;
     fixData = [
       ...fixData,
-      ...data.data.items.map((e: ItemModel) => {
+      ...object.data.items.map((e: ItemModel) => {
         return {
           building_description: e.caption.text,
-          image_urls: e.carousel_media.map(
+          image_urls: e.carousel_media?.map(
             (f) => f.thumbnail_url
           ),
         } as BuildingModel;
@@ -82,6 +89,7 @@ const getFix = async (
     console.log(`producing ${i}`);
   }
 
+  console.log(chalk.green("Get fix object done"));
   return fixData;
 };
 
@@ -89,9 +97,7 @@ const mapperToJson = async (
   howMany: number
 ): Promise<void> => {
   try {
-    console.log(chalk.green("Get fix object"));
     const fix = await getFix(howMany);
-    console.log(chalk.green("Get fix object done"));
     const jsonList = fix.map((e) =>
       JSON.parse(JSON.stringify(e))
     );

@@ -1,6 +1,6 @@
 export interface MasterModel {
   data: Data;
-  paginationToken: string;
+  pagination_token: string;
 }
 
 export interface Data {
@@ -8,7 +8,7 @@ export interface Data {
 }
 
 export interface ItemModel {
-  carousel_media: CarouselData[];
+  carousel_media?: CarouselData[];
   caption: CaptionData;
 }
 
