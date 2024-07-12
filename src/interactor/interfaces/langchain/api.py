@@ -13,7 +13,7 @@ class LangchainAPIInterface(ABC):
     """
 
     @abstractmethod
-    def create_open_ai_llm(self, api_key: str) -> None:
+    def create_open_ai_llm(self) -> None:
         """ 
         Create OpenAI LLM and register it as dependency
         """
@@ -24,7 +24,7 @@ class LangchainAPIInterface(ABC):
         """
     
     @abstractmethod
-    def create_huggingface_llm(self, api_key: str) -> None:
+    def create_huggingface_llm(self) -> None:
         """ 
         Create Huggingface LLM and register it as dependency
         """
@@ -38,23 +38,25 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def receive_prompt(self, prompt: str) -> Message:
+    def receive_prompt(self, sessionid: str, prompt: str) -> Message:
         """ 
         Receive prompt, receive the prompt from the client app
+        :param sessionid: chat conversation session Id.
         :param prompt: chat message to be analyzed.
         """
 
     @abstractmethod
-    def analyze_prompt(self, prompt: str, filter_array: list) -> Message:
+    def analyze_prompt(self, prompt: str, sessionId: str, filter_array: list, query: str) -> Message:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
         :param prompt: chat message to be analyzed.
         :param filter_array: filters that needed for prompt analysis.
+        :param query: formatted accurate query for the vector DB based on the user input.
         """
 
     @abstractmethod
-    def feedback_prompt(self, prompt: str, reask: bool, found: List[Building] | None) -> Message:
+    def feedback_prompt(self, prompt: str, sessionId: str, reask: bool, found: List[Building] | None) -> Message:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.

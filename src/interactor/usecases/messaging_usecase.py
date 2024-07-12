@@ -44,7 +44,7 @@ class MessagingUseCase():
         validator = MessagingInputDtoValidator(input_dto.to_dict())
         validator.validate()
         
-        message_output = self.llm.receive_prompt(input_dto.content)
+        message_output = self.llm.receive_prompt(input_dto.sessionId, input_dto.content)
         message = self.repository.create(
             input=message_output.input,
             output= message_output.output,

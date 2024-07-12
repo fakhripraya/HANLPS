@@ -7,6 +7,7 @@ from src.domain.entities.message.message import Message
 @dataclass
 class MessagingInputDto:
     """ Input Dto for messaging """
+    sessionId: str
     content: str
 
     def to_dict(self):

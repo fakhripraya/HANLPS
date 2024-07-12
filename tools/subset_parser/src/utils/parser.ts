@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import chalk from "chalk";
 import { promises as fs } from "fs";
 import {
@@ -9,29 +9,50 @@ import {
 
 const getData = async (
   paginationToken?: string
-): Promise<MasterModel> => {
-  const token =
-    paginationToken ||
-    "HE0zBBwpShYYZQpSAF0DQQFLB0dVR0FDSlkQbBRVPE0GWRNBF24MWUhBXkNRHA8JMB0tHxtQFX1JM2UtHiEUIAIPAxYWGAIiBwpNICgRBycMNkhnOzVdIwgnBT4yPQZUBzMsDjs3Sh1QJCofEzQdNTASBSAKHkcdRydQQz4BFQAHBAUsB1BNVUBGUUYYVi1ZC2smLQdAHFd9V1BcX14MQRZVCmoRQQJKBlszDFsnEQAcCA";
+): Promise<MasterModel | undefined> => {
+  let data: MasterModel | undefined = undefined;
+  try {
+    console.log(chalk.green("Fetch data"));
+    const token =
+      paginationToken ||
+      "HE0zBBwpShYYZQpSAFQDQwFDB0VVQkFBSlQQZhRUPE0GWRNBF24MWUhBXkNRHA8JMB0tHxtQFX1JM2U3HiMUEgIlA0EWFAIiByZNUigePickIVNmLjUvMT02FRAxMixcEysCLDsxSh1QNCohEykdNjA-BQYKHkdCRyNQQz4BFQAHBAUsB1BNVUBGUUYYVi1ZC2smLQdAHFZ9XVBSX1wMRxZWCmoRRgJKBlszDFsnEQAcCA";
 
-  const res = await axios.get(
-    `https://instagram-scraper-api2.p.rapidapi.com/v1.2/posts?username_or_id_or_url=jktinfokost&pagination_token=${token}&url_embed_safe=true`,
-    {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "x-rapidapi-ua": "RapidAPI-Playground",
-        "x-rapidapi-key":
-          "952c971aa2mshea4a8b7b9207039p123f06jsn2a3c1f1ae79b",
-        "x-rapidapi-host":
-          "instagram-scraper-api2.p.rapidapi.com",
-      },
+    const res = await axios.get(
+      `https://instagram-scraper-api2.p.rapidapi.com/v1.2/posts?username_or_id_or_url=jktinfokost&pagination_token=${token}&url_embed_safe=true`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-rapidapi-ua": "RapidAPI-Playground",
+          "x-rapidapi-key":
+            "5bed0ca8e2mshfdf387ce894f6f7p1cb5f9jsnb1fcb6b25091",
+          "x-rapidapi-host":
+            "instagram-scraper-api2.p.rapidapi.com",
+        },
+      }
+    );
+
+    console.log(chalk.green("Fetch data done"));
+    data = res.data;
+    return data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error(
+        chalk.red(
+          `Error: ${error.response.status} - ${error.response.statusText}`
+        )
+      );
+      console.error(chalk.red(error.response.data));
+    } else if (error.request) {
+      console.error(
+        chalk.red("Error: No response received from server")
+      );
+      console.error(chalk.red(error.request));
+    } else {
+      console.error(chalk.red("Error:", error.message));
     }
-  );
-
-  if (res.status !== 200) throw new Error("Stopper");
-
-  return res.data as MasterModel;
+    console.error(chalk.red("Error config:", error.config));
+  }
 };
 
 const getFix = async (
@@ -40,10 +61,12 @@ const getFix = async (
   let fixData: BuildingModel[] = [];
   let token: string | undefined;
 
+  console.log(chalk.green("Start loop on getFix"));
   for (let i = 1; i <= howManyTimes; i++) {
     const data = await getData(token);
-    token = data.paginationToken;
+    if (!data) continue;
 
+    token = data.paginationToken;
     fixData = [
       ...fixData,
       ...data.data.items.map((e: ItemModel) => {
@@ -66,7 +89,9 @@ const mapperToJson = async (
   howMany: number
 ): Promise<void> => {
   try {
+    console.log(chalk.green("Get fix object"));
     const fix = await getFix(howMany);
+    console.log(chalk.green("Get fix object done"));
     const jsonList = fix.map((e) =>
       JSON.parse(JSON.stringify(e))
     );

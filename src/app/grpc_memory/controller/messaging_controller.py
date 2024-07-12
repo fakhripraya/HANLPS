@@ -26,8 +26,9 @@ class MessagingController(MessagingControllerInterface):
         :raises: ValueError if message content are missing.
         """
         if grpc_message.content is not None:
+             sessionId = str(grpc_message.sessionId)
              content = str(grpc_message.content)
-             self.input_dto = MessagingInputDto(content)
+             self.input_dto = MessagingInputDto(sessionId, content)
         else:
             raise ValueError("Missing message content")
        

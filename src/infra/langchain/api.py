@@ -126,14 +126,14 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             self._store[session_id] = ChatMessageHistory()
         return self._store[session_id]
 
-    def receive_prompt(self, prompt) -> Message:
+    def receive_prompt(self, sessionid, prompt) -> Message:
         """ 
         Receive prompt, receive the prompt from the client app
         :param prompt: chat message to be analyzed.
         """
         conversation = None
-        if "abc123" in self._store:
-            conversation = self._store["abc123"]
+        if sessionid in self._store:
+            conversation = self._store[sessionid]
             print(conversation)
             
         templates = self._templates["analyzer_template"]
@@ -178,12 +178,12 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             building_query = prompt if building_query is None else building_query            
             print(f"Query: {building_query}\n")
             
-            output = self.analyze_prompt(prompt, filter_array, building_query)
+            output = self.analyze_prompt(prompt, sessionid, filter_array, building_query)
             return output
         
-        return self.feedback_prompt(prompt)
+        return self.feedback_prompt(prompt, sessionid)
 
-    def analyze_prompt(self, prompt, filter_array, query = "") -> Message:
+    def analyze_prompt(self, prompt, sessionId, filter_array, query = "") -> Message:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
@@ -201,7 +201,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         
         # if the len of the object is 0, reask the user about the prompt
         if(len(response.objects) == 0):
-            output = self.feedback_prompt(prompt, True)
+            output = self.feedback_prompt(prompt, sessionId, True)
             return output
             
         building_list: List[Building] = []
@@ -214,10 +214,10 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             building_list.append(building_instance)
             
             
-        output = self.feedback_prompt(prompt, found=building_list)
+        output = self.feedback_prompt(prompt, sessionId, found=building_list)
         return output
 
-    def feedback_prompt(self, prompt, reask = False, found = None) -> Message:
+    def feedback_prompt(self, prompt, sessionId, reask = False, found = None) -> Message:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
@@ -240,7 +240,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         if found:
             runnable_input["result"] = found
             
-        output = self.respond(template, input_variables, runnable_input, "abc123")
+        output = self.respond(template, input_variables, runnable_input, sessionId)
         return Message(
             input=prompt,
             output=output,
