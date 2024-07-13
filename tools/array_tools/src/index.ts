@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { cleanFirst } from "./utils/parser";
+import { shiftArray, addIsReady } from "./utils/parser";
 
 async function main() {
-  await cleanFirst();
+  await addIsReady();
 }
 
 main();

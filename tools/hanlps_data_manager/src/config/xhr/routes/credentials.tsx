@@ -1,0 +1,9 @@
+export const URL_GET_GOOGLE_URL = `/v1/auth/google/url`;
+export const URL_POST_REGISTER = `/v1/auth/signup`;
+export const URL_POST_LOGIN = `/v1/auth/login`;
+export const URL_POST_FORGOT_PW = `/v1/auth/pw/forgot`;
+export const URL_POST_GOOGLE_CALLBACK = `/v1/auth/google/callback`;
+export const URL_POST_NEW_PW = `/v1/auth/pw/new`;
+export const URL_POST_LOGOUT = `/v1/auth/logout`;
+export const URL_POST_OTP = `/v1/auth/verify/otp`;
+export const URL_CHECK_AUTH_AND_REFRESH_TOKEN = `/v1/auth/token`;

@@ -1,0 +1,212 @@
+.home-page {
+  overflow: hidden;
+  height: 100svh !important;
+}
+
+.home-page-container {
+  min-width: 100vw;
+  height: 100svh;
+  //overflow: hidden;
+}
+
+.home-page-wrapper {
+  width: calc(100vw - 24px);
+  margin: 0px auto;
+  position: relative;
+  align-items: center;
+  -webkit-box-align: center;
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: 768px) {
+    width: 100vw;
+    max-width: 767px;
+  }
+}
+
+.home-page-flex-container {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  margin-left: 0px;
+  margin-right: 0px;
+  width: 100%;
+  box-sizing: border-box;
+  height: calc(100vh - 24px);
+  background-color: #151515;
+  border-radius: 1em;
+}
+
+.home-page-body-header-container {
+  display: flex;
+  flex-direction: row;
+  border-radius: 1em;
+  height: 60px;
+  width: stretch;
+  width: -webkit-fill-available;
+  width: fill-available;
+  background-color: #1c1d1d;
+  justify-content: space-between;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.home-page-body-header-left {
+  display: flex;
+  flex-direction: row;
+  justify-self: flex-start;
+  align-self: center;
+  color: #fff;
+}
+
+.home-page-body-container {
+  position: relative;
+  box-sizing: border-box;
+  width: stretch;
+  width: -webkit-fill-available;
+  width: fill-available;
+  display: flex;
+  flex-direction: column;
+  height: inherit;
+
+  @media screen and (max-width: 769px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+.home-page-mainbody-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  height: stretch;
+  height: -webkit-fill-available;
+  height: fill-available;
+  height: 100vh;
+  padding: 12px;
+  overflow: hidden;
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+}
+
+.home-page-chatbody-container {
+  padding-bottom: 0px !important;
+}
+
+.home-page-chatbody-container:hover {
+  overflow-y: scroll;
+}
+
+.home-page-mainbody-wrapper {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  margin: auto 8px auto 8px;
+}
+
+.home-page-chat-container {
+  padding: 12px;
+  padding-top: 0px !important;
+  height: fit-content;
+  width: stretch;
+  width: -webkit-fill-available;
+  width: fill-available;
+  display: flex;
+  flex-direction: row;
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+}
+
+.home-page-chat-leftside-textinput-button {
+  cursor: pointer;
+  height: 30px !important;
+  width: 30px !important;
+  transition: all 0.3s ease-in-out;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 24px;
+  justify-self: center;
+  align-self: center;
+  display: flex;
+  background-color: transparent;
+  box-shadow: none !important;
+  margin-right: 6px;
+}
+
+.home-page-chat-leftside-textinput-button-emoji {
+  background-image: url("../../assets/svg/face-smile-solid.svg");
+}
+
+.home-page-chat-leftside-textinput-button-gif {
+  background-image: url("../../assets/svg/gif-icon.svg");
+}
+
+.home-page-chat-textinput {
+  color: #151515;
+  margin-right: 6px;
+  text-indent: 12px;
+}
+
+.home-page-chattext-username {
+  margin: 0px !important;
+  margin-bottom: 4px !important;
+}
+
+.home-page-chattext-avatar {
+  justify-self: center;
+  align-self: flex-start;
+  padding-right: 8px;
+}
+
+.home-page-chattext-wrapper {
+  padding: 1em;
+  padding-top: 12.5px !important;
+}
+
+.home-page-chattext-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.home-page-chat-cards-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.home-page-longtext-area {
+  border-radius: 6px !important;
+  margin: 8px 0px;
+  width: 100%;
+  min-height: 300px;
+  background-color: rgb(28, 29, 29);
+  color: white;
+  text-align: start;
+}
+
+.home-page-input-title {
+  width: 120px;
+  max-width: 120px;
+  min-width: 120px;
+  margin: 10px 10px 0px 0px;
+}
+
+.home-page-textinput-box {
+  margin-top: 12px;
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+}
+
+.home-page-textinput {
+  padding: 6px;
+  border-radius: 8px;
+  width: 100%;
+  max-height: 20px;
+  text-decoration: none;
+  outline: none;
+  text-align: start;
+  font-size: large;
+  background-color: rgb(29, 29, 29);
+  color: #fff;
+}

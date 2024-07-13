@@ -12,4 +12,5 @@ export interface BuildingModel {
   owner_phone_number?: string;
   owner_email?: string;
   image_urls?: string[];
+  isReady?: boolean;
 }

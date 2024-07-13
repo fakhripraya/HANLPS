@@ -1,0 +1,87 @@
+import { USER_UNAUTHORIZED } from "../../variables/errorMessages/global";
+import {
+  AUTHORIZATION,
+  CLIENT_USER_INFO,
+  IS_OTP_VERIFIED,
+  URL_CHECK_AUTH_AND_REFRESH_TOKEN,
+  X_SID,
+} from "../../variables/global";
+
+interface Services {
+  postData: (
+    config: PostDataConfig
+  ) => Promise<AxiosResult>;
+}
+
+interface Cookies {
+  get: (name: string, options?: any) => any;
+  set: (name: string, value: any, options?: any) => void;
+}
+
+interface PostDataConfig {
+  headers: Record<string, string>;
+  endpoint: string | undefined;
+  url: string;
+  data: any;
+}
+
+interface AxiosResult {
+  responseData: any;
+  responseStatus: number;
+  errorContent?: string;
+}
+
+interface Login {
+  sid: string;
+  credentialToken: {
+    accessToken: string;
+  };
+}
+
+interface AuthResult {
+  message: string;
+  responseStatus: number;
+}
+
+export async function checkAuthAndRefresh(
+  services: Services,
+  cookies: Cookies
+): Promise<AuthResult> {
+  const login: Login = cookies.get(CLIENT_USER_INFO, {
+    path: "/",
+  });
+
+  if (!IS_OTP_VERIFIED(login)) {
+    return {
+      message: USER_UNAUTHORIZED,
+      responseStatus: 401,
+    };
+  }
+
+  const result: AuthResult = await services
+    .postData({
+      headers: {
+        [X_SID]: `${login.sid}`,
+        [AUTHORIZATION]: `Bearer ${login.credentialToken.accessToken}`,
+      },
+      endpoint: process.env.REACT_APP_OLYMPUS_SERVICE,
+      url: URL_CHECK_AUTH_AND_REFRESH_TOKEN,
+      data: {
+        credentialToken: login.credentialToken,
+      },
+    })
+    .then((res: AxiosResult) => {
+      cookies.set(CLIENT_USER_INFO, res.responseData, {
+        path: "/",
+      });
+      return { message: "Success", responseStatus: 200 };
+    })
+    .catch((error: AxiosResult) => {
+      return {
+        message: error.errorContent ?? "An error occurred",
+        responseStatus: error.responseStatus,
+      };
+    });
+
+  return result;
+}
