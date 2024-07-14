@@ -6,12 +6,13 @@
 .home-page-container {
   min-width: 100vw;
   height: 100svh;
+  display: flex;
+  flex-direction: row;
   //overflow: hidden;
 }
 
 .home-page-wrapper {
   width: calc(100vw - 24px);
-  margin: 0px auto;
   position: relative;
   align-items: center;
   -webkit-box-align: center;
@@ -19,9 +20,18 @@
   flex-direction: column;
 
   @media screen and (min-width: 768px) {
-    width: 100vw;
-    max-width: 767px;
+    width: stretch;
   }
+}
+
+.home-page-left {
+  margin-left: 12px;
+  margin-right: 6px;
+}
+
+.home-page-right {
+  margin-right: 12px;
+  margin-left: 6px;
 }
 
 .home-page-flex-container {
@@ -55,6 +65,14 @@
   display: flex;
   flex-direction: row;
   justify-self: flex-start;
+  align-self: center;
+  color: #fff;
+}
+
+.home-page-body-header-right {
+  display: flex;
+  flex-direction: row;
+  justify-self: flex-end;
   align-self: center;
   color: #fff;
 }
@@ -104,6 +122,37 @@
   margin: auto 8px auto 8px;
 }
 
+.home-page-chat-container {
+  padding: 12px;
+  padding-top: 0px !important;
+  height: fit-content;
+  width: stretch;
+  width: -webkit-fill-available;
+  width: fill-available;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+}
+
+.home-page-chat-container-left {
+  display: flex;
+  flex-direction: row;
+}
+
+.home-page-footer-container {
+  padding: 12px;
+  padding-top: 0px !important;
+  height: fit-content;
+  width: stretch;
+  width: -webkit-fill-available;
+  width: fill-available;
+  display: flex;
+  flex-direction: row;
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+}
 .home-page-chat-container {
   padding: 12px;
   padding-top: 0px !important;
@@ -209,4 +258,10 @@
   font-size: large;
   background-color: rgb(29, 29, 29);
   color: #fff;
+}
+
+.home-page-chat-cards-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }

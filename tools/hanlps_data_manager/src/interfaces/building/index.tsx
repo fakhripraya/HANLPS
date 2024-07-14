@@ -11,6 +11,11 @@ export interface BuildingModel {
   isReady?: boolean;
 }
 
+export interface EditedBuildingModel extends BuildingModel {
+  index?: number;
+  isEdited?: boolean;
+}
+
 export interface MasterData {
   data: BuildingModel[];
 }
