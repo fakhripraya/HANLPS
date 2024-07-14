@@ -27,7 +27,7 @@ const TextArea: React.FC<TextAreaProps> = ({
     <textarea
       placeholder={placeholder}
       readOnly={readOnly}
-      value={value}
+      value={value ?? ""}
       style={style}
       onChange={onChange}
       maxLength={maxLength}

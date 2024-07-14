@@ -52,9 +52,21 @@ export const removeLeadingZeros = (str: string) => {
   return str.replace(/^0+/, "");
 };
 
-export const formattedNumber = (number: number) => {
-  if (isNaN(number)) number = 0;
-  return new Intl.NumberFormat().format(number);
+export const formattedNumber = (value: string): string => {
+  // Format with commas for thousands separators
+  if (isNaN(Number(value))) value = "0";
+  const formattedValue = Intl.NumberFormat("id-ID").format(
+    parseFloat(value)
+  );
+
+  return formattedValue;
+};
+
+export const formattedCurrencyIDR = (number: number) => {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(number);
 };
 
 export const unformattedNumber = (

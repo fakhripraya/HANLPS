@@ -9,7 +9,7 @@ interface ModalProps {
   className?: string;
   bgClassName?: string;
   toggle: boolean;
-  clicked: () => void;
+  clicked?: () => void;
   children?: ReactNode;
 }
 

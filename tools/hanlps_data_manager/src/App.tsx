@@ -1,11 +1,12 @@
 import "./App.scss";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { routes } from "./config/routes/routes.tsx";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
+import Spinner from "./components/Spinner/index.tsx";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           />
         ))}
       </Routes>
+      <Spinner />
     </Router>
   );
 }

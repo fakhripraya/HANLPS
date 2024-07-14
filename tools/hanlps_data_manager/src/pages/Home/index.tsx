@@ -1,6 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "./style.scss";
-import { useRef, useState } from "react";
+import {
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Button from "../../components/Button";
 import {
   EditedBuildingModel,
@@ -11,6 +17,24 @@ import TextInput from "../../components/TextInput";
 import { saveAs } from "file-saver";
 import { ShowGrabableStoreCardCarousel } from "./modular/ShowCarousels";
 import _ from "lodash";
+import Modal from "../../components/Modal";
+import { formattedNumber } from "../../utils/functions/global";
+
+const HomeDefaultValue:
+  | EditedBuildingModel
+  | undefined
+  | null = {
+  building_title: "",
+  building_address: "",
+  building_description: "",
+  housing_price: "0",
+  owner_email: "",
+  owner_name: "",
+  owner_phone_number: "",
+  owner_whatsapp: "",
+  image_urls: [],
+  isEdited: false,
+};
 
 export default function Home() {
   // REFS //
@@ -18,7 +42,8 @@ export default function Home() {
     useRef<HTMLInputElement>(null);
 
   const [data, setData] = useState<MasterData | null>(null);
-  const [page, setPage] = useState<number>(0);
+  const [isLoading, setIsLoading] =
+    useState<boolean>(false);
   const [selected, setSelected] = useState<
     EditedBuildingModel | undefined | null
   >(null);
@@ -29,15 +54,57 @@ export default function Home() {
       HTMLInputElement | HTMLTextAreaElement
     >
   ) {
-    const temp: EditedBuildingModel = { ...selected };
-    if (field in temp) {
+    const temp = _.cloneDeep(selected);
+    if (temp && field in temp) {
       temp[field] = event.target.value as any;
       setSelected(temp);
     }
   }
 
+  function handleNumberChange(
+    field: keyof EditedBuildingModel,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) {
+    if (event.target.value === "") event.target.value = "0";
+
+    const temp = _.cloneDeep(selected);
+    if (temp && field in temp) {
+      event.target.value = event.target.value
+        .split(".")
+        .join("");
+
+      temp[field] = event.target.value as any;
+      setSelected(temp);
+    }
+  }
+
+  const handleNextItem = () => {
+    const dataCount = data?.data.length ?? -1;
+    if (dataCount <= 0) return;
+    if (typeof selected?.index === "undefined") return;
+    if (selected?.index >= dataCount) return;
+    handleSaveData();
+    handleSelectedItem(selected?.index + 1);
+  };
+
+  const handlePrevItem = () => {
+    if (typeof selected?.index === "undefined") return;
+    if (selected?.index <= 0) return;
+    handleSaveData();
+    handleSelectedItem(selected?.index - 1);
+  };
+
   const handleSaveData = () => {
-    return;
+    const temp = _.cloneDeep(data);
+    if (!selected) return;
+    if (typeof selected?.index === "undefined") return;
+    if (!temp) return;
+
+    temp.data[selected?.index] = {
+      ...selected,
+    };
+
+    setData(temp);
   };
 
   const handleDeleteData = (index: number | undefined) => {
@@ -45,29 +112,50 @@ export default function Home() {
     const temp = _.cloneDeep(data);
     temp?.data.splice(index, 1);
     setData(temp);
-    handleSelectedItem(index + 1);
+    handleSelectedItem(index, true);
   };
 
-  const handleSelectedItem = (index: number) => {
-    const temp: EditedBuildingModel | undefined | null =
-      data?.data[index];
-    setSelected({
-      index: index,
-      ...temp,
-    });
+  const handleSelectedItem = (
+    index: number,
+    fromDelete: boolean = false
+  ) => {
+    try {
+      const defaultValue = {
+        index: index,
+        ...HomeDefaultValue,
+      };
+      const temp: EditedBuildingModel | undefined | null =
+        _.cloneDeep(
+          data?.data[fromDelete ? index + 1 : index]
+        );
+
+      setSelected({
+        ...defaultValue,
+        ...temp,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleFileUpload = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        setData(JSON.parse(result));
-      };
-      reader.readAsText(file);
+    setIsLoading(true);
+    try {
+      const file = event.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const result = e.target?.result as string;
+          setData(JSON.parse(result));
+          setIsLoading(false);
+        };
+        reader.readAsText(file);
+      }
+    } catch (error) {
+      alert(error as string);
+      setIsLoading(false);
     }
   };
 
@@ -78,231 +166,250 @@ export default function Home() {
     saveAs(blob, "modifiedData.json");
   };
 
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === "Enter") handleSaveData();
+  };
+
+  useEffect(() => {
+    // Add event listener when component mounts
+    window.addEventListener("keydown", handleKeyPress);
+
+    // Clean up the event listener when component unmounts
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [selected]);
+
   return (
-    <div className="home-page">
-      <div className="visible home-page-container">
-        <div className="home-page-wrapper home-page-left">
-          <div className="home-page-flex-container">
-            <div className="home-page-body-container">
-              <div className="home-page-body-header-container">
-                <div className="home-page-body-header-left">
-                  <h4>
-                    Edit File - Masukkan file dengan extensi
-                    .json
-                  </h4>
-                </div>
-                <div className="home-page-body-header-right">
-                  <input
-                    placeholder="Upload"
-                    title="Upload"
-                    type="file"
-                    accept=".json"
-                    onChange={handleFileUpload}
-                  />
-                </div>
-              </div>
-              <div
-                ref={chatBodyContainerRef}
-                className="home-page-mainbody-container home-page-chatbody-container dark-bg-color">
-                <div className="home-page-mainbody-wrapper">
-                  <div className="home-page-chat-cards-container">
-                    <ShowGrabableStoreCardCarousel
-                      uniqueKey={"building-card"}
-                      values={data}
-                      handleSelectedItem={
-                        handleSelectedItem
-                      }
+    <Fragment>
+      <Modal toggle={isLoading}>...Loading bentar</Modal>
+      <div className="home-page">
+        <div className="visible home-page-container">
+          <div className="home-page-wrapper home-page-left">
+            <div className="home-page-flex-container">
+              <div className="home-page-body-container">
+                <div className="home-page-body-header-container">
+                  <div className="home-page-body-header-left">
+                    <h4>
+                      Edit File - Masukkan file dengan
+                      extensi .json
+                    </h4>
+                  </div>
+                  <div className="home-page-body-header-right">
+                    <input
+                      placeholder="Upload"
+                      title="Upload"
+                      type="file"
+                      accept=".json"
+                      onChange={handleFileUpload}
                     />
+                  </div>
+                </div>
+                <div
+                  ref={chatBodyContainerRef}
+                  className="home-page-mainbody-container home-page-chatbody-container dark-bg-color">
+                  <div className="home-page-mainbody-wrapper">
+                    <div className="home-page-chat-cards-container">
+                      <ShowGrabableStoreCardCarousel
+                        uniqueKey={"building-card"}
+                        values={data}
+                        selectedIndex={selected?.index}
+                        handleSelectedItem={
+                          handleSelectedItem
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="home-page-wrapper home-page-right">
-          <div className="home-page-flex-container">
-            <div className="home-page-body-container">
-              <div className="home-page-body-header-container">
-                <div className="home-page-body-header-left">
-                  <h4>
-                    Property No.{" "}
-                    {selected?.index
-                      ? selected?.index + 1
-                      : 0}
-                  </h4>
+          <div className="home-page-wrapper home-page-right">
+            <div className="home-page-flex-container">
+              <div className="home-page-body-container">
+                <div className="home-page-body-header-container">
+                  <div className="home-page-body-header-left">
+                    <h4>
+                      {typeof selected?.index !==
+                      "undefined"
+                        ? `Property No. ${
+                            selected?.index + 1
+                          }`
+                        : "No Selected"}
+                    </h4>
+                  </div>
+                  <div
+                    onClick={() =>
+                      handleDeleteData(selected?.index)
+                    }
+                    className="home-page-body-header-right cursor-pointer">
+                    <span className="red-color">
+                      Delete
+                    </span>
+                  </div>
                 </div>
                 <div
-                  onClick={() =>
-                    handleDeleteData(selected?.index)
-                  }
-                  className="home-page-body-header-right cursor-pointer">
-                  <span className="red-color">Delete</span>
-                </div>
-              </div>
-              <div
-                ref={chatBodyContainerRef}
-                className="home-page-mainbody-container home-page-chatbody-container dark-bg-color">
-                <div className="home-page-mainbody-wrapper">
-                  <label className="margin-top-16">
-                    Title
-                  </label>
-                  <div className="home-page-textinput-box">
-                    <TextInput
-                      onChange={(e) =>
-                        handleTextChange(
-                          "building_title",
-                          e
-                        )
-                      }
-                      value={selected?.building_title}
-                      type="text"
-                      className="home-page-textinput darker-bg-color"
-                    />
-                  </div>
-                  <label className="margin-top-16">
-                    Alamat
-                  </label>
-                  <div className="home-page-textinput-box">
-                    <TextInput
-                      onChange={(e) =>
-                        handleTextChange(
-                          "building_address",
-                          e
-                        )
-                      }
-                      value={selected?.building_address}
-                      type="text"
-                      className="home-page-textinput darker-bg-color"
-                    />
-                  </div>
-                  <label className="margin-top-16">
-                    Harga
-                  </label>
-                  <div className="home-page-textinput-box">
-                    <TextInput
-                      onChange={(e) =>
-                        handleTextChange("housing_price", e)
-                      }
-                      value={selected?.housing_price}
-                      type="text"
-                      className="home-page-textinput darker-bg-color"
-                    />
-                  </div>
-                  <label className="margin-top-16">
-                    Pemilik
-                  </label>
-                  <div className="home-page-textinput-box">
-                    <TextInput
-                      onChange={(e) =>
-                        handleTextChange("owner_name", e)
-                      }
-                      value={selected?.owner_name}
-                      type="text"
-                      className="home-page-textinput darker-bg-color"
-                    />
-                  </div>
-                  <label className="margin-top-16">
-                    Whatsapp Pemilik
-                  </label>
-                  <div className="home-page-textinput-box">
-                    <TextInput
-                      onChange={(e) =>
-                        handleTextChange(
-                          "owner_whatsapp",
-                          e
-                        )
-                      }
-                      value={selected?.owner_whatsapp}
-                      type="text"
-                      className="home-page-textinput darker-bg-color"
-                    />
-                  </div>
-                  <label className="margin-top-16">
-                    Nomor Telepon Pemilik
-                  </label>
-                  <div className="home-page-textinput-box">
-                    <TextInput
-                      onChange={(e) =>
-                        handleTextChange(
-                          "owner_phone_number",
-                          e
-                        )
-                      }
-                      value={selected?.owner_phone_number}
-                      type="text"
-                      className="home-page-textinput darker-bg-color"
-                    />
-                  </div>
-                  <label className="margin-top-16">
-                    Email Pemilik
-                  </label>
-                  <div className="home-page-textinput-box">
-                    <TextInput
-                      onChange={(e) =>
-                        handleTextChange(
-                          "owner_phone_number",
-                          e
-                        )
-                      }
-                      value={selected?.owner_phone_number}
-                      type="text"
-                      className="home-page-textinput darker-bg-color"
-                    />
-                  </div>
-                  <div className="home-page-textinput-box">
-                    <label className="home-page-input-title">
-                      Deskripsi
+                  ref={chatBodyContainerRef}
+                  className="home-page-mainbody-container home-page-chatbody-container dark-bg-color">
+                  <div className="home-page-mainbody-wrapper">
+                    <label className="margin-top-16">
+                      Title
                     </label>
-                    <TextArea
-                      onChange={(e) =>
-                        handleTextChange(
-                          "building_description",
-                          e
-                        )
-                      }
-                      className="home-page-longtext-area darker-bg-color"
-                      value={selected?.building_description}
-                    />
+                    <div className="home-page-textinput-box">
+                      <TextInput
+                        onChange={(e) =>
+                          handleTextChange(
+                            "building_title",
+                            e
+                          )
+                        }
+                        value={selected?.building_title}
+                        type="text"
+                        className="home-page-textinput darker-bg-color"
+                      />
+                    </div>
+                    <label className="margin-top-16">
+                      Alamat
+                    </label>
+                    <div className="home-page-textinput-box">
+                      <TextInput
+                        onChange={(e) =>
+                          handleTextChange(
+                            "building_address",
+                            e
+                          )
+                        }
+                        value={selected?.building_address}
+                        type="text"
+                        className="home-page-textinput darker-bg-color"
+                      />
+                    </div>
+                    <label className="margin-top-16">
+                      Harga (Rp.)
+                    </label>
+                    <div className="home-page-textinput-box">
+                      <TextInput
+                        onChange={(e) =>
+                          handleNumberChange(
+                            "housing_price",
+                            e
+                          )
+                        }
+                        value={formattedNumber(
+                          selected?.housing_price ?? "0"
+                        )}
+                        type="text"
+                        className="home-page-textinput darker-bg-color"
+                      />
+                    </div>
+                    <label className="margin-top-16">
+                      Pemilik
+                    </label>
+                    <div className="home-page-textinput-box">
+                      <TextInput
+                        onChange={(e) =>
+                          handleTextChange("owner_name", e)
+                        }
+                        value={selected?.owner_name}
+                        type="text"
+                        className="home-page-textinput darker-bg-color"
+                      />
+                    </div>
+                    <label className="margin-top-16">
+                      Whatsapp Pemilik
+                    </label>
+                    <div className="home-page-textinput-box">
+                      <TextInput
+                        onChange={(e) =>
+                          handleTextChange(
+                            "owner_whatsapp",
+                            e
+                          )
+                        }
+                        value={selected?.owner_whatsapp}
+                        type="text"
+                        className="home-page-textinput darker-bg-color"
+                      />
+                    </div>
+                    <label className="margin-top-16">
+                      Nomor Telepon Pemilik
+                    </label>
+                    <div className="home-page-textinput-box">
+                      <TextInput
+                        onChange={(e) =>
+                          handleTextChange(
+                            "owner_phone_number",
+                            e
+                          )
+                        }
+                        value={selected?.owner_phone_number}
+                        type="text"
+                        className="home-page-textinput darker-bg-color"
+                      />
+                    </div>
+                    <label className="margin-top-16">
+                      Email Pemilik
+                    </label>
+                    <div className="home-page-textinput-box">
+                      <TextInput
+                        onChange={(e) =>
+                          handleTextChange("owner_email", e)
+                        }
+                        value={selected?.owner_email}
+                        type="text"
+                        className="home-page-textinput darker-bg-color"
+                      />
+                    </div>
+                    <div className="home-page-textinput-box">
+                      <label className="home-page-input-title">
+                        Deskripsi
+                      </label>
+                      <TextArea
+                        onChange={(e) =>
+                          handleTextChange(
+                            "building_description",
+                            e
+                          )
+                        }
+                        className="home-page-longtext-area darker-bg-color"
+                        value={
+                          selected?.building_description
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="home-page-chat-container dark-bg-color">
-                <div className="home-page-chat-container-left">
+                <div className="home-page-chat-container dark-bg-color">
+                  <div className="home-page-chat-container-left">
+                    <Button
+                      className="margin-top-16 transparent-bg-color"
+                      onClick={handlePrevItem}>
+                      prev
+                    </Button>
+                    <Button
+                      className="margin-top-16 transparent-bg-color"
+                      onClick={handleNextItem}>
+                      next
+                    </Button>
+                  </div>
                   <Button
-                    className="margin-top-16 transparent-bg-color"
-                    onClick={() => {
-                      if (page === 0) return;
-                      setPage(page - 1);
-                    }}>
-                    prev
-                  </Button>
-                  <Button
-                    className="margin-top-16 transparent-bg-color"
-                    onClick={() => {
-                      if (page === data?.data?.length)
-                        return;
-                      setPage(page + 1);
-                    }}>
-                    next
+                    className="margin-top-16"
+                    onClick={handleSaveData}>
+                    save
                   </Button>
                 </div>
-                <Button
-                  className="margin-top-16"
-                  onClick={handleSaveData}>
-                  save
-                </Button>
-              </div>
-              <div className="home-page-footer-container transparent-bg-color">
-                <Button
-                  className="margin-top-16"
-                  onClick={handleDownload}>
-                  download
-                </Button>
+                <div className="home-page-footer-container transparent-bg-color">
+                  <Button
+                    className="margin-top-16"
+                    onClick={handleDownload}>
+                    download
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 }

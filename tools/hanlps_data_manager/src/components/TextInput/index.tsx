@@ -30,7 +30,7 @@ const TextInput = React.forwardRef<
 >((props, ref: Ref<HTMLInputElement>) => (
   <input
     ref={ref}
-    value={props.value}
+    value={props.value ?? ""}
     defaultValue={props.defaultValue}
     readOnly={props.readOnly}
     placeholder={props.placeholder}
