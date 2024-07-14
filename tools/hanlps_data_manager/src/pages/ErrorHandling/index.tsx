@@ -1,4 +1,4 @@
-import React, { ReactNode, CSSProperties } from "react";
+import { ReactNode, CSSProperties } from "react";
 import "./style.scss";
 
 interface IErrorHandling {
@@ -17,8 +17,12 @@ export default function ErrorHandling({
   wrapperStyle,
 }: IErrorHandling) {
   return (
-    <div style={containerStyle} className={`error-handling-container ${className}`}>
-      <div style={wrapperStyle} className="error-handling-wrapper">
+    <div
+      style={containerStyle}
+      className={`error-handling-container ${className}`}>
+      <div
+        style={wrapperStyle}
+        className="error-handling-wrapper">
         {errorMessage}
         {children}
       </div>
