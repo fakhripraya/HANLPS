@@ -92,7 +92,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             google_api_key=GEMINI_API_KEY,
             temperature=0,
             baseUrl=baseUrl,
-            max_retries=0,
+            max_retries=3,
             version=version
         )
         self._client = client
@@ -131,6 +131,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         Receive prompt, receive the prompt from the client app
         :param prompt: chat message to be analyzed.
         """
+        print(f"Session: {sessionid}")
         conversation = None
         if sessionid in self._store:
             conversation = self._store[sessionid]
@@ -195,7 +196,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             query=query,
             target_vector="building_details",
             filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
-            limit=2,
+            limit=5,
             return_metadata=MetadataQuery(distance=True,certainty=True)
         )
         

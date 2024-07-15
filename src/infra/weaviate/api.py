@@ -1,6 +1,7 @@
 """ Module for WeaviateAPI
 """
 
+import json
 import weaviate as weaviate_lib
 from configs.config import OPENAI_API_KEY, GEMINI_API_KEY
 from src.domain.constants import OPENAI, GEMINI
@@ -39,7 +40,7 @@ class WeaviateAPI(WeaviateAPIInterface):
             schema.create_collections()
 
             # load initial documents
-            self.load_buildings_from_document_csv()
+            self.load_buildings_from_document_json()
             
             self._logger.log_info("Weaviate client successfully initialized")
         except Exception as e:
@@ -98,6 +99,43 @@ class WeaviateAPI(WeaviateAPIInterface):
                     "owner_phone_number": doc["owner_phone_number"],
                     "owner_email": doc["owner_email"],
                     "image_url": doc["image_url"],
+                })
+                
+                self._logger.log_info(f"[{uuid}]: Document Loaded")
+                self._logger.log_info(f"{idx}/{len(docs)-1} Loaded")
+                
+            self._logger.log_info("Successfully load documents")
+        except Exception as e: 
+            self._logger.log_exception(f"Failed to load documents, ERROR: {e}")
+            raise Exception(e)
+        
+    def load_buildings_from_document_json(self) -> None:
+        """ 
+        Load and insert new objects of building and insert it to db from document csv
+        """
+        # migrate data object
+        try:
+            self._logger.log_info(f"Loading documents")  
+            with open('./json/data.json', 'r', encoding='utf-8') as file:
+                docs = json.load(file)["data"]
+
+            # text_splitter = LangchainTextSplitter(128,0)
+            # docs = text_splitter.execute(data)
+            
+            self._logger.log_info(f"0/{len(docs)-1} Loaded")
+            buildings_collection =  self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
+            for idx, doc in enumerate(docs):
+                if(idx == 0): continue
+                uuid = buildings_collection.data.insert({
+                    "building_title": doc["building_title"],
+                    "building_address": doc["building_address"],
+                    "building_description": doc["building_description"],
+                    "housing_price": float(doc["housing_price"]),
+                    "owner_name": doc["owner_name"],
+                    "owner_whatsapp": doc["owner_whatsapp"],
+                    "owner_phone_number": doc["owner_phone_number"],
+                    "owner_email": doc["owner_email"],
+                    "image_url": str(doc["image_urls"]),
                 })
                 
                 self._logger.log_info(f"[{uuid}]: Document Loaded")

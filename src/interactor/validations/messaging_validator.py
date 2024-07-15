@@ -13,6 +13,11 @@ class MessagingInputDtoValidator(BaseInputValidator):
         super().__init__(input_data)
         self.input_data = input_data
         self.__schema = {
+            "sessionId": {
+                "type": "string",
+                "required": True,
+                "empty": False
+            },
             "content": {
                 "type": "string",
                 "required": True,
