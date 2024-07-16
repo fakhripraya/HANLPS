@@ -2,6 +2,7 @@
 
 import logging
 from src.interactor.interfaces.logger.logger import LoggerInterface
+from configs.config import IN_DEVELOPMENT
 
 class LoggerDefault(LoggerInterface):
     """ LoggerDefault class.
@@ -20,34 +21,40 @@ class LoggerDefault(LoggerInterface):
         """ Log debug message.
         :param message: Message to log.
         """
+        if IN_DEVELOPMENT is True: print(message)
         logging.debug(message)
 
     def log_info(self, message: str) -> None:
         """ Log info message.
         :param message: Message to log.
         """
+        if IN_DEVELOPMENT is True: print(message)
         logging.info(message)
 
     def log_warning(self, message: str) -> None:
         """ Log warning message.
         :param message: Message to log.
         """
+        if IN_DEVELOPMENT is True: print(message)
         logging.warning(message)
 
     def log_error(self, message: str) -> None:
         """ Log error message.
         :param message: Message to log.
         """
+        if IN_DEVELOPMENT is True: print(message)
         logging.error(message)
 
     def log_critical(self, message: str) -> None:
         """ Log critical message.
         :param message: Message to log.
         """
+        if IN_DEVELOPMENT is True: print(message)
         logging.critical(message)
 
     def log_exception(self, message: str) -> None:
         """ Log exception message with exception info.
         :param message: Message to log.
         """
+        if IN_DEVELOPMENT is True: print(message)
         logging.exception(message)

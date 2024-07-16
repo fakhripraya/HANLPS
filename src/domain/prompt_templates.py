@@ -157,41 +157,56 @@ reask_template = chat_template + """
 
     The Human input: {prompts}
 """
-    
+
 building_found_template = chat_template + """
     Understand the context of the conversation
     You have done the searching and found some of the possible result by the human input reference,
     
-    This is the result:
-    {result}
-    
     This is The Human input: 
     {prompts}
     
-    As an AI you need to reply the human input like these possible cases
-    
-    Example 1
-    Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
-    Result context: the search result seems to have low similarity with the human input
-    AI supposed to reply: 
-    Ini ya kak, maaf kalau kurang mirip tapi adanya ini, boleh tolong detailin lagi kak?
-    
-    Example 2
-    Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
-    Result context: the search result seems to have medium similarity with the human input
-    AI supposed to reply: 
-    Ini ya kak, kira kira gimana kak?
-    
-    Example 3
-    Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
-    Result context: the search result seems to have high similarity with the human input
-    AI supposed to reply: 
-    Kita nemu nih kak!, bener ga yang ini?
-    
-    Example 4
-    If you didn't found anything just reply in something or the search result seems to have completely different similarities with the human input
-    AI Reply: kayanya belum bisa nemuin yang ditempat itu deh kak, ini aja yang aku temuin
+    As an AI you need to ask whether the result is satisfying,
+    Don't say something like "Ada nih", "Ada banyak nih", "Ada kok", etc
+    Rather reply in something like "Gimana cocok?", "Ini oke ga?", "Adanya ini nih, udah mantep?", "etc"
     
     NOTE:
-    DON'T GIVE THE RESULT DETAIL, THIS INSTRUCTION MEANT JUST TO REPLY SEMANTICALLY
+    Be creative in replying
     """
+    
+# building_found_template = chat_template + """
+#     Understand the context of the conversation
+#     You have done the searching and found some of the possible result by the human input reference,
+    
+#     This is the result:
+#     {result}
+    
+#     This is The Human input: 
+#     {prompts}
+    
+#     As an AI you need to reply the human input like these possible cases
+    
+#     Example 1
+#     Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
+#     Result context: the search result seems to have low similarity with the human input
+#     AI supposed to reply: 
+#     Ini ya kak, maaf kalau kurang mirip tapi adanya ini, boleh tolong detailin lagi kak?
+    
+#     Example 2
+#     Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
+#     Result context: the search result seems to have medium similarity with the human input
+#     AI supposed to reply: 
+#     Ini ya kak, kira kira gimana kak?
+    
+#     Example 3
+#     Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
+#     Result context: the search result seems to have high similarity with the human input
+#     AI supposed to reply: 
+#     Kita nemu nih kak!, bener ga yang ini?
+    
+#     Example 4
+#     If you didn't found anything just reply in something or the search result seems to have completely different similarities with the human input
+#     AI Reply: kayanya belum bisa nemuin yang ditempat itu deh kak, ini aja yang aku temuin
+    
+#     NOTE:
+#     DON'T GIVE THE RESULT DETAIL, THIS INSTRUCTION MEANT JUST TO REPLY SEMANTICALLY
+#     """

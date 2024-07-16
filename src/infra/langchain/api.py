@@ -131,11 +131,11 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         Receive prompt, receive the prompt from the client app
         :param prompt: chat message to be analyzed.
         """
-        print(f"Session: {sessionid}")
+        self._logger.log_info(f"Session: {sessionid}")
         conversation = None
         if sessionid in self._store:
             conversation = self._store[sessionid]
-            print(conversation)
+            self._logger.log_info(conversation)
             
         templates = self._templates["analyzer_template"]
         result: str = self._prompt_parser.execute(
@@ -145,7 +145,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         result = result.strip()
         
         # using string to avoid truthy context of boolean
-        print(f"Is asking for boarding house: {result}\n")
+        self._logger.log_info(f"Is asking for boarding house: {result}\n")
         if result == "True":
             templates = self._templates["filter_analyzer_template"]
             result: str = self._prompt_parser.execute(
@@ -153,17 +153,17 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 templates
             )
             
-            print(f"Filters: {result}\n")
+            self._logger.log_info(f"Filters: {result}\n")
             json_result = result.strip("`").strip("json").strip("`").strip()
-            print(f"Stripped: {json_result}\n")
+            self._logger.log_info(f"Stripped: {json_result}\n")
             
             data_dict = json.loads(json_result)
             buildings_filter = BuildingsFilter(**data_dict)
-            print(f"Filters in Pydantic: {buildings_filter}\n")
+            self._logger.log_info(f"Filters in Pydantic: {buildings_filter}\n")
 
             filter_array: list = []
             filter_array = append_housing_price_filters(buildings_filter, filter_array)
-            print(f"Filters array: {filter_array}\n")
+            self._logger.log_info(f"Filters array: {filter_array}\n")
             
             building_instance = None
             building_query = None
@@ -176,8 +176,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 building_dict = building_instance.to_dict()
                 building_query = str(building_dict)
                 
-            building_query = prompt if building_query is None else building_query            
-            print(f"Query: {building_query}\n")
+            building_query = prompt if building_query is None else building_query
+            self._logger.log_info(f"Query: {building_query}\n")
             
             output = self.analyze_prompt(prompt, sessionid, filter_array, building_query)
             return output
@@ -192,7 +192,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param filter_array: filters that needed for prompt analysis.
         """
         buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-        response = buildings_collection.query.near_text(
+        response = buildings_collection.query.hybrid(
             query=query,
             target_vector="building_details",
             filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
@@ -207,9 +207,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             
         building_list: List[Building] = []
         for obj in response.objects:
-            print(f"Found object: {obj.properties}")
-            print(f"Object distance: {obj.metadata.distance}")
-            print(f"Object certainty: {obj.metadata.certainty}")
+            self._logger.log_info(f"Found object: {obj.properties}")
             data_dict = ast.literal_eval(str(obj.properties))
             building_instance = Building.from_dict(data_dict)
             building_list.append(building_instance)
@@ -224,8 +222,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param prompt: chat message to be analyzed.
         :param reask: reask flag.
         """
-        print(f"Is reask for something is necessary: {reask}")
-        print(f"Is search found: {found}")
+        self._logger.log_info(f"Is reask for something is necessary: {reask}")
+        self._logger.log_info(f"Is search found: {found}")
         
         template = self._templates["reask_template"] if reask else self._templates["chat_template"]
         if found:
@@ -254,7 +252,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         command, a simple chat, etc.
         :param prompt: chat message to be analyzed.
         """
-        print(f"Input variable: {input_variables}")
         system_message = SystemMessagePromptTemplate(
             prompt=PromptTemplate(
                 template=template,
@@ -281,5 +278,5 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             config={"configurable": {"session_id": session_id}}
         )
         
-        print(f"AI Result: {result}")
+        self._logger.log_info(f"AI Result: {result}")
         return result

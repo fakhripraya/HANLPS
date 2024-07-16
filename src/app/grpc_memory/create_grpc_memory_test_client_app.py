@@ -11,13 +11,14 @@ def create_grpc_memory_test_client_app(logger: LoggerInterface):
     with grpc.insecure_channel(INSECURE_PORT) as channel:
         stub = messaging_pb2_grpc.MessagingStub(channel)
         try:
-            run_test(stub)
+            run_test(stub, logger)
         except Exception as e:
             logger.log_exception(f"Failed to serve the app: {e}")
 
-def run_test(stub:messaging_pb2_grpc.MessagingStub) -> None:
+def run_test(stub:messaging_pb2_grpc.MessagingStub, logger: LoggerInterface) -> None:
     # Get user Input 
     chat_content = input("Please input the chat: ")
     response = stub.textMessaging(messaging.MessageRequest(content=chat_content))
-    print(f"Result: {response.result}")
+    logger.log_info(f"Result: {response.result}")
+    
     

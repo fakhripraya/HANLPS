@@ -37,7 +37,6 @@ class GRPCMemoryApp:
         try:
             self.grpc_server.add_insecure_port(INSECURE_PORT)
             self.grpc_server.start()
-            print(f"GRPC server started on port {INSECURE_PORT}")
             self.logger.log_info(f"GRPC server started on port {INSECURE_PORT}")
 
             self.grpc_server.wait_for_termination()

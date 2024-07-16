@@ -14,7 +14,8 @@ class MessagingServicer(messaging_pb2_grpc.MessagingServiceServicer):
             controller = MessagingController(self.logger, self.llm)
             controller.get_message(request)
             result = controller.execute()
-            print(f"Final Result: \n {result}")
+            
+            self.logger.log_info(f"Final Result: \n {result}")
             return messaging.MessageResponse(
                 input=result['input'],
                 output=result['output'],
