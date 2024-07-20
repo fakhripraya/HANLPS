@@ -15,7 +15,7 @@ class MessagingServicer(messaging_pb2_grpc.MessagingServiceServicer):
             controller.get_message(request)
             result = controller.execute()
             
-            self.logger.log_info(f"Final Result: \n {result}")
+            self.logger.log_info("Result Generated")
             return messaging.MessageResponse(
                 input=result['input'],
                 output=result['output'],

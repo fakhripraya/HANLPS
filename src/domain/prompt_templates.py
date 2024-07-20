@@ -7,9 +7,10 @@ analyzer_template = """
     Human: {prompts}
     
     Analyze the incoming human input:
-    - If it to ask or re-ask for something regarding KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, etc. Please reply with True
-    - If it is to ask or re-ask for advertising or for posting, just reply with False
-    - If it is to ask or re-ask for something or just a normal chat, just reply with False
+    - If the incoming input is to ask or re-ask for something regarding KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, etc. Please reply with True
+    - If the incoming input is to ask or re-ask for advertising or for posting, just reply with False
+    - If the incoming input is to ask or re-ask for something or just a normal chat, just reply with False
+    - If the incoming input is to confirm any satisfaction, just reply with False
     
     Only answer with True or False
     """
@@ -167,10 +168,8 @@ building_found_template = chat_template + """
     
     As an AI you need to ask whether the result is satisfying,
     Don't say something like "Ada nih", "Ada banyak nih", "Ada kok", etc
-    Rather reply in something like "Gimana cocok?", "Ini oke ga?", "Adanya ini nih, udah mantep?", "etc"
-    
-    NOTE:
-    Be creative in replying
+    Rather reply in something like "Gimana cocok?", "Ini oke ga?", "Adanya ini nih, udah mantep?", "Ini pilihannya, gimana?" "etc"
+    And don't ask or say anything afterwards
     """
     
 # building_found_template = chat_template + """

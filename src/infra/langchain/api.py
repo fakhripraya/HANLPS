@@ -145,7 +145,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         result = result.strip()
         
         # using string to avoid truthy context of boolean
-        self._logger.log_info(f"Is asking for boarding house: {result}\n")
+        self._logger.log_info(f"Is asking for boarding house: {result}")
         if result == "True":
             templates = self._templates["filter_analyzer_template"]
             result: str = self._prompt_parser.execute(
@@ -153,17 +153,17 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 templates
             )
             
-            self._logger.log_info(f"Filters: {result}\n")
+            self._logger.log_info(f"Filters: {result}")
             json_result = result.strip("`").strip("json").strip("`").strip()
-            self._logger.log_info(f"Stripped: {json_result}\n")
+            self._logger.log_info(f"Stripped: {json_result}")
             
             data_dict = json.loads(json_result)
             buildings_filter = BuildingsFilter(**data_dict)
-            self._logger.log_info(f"Filters in Pydantic: {buildings_filter}\n")
+            self._logger.log_info(f"Filters in Pydantic: {buildings_filter}")
 
             filter_array: list = []
             filter_array = append_housing_price_filters(buildings_filter, filter_array)
-            self._logger.log_info(f"Filters array: {filter_array}\n")
+            self._logger.log_info(f"Filters array: {filter_array}")
             
             building_instance = None
             building_query = None
@@ -177,7 +177,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 building_query = str(building_dict)
                 
             building_query = prompt if building_query is None else building_query
-            self._logger.log_info(f"Query: {building_query}\n")
+            self._logger.log_info(f"Query: {building_query}")
             
             output = self.analyze_prompt(prompt, sessionid, filter_array, building_query)
             return output
@@ -206,8 +206,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             return output
             
         building_list: List[Building] = []
+        self._logger.log_info("Found object")
         for obj in response.objects:
-            self._logger.log_info(f"Found object: {obj.properties}")
             data_dict = ast.literal_eval(str(obj.properties))
             building_instance = Building.from_dict(data_dict)
             building_list.append(building_instance)
@@ -223,7 +223,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param reask: reask flag.
         """
         self._logger.log_info(f"Is reask for something is necessary: {reask}")
-        self._logger.log_info(f"Is search found: {found}")
+        self._logger.log_info(f"Is search found: {True if found else False}")
         
         template = self._templates["reask_template"] if reask else self._templates["chat_template"]
         if found:

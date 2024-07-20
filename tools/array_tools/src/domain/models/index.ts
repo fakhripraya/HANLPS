@@ -3,6 +3,7 @@ export interface MasterModel {
 }
 
 export interface BuildingModel {
+  index?: number;
   building_title?: string;
   building_address?: string;
   building_description?: string;

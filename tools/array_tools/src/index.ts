@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
-import { shiftArray, addIsReady } from "./utils/parser";
+import {
+  shiftArray,
+  addIsReady,
+  addIndex,
+} from "./utils/parser";
 
 async function main() {
-  await addIsReady();
+  await addIndex();
 }
 
 main();
