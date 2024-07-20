@@ -121,7 +121,6 @@ export default function Home() {
   ) => {
     try {
       const defaultValue = {
-        index: index,
         ...HomeDefaultValue,
       };
       const temp: EditedBuildingModel | undefined | null =
@@ -132,6 +131,7 @@ export default function Home() {
       setSelected({
         ...defaultValue,
         ...temp,
+        index: index,
       });
     } catch (error) {
       console.log(error);
