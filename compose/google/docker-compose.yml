@@ -16,12 +16,13 @@ services:
     - weaviate_data:/var/lib/weaviate
     restart: on-failure:0
     environment:
+      LOG_LEVEL: 'debug'
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      ENABLE_MODULES: text2vec-openai
-      DEFAULT_VECTORIZER_MODULE: text2vec-openai
+      ENABLE_MODULES: 'text2vec-palm, generative-palm'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-palm'
       CLUSTER_HOSTNAME: 'node1'
       AUTOSCHEMA_ENABLED: 'false'
 volumes:
-  weaviate_data:
+    weaviate_data:
