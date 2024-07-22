@@ -45,28 +45,8 @@ text2vec_openai = [
                 "building_title",
                 "building_address",
                 "building_description",
-                "housing_price"
-            ]
-        ),
-        wvc.config.Configure.NamedVectors.text2vec_openai( 
-            name="building_title", source_properties=[
-                "building_title",
-            ]
-        ),
-        wvc.config.Configure.NamedVectors.text2vec_openai( 
-            name="building_address", source_properties=[
-                "building_address",
-            ]
-        ),
-        wvc.config.Configure.NamedVectors.text2vec_openai( 
-            name="building_description", source_properties=[
-                "building_description",
-            ]
-        ),
-        wvc.config.Configure.NamedVectors.text2vec_openai( 
-            name="housing_price", source_properties=[
-                "housing_price",
-            ]
+            ],
+            model="text-embedding-3-small",
         ),
     ]
 
@@ -97,48 +77,52 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
                     name="building_title",
                     data_type=wvc.config.DataType.TEXT,
                     tokenization=wvc.config.Tokenization.WHITESPACE,
-                    index_searchable=True
                 ),
                 wvc.config.Property(
                     name="building_address",
                     data_type=wvc.config.DataType.TEXT,
                     tokenization=wvc.config.Tokenization.WHITESPACE,
-                    index_searchable=True 
                 ),
                 wvc.config.Property(
                     name="building_description",
                     data_type=wvc.config.DataType.TEXT,
                     tokenization=wvc.config.Tokenization.WHITESPACE,
-                    index_searchable=True 
                 ),
                 wvc.config.Property(
                     name="housing_price",
                     data_type=wvc.config.DataType.NUMBER,
+                    vectorize_property_name=False,
+                    skip_vectorization=True
                 ),
                 wvc.config.Property(
                     name="owner_name",
                     data_type=wvc.config.DataType.TEXT,
                     vectorize_property_name=False,
+                    skip_vectorization=True
                 ),
                 wvc.config.Property(
                     name="owner_whatsapp",
                     data_type=wvc.config.DataType.TEXT,
                     vectorize_property_name=False,
+                    skip_vectorization=True
                 ),
                 wvc.config.Property(
                     name="owner_phone_number",
                     data_type=wvc.config.DataType.TEXT,
                     vectorize_property_name=False,
+                    skip_vectorization=True
                 ),
                 wvc.config.Property(
                     name="owner_email",
                     data_type=wvc.config.DataType.TEXT,
                     vectorize_property_name=False,
+                    skip_vectorization=True
                 ),
                 wvc.config.Property(
                     name="image_url",
                     data_type=wvc.config.DataType.TEXT,
                     vectorize_property_name=False,
+                    skip_vectorization=True
                 ),
             ],
         )
