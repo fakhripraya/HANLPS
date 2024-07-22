@@ -79,7 +79,7 @@ def define_transformers():
 def define_generative():
     if int(USE_MODULE) == 1 and MODULE_USED == OPENAI:
         openai_generative = wvc.config.Configure.Generative.openai(
-            model=OPENAI_MODEL
+            model="gpt-3.5-turbo"
         )
         return openai_generative
     else: 

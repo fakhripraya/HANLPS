@@ -196,16 +196,23 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param filter_array: filters that needed for prompt analysis.
         """
         buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-        response = buildings_collection.query.hybrid(
+        response = buildings_collection.generate.near_text(
             query=query,
             target_vector="building_details",
             filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
-            limit=5,
+            grouped_task=f"Is the building object is close to this address: {"Kebayoran Lama"}",
+            grouped_properties=["building_address"],
+            limit=10,
             return_metadata=MetadataQuery(distance=True,certainty=True)
         )
         
         # if the len of the object is 0, reask the user about the prompt
+        self._logger.log_info("Searched generative object")
         if(len(response.objects) == 0):
+            for o in response.objects:
+                print(o.generated)
+                print(o.properties)
+                
             output = self.feedback_prompt(prompt, sessionId, True)
             return output
             
