@@ -3,6 +3,7 @@
 
 import json
 import weaviate as weaviate_lib
+from weaviate.config import AdditionalConfig, ConnectionConfig , Timeout
 from configs.config import OPENAI_API_KEY, GEMINI_API_KEY, OPENAI_ORGANIZATION_ID
 from src.domain.constants import OPENAI, GEMINI
 from src.interactor.interfaces.weaviate.api import WeaviateAPIInterface
@@ -53,17 +54,32 @@ class WeaviateAPI(WeaviateAPIInterface):
         Connect the weaviate instance locally
         """
         self._logger.log_info("Connecting weaviate client with local vectorizer")
-        self._weaviate_client = weaviate_lib.connect_to_local()
+        self._weaviate_client = weaviate_lib.connect_to_local(
+            additional_config=AdditionalConfig(
+                connection=ConnectionConfig(
+                    session_pool_max_retries=3,
+                ),
+                timeout=Timeout(query=60, insert=120),
+            ),
+        )
     
     def connect_with_openai(self) -> None:
         """ 
         Connect the weaviate instance with openai module
         """
         self._logger.log_info("Connecting weaviate client with OpenAI")
-        self._weaviate_client = weaviate_lib.connect_to_local(headers={
-            "X-OpenAI-Api-Key": OPENAI_API_KEY,
-            "X-OpenAI-Organization": OPENAI_ORGANIZATION_ID
-         })
+        self._weaviate_client = weaviate_lib.connect_to_local(
+            headers={
+                "X-OpenAI-Api-Key": OPENAI_API_KEY,
+                "X-OpenAI-Organization": OPENAI_ORGANIZATION_ID
+            },
+            additional_config=AdditionalConfig(
+                connection=ConnectionConfig(
+                    session_pool_max_retries=3,
+                ),
+                timeout=Timeout(query=60, insert=120),
+            ),
+        )
     
     def connect_with_google(self) -> None:
         """ 
@@ -71,9 +87,17 @@ class WeaviateAPI(WeaviateAPIInterface):
         """
         # Currently has bug to use this header, only vertex is avail for now
         self._logger.log_info("Connecting weaviate client with Google")
-        self._weaviate_client = weaviate_lib.connect_to_local(headers={
+        self._weaviate_client = weaviate_lib.connect_to_local(
+            headers={
              "X-Google-Studio-Api-Key": GEMINI_API_KEY,
-         })
+            },
+            additional_config=AdditionalConfig(
+                connection=ConnectionConfig(
+                    session_pool_max_retries=3,
+                ),
+                timeout=Timeout(query=60, insert=120),
+            ),
+        )
             
     def load_buildings_from_document_csv(self) -> None:
         """ 

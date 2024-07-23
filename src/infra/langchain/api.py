@@ -3,6 +3,7 @@
 
 # Standard and third-party libraries
 import ast
+import time
 import json
 from typing import List
 
@@ -195,22 +196,27 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param prompt: chat message to be analyzed.
         :param filter_array: filters that needed for prompt analysis.
         """
-        data_dict = ast.literal_eval(query)
-        target_address = data_dict.get('building_address')
-        
-        single_prompt = f"""
-        Is this location {{building_address}} located close to {target_address}?
-        If yes, reply True, else reply False
-        """
+        target_address = None
+        try:
+            data_dict = ast.literal_eval(query)
+            target_address = data_dict.get('building_address')
+        except:
+            self._logger.log_error(f"Failed to parse query: {query}, target_address = None")
         
         buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
         building_list: List[Building] = []
-        limit = 100
-        offset = 0
 
         response = None
+        start_time = time.time()
         if target_address is not None:
+            limit = 100 
+            offset = 0
             self._logger.log_info("Execute Generative query")
+            single_prompt = f"""
+                Is the location at {{building_address}} within a 5-kilometer radius of {target_address}?
+                Consider major landmarks, transport accessibility, and general proximity.
+                If yes, reply with True, else reply with False.
+            """
             response = buildings_collection.generate.hybrid(
                 query=query,
                 target_vector="building_details",
@@ -220,20 +226,18 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 single_prompt=single_prompt
             )
             
-            # if the len of the object is 0, reask the user about the prompt
             if(len(response.objects) == 0):
                 output = self.feedback_prompt(prompt, sessionId, True)
                 return output
                 
-            self._logger.log_info("Found object")
             self._logger.log_info(f"Object count: {len(response.objects)}")
-            for obj in response.objects:
-                if obj.generated == "False":
-                    continue
-
-                data_dict = ast.literal_eval(str(obj.properties))
-                building_instance = Building.from_dict(data_dict)
-                building_list.append(building_instance)
+            temp_building_list = [
+                Building.from_dict(ast.literal_eval(str(obj.properties)))
+                for obj in response.objects if obj.generated == "True"
+            ]
+            
+            building_list.extend(temp_building_list)
+            offset += limit
         else:
             self._logger.log_info("Execute query")
             response = buildings_collection.query.hybrid(
@@ -244,19 +248,19 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 offset=0,
             )
             
-            # if the len of the object is 0, reask the user about the prompt
             if(len(response.objects) == 0):
                 output = self.feedback_prompt(prompt, sessionId, True)
                 return output
             
-            self._logger.log_info("Found object")
             self._logger.log_info(f"Object count: {len(response.objects)}")
             for obj in response.objects:
                 data_dict = ast.literal_eval(str(obj.properties))
                 building_instance = Building.from_dict(data_dict)
                 building_list.append(building_instance)
             
-        self._logger.log_info(f"Object filtered, remaining count: {str(len(building_list))}")
+        end_time = time.time()
+        elapsed_time = end_time - start_time 
+        self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\n Object filtered, remaining count: {str(len(building_list))}")
         output = self.feedback_prompt(prompt, sessionId, found=building_list)
         return output
 
