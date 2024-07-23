@@ -195,35 +195,68 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param prompt: chat message to be analyzed.
         :param filter_array: filters that needed for prompt analysis.
         """
-        buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-        response = buildings_collection.generate.near_text(
-            query=query,
-            target_vector="building_details",
-            filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
-            grouped_task=f"Is the building object is close to this address: {"Kebayoran Lama"}",
-            grouped_properties=["building_address"],
-            limit=10,
-            return_metadata=MetadataQuery(distance=True,certainty=True)
-        )
+        data_dict = ast.literal_eval(query)
+        target_address = data_dict.get('building_address')
         
-        # if the len of the object is 0, reask the user about the prompt
-        self._logger.log_info("Searched generative object")
-        if(len(response.objects) == 0):
-            for o in response.objects:
-                print(o.generated)
-                print(o.properties)
-                
-            output = self.feedback_prompt(prompt, sessionId, True)
-            return output
-            
+        single_prompt = f"""
+        Is this location {{building_address}} located close to {target_address}?
+        If yes, reply True, else reply False
+        """
+        
+        buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
         building_list: List[Building] = []
-        self._logger.log_info("Found object")
-        for obj in response.objects:
-            data_dict = ast.literal_eval(str(obj.properties))
-            building_instance = Building.from_dict(data_dict)
-            building_list.append(building_instance)
+        limit = 100
+        offset = 0
+
+        response = None
+        if target_address is not None:
+            self._logger.log_info("Execute Generative query")
+            response = buildings_collection.generate.hybrid(
+                query=query,
+                target_vector="building_details",
+                filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
+                limit=limit,
+                offset=offset,
+                single_prompt=single_prompt
+            )
             
+            # if the len of the object is 0, reask the user about the prompt
+            if(len(response.objects) == 0):
+                output = self.feedback_prompt(prompt, sessionId, True)
+                return output
+                
+            self._logger.log_info("Found object")
+            self._logger.log_info(f"Object count: {len(response.objects)}")
+            for obj in response.objects:
+                if obj.generated == "False":
+                    continue
+
+                data_dict = ast.literal_eval(str(obj.properties))
+                building_instance = Building.from_dict(data_dict)
+                building_list.append(building_instance)
+        else:
+            self._logger.log_info("Execute query")
+            response = buildings_collection.query.hybrid(
+                query=query,
+                target_vector="building_details",
+                filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
+                limit=10,
+                offset=0,
+            )
             
+            # if the len of the object is 0, reask the user about the prompt
+            if(len(response.objects) == 0):
+                output = self.feedback_prompt(prompt, sessionId, True)
+                return output
+            
+            self._logger.log_info("Found object")
+            self._logger.log_info(f"Object count: {len(response.objects)}")
+            for obj in response.objects:
+                data_dict = ast.literal_eval(str(obj.properties))
+                building_instance = Building.from_dict(data_dict)
+                building_list.append(building_instance)
+            
+        self._logger.log_info(f"Object filtered, remaining count: {str(len(building_list))}")
         output = self.feedback_prompt(prompt, sessionId, found=building_list)
         return output
 

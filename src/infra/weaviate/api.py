@@ -3,7 +3,7 @@
 
 import json
 import weaviate as weaviate_lib
-from configs.config import OPENAI_API_KEY, GEMINI_API_KEY, OPENAI_ORGANIZATION
+from configs.config import OPENAI_API_KEY, GEMINI_API_KEY, OPENAI_ORGANIZATION_ID
 from src.domain.constants import OPENAI, GEMINI
 from src.interactor.interfaces.weaviate.api import WeaviateAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
@@ -62,7 +62,7 @@ class WeaviateAPI(WeaviateAPIInterface):
         self._logger.log_info("Connecting weaviate client with OpenAI")
         self._weaviate_client = weaviate_lib.connect_to_local(headers={
             "X-OpenAI-Api-Key": OPENAI_API_KEY,
-            "X-OpenAI-Organization": OPENAI_ORGANIZATION
+            "X-OpenAI-Organization": OPENAI_ORGANIZATION_ID
          })
     
     def connect_with_google(self) -> None:
