@@ -203,7 +203,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         start_time = time.time()
         building_list: List[Building] = []
         try:
-            WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
+            self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
             buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
             if target_address is not None:
                 self._logger.log_info("Execute Generative query")
