@@ -207,11 +207,11 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         building_list: List[Building] = []
 
         response = None
+        limit = 10
+        offset = 0
         start_time = time.time()
         try:
             if target_address is not None:
-                limit = 10
-                offset = 0
                 self._logger.log_info("Execute Generative query")
                 single_prompt = f"""
                     Is the location at {{building_address}} within a 5-kilometer radius of {target_address}?
@@ -241,8 +241,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                     query=prompt,
                     target_vector="building_details",
                     filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
-                    limit=10,
-                    offset=0,
+                    limit=limit,
+                    offset=offset,
                 )
                 
                 self._logger.log_info(f"Object count: {len(response.objects)}")
