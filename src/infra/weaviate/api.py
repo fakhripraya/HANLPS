@@ -5,7 +5,7 @@ import json
 import weaviate as weaviate_lib
 from weaviate.config import AdditionalConfig, ConnectionConfig , Timeout
 from configs.config import OPENAI_API_KEY, GEMINI_API_KEY, OPENAI_ORGANIZATION_ID
-from src.domain.constants import OPENAI, GEMINI
+from src.domain.constants import OPENAI, GEMINI, HUGGING_FACE
 from src.interactor.interfaces.weaviate.api import WeaviateAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.weaviate.schema.schema import WeaviateSchemasManagement
@@ -16,21 +16,15 @@ class WeaviateAPI(WeaviateAPIInterface):
     """ WeaviateAPI class.
     """
 
-    def __init__(self, with_generative: str | None, logger: LoggerInterface) -> None: 
+    def __init__(self, with_modules: int, module_used: str | None, logger: LoggerInterface) -> None: 
         try:
             self._weaviate_client = None
             self._logger = logger
-            # connect Weaviate Cluster
             self._logger.log_info("Initializing Weaviate client")
-
-            if(with_generative == OPENAI):
-                self.connect_with_openai()
-            elif(with_generative == GEMINI):
-                self.connect_with_google()
-            else:
-                self.connect_locally()
             
-            self._logger.log_info("Weaviate client successfully connected")
+            # connect to weaviate client to load document
+            self._weaviate_client = self.connect_to_server(with_modules, module_used)
+            self._logger.log_info("Weaviate client successfully connected")  
             
             # init schemas
             self._logger.log_info("Deleting all existing Weaviate collections")
@@ -50,13 +44,23 @@ class WeaviateAPI(WeaviateAPIInterface):
             logger.log_critical(f"Failed to start weaviate client, ERROR: {e}")
         finally:
             self.close_connection_to_server()
+      
+    def connect_to_server(self, with_modules: int, module_used: str) -> weaviate_lib.WeaviateClient:
+        if with_modules == 1 and module_used == OPENAI:
+            return self.connect_with_openai()
+        elif with_modules == 1 and module_used == GEMINI:
+            return self.connect_with_google()
+        elif with_modules == 1 and module_used == HUGGING_FACE:
+            return self.connect_locally()
+        else:
+            return self.connect_locally()
             
-    def connect_locally(self) -> None:
+    def connect_locally(self) -> weaviate_lib.WeaviateClient:
         """ 
         Connect the weaviate instance locally
         """
         self._logger.log_info("Connecting weaviate client with local vectorizer")
-        self._weaviate_client = weaviate_lib.connect_to_local(
+        return weaviate_lib.connect_to_local(
             additional_config=AdditionalConfig(
                 connection=ConnectionConfig(
                     session_pool_max_retries=3,
@@ -65,12 +69,12 @@ class WeaviateAPI(WeaviateAPIInterface):
             ),
         )
     
-    def connect_with_openai(self) -> None:
+    def connect_with_openai(self) -> weaviate_lib.WeaviateClient:
         """ 
         Connect the weaviate instance with openai module
         """
         self._logger.log_info("Connecting weaviate client with OpenAI")
-        self._weaviate_client = weaviate_lib.connect_to_local(
+        return weaviate_lib.connect_to_local(
             headers={
                 "X-OpenAI-Api-Key": OPENAI_API_KEY,
                 "X-OpenAI-Organization": OPENAI_ORGANIZATION_ID
@@ -83,13 +87,13 @@ class WeaviateAPI(WeaviateAPIInterface):
             ),
         )
     
-    def connect_with_google(self) -> None:
+    def connect_with_google(self) -> weaviate_lib.WeaviateClient:
         """ 
         Connect the weaviate instance with google module
         """
         # Currently has bug to use this header, only vertex is avail for now
         self._logger.log_info("Connecting weaviate client with Google")
-        self._weaviate_client = weaviate_lib.connect_to_local(
+        return weaviate_lib.connect_to_local(
             headers={
              "X-Google-Studio-Api-Key": GEMINI_API_KEY,
             },

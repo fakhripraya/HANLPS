@@ -61,13 +61,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         else:
             raise Exception("No LLM Found")
         
-        if MODULE_USED == OPENAI:
-            WeaviateAPI.__init__(self, OPENAI if int(USE_MODULE) == 1 else None, self._logger)
-        elif MODULE_USED == GEMINI:
-            WeaviateAPI.__init__(self, GEMINI if int(USE_MODULE) == 1 else None, self._logger)
-        elif MODULE_USED == HUGGING_FACE:
-            WeaviateAPI.__init__(self, HUGGING_FACE if int(USE_MODULE) == 1 else None, self._logger)
-        
+        WeaviateAPI.__init__(self, int(USE_MODULE), MODULE_USED, self._logger)
         self._prompt_parser = PromptParser(self._client)
         self._templates = {
             "filter_analyzer_template": [
@@ -209,6 +203,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         start_time = time.time()
         building_list: List[Building] = []
         try:
+            WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
             buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
             if target_address is not None:
                 self._logger.log_info("Execute Generative query")

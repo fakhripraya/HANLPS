@@ -1,6 +1,7 @@
 """ Module provides a weaviate API interface.
 """
 
+import weaviate as weaviate_lib
 from abc import ABC, abstractmethod
 
 class WeaviateAPIInterface(ABC):
@@ -8,19 +9,25 @@ class WeaviateAPIInterface(ABC):
     """
     
     @abstractmethod
-    def connect_locally(self) -> None:
+    def connect_to_server(self, with_modules: int, module_used: str)  -> weaviate_lib.WeaviateClient:
         """ 
         Connect the weaviate instance locally
         """
     
     @abstractmethod
-    def connect_with_openai(self) -> None:
+    def connect_locally(self) -> weaviate_lib.WeaviateClient:
+        """ 
+        Connect the weaviate instance locally
+        """
+    
+    @abstractmethod
+    def connect_with_openai(self) -> weaviate_lib.WeaviateClient:
         """ 
         Connect the weaviate instance with openai module
         """
     
     @abstractmethod
-    def connect_with_google(self) -> None:
+    def connect_with_google(self) -> weaviate_lib.WeaviateClient:
         """ 
         Connect the weaviate instance with google module
         """
