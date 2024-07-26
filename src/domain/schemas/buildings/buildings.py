@@ -48,6 +48,12 @@ text2vec_openai = [
             ],
             model="text-embedding-3-small",
         ),
+        wvc.config.Configure.NamedVectors.text2vec_openai( 
+            name="building_address", source_properties=[
+                "building_address",
+            ],
+            model="text-embedding-3-small",
+        ),
     ]
 
 def define_transformers():

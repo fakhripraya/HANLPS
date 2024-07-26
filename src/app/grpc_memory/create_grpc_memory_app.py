@@ -41,14 +41,15 @@ class GRPCMemoryApp:
 
             self.grpc_server.wait_for_termination()
         except KeyboardInterrupt:
-            self.stop_server()
             self.logger.log_info("Server has been stopped with keyboard interaction")
         except Exception as e:
             self.logger.log_exception(f"Failed to serve the app: {e}")
+        finally:
+            self.stop_server()
 
     def stop_server(self):
         """Stop the GRPC server."""
-        if self.llm._weaviate_client:
+        if self.llm._weaviate_client and self.llm._weaviate_client.is_live:
             self.llm._weaviate_client.close()
         if self.grpc_server:
             self.grpc_server.stop(0)

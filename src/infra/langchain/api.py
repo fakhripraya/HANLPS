@@ -208,59 +208,63 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
 
         response = None
         start_time = time.time()
-        if target_address is not None:
-            limit = 100 
-            offset = 0
-            self._logger.log_info("Execute Generative query")
-            single_prompt = f"""
-                Is the location at {{building_address}} within a 5-kilometer radius of {target_address}?
-                Consider major landmarks, transport accessibility, and general proximity.
-                If yes, reply with True, else reply with False.
-            """
-            response = buildings_collection.generate.hybrid(
-                query=query,
-                target_vector="building_details",
-                filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
-                limit=limit,
-                offset=offset,
-                single_prompt=single_prompt
-            )
-            
-            if(len(response.objects) == 0):
-                output = self.feedback_prompt(prompt, sessionId, True)
-                return output
+        try:
+            if target_address is not None:
+                limit = 10
+                offset = 0
+                self._logger.log_info("Execute Generative query")
+                single_prompt = f"""
+                    Is the location at {{building_address}} within a 5-kilometer radius of {target_address}?
+                    Use precise geographical coordinates and calculate the straight-line distance between the two addresses.
+                    If the distance is 5 kilometers or less, reply with True, else reply with False.
+                """
+                response = buildings_collection.generate.hybrid(
+                    query=prompt,
+                    target_vector="building_address",
+                    filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
+                    limit=limit,
+                    offset=offset,
+                    single_prompt=single_prompt
+                )
+                    
+                self._logger.log_info(f"Object count: {len(response.objects)}")
+                temp_building_list = [
+                    Building.from_dict(ast.literal_eval(str(obj.properties)))
+                    for obj in response.objects if obj.generated == "True"
+                ]
                 
-            self._logger.log_info(f"Object count: {len(response.objects)}")
-            temp_building_list = [
-                Building.from_dict(ast.literal_eval(str(obj.properties)))
-                for obj in response.objects if obj.generated == "True"
-            ]
+                building_list.extend(temp_building_list)
+                offset += limit
+            else:
+                self._logger.log_info("Execute query")
+                response = buildings_collection.query.hybrid(
+                    query=prompt,
+                    target_vector="building_details",
+                    filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
+                    limit=10,
+                    offset=0,
+                )
+                
+                self._logger.log_info(f"Object count: {len(response.objects)}")
+                for obj in response.objects:
+                    data_dict = ast.literal_eval(str(obj.properties))
+                    building_instance = Building.from_dict(data_dict)
+                    building_list.append(building_instance)
+                
+            end_time = time.time()
+            elapsed_time = end_time - start_time 
+            self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\n Object filtered, remaining count: {str(len(building_list))}")
+        
+        except Exception as e:
+            self._logger.log_exception(f"Failed do weaviate query, ERROR: {e}")
+            raise Exception(e)
+        finally:
+            WeaviateAPI.close_connection_to_server()
             
-            building_list.extend(temp_building_list)
-            offset += limit
-        else:
-            self._logger.log_info("Execute query")
-            response = buildings_collection.query.hybrid(
-                query=query,
-                target_vector="building_details",
-                filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
-                limit=10,
-                offset=0,
-            )
-            
-            if(len(response.objects) == 0):
-                output = self.feedback_prompt(prompt, sessionId, True)
-                return output
-            
-            self._logger.log_info(f"Object count: {len(response.objects)}")
-            for obj in response.objects:
-                data_dict = ast.literal_eval(str(obj.properties))
-                building_instance = Building.from_dict(data_dict)
-                building_list.append(building_instance)
-            
-        end_time = time.time()
-        elapsed_time = end_time - start_time 
-        self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\n Object filtered, remaining count: {str(len(building_list))}")
+        if(len(building_list) == 0):
+            output = self.feedback_prompt(prompt, sessionId, True)
+            return output
+        
         output = self.feedback_prompt(prompt, sessionId, found=building_list)
         return output
 

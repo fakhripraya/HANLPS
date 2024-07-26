@@ -48,6 +48,8 @@ class WeaviateAPI(WeaviateAPIInterface):
             if self._weaviate_client is not None:
                 self._weaviate_client.close()
             logger.log_critical(f"Failed to start weaviate client, ERROR: {e}")
+        finally:
+            self.close_connection_to_server()
             
     def connect_locally(self) -> None:
         """ 
@@ -172,3 +174,8 @@ class WeaviateAPI(WeaviateAPIInterface):
         except Exception as e: 
             self._logger.log_exception(f"Failed to load documents, ERROR: {e}")
             raise Exception(e)
+          
+    def close_connection_to_server(self) -> None:
+        """Close the connection to Weaviate server"""
+        if self._weaviate_client and self._weaviate_client.is_live:
+            self._weaviate_client.close()

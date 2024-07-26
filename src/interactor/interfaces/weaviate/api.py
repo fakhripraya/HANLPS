@@ -30,3 +30,13 @@ class WeaviateAPIInterface(ABC):
         """ 
         Load and insert new objects of building and insert it to db from document csv
         """
+    
+    @abstractmethod
+    def load_buildings_from_document_json(self) -> None:
+        """ 
+        Load and insert new objects of building and insert it to db from json document
+        """
+    
+    @abstractmethod
+    def close_connection_to_server(self) -> None:
+        """Close the connection to Weaviate server"""
