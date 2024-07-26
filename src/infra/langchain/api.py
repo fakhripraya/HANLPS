@@ -207,9 +207,9 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         limit = 10
         offset = 0
         start_time = time.time()
+        building_list: List[Building] = []
         try:
             buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-            building_list: List[Building] = []
             if target_address is not None:
                 self._logger.log_info("Execute Generative query")
                 single_prompt = f"""
