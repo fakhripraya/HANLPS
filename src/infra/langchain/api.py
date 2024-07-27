@@ -207,10 +207,13 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
             if target_address is not None:
                 self._logger.log_info("Execute Generative query")
+                
+                # TODO: When the data is provided enough, 
+                # validate the input by the type of property it ask, whether it kost, kontrakan, or apartment and stuff
                 single_prompt = f"""
-                    Is the location at {{building_address}} within a 5-kilometer radius of {target_address}?
+                    Is the location at {{building_address}} within a 3-kilometer radius of {target_address}?
                     Provide your answer based on known distances and relationships between the two locations.
-                    If the location is within 5 kilometers, reply with True. Otherwise, reply with False.
+                    If the location is within 3 kilometers, reply with True. Otherwise, reply with False.
                     Just reply with True or False with no explanation.
                 """
                 response = buildings_collection.generate.hybrid(
