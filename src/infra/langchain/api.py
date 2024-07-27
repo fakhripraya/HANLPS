@@ -209,8 +209,9 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 self._logger.log_info("Execute Generative query")
                 single_prompt = f"""
                     Is the location at {{building_address}} within a 5-kilometer radius of {target_address}?
-                    Use precise geographical coordinates and calculate the straight-line distance between the two addresses.
-                    If the distance is 5 kilometers or less, reply with True, else reply with False.
+                    Provide your answer based on known distances and relationships between the two locations.
+                    If the location is within 5 kilometers, reply with True. Otherwise, reply with False.
+                    Just reply with True or False with no explanation.
                 """
                 response = buildings_collection.generate.hybrid(
                     query=prompt,
@@ -228,7 +229,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 ]
                 
                 building_list.extend(temp_building_list)
-                offset += limit
             else:
                 self._logger.log_info("Execute query")
                 response = buildings_collection.query.hybrid(
@@ -253,7 +253,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             self._logger.log_exception(f"Failed do weaviate query, ERROR: {e}")
             raise Exception(e)
         finally:
-            WeaviateAPI.close_connection_to_server()
+            WeaviateAPI.close_connection_to_server(self)
             
         if(len(building_list) == 0):
             output = self.feedback_prompt(prompt, sessionId, True)
