@@ -86,4 +86,33 @@ const addIndex = async (): Promise<void> => {
   }
 };
 
-export { shiftArray, addIsReady, addIndex };
+const addKey = async (): Promise<void> => {
+  try {
+    let masterData: MasterModel = inputJson as MasterModel;
+    const sliced: BuildingModel[] = masterData.data.map(
+      (val, index) => {
+        let new_val = { ...val };
+        if (new_val) {
+          new_val.building_landmarks = "";
+          new_val.building_facility = "";
+        }
+        return new_val;
+      }
+    );
+
+    masterData.data = sliced;
+    await fs.writeFile(
+      "src/output_json/cutted.json",
+      JSON.stringify(masterData, null, 2)
+    );
+    console.log(
+      chalk.green(
+        "Successfully added index to JSON data and saved in output.json"
+      )
+    );
+  } catch (error) {
+    console.log(chalk.red(error as string));
+  }
+};
+
+export { shiftArray, addIsReady, addIndex, addKey };

@@ -13,6 +13,7 @@
     "pure": "node src/index.ts"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.16.0",
     "axios": "^1.7.2",
     "chalk": "^4.1.2",
     "commander": "^7.2.0",

@@ -4,10 +4,11 @@ import {
   shiftArray,
   addIsReady,
   addIndex,
+  addKey,
 } from "./utils/parser";
 
 async function main() {
-  await addIndex();
+  await addKey();
 }
 
 main();
