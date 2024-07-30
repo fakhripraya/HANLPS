@@ -26,6 +26,8 @@ const HomeDefaultValue:
   | null = {
   building_title: "",
   building_address: "",
+  building_proximity: "",
+  building_facility: "",
   building_description: "",
   housing_price: "0",
   owner_email: "",
@@ -167,7 +169,17 @@ export default function Home() {
   };
 
   const handleKeyPress = (event: KeyboardEvent) => {
-    if (event.key === "Enter") handleSaveData();
+    // Check if the Enter key is pressed and the target is not an input, textarea, or select element
+    const target = event.target as Element;
+    const targetTag = target.tagName.toLowerCase();
+    if (
+      event.key === "Enter" &&
+      targetTag !== "input" &&
+      targetTag !== "textarea" &&
+      targetTag !== "select"
+    ) {
+      handleSaveData();
+    }
   };
 
   useEffect(() => {
@@ -358,6 +370,36 @@ export default function Home() {
                         value={selected?.owner_email}
                         type="text"
                         className="home-page-textinput darker-bg-color"
+                      />
+                    </div>
+                    <div className="home-page-textinput-box">
+                      <label className="home-page-input-title">
+                        Lingkungan Sekitar
+                      </label>
+                      <TextArea
+                        onChange={(e) =>
+                          handleTextChange(
+                            "building_proximity",
+                            e
+                          )
+                        }
+                        className="home-page-longtext-area darker-bg-color"
+                        value={selected?.building_proximity}
+                      />
+                    </div>
+                    <div className="home-page-textinput-box">
+                      <label className="home-page-input-title">
+                        Fasilitas
+                      </label>
+                      <TextArea
+                        onChange={(e) =>
+                          handleTextChange(
+                            "building_facility",
+                            e
+                          )
+                        }
+                        className="home-page-longtext-area darker-bg-color"
+                        value={selected?.building_facility}
                       />
                     </div>
                     <div className="home-page-textinput-box">
