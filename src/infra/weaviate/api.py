@@ -125,6 +125,8 @@ class WeaviateAPI(WeaviateAPIInterface):
                 uuid = buildings_collection.data.insert({
                     "building_title": doc["building_title"],
                     "building_address": doc["building_address"],
+                    "building_proximity": doc["building_proximity"],
+                    "building_facility": doc["building_facility"],
                     "building_description": doc["building_description"],
                     "housing_price": float(doc["housing_price"]),
                     "owner_name": doc["owner_name"],
@@ -162,6 +164,8 @@ class WeaviateAPI(WeaviateAPIInterface):
                 uuid = buildings_collection.data.insert({
                     "building_title": doc["building_title"],
                     "building_address": doc["building_address"],
+                    "building_proximity": doc["building_proximity"],
+                    "building_facility": doc["building_facility"],
                     "building_description": doc["building_description"],
                     "housing_price": float(doc["housing_price"]),
                     "owner_name": doc["owner_name"],

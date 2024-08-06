@@ -190,63 +190,29 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param prompt: chat message to be analyzed.
         :param filter_array: filters that needed for prompt analysis.
         """
-        target_address = None
-        try:
-            data_dict = ast.literal_eval(query)
-            target_address = data_dict.get('building_address')
-        except:
-            self._logger.log_error(f"Failed to parse query: {query}, target_address = None")
-
         response = None
-        limit = 10
+        limit = 5
         offset = 0
         start_time = time.time()
         building_list: List[Building] = []
         try:
             self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
             buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-            if target_address is not None:
-                self._logger.log_info("Execute Generative query")
-                
-                # TODO: When the data is provided enough, 
-                # validate the input by the type of property it ask, whether it kost, kontrakan, or apartment and stuff
-                single_prompt = f"""
-                    Is the location at {{building_address}} within a 3-kilometer radius of {target_address}?
-                    Provide your answer based on known distances and relationships between the two locations.
-                    If the location is within 3 kilometers, reply with True. Otherwise, reply with False.
-                    Just reply with True or False with no explanation.
-                """
-                response = buildings_collection.generate.hybrid(
-                    query=prompt,
-                    target_vector="building_address",
-                    filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
-                    limit=limit,
-                    offset=offset,
-                    single_prompt=single_prompt
-                )
                     
-                self._logger.log_info(f"Object count: {len(response.objects)}")
-                temp_building_list = [
-                    Building.from_dict(ast.literal_eval(str(obj.properties)))
-                    for obj in response.objects if obj.generated == "True"
-                ]
-                
-                building_list.extend(temp_building_list)
-            else:
-                self._logger.log_info("Execute query")
-                response = buildings_collection.query.hybrid(
-                    query=prompt,
-                    target_vector="building_details",
-                    filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
-                    limit=limit,
-                    offset=offset,
-                )
-                
-                self._logger.log_info(f"Object count: {len(response.objects)}")
-                for obj in response.objects:
-                    data_dict = ast.literal_eval(str(obj.properties))
-                    building_instance = Building.from_dict(data_dict)
-                    building_list.append(building_instance)
+            self._logger.log_info("Execute query")
+            response = buildings_collection.query.hybrid(
+                query=prompt,
+                target_vector="building_details",
+                filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
+                limit=limit,
+                offset=offset,
+            )
+            
+            self._logger.log_info(f"Object count: {len(response.objects)}")
+            for obj in response.objects:
+                data_dict = ast.literal_eval(str(obj.properties))
+                building_instance = Building.from_dict(data_dict)
+                building_list.append(building_instance)
                 
             end_time = time.time()
             elapsed_time = end_time - start_time 

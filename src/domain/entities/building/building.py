@@ -10,6 +10,8 @@ class Building:
     """ Definition of the Building entity """
     building_title: Optional[str] = None
     building_address: Optional[str] = None
+    building_proximity: Optional[str] = None
+    building_facility: Optional[str] = None
     building_description: Optional[str] = None
     housing_price: Optional[Union[str, float]] = None
     owner_name: Optional[str] = None
@@ -32,4 +34,15 @@ class Building:
 
     def __str__(self):
         """ String representation of the Building instance """
-        return f"Building(title={self.building_title}, address={self.building_address}, price={self.housing_price})"
+        return (f"Building("
+                f"title={self.building_title}, "
+                f"address={self.building_address}, "
+                f"proximity={self.building_proximity}, "
+                f"facility={self.building_facility}, "
+                f"description={self.building_description}, "
+                f"price={self.housing_price}, "
+                f"owner_name={self.owner_name}, "
+                f"owner_email={self.owner_email}, "
+                f"owner_whatsapp={self.owner_whatsapp}, "
+                f"owner_phone_number={self.owner_phone_number}, "
+                f"image_url={self.image_url})")

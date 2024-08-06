@@ -44,13 +44,15 @@ text2vec_openai = [
             name="building_details", source_properties=[
                 "building_title",
                 "building_address",
-                "building_description",
+                "building_proximity",
+                "building_facility",
             ],
             model="text-embedding-3-small",
         ),
         wvc.config.Configure.NamedVectors.text2vec_openai( 
             name="building_address", source_properties=[
                 "building_address",
+                "building_proximity",
             ],
             model="text-embedding-3-small",
         ),
@@ -90,9 +92,20 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
                     tokenization=wvc.config.Tokenization.WHITESPACE,
                 ),
                 wvc.config.Property(
-                    name="building_description",
+                    name="building_proximity",
                     data_type=wvc.config.DataType.TEXT,
                     tokenization=wvc.config.Tokenization.WHITESPACE,
+                ),
+                wvc.config.Property(
+                    name="building_facility",
+                    data_type=wvc.config.DataType.TEXT,
+                    tokenization=wvc.config.Tokenization.WHITESPACE,
+                ),
+                wvc.config.Property(
+                    name="building_description",
+                    data_type=wvc.config.DataType.TEXT,
+                    vectorize_property_name=False,
+                    skip_vectorization=True
                 ),
                 wvc.config.Property(
                     name="housing_price",

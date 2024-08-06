@@ -27,6 +27,8 @@ class LangchainDocumentLoader():
                     "fieldnames": [
                         "building_title",
                         "building_address",
+                        "building_proximity",
+                        "building_facility",
                         "building_description",
                         "housing_price",
                         "owner_name",
