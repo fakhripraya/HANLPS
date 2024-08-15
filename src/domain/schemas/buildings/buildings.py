@@ -84,22 +84,22 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
                 wvc.config.Property(
                     name="building_title",
                     data_type=wvc.config.DataType.TEXT,
-                    tokenization=wvc.config.Tokenization.WHITESPACE,
+                    tokenization=wvc.config.Tokenization.WORD,
                 ),
                 wvc.config.Property(
                     name="building_address",
                     data_type=wvc.config.DataType.TEXT,
-                    tokenization=wvc.config.Tokenization.WHITESPACE,
+                    tokenization=wvc.config.Tokenization.WORD,
                 ),
                 wvc.config.Property(
                     name="building_proximity",
                     data_type=wvc.config.DataType.TEXT,
-                    tokenization=wvc.config.Tokenization.WHITESPACE,
+                    tokenization=wvc.config.Tokenization.WORD,
                 ),
                 wvc.config.Property(
                     name="building_facility",
                     data_type=wvc.config.DataType.TEXT,
-                    tokenization=wvc.config.Tokenization.WHITESPACE,
+                    tokenization=wvc.config.Tokenization.WORD,
                 ),
                 wvc.config.Property(
                     name="building_description",

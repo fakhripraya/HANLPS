@@ -30,11 +30,12 @@ filter_analyzer_template = """"
     
     First Example Conversation:
     System = "Conversation Begin"
-    Human = "Aku lagi nyari apartement di jakarta nih yang harganya dibawah 5jtan"
+    Human = "Aku lagi nyari apartement di jakarta nih yang deket PT Khong guan harganya dibawah 5jtan"
 
     Extracted Data:
     building_title: null
     building_address: "Jakarta"
+    building_proximity: "PT Khong guan"
     building_facility: null
     filter_type: "LESS_THAN"
     less_than_price: 5000000
@@ -44,11 +45,12 @@ filter_analyzer_template = """"
     System = "Conversation Begin"
     Human = "Aku lagi nyari apartement di jakarta nih yang harganya diatas 5jtan"
     AI = "Aku cariin dulu ya kak"
-    Human = "Kak gajadi deh kayanya yang di bandung aja deh, yang ada parkiran dalam dan dapur bersama ya"
+    Human = "Kak gajadi deh kayanya yang di bandung deket gedung sate aja deh, yang ada parkiran dalam dan dapur bersama ya"
 
     Extracted Data:
     building_title: null
     building_address: "Bandung"
+    building_proximity: "gedung sate"
     building_facility: "parkiran dalam, dapur bersama" # this applies for facility or other benefit
     filter_type: "GREATER_THAN"
     less_than_price: null
@@ -56,7 +58,7 @@ filter_analyzer_template = """"
     
     Third Example Conversation:
     System = "Conversation Begin"
-    Human = "Aku lagi nyari apartement di banduing nih yang harganya 5jtan"
+    Human = "Aku lagi nyari apartement di gandsaria deket gancy nih yang harganya 5jtan"
     AI = "Maksudnya bandung ya kak?"
     Human = "Iya kak bandung, adakah?"
     AI = "Aku cariin ya kak, duduk manis dulu aja wkwkkw"
@@ -64,7 +66,8 @@ filter_analyzer_template = """"
 
     Extracted Data:
     building_title: null
-    building_address: "Bandung"
+    building_address: "Gandaria"
+    building_proximity: "gancy, gandaria city"
     building_facility: "kamar mandi dalam"
     filter_type: "AROUND"
     less_than_price: 5500000

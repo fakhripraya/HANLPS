@@ -131,6 +131,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param prompt: chat message to be analyzed.
         """
         self._logger.log_info(f"Session: {sessionid}")
+        self._logger.log_info(f"User prompt: {prompt}")
         conversation = None
         if sessionid in self._store:
             conversation = self._store[sessionid]
@@ -165,17 +166,14 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             self._logger.log_info(f"Filters array: {filter_array}")
             
             building_instance = None
-            building_query = None
-            if(buildings_filter.building_title is not None or buildings_filter.building_address is not None):
-                building_instance  = Building(
+            building_instance  = Building(
                     building_title=buildings_filter.building_title,
                     building_address=buildings_filter.building_address,
-                    building_description=buildings_filter.building_facility
+                    building_facility=buildings_filter.building_facility,
+                    building_proximity=buildings_filter.building_proximity
                 )
-                building_dict = building_instance.to_dict()
-                building_query = str(building_dict)
-                
-            building_query = prompt if building_query is None else building_query
+            building_dict = building_instance.to_dict()
+            building_query = str(building_dict)
             self._logger.log_info(f"Query: {building_query}")
             
             output = self.analyze_prompt(prompt, sessionid, filter_array, building_query)
@@ -191,7 +189,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param filter_array: filters that needed for prompt analysis.
         """
         response = None
-        limit = 5
+        limit = 10
         offset = 0
         start_time = time.time()
         building_list: List[Building] = []
@@ -200,16 +198,24 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
                     
             self._logger.log_info("Execute query")
+            # TODO: Modify query into a semantic sentence
             response = buildings_collection.query.hybrid(
                 query=prompt,
-                target_vector="building_details",
+                target_vector="building_address",
                 filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
                 limit=limit,
                 offset=offset,
+                return_metadata=MetadataQuery(
+                    score=True,
+                    explain_score=True,
+                    distance=True,
+                    certainty=True
+                ),
             )
             
             self._logger.log_info(f"Object count: {len(response.objects)}")
             for obj in response.objects:
+                self._logger.log_info(f"Metadata: {obj.metadata}")
                 data_dict = ast.literal_eval(str(obj.properties))
                 building_instance = Building.from_dict(data_dict)
                 building_list.append(building_instance)
