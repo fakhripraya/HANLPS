@@ -173,10 +173,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                     buildingAddress=buildings_filter.building_address,
                     buildingDescription=buildings_filter.building_facility
                 )
-                building_dict = building_instance.to_dict()
-                building_query = str(building_dict)
-                
-            building_query = prompt if building_query is None else building_query
+            building_dict = building_instance.to_dict()
+            building_query = str(building_dict)
             self._logger.log_info(f"Query: {building_query}")
             
             output = self.analyze_prompt(prompt, session_id, filter_array, building_query)
@@ -192,7 +190,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param filter_array: filters that needed for prompt analysis.
         """
         response = None
-        limit = 5
+        limit = 10
         offset = 0
         start_time = time.time()
         building_list: List[Building] = []
@@ -217,6 +215,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             
             self._logger.log_info(f"Object count: {len(response.objects)}")
             for obj in response.objects:
+                self._logger.log_info(f"Metadata: {obj.metadata}")
                 data_dict = ast.literal_eval(str(obj.properties))
                 building_instance = Building.from_dict(data_dict)
                 building_list.append(building_instance)
