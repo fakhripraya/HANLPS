@@ -132,6 +132,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         :param prompt: chat message to be analyzed.
         """
         self._logger.log_info(f"Session: {session_id}")
+        self._logger.log_info(f"User prompt: {prompt}")
         conversation = None
         if session_id in self._store:
             conversation = self._store[session_id]
