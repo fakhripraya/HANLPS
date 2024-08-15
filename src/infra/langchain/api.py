@@ -14,7 +14,7 @@ from configs.config import (
     GEMINI_API_KEY, USE_MODULE, MODULE_USED
 )
 from src.domain.entities.message.message import Message
-from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDINGS_COLLECTION_NAME
+from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME, BUILDINGS_COLLECTION_NAME
 from src.domain.prompt_templates import (
     chat_template,
     analyzer_template,
@@ -41,7 +41,8 @@ from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_openai.chat_models import ChatOpenAI
 from langchain_huggingface import HuggingFacePipeline
 from langchain_google_genai import ChatGoogleGenerativeAI
-from weaviate.classes.query import MetadataQuery, Filter
+from weaviate.classes.query import Filter
+from weaviate.classes.config import ReferenceProperty
 
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     """ LangchainAPI class.
@@ -125,15 +126,15 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             self._store[session_id] = ChatMessageHistory()
         return self._store[session_id]
 
-    def receive_prompt(self, sessionid, prompt) -> Message:
+    def receive_prompt(self, session_id, prompt) -> Message:
         """ 
         Receive prompt, receive the prompt from the client app
         :param prompt: chat message to be analyzed.
         """
-        self._logger.log_info(f"Session: {sessionid}")
+        self._logger.log_info(f"Session: {session_id}")
         conversation = None
-        if sessionid in self._store:
-            conversation = self._store[sessionid]
+        if session_id in self._store:
+            conversation = self._store[session_id]
             self._logger.log_info(conversation)
             
         templates = self._templates["analyzer_template"]
@@ -167,10 +168,10 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             building_instance = None
             building_query = None
             if(buildings_filter.building_title is not None or buildings_filter.building_address is not None):
-                building_instance  = Building(
-                    building_title=buildings_filter.building_title,
-                    building_address=buildings_filter.building_address,
-                    building_description=buildings_filter.building_facility
+                building_instance = Building(
+                    buildingTitle=buildings_filter.building_title,
+                    buildingAddress=buildings_filter.building_address,
+                    buildingDescription=buildings_filter.building_facility
                 )
                 building_dict = building_instance.to_dict()
                 building_query = str(building_dict)
@@ -178,12 +179,12 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             building_query = prompt if building_query is None else building_query
             self._logger.log_info(f"Query: {building_query}")
             
-            output = self.analyze_prompt(prompt, sessionid, filter_array, building_query)
+            output = self.analyze_prompt(prompt, session_id, filter_array, building_query)
             return output
         
-        return self.feedback_prompt(prompt, sessionid)
+        return self.feedback_prompt(prompt, session_id)
 
-    def analyze_prompt(self, prompt, sessionId, filter_array, query = "") -> Message:
+    def analyze_prompt(self, prompt, session_id, filter_array, query = "") -> Message:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
@@ -197,15 +198,21 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         building_list: List[Building] = []
         try:
             self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
-            buildings_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
+            building_chunks_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
                     
             self._logger.log_info("Execute query")
-            response = buildings_collection.query.hybrid(
+            response = building_chunks_collection.query.hybrid(
                 query=prompt,
-                target_vector="building_details",
+                target_vector="buildingDetails",
                 filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
                 limit=limit,
                 offset=offset,
+                return_references=[
+                    ReferenceProperty(
+                        link_on="hasbuilding",
+                        target_collection=BUILDINGS_COLLECTION_NAME
+                    ),
+                ],
             )
             
             self._logger.log_info(f"Object count: {len(response.objects)}")
@@ -225,13 +232,13 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             WeaviateAPI.close_connection_to_server(self)
             
         if(len(building_list) == 0):
-            output = self.feedback_prompt(prompt, sessionId, True)
+            output = self.feedback_prompt(prompt, session_id, True)
             return output
         
-        output = self.feedback_prompt(prompt, sessionId, found=building_list)
+        output = self.feedback_prompt(prompt, session_id, found=building_list)
         return output
 
-    def feedback_prompt(self, prompt, sessionId, reask = False, found = None) -> Message:
+    def feedback_prompt(self, prompt, session_id, reask = False, found = None) -> Message:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
@@ -254,7 +261,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         if found:
             runnable_input["result"] = found
             
-        output = self.respond(template, input_variables, runnable_input, sessionId)
+        output = self.respond(template, input_variables, runnable_input, session_id)
         return Message(
             input=prompt,
             output=output,

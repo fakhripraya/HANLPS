@@ -10,7 +10,7 @@ from src.interactor.interfaces.weaviate.api import WeaviateAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.weaviate.schema.schema import WeaviateSchemasManagement
 from src.infra.langchain.document_loader.document_loader import LangchainDocumentLoader
-from src.domain.constants import BUILDINGS_COLLECTION_NAME
+from src.domain.constants import BUILDINGS_COLLECTION_NAME, BUILDING_CHUNKS_COLLECTION_NAME
 
 class WeaviateAPI(WeaviateAPIInterface):
     """ WeaviateAPI class.
@@ -120,21 +120,38 @@ class WeaviateAPI(WeaviateAPIInterface):
             
             self._logger.log_info(f"0/{len(docs)-1} Loaded")
             buildings_collection =  self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
+            building_chunks_collection =  self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
             for idx, doc in enumerate(docs):
                 if(idx == 0): continue
+                
                 uuid = buildings_collection.data.insert({
-                    "building_title": doc["building_title"],
-                    "building_address": doc["building_address"],
-                    "building_proximity": doc["building_proximity"],
-                    "building_facility": doc["building_facility"],
-                    "building_description": doc["building_description"],
-                    "housing_price": float(doc["housing_price"]),
-                    "owner_name": doc["owner_name"],
-                    "owner_whatsapp": doc["owner_whatsapp"],
-                    "owner_phone_number": doc["owner_phone_number"],
-                    "owner_email": doc["owner_email"],
-                    "image_url": doc["image_url"],
+                    "buildingTitle": doc["building_title"],
+                    "buildingAddress": doc["building_address"],
+                    "buildingDescription": doc["building_description"],
+                    "housingPrice": float(doc["housing_price"]),
+                    "ownerName": doc["owner_name"],
+                    "ownerWhatsapp": doc["owner_whatsapp"],
+                    "ownerPhoneNumber": doc["owner_phone_number"],
+                    "ownerEmail": doc["owner_email"],
+                    "imageUrl": str(doc["image_urls"]),
                 })
+                
+                building_proximity = list(doc["building_proximity"])
+                building_facility = list(doc["building_facility"])
+
+                longest = len(building_proximity) if len(building_proximity) > len(building_facility) else len(building_facility)
+                
+                for i in range(longest):
+                    proximity_chunk = building_proximity[i] if i < len(building_proximity) else None
+                    facility_chunk = building_facility[i] if i < len(building_facility) else None
+
+                    chunks_uuid = building_chunks_collection.data.insert(
+                        properties={
+                            "buildingProximity": proximity_chunk,
+                            "buildingFacility": facility_chunk,
+                        },
+                        references={"hasBuilding": uuid},
+                    )
                 
                 self._logger.log_info(f"[{uuid}]: Document Loaded")
                 self._logger.log_info(f"{idx}/{len(docs)-1} Loaded")
@@ -162,17 +179,17 @@ class WeaviateAPI(WeaviateAPIInterface):
             for idx, doc in enumerate(docs):
                 if(idx == 0): continue
                 uuid = buildings_collection.data.insert({
-                    "building_title": doc["building_title"],
-                    "building_address": doc["building_address"],
-                    "building_proximity": doc["building_proximity"],
-                    "building_facility": doc["building_facility"],
-                    "building_description": doc["building_description"],
-                    "housing_price": float(doc["housing_price"]),
-                    "owner_name": doc["owner_name"],
-                    "owner_whatsapp": doc["owner_whatsapp"],
-                    "owner_phone_number": doc["owner_phone_number"],
-                    "owner_email": doc["owner_email"],
-                    "image_url": str(doc["image_urls"]),
+                    "buildingTitle": doc["building_title"],
+                    "buildingAddress": doc["building_address"],
+                    "buildingProximity": doc["building_proximity"],
+                    "buildingFacility": doc["building_facility"],
+                    "buildingDescription": doc["building_description"],
+                    "housingPrice": float(doc["housing_price"]),
+                    "ownerName": doc["owner_name"],
+                    "ownerWhatsapp": doc["owner_whatsapp"],
+                    "ownerPhoneNumber": doc["owner_phone_number"],
+                    "ownerEmail": doc["owner_email"],
+                    "imageUrl": str(doc["image_urls"]),
                 })
                 
                 self._logger.log_info(f"[{uuid}]: Document Loaded")
