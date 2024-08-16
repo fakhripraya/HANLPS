@@ -1,11 +1,11 @@
 {
-  "name": "my-cli-app",
+  "name": "hanlps-array-tools",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
-    "hanlps": "./dist/index.js"
+    "harr": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",

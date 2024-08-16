@@ -7,7 +7,7 @@ export interface BuildingModel {
   building_title?: string;
   building_address?: string;
   building_facility?: string;
-  building_landmarks?: string;
+  building_proximity?: string;
   building_description?: string;
   housing_price?: string;
   owner_name?: string;
