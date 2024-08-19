@@ -1,6 +1,5 @@
 """Create Messaging Controller Module"""
 
-from typing import Dict
 from src.interactor.usecases.messaging_usecase import MessagingUseCase
 from src.infra.repositories.messaging_in_memory_repository \
     import MessagingInMemoryRepository
@@ -32,7 +31,7 @@ class MessagingController(MessagingControllerInterface):
         else:
             raise ValueError("Missing message content")
        
-    def execute(self) -> Dict:
+    def execute(self) -> dict:
         """ Executes the controller
         :returns: Message processed and send responses
         """

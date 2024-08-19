@@ -2,7 +2,6 @@
 """
 
 import json
-from typing import Dict
 from src.interactor.dtos.messaging_dtos \
     import MessagingInputDto, MessagingOutputDto
 from src.interactor.interfaces.presenters.message_presenter \
@@ -34,7 +33,7 @@ class MessagingUseCase():
     def execute(
             self,
             input_dto: MessagingInputDto
-    ) -> Dict:
+    ) -> dict:
         """ This method is responsible for messaging.
         :param input_dto: The input data transfer object.
         :type input_dto: MessagingInputDto

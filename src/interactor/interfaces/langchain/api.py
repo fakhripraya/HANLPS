@@ -2,11 +2,11 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, List
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables import Runnable
 from src.domain.entities.building.building import Building
 from src.domain.entities.message.message import Message
+from typing import Any
 
 class LangchainAPIInterface(ABC):
     """ LangchainAPIInterface class provides an interface for langchain API.
@@ -56,7 +56,7 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def feedback_prompt(self, prompt: str, sessionId: str, reask: bool, found: List[Building] | None) -> Message:
+    def feedback_prompt(self, prompt: str, sessionId: str, reask: bool, found: list[Building] | None) -> Message:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.

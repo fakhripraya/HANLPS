@@ -2,7 +2,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import Optional
 from src.domain.entities.message.message import Message
 
 class MessagingRepositoryInterface(ABC):
@@ -14,7 +14,7 @@ class MessagingRepositoryInterface(ABC):
         self,
         input: str,
         output: str,
-        output_content: List[str] | None,
+        output_content: list[str] | None,
     ) -> Optional[Message]:
         """ Create a Message
 

@@ -5,7 +5,6 @@
 import ast
 import time
 import json
-from typing import List
 
 # Source-specific imports
 from configs.config import (
@@ -42,7 +41,7 @@ from langchain_openai.chat_models import ChatOpenAI
 from langchain_huggingface import HuggingFacePipeline
 from langchain_google_genai import ChatGoogleGenerativeAI
 from weaviate.classes.query import Filter
-from weaviate.classes.config import ReferenceProperty
+from weaviate.classes.query import QueryReference, GroupBy
 
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     """ LangchainAPI class.
@@ -168,11 +167,18 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             
             building_instance = None
             building_query = None
-            if(buildings_filter.building_title is not None or buildings_filter.building_address is not None):
+            filter_validation = any([
+                buildings_filter.building_title,
+                buildings_filter.building_address,
+                buildings_filter.building_proximity,
+                buildings_filter.building_facility
+            ])
+            if(filter_validation):
                 building_instance = Building(
                     buildingTitle=buildings_filter.building_title,
                     buildingAddress=buildings_filter.building_address,
-                    buildingDescription=buildings_filter.building_facility
+                    buildingProximity=buildings_filter.building_proximity,
+                    buildingFacility=buildings_filter.building_facility
                 )
             building_dict = building_instance.to_dict()
             building_query = str(building_dict)
@@ -194,11 +200,15 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         limit = 10
         offset = 0
         start_time = time.time()
-        building_list: List[Building] = []
+        building_list: list[Building] = []
         try:
             self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
             building_chunks_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
-                    
+            group_by = GroupBy(
+                prop="buildingTitle",  # group by this property
+                objects_per_group=2,  # maximum objects per group
+                number_of_groups=1,  # maximum number of groups
+            )
             self._logger.log_info("Execute query")
             response = building_chunks_collection.query.hybrid(
                 query=prompt,
@@ -207,9 +217,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 limit=limit,
                 offset=offset,
                 return_references=[
-                    ReferenceProperty(
-                        link_on="hasbuilding",
-                        target_collection=BUILDINGS_COLLECTION_NAME
+                    QueryReference(
+                        link_on="hasBuilding"
                     ),
                 ],
             )

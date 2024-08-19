@@ -1,7 +1,6 @@
 """ Defines the validator for the messaging input data.
 """
 
-from typing import Dict
 from src.interactor.validations.base_input_validator import BaseInputValidator
 
 class MessagingInputDtoValidator(BaseInputValidator):
@@ -9,7 +8,7 @@ class MessagingInputDtoValidator(BaseInputValidator):
     :param input_data: The input data to be validated.
     """
 
-    def __init__(self, input_data: Dict) -> None:
+    def __init__(self, input_data: dict) -> None:
         super().__init__(input_data)
         self.input_data = input_data
         self.__schema = {

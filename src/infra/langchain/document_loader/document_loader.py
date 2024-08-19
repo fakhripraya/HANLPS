@@ -2,8 +2,6 @@
 """
 from langchain_community.document_loaders import DirectoryLoader, TextLoader, CSVLoader
 from langchain_core.documents import Document
-from typing import List, Dict
-import json
 
 class LangchainDocumentLoader():
     """ This class is responsible for loading external document
@@ -53,7 +51,7 @@ class LangchainDocumentLoader():
         structured_docs = self.documents_to_structured(docs)
         return structured_docs
     
-    def parse_document(self, doc: Document) -> Dict:
+    def parse_document(self, doc: Document) -> dict:
         """ This method is to parse Document object into structured data.
         :param: Document: a single object of Document
         :return: Dict
@@ -69,10 +67,10 @@ class LangchainDocumentLoader():
         data.update(doc.metadata)
         return data
 
-    def documents_to_structured(self, docs: List[Document]) -> List[Dict]:
+    def documents_to_structured(self, docs: list[Document]) -> list[dict]:
         """ This method is loading external document.
         :return: List[Dict]
         """
         # Parse each document and convert to list of dictionaries
-        structured_docs: List[Dict] = [self.parse_document(doc) for doc in docs]
+        structured_docs: list[dict] = [self.parse_document(doc) for doc in docs]
         return structured_docs

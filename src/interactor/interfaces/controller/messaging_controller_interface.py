@@ -1,7 +1,6 @@
 """ This module contains the MessagingControllerInterface class
 """
 
-from typing import Dict
 from abc import ABC, abstractmethod
 
 class MessagingControllerInterface(ABC):
@@ -15,7 +14,7 @@ class MessagingControllerInterface(ABC):
         """
 
     @abstractmethod
-    def execute(self) -> Dict:
+    def execute(self) -> dict:
         """ Executes the controller
         :returns: Message processed and send responses
         """

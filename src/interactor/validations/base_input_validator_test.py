@@ -2,12 +2,11 @@
 # pylint: disable=missing-class-docstring
 # pylint: disable=missing-function-docstring
 
-from typing import Dict
 import pytest
 from src.interactor.validations.base_input_validator import BaseInputValidator
 
 class BaseValidator(BaseInputValidator):
-    def __init__(self, data: Dict):
+    def __init__(self, data: dict):
         super().__init__(data)
         self.schema = {
                 "content": {

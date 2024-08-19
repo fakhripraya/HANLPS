@@ -63,12 +63,6 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
                     vectorize_property_name=False,
                     skip_vectorization=True
                 ),
-            ],
-            references=[
-                wvc.config.ReferenceProperty(
-                    name="hasChunks",
-                    target_collection=BUILDING_CHUNKS_COLLECTION_NAME
-                )
             ]
         )
         

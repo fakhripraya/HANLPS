@@ -3,7 +3,6 @@
 
 
 from dataclasses import dataclass, asdict
-from typing import List
 from src.domain.entities.building.building import Building
 
 @dataclass
@@ -12,7 +11,7 @@ class Message:
     """
     input: str
     output: str
-    output_content: List[Building] | None
+    output_content: list[Building] | None
 
     @classmethod
     def from_dict(cls, data):

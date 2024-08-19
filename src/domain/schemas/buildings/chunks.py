@@ -5,6 +5,8 @@ from src.interactor.interfaces.logger.logger import LoggerInterface
 from configs.config import (
     MODULE_USED,
     USE_MODULE,
+    OPENAI_GENERATIVE_MODEL,
+    OPENAI_TRANSFORMERS_MODEL,
 )
 
 text2vec_transformers = [
@@ -32,14 +34,14 @@ text2vec_openai = [
                 "buildingProximity",
                 "buildingFacility",
             ],
-            model="text-embedding-3-small",
+            model=OPENAI_TRANSFORMERS_MODEL,
         ),
         wvc.config.Configure.NamedVectors.text2vec_openai( 
             name="buildingAddress", source_properties=[
                 "buildingAddress",
                 "buildingProximity",
             ],
-            model="text-embedding-3-small",
+            model=OPENAI_TRANSFORMERS_MODEL,
         ),
     ]
 
@@ -52,7 +54,7 @@ def define_transformers():
 def define_generative():
     if int(USE_MODULE) == 1 and MODULE_USED == OPENAI:
         openai_generative = wvc.config.Configure.Generative.openai(
-            model="gpt-3.5-turbo"
+            model=OPENAI_GENERATIVE_MODEL
         )
         return openai_generative
     else: 

@@ -43,6 +43,12 @@ class WeaviateAPIInterface(ABC):
         """ 
         Load and insert new objects of building and insert it to db from json document
         """
+        
+    @abstractmethod
+    def load_data_to_db(self, docs: list[dict]) -> None:
+        """ 
+        Insert a list of data to weaviate from documents
+        """
     
     @abstractmethod
     def close_connection_to_server(self) -> None:

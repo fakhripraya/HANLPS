@@ -5,7 +5,6 @@ from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from langchain_openai.chat_models import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableParallel
-from typing import Dict
 
 class PromptParser(PromptParserInterface):
     """ PromptParser class.
@@ -13,7 +12,7 @@ class PromptParser(PromptParserInterface):
     def __init__(self, llm_client: ChatOpenAI):
         self._client = llm_client
 
-    def execute(self, input: Dict, templates) -> str:
+    def execute(self, input: dict, templates) -> str:
         """ Parse the incoming prompt.
         :param prompt: Prompt to be parse.
         :return: output

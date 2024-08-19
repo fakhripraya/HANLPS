@@ -29,6 +29,7 @@ class WeaviateAPI(WeaviateAPIInterface):
             # init schemas
             self._logger.log_info("Deleting all existing Weaviate collections")
             self._weaviate_client.collections.delete(BUILDINGS_COLLECTION_NAME)
+            self._weaviate_client.collections.delete(BUILDING_CHUNKS_COLLECTION_NAME)
             
             self._logger.log_info("Creating new Weaviate collections")
             schema = WeaviateSchemasManagement(self._weaviate_client, self._logger)
@@ -45,13 +46,11 @@ class WeaviateAPI(WeaviateAPIInterface):
         finally:
             self.close_connection_to_server()
       
-    def connect_to_server(self, with_modules: int, module_used: str) -> weaviate_lib.WeaviateClient:
+    def connect_to_server(self, with_modules, module_used) -> weaviate_lib.WeaviateClient:
         if with_modules == 1 and module_used == OPENAI:
             return self.connect_with_openai()
         elif with_modules == 1 and module_used == GEMINI:
             return self.connect_with_google()
-        elif with_modules == 1 and module_used == HUGGING_FACE:
-            return self.connect_locally()
         else:
             return self.connect_locally()
             
@@ -114,10 +113,30 @@ class WeaviateAPI(WeaviateAPIInterface):
             self._logger.log_info(f"Loading documents")
             loader = LangchainDocumentLoader("csv", './csvs/sheet.csv', "**/*.csv")
             docs = loader.execute()
-
-            # text_splitter = LangchainTextSplitter(128,0)
-            # docs = text_splitter.execute(data)
-            
+            self.load_data_to_db(docs)
+        except Exception as e: 
+            self._logger.log_exception(f"Failed to load csvs documents to weaviate, ERROR: {e}")
+            raise Exception(e)
+        
+    def load_buildings_from_document_json(self) -> None:
+        """ 
+        Load and insert new objects of building and insert it to db from document csv
+        """
+        # migrate data object
+        try:
+            self._logger.log_info(f"Loading documents")  
+            with open('./json/data.json', 'r', encoding='utf-8') as file:
+                docs = json.load(file)["data"]
+                if isinstance(docs, list) and all(isinstance(item, dict) for item in docs):
+                    self.load_data_to_db(docs)
+                else:
+                    raise TypeError("The loaded data is not of type list[dict]")
+        except Exception as e: 
+            self._logger.log_exception(f"Failed to load json documents to weaviate, ERROR: {e}")
+            raise Exception(e)
+        
+    def load_data_to_db(self, docs) -> None:
+        try:
             self._logger.log_info(f"0/{len(docs)-1} Loaded")
             buildings_collection =  self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
             building_chunks_collection =  self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
@@ -133,7 +152,7 @@ class WeaviateAPI(WeaviateAPIInterface):
                     "ownerWhatsapp": doc["owner_whatsapp"],
                     "ownerPhoneNumber": doc["owner_phone_number"],
                     "ownerEmail": doc["owner_email"],
-                    "imageUrl": str(doc["image_urls"]),
+                    "imageURL": str(doc["image_urls"]),
                 })
                 
                 building_proximity = list(doc["building_proximity"])
@@ -145,52 +164,13 @@ class WeaviateAPI(WeaviateAPIInterface):
                     proximity_chunk = building_proximity[i] if i < len(building_proximity) else None
                     facility_chunk = building_facility[i] if i < len(building_facility) else None
 
-                    chunks_uuid = building_chunks_collection.data.insert(
+                    building_chunks_collection.data.insert(
                         properties={
                             "buildingProximity": proximity_chunk,
                             "buildingFacility": facility_chunk,
                         },
                         references={"hasBuilding": uuid},
                     )
-                
-                self._logger.log_info(f"[{uuid}]: Document Loaded")
-                self._logger.log_info(f"{idx}/{len(docs)-1} Loaded")
-                
-            self._logger.log_info("Successfully load documents")
-        except Exception as e: 
-            self._logger.log_exception(f"Failed to load documents, ERROR: {e}")
-            raise Exception(e)
-        
-    def load_buildings_from_document_json(self) -> None:
-        """ 
-        Load and insert new objects of building and insert it to db from document csv
-        """
-        # migrate data object
-        try:
-            self._logger.log_info(f"Loading documents")  
-            with open('./json/data.json', 'r', encoding='utf-8') as file:
-                docs = json.load(file)["data"]
-
-            # text_splitter = LangchainTextSplitter(128,0)
-            # docs = text_splitter.execute(data)
-            
-            self._logger.log_info(f"0/{len(docs)-1} Loaded")
-            buildings_collection =  self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-            for idx, doc in enumerate(docs):
-                if(idx == 0): continue
-                uuid = buildings_collection.data.insert({
-                    "buildingTitle": doc["building_title"],
-                    "buildingAddress": doc["building_address"],
-                    "buildingProximity": doc["building_proximity"],
-                    "buildingFacility": doc["building_facility"],
-                    "buildingDescription": doc["building_description"],
-                    "housingPrice": float(doc["housing_price"]),
-                    "ownerName": doc["owner_name"],
-                    "ownerWhatsapp": doc["owner_whatsapp"],
-                    "ownerPhoneNumber": doc["owner_phone_number"],
-                    "ownerEmail": doc["owner_email"],
-                    "imageUrl": str(doc["image_urls"]),
-                })
                 
                 self._logger.log_info(f"[{uuid}]: Document Loaded")
                 self._logger.log_info(f"{idx}/{len(docs)-1} Loaded")
