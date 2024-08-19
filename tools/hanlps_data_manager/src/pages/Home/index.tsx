@@ -26,8 +26,10 @@ const HomeDefaultValue:
   | null = {
   building_title: "",
   building_address: "",
-  building_proximity: "",
-  building_facility: "",
+  building_proximity_string: "",
+  building_proximity: [],
+  building_facility_string: "",
+  building_facility: [],
   building_description: "",
   housing_price: "0",
   owner_email: "",
@@ -50,6 +52,7 @@ export default function Home() {
     EditedBuildingModel | undefined | null
   >(null);
 
+  console.log(selected);
   function handleTextChange(
     field: keyof EditedBuildingModel,
     event: React.ChangeEvent<
@@ -61,6 +64,34 @@ export default function Home() {
       temp[field] = event.target.value as any;
       setSelected(temp);
     }
+  }
+
+  function handleAlterArray(
+    handle: string,
+    field: keyof EditedBuildingModel,
+    incoming: any,
+    index: number = 0
+  ) {
+    const temp = _.cloneDeep(selected);
+    if (!temp?.[field]) return;
+    switch (field) {
+      case "building_proximity":
+        if (handle === "change")
+          temp[field][index] = incoming;
+        else if (handle === "push")
+          temp[field].push(incoming);
+        break;
+      case "building_facility":
+        if (handle === "change")
+          temp[field][index] = incoming;
+        else if (handle === "push")
+          temp[field].push(incoming);
+        break;
+      default:
+        break;
+    }
+
+    setSelected(temp);
   }
 
   function handleNumberChange(
@@ -379,12 +410,14 @@ export default function Home() {
                       <TextArea
                         onChange={(e) =>
                           handleTextChange(
-                            "building_proximity",
+                            "building_proximity_string",
                             e
                           )
                         }
                         className="home-page-longtext-area darker-bg-color"
-                        value={selected?.building_proximity}
+                        value={
+                          selected?.building_proximity_string
+                        }
                       />
                     </div>
                     <div className="home-page-textinput-box">
@@ -394,13 +427,101 @@ export default function Home() {
                       <TextArea
                         onChange={(e) =>
                           handleTextChange(
-                            "building_facility",
+                            "building_facility_string",
                             e
                           )
                         }
                         className="home-page-longtext-area darker-bg-color"
-                        value={selected?.building_facility}
+                        value={
+                          selected?.building_facility_string
+                        }
                       />
+                    </div>
+                    <div className="home-page-textinput-box home-page-flex-column margin-top-0">
+                      {selected?.building_proximity?.map(
+                        (value, index) => (
+                          <div
+                            key={`home-page-building-proximity-${index}`}
+                            className="home-page-textinput-box">
+                            <label className="home-page-input-title">
+                              Proximity Chunk {index + 1}
+                            </label>
+                            <TextInput
+                              onChange={(e) =>
+                                handleAlterArray(
+                                  "change",
+                                  "building_proximity",
+                                  index,
+                                  e.target.value as any
+                                )
+                              }
+                              value={value}
+                              type="text"
+                              className="home-page-textinput margin-top-bottom-8 darker-bg-color"
+                            />
+                          </div>
+                        )
+                      )}
+                      <Button
+                        onClick={() =>
+                          handleAlterArray(
+                            "push",
+                            "building_proximity",
+                            "New input"
+                          )
+                        }
+                        className="margin-top-16 align-self-start home-page-button main-bg-color">
+                        <label className="home-page-button-text">
+                          {selected?.building_proximity &&
+                          selected?.building_proximity
+                            .length > 0
+                            ? "+"
+                            : "Add proximity chunks"}
+                        </label>
+                      </Button>
+                    </div>
+                    <div className="home-page-textinput-box home-page-flex-column margin-top-0">
+                      {selected?.building_facility?.map(
+                        (value, index) => (
+                          <div
+                            key={`home-page-building-facility-${index}`}
+                            className="home-page-textinput-box">
+                            <label className="home-page-input-title">
+                              Facility Chunk {index + 1}
+                            </label>
+                            <TextInput
+                              onChange={(e) =>
+                                handleAlterArray(
+                                  "change",
+                                  "building_facility",
+                                  index,
+                                  e.target.value as any
+                                )
+                              }
+                              value={value}
+                              type="text"
+                              className="home-page-textinput margin-top-bottom-8 darker-bg-color"
+                            />
+                          </div>
+                        )
+                      )}
+                      <Button
+                        onClick={() =>
+                          handleAlterArray(
+                            "push",
+                            "building_facility",
+                            "New input"
+                          )
+                        }
+                        className="margin-top-16 align-self-start home-page-button main-bg-color">
+                        <label className="home-page-button-text">
+                          {selected?.building_facility &&
+                          selected?.building_facility
+                            .length > 0
+                            ? "+"
+                            : "Add facility chunks"}
+                        </label>
+                      </Button>
                     </div>
                     <div className="home-page-textinput-box">
                       <label className="home-page-input-title">
