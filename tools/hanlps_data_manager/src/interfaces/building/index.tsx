@@ -1,8 +1,10 @@
 export interface BuildingModel {
   building_title?: string;
   building_address?: string;
-  building_proximity?: string;
-  building_facility?: string;
+  building_proximity_string?: string;
+  building_proximity?: string[];
+  building_facility_string?: string;
+  building_facility?: string[];
   building_description?: string;
   housing_price?: string;
   owner_name?: string;

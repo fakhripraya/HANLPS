@@ -166,34 +166,19 @@
   border-bottom-right-radius: 1em;
 }
 
-.home-page-chat-leftside-textinput-button {
+.home-page-button {
   cursor: pointer;
   height: 30px !important;
-  width: 30px !important;
-  transition: all 0.3s ease-in-out;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: 24px;
+  min-width: 30px !important;
   justify-self: center;
   align-self: center;
   display: flex;
   background-color: transparent;
   box-shadow: none !important;
-  margin-right: 6px;
 }
 
-.home-page-chat-leftside-textinput-button-emoji {
-  background-image: url("../../assets/svg/face-smile-solid.svg");
-}
-
-.home-page-chat-leftside-textinput-button-gif {
-  background-image: url("../../assets/svg/gif-icon.svg");
-}
-
-.home-page-chat-textinput {
-  color: #151515;
-  margin-right: 6px;
-  text-indent: 12px;
+.home-page-button-text {
+  color: #fff;
 }
 
 .home-page-chattext-username {
@@ -245,6 +230,11 @@
   list-style: none;
   display: flex;
   flex-direction: row;
+}
+
+.home-page-flex-column {
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .home-page-textinput {

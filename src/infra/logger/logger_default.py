@@ -10,7 +10,7 @@ class LoggerDefault(LoggerInterface):
      
     def __init__(self):
         logging.basicConfig(
-            filename='flask_app.log',
+            filename='servelog.log',
             filemode='a',
             datefmt='%Y-%m-%d %H:%M:%S',
             format='%(asctime)-s - %(levelname)s - %(message)s',

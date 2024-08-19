@@ -152,6 +152,7 @@ class WeaviateAPI(WeaviateAPIInterface):
                         },
                         references={"hasBuilding": uuid},
                     )
+                    self._logger.log_info(f"[{chunks_uuid}]: Chunk Loaded")
                 
                 self._logger.log_info(f"[{uuid}]: Document Loaded")
                 self._logger.log_info(f"{idx}/{len(docs)-1} Loaded")
