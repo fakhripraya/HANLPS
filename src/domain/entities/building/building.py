@@ -8,17 +8,17 @@ from typing import Union, Optional
 @dataclass
 class Building:
     """ Definition of the Building entity """
-    buildingTitle: Optional[str] = None
-    buildingAddress: Optional[str] = None
-    buildingProximity: Optional[str] = None
-    buildingFacility: Optional[str] = None
-    buildingDescription: Optional[str] = None
-    housingPrice: Optional[Union[str, float]] = None
-    ownerName: Optional[str] = None
-    ownerEmail: Optional[str] = None
-    ownerWhatsapp: Optional[str] = None
-    ownerPhoneNumber: Optional[str] = None
-    imageURL: Optional[str] = None
+    building_title: Optional[str] = None
+    building_address: Optional[str] = None
+    building_proximity: Optional[str] = None
+    building_facility: Optional[str] = None
+    building_description: Optional[str] = None
+    housing_price: Optional[Union[str, float]] = None
+    owner_name: Optional[str] = None
+    owner_email: Optional[str] = None
+    owner_whatsapp: Optional[str] = None
+    owner_phone_number: Optional[str] = None
+    image_url: Optional[str] = None
 
     @classmethod
     def from_dict(cls, data):
@@ -35,14 +35,14 @@ class Building:
     def __str__(self):
         """ String representation of the Building instance """
         return (f"Building("
-                f"buildingTitle={self.buildingTitle}, "
-                f"buildingAddress={self.buildingAddress}, "
-                f"buildingProximity={self.buildingProximity}, "
-                f"buildingFacility={self.buildingFacility}, "
-                f"buildingDescription={self.buildingDescription}, "
-                f"housingPrice={self.housingPrice}, "
-                f"ownerName={self.ownerName}, "
-                f"ownerEmail={self.ownerEmail}, "
-                f"ownerWhatsapp={self.ownerWhatsapp}, "
-                f"ownerPhoneNumber={self.ownerPhoneNumber}, "
-                f"imageURL={self.imageURL})")
+                f"building_title={self.building_title}, "
+                f"building_address={self.building_address}, "
+                f"building_proximity={self.building_proximity}, "
+                f"building_facility={self.building_facility}, "
+                f"building_description={self.building_description}, "
+                f"housing_price={self.housing_price}, "
+                f"owner_name={self.owner_name}, "
+                f"owner_email={self.owner_email}, "
+                f"owner_whatsapp={self.owner_whatsapp}, "
+                f"owner_phone_number={self.owner_phone_number}, "
+                f"image_url={self.image_url})")

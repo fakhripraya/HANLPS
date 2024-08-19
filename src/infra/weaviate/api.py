@@ -137,12 +137,10 @@ class WeaviateAPI(WeaviateAPIInterface):
         
     def load_data_to_db(self, docs) -> None:
         try:
-            self._logger.log_info(f"0/{len(docs)-1} Loaded")
+            self._logger.log_info(f"0/{len(docs)} Loaded")
             buildings_collection =  self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
             building_chunks_collection =  self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
             for idx, doc in enumerate(docs):
-                if(idx == 0): continue
-                
                 uuid = buildings_collection.data.insert({
                     "buildingTitle": doc["building_title"],
                     "buildingAddress": doc["building_address"],
@@ -164,7 +162,7 @@ class WeaviateAPI(WeaviateAPIInterface):
                     proximity_chunk = building_proximity[i] if i < len(building_proximity) else None
                     facility_chunk = building_facility[i] if i < len(building_facility) else None
 
-                    building_chunks_collection.data.insert(
+                    chunks_uuid = building_chunks_collection.data.insert(
                         properties={
                             "buildingProximity": proximity_chunk,
                             "buildingFacility": facility_chunk,
@@ -174,7 +172,7 @@ class WeaviateAPI(WeaviateAPIInterface):
                     self._logger.log_info(f"[{chunks_uuid}]: Chunk Loaded")
                 
                 self._logger.log_info(f"[{uuid}]: Document Loaded")
-                self._logger.log_info(f"{idx}/{len(docs)-1} Loaded")
+                self._logger.log_info(f"{idx + 1}/{len(docs)} Loaded")
                 
             self._logger.log_info("Successfully load documents")
         except Exception as e: 

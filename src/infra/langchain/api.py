@@ -175,10 +175,10 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             ])
             if(filter_validation):
                 building_instance = Building(
-                    buildingTitle=buildings_filter.building_title,
-                    buildingAddress=buildings_filter.building_address,
-                    buildingProximity=buildings_filter.building_proximity,
-                    buildingFacility=buildings_filter.building_facility
+                    building_title=buildings_filter.building_title,
+                    building_address=buildings_filter.building_address,
+                    building_proximity=buildings_filter.building_proximity,
+                    building_facility=buildings_filter.building_facility
                 )
             building_dict = building_instance.to_dict()
             building_query = str(building_dict)
@@ -204,11 +204,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         try:
             self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
             building_chunks_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
-            group_by = GroupBy(
-                prop="buildingTitle",  # group by this property
-                objects_per_group=2,  # maximum objects per group
-                number_of_groups=1,  # maximum number of groups
-            )
             self._logger.log_info("Execute query")
             response = building_chunks_collection.query.hybrid(
                 query=prompt,
@@ -226,9 +221,20 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             self._logger.log_info(f"Object count: {len(response.objects)}")
             for obj in response.objects:
                 self._logger.log_info(f"Metadata: {obj.metadata}")
-                data_dict = ast.literal_eval(str(obj.properties))
-                building_instance = Building.from_dict(data_dict)
-                building_list.append(building_instance)
+                for ref_obj in obj.references["hasBuilding"].objects:
+                    self._logger.log_info(f"Reference: {ref_obj.properties}")      
+                    building_instance = Building(
+                        building_title=ref_obj.properties["buildingTitle"],
+                        building_address=ref_obj.properties["buildingAddress"],
+                        building_description=ref_obj.properties["buildingDescription"],
+                        housing_price=ref_obj.properties["housingPrice"],
+                        owner_name=ref_obj.properties["ownerName"],
+                        owner_email=ref_obj.properties["ownerEmail"],
+                        owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
+                        owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
+                        image_url=ref_obj.properties["imageURL"]
+                    )
+                    building_list.append(building_instance)
                 
             end_time = time.time()
             elapsed_time = end_time - start_time 

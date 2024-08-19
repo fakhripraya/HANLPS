@@ -40,6 +40,12 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
                     skip_vectorization=True
                 ),
                 wvc.config.Property(
+                    name="ownerEmail",
+                    data_type=wvc.config.DataType.TEXT,
+                    vectorize_property_name=False,
+                    skip_vectorization=True
+                ),
+                wvc.config.Property(
                     name="ownerWhatsapp",
                     data_type=wvc.config.DataType.TEXT,
                     vectorize_property_name=False,
@@ -47,12 +53,6 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
                 ),
                 wvc.config.Property(
                     name="ownerPhoneNumber",
-                    data_type=wvc.config.DataType.TEXT,
-                    vectorize_property_name=False,
-                    skip_vectorization=True
-                ),
-                wvc.config.Property(
-                    name="ownerEmail",
                     data_type=wvc.config.DataType.TEXT,
                     vectorize_property_name=False,
                     skip_vectorization=True
