@@ -180,10 +180,10 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                     building_proximity=buildings_filter.building_proximity,
                     building_facility=buildings_filter.building_facility
                 )
-            building_dict = building_instance.to_dict()
-            building_query = str(building_dict)
-            self._logger.log_info(f"Query: {building_query}")
+                building_dict = building_instance.to_dict()
+                building_query = str(building_dict)
             
+            self._logger.log_info(f"Query: {building_query}")
             output = self.analyze_prompt(prompt, session_id, filter_array, building_query)
             return output
         
