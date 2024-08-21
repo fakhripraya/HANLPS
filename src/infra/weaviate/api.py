@@ -140,6 +140,7 @@ class WeaviateAPI(WeaviateAPIInterface):
             self._logger.log_info(f"0/{len(docs)} Loaded")
             buildings_collection =  self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
             building_chunks_collection =  self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
+            
             for idx, doc in enumerate(docs):
                 uuid = buildings_collection.data.insert({
                     "buildingTitle": doc["building_title"],
@@ -158,18 +159,19 @@ class WeaviateAPI(WeaviateAPIInterface):
 
                 longest = len(building_proximity) if len(building_proximity) > len(building_facility) else len(building_facility)
                 
-                for i in range(longest):
-                    proximity_chunk = building_proximity[i] if i < len(building_proximity) else None
-                    facility_chunk = building_facility[i] if i < len(building_facility) else None
+                with building_chunks_collection.batch.dynamic() as batch:
+                    for i in range(longest):
+                        proximity_chunk = building_proximity[i] if i < len(building_proximity) else None
+                        facility_chunk = building_facility[i] if i < len(building_facility) else None
 
-                    chunks_uuid = building_chunks_collection.data.insert(
-                        properties={
-                            "buildingProximity": proximity_chunk,
-                            "buildingFacility": facility_chunk,
-                        },
-                        references={"hasBuilding": uuid},
-                    )
-                    self._logger.log_info(f"[{chunks_uuid}]: Chunk Loaded")
+                        chunks_uuid = batch.add_object(
+                            properties={
+                                "buildingProximity": proximity_chunk,
+                                "buildingFacility": facility_chunk,
+                            },
+                            references={"hasBuilding": uuid},
+                        )
+                        self._logger.log_info(f"[{chunks_uuid}]: Chunk Loaded")
                 
                 self._logger.log_info(f"[{uuid}]: Document Loaded")
                 self._logger.log_info(f"{idx + 1}/{len(docs)} Loaded")

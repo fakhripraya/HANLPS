@@ -202,6 +202,9 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         start_time = time.time()
         building_list: list[Building] = []
         try:
+            #TODO: Query need to be more specific and semantic, and can't be pure user prompt cause the transformers still a little bit stupid or maybe im stupid?
+            #Example raw Query: {"building_proximity":"blok m"}
+            #Example processed Query: "Dekat dengan blok m"
             self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
             building_chunks_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
             self._logger.log_info("Execute query")
@@ -220,9 +223,10 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             
             self._logger.log_info(f"Object count: {len(response.objects)}")
             for obj in response.objects:
+                self._logger.log_info(f"Chunk object: {obj.properties}")
                 self._logger.log_info(f"Metadata: {obj.metadata}")
                 for ref_obj in obj.references["hasBuilding"].objects:
-                    self._logger.log_info(f"Reference: {ref_obj.properties}")      
+                    self._logger.log_info(f"Reference: {ref_obj.properties["buildingTitle"]}")      
                     building_instance = Building(
                         building_title=ref_obj.properties["buildingTitle"],
                         building_address=ref_obj.properties["buildingAddress"],
