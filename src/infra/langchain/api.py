@@ -2,7 +2,6 @@
 """
 
 # Standard and third-party libraries
-import ast
 import time
 import json
 
@@ -13,7 +12,7 @@ from configs.config import (
     GEMINI_API_KEY, USE_MODULE, MODULE_USED
 )
 from src.domain.entities.message.message import Message
-from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME, BUILDINGS_COLLECTION_NAME
+from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME
 from src.domain.prompt_templates import (
     chat_template,
     analyzer_template,
@@ -23,10 +22,11 @@ from src.domain.prompt_templates import (
 )
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
 from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
-from src.infra.weaviate.api import WeaviateAPI
+from src.infra.repositories.weaviate.query_parser.query_parser import QueryParser
+from src.infra.repositories.weaviate.api import WeaviateAPI
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.infra.weaviate.schema.collections.buildings.buildings import append_housing_price_filters
+from src.infra.repositories.weaviate.schema.collections.buildings.buildings import append_housing_price_filters
 from src.domain.entities.building.building import Building
 
 # Langchain and related libraries
@@ -41,7 +41,7 @@ from langchain_openai.chat_models import ChatOpenAI
 from langchain_huggingface import HuggingFacePipeline
 from langchain_google_genai import ChatGoogleGenerativeAI
 from weaviate.classes.query import Filter
-from weaviate.classes.query import QueryReference, GroupBy
+from weaviate.classes.query import QueryReference
 
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     """ LangchainAPI class.
@@ -63,6 +63,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         
         WeaviateAPI.__init__(self, int(USE_MODULE), MODULE_USED, self._logger)
         self._prompt_parser = PromptParser(self._client)
+        self._query_parser = QueryParser()
         self._templates = {
             "filter_analyzer_template": [
                 ChatPromptTemplate.from_template(filter_analyzer_template),
@@ -181,7 +182,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                     building_facility=buildings_filter.building_facility
                 )
                 building_dict = building_instance.to_dict()
-                building_query = str(building_dict)
+                # building_query = str(building_dict)
+                building_query = self._query_parser.execute(building_dict)
             
             self._logger.log_info(f"Query: {building_query}")
             output = self.analyze_prompt(prompt, session_id, filter_array, building_query)
@@ -209,7 +211,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             building_chunks_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
             self._logger.log_info("Execute query")
             response = building_chunks_collection.query.hybrid(
-                query=prompt,
+                query=query,
                 target_vector="buildingDetails",
                 filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
                 limit=limit,
