@@ -141,27 +141,44 @@ class WeaviateAPI(WeaviateAPIInterface):
             buildings_collection =  self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
             building_chunks_collection =  self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
             
-            for idx, doc in enumerate(docs):
-                uuid = buildings_collection.data.insert({
-                    "buildingTitle": doc["building_title"],
-                    "buildingAddress": doc["building_address"],
-                    "buildingDescription": doc["building_description"],
-                    "housingPrice": float(doc["housing_price"]),
-                    "ownerName": doc["owner_name"],
-                    "ownerWhatsapp": doc["owner_whatsapp"],
-                    "ownerPhoneNumber": doc["owner_phone_number"],
-                    "ownerEmail": doc["owner_email"],
-                    "imageURL": str(doc["image_urls"]),
-                })
-                
-                # building_proximity = list(doc["building_proximity"])
-                # building_facility = list(doc["building_facility"])
+            temp_building = []
+            self._logger.log_info("Loading documents")
+            with buildings_collection.batch.dynamic() as building_batch:
+                for idx, doc in enumerate(docs):
+                    uuid = building_batch.add_object(
+                        properties={
+                            "buildingTitle": doc["building_title"],
+                            "buildingAddress": doc["building_address"],
+                            "buildingDescription": doc["building_description"],
+                            "housingPrice": float(doc["housing_price"]),
+                            "ownerName": doc["owner_name"],
+                            "ownerWhatsapp": doc["owner_whatsapp"],
+                            "ownerPhoneNumber": doc["owner_phone_number"],
+                            "ownerEmail": doc["owner_email"],
+                            "imageURL": str(doc["image_urls"]),
+                        }
+                    )
+                    
+                    temp_building.append({
+                        "id": uuid,
+                        "chunks": list(doc["building_proximity"]) + list(doc["building_facility"]),
+                    })
+                    self._logger.log_info(f"[{uuid}]: Document Loaded")
+                    self._logger.log_info(f"{idx + 1}/{len(docs)} Loaded")
+            failed_objs = buildings_collection.batch.failed_objects
+            self._logger.log_info(f"Document failed batch objects load: {failed_objs}")
+            # building_proximity = list(doc["building_proximity"])
+            # building_facility = list(doc["building_facility"])
 
-                # longest = len(building_proximity) if len(building_proximity) > len(building_facility) else len(building_facility)
-                
-                merged_list = list(doc["building_proximity"]) + list(doc["building_facility"])
-                with building_chunks_collection.batch.dynamic() as batch:
-                    for i in range(merged_list):
+            # longest = len(building_proximity) if len(building_proximity) > len(building_facility) else len(building_facility)
+            
+            temp_building_to_be_refered = []
+            self._logger.log_info("Loading chunks")
+            with building_chunks_collection.batch.dynamic() as chunk_batch:
+                for idx, doc in enumerate(temp_building):
+                    temp_chunk_uuids = []
+                    self._logger.log_info(f"{[doc["id"]]}: Loading chunk")
+                    for i, obj in enumerate(doc["chunks"]):
                         # proximity_chunk = building_proximity[i] if i < len(building_proximity) else None
                         # facility_chunk = building_facility[i] if i < len(building_facility) else None
 
@@ -173,23 +190,36 @@ class WeaviateAPI(WeaviateAPIInterface):
                         #     references={"hasBuilding": uuid},
                         # )
                         # self._logger.log_info(f"[{chunks_uuid}]: Chunk Loaded")
-                        chunk = merged_list[i]
-                        chunks_uuid = batch.add_object(
+                        self._logger.log_info(f"[Object - {i + 1}]: {obj}")
+                        chunk_uuid = chunk_batch.add_object(
                             properties={
-                                "chunk": chunk,
+                                "chunk": obj,
                             },
-                            references={"hasBuilding": uuid},
                         )
-                        batch.add_reference(
+                        temp_chunk_uuids.append({
+                            "chunk_uuid": chunk_uuid,
+                        })
+                        self._logger.log_info(f"[{chunk_uuid}]: Chunk Loaded")
+                        
+                    temp_building_to_be_refered.append({
+                        "id": doc["id"],
+                        "chunk_uuids": temp_chunk_uuids,
+                    })
+                    
+            self._logger.log_info("Adding references")
+            with buildings_collection.batch.dynamic() as reference_batch:
+                for idx, doc in enumerate(temp_building_to_be_refered):
+                    for i, obj in enumerate(doc["chunk_uuids"]):
+                        self._logger.log_info(f"[{doc["id"]}]: Add reference to chunk {obj["chunk_uuid"]}")
+                        reference_batch.add_reference(
                             from_property="hasChunks",
-                            from_uuid=uuid,
-                            to=chunks_uuid,
+                            from_uuid=doc["id"],
+                            to=obj["chunk_uuid"],
                         )
-                        self._logger.log_info(f"[{chunks_uuid}]: Chunk Loaded")
-                
-                self._logger.log_info(f"[{uuid}]: Document Loaded")
-                self._logger.log_info(f"{idx + 1}/{len(docs)} Loaded")
-                
+                        self._logger.log_info(f"[{obj["chunk_uuid"]}]: Reference added")
+                    self._logger.log_info(f"{idx + 1}/{len(docs)} Added references")
+            failed_references = building_chunks_collection.batch.failed_references
+            self._logger.log_info(f"References failed batch objects link: {failed_references}")
             self._logger.log_info("Successfully load documents")
         except Exception as e: 
             self._logger.log_exception(f"Failed to load documents, ERROR: {e}")

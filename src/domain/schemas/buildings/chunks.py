@@ -9,19 +9,46 @@ from configs.config import (
     OPENAI_TRANSFORMERS_MODEL,
 )
 
+# text2vec_transformers = [
+#         wvc.config.Configure.NamedVectors.text2vec_transformers( 
+#             name="buildingDetails", source_properties=[
+#                 "buildingTitle",
+#                 "buildingAddress",
+#                 "buildingProximity",
+#                 "buildingFacility",
+#             ],
+#         ),
+#         wvc.config.Configure.NamedVectors.text2vec_transformers( 
+#             name="buildingAddress", source_properties=[
+#                 "buildingAddress",
+#                 "buildingProximity",
+#             ],
+#         ),
+#     ]
+
+# text2vec_openai = [
+#         wvc.config.Configure.NamedVectors.text2vec_openai( 
+#             name="buildingDetails", source_properties=[
+#                 "buildingTitle",
+#                 "buildingAddress",
+#                 "buildingProximity",
+#                 "buildingFacility",
+#             ],
+#             model=OPENAI_TRANSFORMERS_MODEL,
+#         ),
+#         wvc.config.Configure.NamedVectors.text2vec_openai( 
+#             name="buildingAddress", source_properties=[
+#                 "buildingAddress",
+#                 "buildingProximity",
+#             ],
+#             model=OPENAI_TRANSFORMERS_MODEL,
+#         ),
+#     ]
+
 text2vec_transformers = [
         wvc.config.Configure.NamedVectors.text2vec_transformers( 
             name="buildingDetails", source_properties=[
-                "buildingTitle",
-                "buildingAddress",
-                "buildingProximity",
-                "buildingFacility",
-            ],
-        ),
-        wvc.config.Configure.NamedVectors.text2vec_transformers( 
-            name="buildingAddress", source_properties=[
-                "buildingAddress",
-                "buildingProximity",
+                "chunk",
             ],
         ),
     ]
@@ -29,17 +56,7 @@ text2vec_transformers = [
 text2vec_openai = [
         wvc.config.Configure.NamedVectors.text2vec_openai( 
             name="buildingDetails", source_properties=[
-                "buildingTitle",
-                "buildingAddress",
-                "buildingProximity",
-                "buildingFacility",
-            ],
-            model=OPENAI_TRANSFORMERS_MODEL,
-        ),
-        wvc.config.Configure.NamedVectors.text2vec_openai( 
-            name="buildingAddress", source_properties=[
-                "buildingAddress",
-                "buildingProximity",
+                "chunk",
             ],
             model=OPENAI_TRANSFORMERS_MODEL,
         ),
@@ -84,12 +101,6 @@ def create_building_chunks_vectordb_schema(client: WeaviateClient, logger: Logge
                     tokenization=wvc.config.Tokenization.WORD,
                 ),
             ],
-            references=[
-                wvc.config.ReferenceProperty(
-                    name="hasBuilding",
-                    target_collection=BUILDINGS_COLLECTION_NAME
-                )
-            ]
         )
         
         # Add 2 ways reference
