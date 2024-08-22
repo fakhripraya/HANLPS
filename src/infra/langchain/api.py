@@ -12,7 +12,7 @@ from configs.config import (
     GEMINI_API_KEY, USE_MODULE, MODULE_USED
 )
 from src.domain.entities.message.message import Message
-from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME
+from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME, BUILDINGS_COLLECTION_NAME
 from src.domain.prompt_templates import (
     chat_template,
     analyzer_template,
@@ -208,9 +208,42 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             #Example raw Query: {"building_proximity":"blok m"}
             #Example processed Query: "Dekat dengan blok m"
             self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
-            building_chunks_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
+            # building_chunks_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
+            # self._logger.log_info("Execute query")
+            # response = building_chunks_collection.query.hybrid(
+            #     query=query,
+            #     target_vector="buildingDetails",
+            #     filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
+            #     limit=limit,
+            #     offset=offset,
+            #     return_references=[
+            #         QueryReference(
+            #             link_on="hasBuilding"
+            #         ),
+            #     ],
+            # )
+            
+            # self._logger.log_info(f"Object count: {len(response.objects)}")
+            # for obj in response.objects:
+            #     self._logger.log_info(f"Chunk object: {obj.properties}")
+            #     self._logger.log_info(f"Metadata: {obj.metadata}")
+            #     for ref_obj in obj.references["hasBuilding"].objects:
+            #         self._logger.log_info(f"Reference: {ref_obj.properties["buildingTitle"]}")      
+            #         building_instance = Building(
+            #             building_title=ref_obj.properties["buildingTitle"],
+            #             building_address=ref_obj.properties["buildingAddress"],
+            #             building_description=ref_obj.properties["buildingDescription"],
+            #             housing_price=ref_obj.properties["housingPrice"],
+            #             owner_name=ref_obj.properties["ownerName"],
+            #             owner_email=ref_obj.properties["ownerEmail"],
+            #             owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
+            #             owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
+            #             image_url=ref_obj.properties["imageURL"]
+            #         )
+            #         building_list.append(building_instance)
+            building_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
             self._logger.log_info("Execute query")
-            response = building_chunks_collection.query.hybrid(
+            response = building_collection.query.hybrid(
                 query=query,
                 target_vector="buildingDetails",
                 filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
@@ -218,30 +251,31 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 offset=offset,
                 return_references=[
                     QueryReference(
-                        link_on="hasBuilding"
+                        include_vector=True,
+                        link_on="hasChunks"
                     ),
                 ],
             )
             
             self._logger.log_info(f"Object count: {len(response.objects)}")
             for obj in response.objects:
-                self._logger.log_info(f"Chunk object: {obj.properties}")
+                self._logger.log_info(f"Object: {obj.properties["buildingTitle"]}")
                 self._logger.log_info(f"Metadata: {obj.metadata}")
-                for ref_obj in obj.references["hasBuilding"].objects:
-                    self._logger.log_info(f"Reference: {ref_obj.properties["buildingTitle"]}")      
-                    building_instance = Building(
-                        building_title=ref_obj.properties["buildingTitle"],
-                        building_address=ref_obj.properties["buildingAddress"],
-                        building_description=ref_obj.properties["buildingDescription"],
-                        housing_price=ref_obj.properties["housingPrice"],
-                        owner_name=ref_obj.properties["ownerName"],
-                        owner_email=ref_obj.properties["ownerEmail"],
-                        owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
-                        owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
-                        image_url=ref_obj.properties["imageURL"]
-                    )
-                    building_list.append(building_instance)
-                
+                for ref_obj in obj.references["hasChunks"].objects:
+                    self._logger.log_info(f"Reference: {ref_obj.properties}")      
+                building_instance = Building(
+                    building_title=obj.properties["buildingTitle"],
+                    building_address=obj.properties["buildingAddress"],
+                    building_description=obj.properties["buildingDescription"],
+                    housing_price=obj.properties["housingPrice"],
+                    owner_name=obj.properties["ownerName"],
+                    owner_email=obj.properties["ownerEmail"],
+                    owner_whatsapp=obj.properties["ownerWhatsapp"],
+                    owner_phone_number=obj.properties["ownerPhoneNumber"],
+                    image_url=obj.properties["imageURL"]
+                )
+                building_list.append(building_instance)    
+            
             end_time = time.time()
             elapsed_time = end_time - start_time 
             self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\n Object filtered, remaining count: {str(len(building_list))}")

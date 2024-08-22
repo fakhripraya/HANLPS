@@ -68,13 +68,18 @@ def create_building_chunks_vectordb_schema(client: WeaviateClient, logger: Logge
             vectorizer_config=define_transformers(),
             generative_config=define_generative(),
             properties=[
+                # wvc.config.Property(
+                #     name="buildingProximity",
+                #     data_type=wvc.config.DataType.TEXT,
+                #     tokenization=wvc.config.Tokenization.WORD,
+                # ),
+                # wvc.config.Property(
+                #     name="buildingFacility",
+                #     data_type=wvc.config.DataType.TEXT,
+                #     tokenization=wvc.config.Tokenization.WORD,
+                # ),
                 wvc.config.Property(
-                    name="buildingProximity",
-                    data_type=wvc.config.DataType.TEXT,
-                    tokenization=wvc.config.Tokenization.WORD,
-                ),
-                wvc.config.Property(
-                    name="buildingFacility",
+                    name="chunk",
                     data_type=wvc.config.DataType.TEXT,
                     tokenization=wvc.config.Tokenization.WORD,
                 ),
@@ -87,4 +92,12 @@ def create_building_chunks_vectordb_schema(client: WeaviateClient, logger: Logge
             ]
         )
         
+        # Add 2 ways reference
+        building_collection = client.collections.get(BUILDINGS_COLLECTION_NAME)
+        building_collection.config.add_reference(
+            wvc.config.ReferenceProperty(
+                name="hasChunks",
+                target_collection=BUILDING_CHUNKS_COLLECTION_NAME
+            )
+        )
         logger.log_info(f"Successfully create collection: {new_collection}")

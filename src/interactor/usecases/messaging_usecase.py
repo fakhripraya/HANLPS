@@ -6,7 +6,7 @@ from src.interactor.dtos.messaging_dtos \
     import MessagingInputDto, MessagingOutputDto
 from src.interactor.interfaces.presenters.message_presenter \
     import MessagingPresenterInterface
-from src.interactor.interfaces.repositories.messaging_repository \
+from src.interactor.interfaces.repositories.in_memory.messaging_repository \
     import MessagingRepositoryInterface
 from src.interactor.validations.messaging_validator \
     import MessagingInputDtoValidator

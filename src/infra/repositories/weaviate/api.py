@@ -154,22 +154,36 @@ class WeaviateAPI(WeaviateAPIInterface):
                     "imageURL": str(doc["image_urls"]),
                 })
                 
-                building_proximity = list(doc["building_proximity"])
-                building_facility = list(doc["building_facility"])
+                # building_proximity = list(doc["building_proximity"])
+                # building_facility = list(doc["building_facility"])
 
-                longest = len(building_proximity) if len(building_proximity) > len(building_facility) else len(building_facility)
+                # longest = len(building_proximity) if len(building_proximity) > len(building_facility) else len(building_facility)
                 
+                merged_list = list(doc["building_proximity"]) + list(doc["building_facility"])
                 with building_chunks_collection.batch.dynamic() as batch:
-                    for i in range(longest):
-                        proximity_chunk = building_proximity[i] if i < len(building_proximity) else None
-                        facility_chunk = building_facility[i] if i < len(building_facility) else None
+                    for i in range(merged_list):
+                        # proximity_chunk = building_proximity[i] if i < len(building_proximity) else None
+                        # facility_chunk = building_facility[i] if i < len(building_facility) else None
 
+                        # chunks_uuid = batch.add_object(
+                        #     properties={
+                        #         "buildingProximity": proximity_chunk,
+                        #         "buildingFacility": facility_chunk,
+                        #     },
+                        #     references={"hasBuilding": uuid},
+                        # )
+                        # self._logger.log_info(f"[{chunks_uuid}]: Chunk Loaded")
+                        chunk = merged_list[i]
                         chunks_uuid = batch.add_object(
                             properties={
-                                "buildingProximity": proximity_chunk,
-                                "buildingFacility": facility_chunk,
+                                "chunk": chunk,
                             },
                             references={"hasBuilding": uuid},
+                        )
+                        batch.add_reference(
+                            from_property="hasChunks",
+                            from_uuid=uuid,
+                            to=chunks_uuid,
                         )
                         self._logger.log_info(f"[{chunks_uuid}]: Chunk Loaded")
                 

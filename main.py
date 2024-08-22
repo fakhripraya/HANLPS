@@ -1,7 +1,7 @@
 """ GRPC In-Memory Process Handler
 """
 
-from app.grpc.create_grpc_app \
+from src.app.grpc.create_grpc_app \
     import GRPCApp
 from src.infra.logger.logger_default import LoggerDefault
 from dotenv import load_dotenv

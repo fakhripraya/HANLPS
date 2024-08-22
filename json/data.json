@@ -6,7 +6,9 @@
       "building_proximity_string": "Jakarta Barat, jalan raya pos pengumben, perkantoran, mall, sekolah, resto, Andista Animal Care CP Meruya, Dekoruma, hutan kota Srengseng, Taman Pemakaman Umum Joglo, jalan Joglo raya, danau Pembibitan, Botanical garden, lapangan Intercon, Universitas Mercu Buana, Tol Jakarta Tangerang, Tol lingkar luar, Rumah sakit umum Kembangan, kantor dukcapil jakarta barat, Puri Indah mall, kebon jeruk, Universitas Bina Nusantara Anggrek Syahdan Kijang, jalan meruya ilir raya",
       "building_facility_string": "Memiliki fasilitas umum seperti Kos campur, Free lahan parkir motor, Lahan parkir mobil tersedia berbayar, Free Wifi, Security & CCTV 24 Jam, Nuansa cozy, ada teras, rooftop, ruang kumpul santai, Tersedia dapur umum, Free laundry 10kg setiap bulannya. Dan Fasilitas kamar seperti AC, Kamar mandi dalam, Shower, Tempat tidur dengan dipan, Lemari, Meja dan kursi, Sprei dan Gordyn",
       "building_proximity": [
-        "terletak di Srengseng, Kecamatan Kembangan,Jakarta Barat atau Jakbar",
+        "Dekat dengan Srengseng",
+        "Dekat dengan Kecamatan Kembangan",
+        "Dekat dengan Jakarta Barat atau Jakbar",
         "dekat dengan Jalan Raya Pos Pengumben, jalan utama dengan akses transportasi yang mudah",
         "dekat dengan Andista Animal Care CP Meruya, layanan perawatan hewan terdekat",
         "dekat dengan Hutan Kota Srengseng, ruang terbuka hijau untuk rekreasi",
@@ -72,7 +74,7 @@
       "building_proximity_string": "Tol lingkar luar timur, Aula Romauli, jalan BKT banjir kanal timur, jalan sawo kecik, jalan raya damai, Universitas Guna Darma kampus J5, Gedung Sopo Marpingkir HKBP, kantor walikota jakarta timur, mall Grand Cakung, Terminal Pulo Gebang, Buaran plaza, taman pulo indah, PT. Yamaha Indonesia Motor Manufacturing, Lulu Hypermarket, Masjid Raya JGC",
       "building_facility_string": "Ruang serbaguna, Full Furnish, Kitchen Set, Water Heater, AC, Luas unit 36m2, Kos campur",
       "building_proximity": [
-        "terletak di Pulo Gebang, Kecamatan Cakung, Kota Jakarta Timur atau Jaktim",
+        "Dekat dengan Pulo Gebang, Kecamatan Cakung, Kota Jakarta Timur atau Jaktim",
         "dekat dengan Tol Lingkar Luar Timur atau Tol Lintas Timur, akses tol utama di Jakarta",
         "dekat dengan Aula Romauli, ruang pertemuan atau acara",
         "dekat dengan Jalan BKT Banjir Kanal Timur, jalan utama",
@@ -123,7 +125,7 @@
       "building_proximity_string": "Ciliwung, Tepi jalan raya Otista, Otto Iskandardinata, STI Statistik, stasiun Kampung Melayu,  Flyover Kampung Melayu, Tebet, Casablanca, Kuningan, TPU Prumpung Cipinang, RS Premier Jatinegara, Tol Dalam Kota, Kampus Ursulin St. Vincentius, Taman Cornel Simanjuntak, GOR Jakarta Timur",
       "building_facility_string": "Kamar pribadi dengan AC, shower air panas, TV, lemari pakaian, meja dan kursi kerja. Fasilitas Umum: Dapur dengan kompor gas, kulkas, microwave, air minum gratis (aqua), kopi, teh, WiFi fiber optic cepat, CCTV, laundry dengan mesin cuci dan area jemur. Fasilitas Sekitar: Apotik, klinik, bengkel, mini market, tempat ibadah, layanan laundry, restoran.",
       "building_proximity": [
-        "terletak di Kampung Melayu Jatinegara RT5 RW2 Kelurahan Bidara Cina Kecamatan Jatinegara Jakarta Timur atau Jaktim",
+        "Dekat dengan Kampung Melayu Jatinegara RT5 RW2 Kelurahan Bidara Cina Kecamatan Jatinegara Jakarta Timur atau Jaktim",
         "dekat dengan Ciliwung, atau sungai Ciliwung",
         "dekat dengan Tepi Jalan Raya Otista, lokasi di sepanjang jalan raya Otista",
         "dekat dengan Otto Iskandardinata, jalan utama",
@@ -187,7 +189,7 @@
       "building_proximity_string": "Cijantung, Pasar Rebo, Jakarta Timur, RA Fadillah, Stadion Atang Soetrisna, Kali Setu, Gelanggang Olahraga Ciracas, GOR Kalisari, Gedung Persit Kartika Chandra Kirana",
       "building_facility_string": "2 lantai, luas 100 m2, 2 kamar mandi, dapur, listrik 2300 Kwh (token), parkir luas, pinggir jalan raya",
       "building_proximity": [
-        "terletak di Cijantung Pasar Rebo Jakarta Timur atau Jaktim",
+        "Dekat dengan Cijantung Pasar Rebo Jakarta Timur atau Jaktim",
         "dekat dengan RA Fadillah, jalan utama",
         "dekat dengan Stadion Atang Soetrisna, stadion olahraga",
         "dekat dengan Kali Setu, sungai",
@@ -229,7 +231,7 @@
       "building_proximity_string": "Jalan Joglo raya, Jalan Asoka raya, OLX AUTO Joglo, Puri beta, Ciledug, RS. Sari Asih Ciledug, RS Hermina Ciledug, Kantor Desa Karang tengah, Jalan Raden Saleh, Rumah Sakit Umum Bhakti Asih, CBD Ciledung, Gelanggang Olahraga Kecamatan Larangan, Rumah Sakit Karang Tengah Medika",
       "building_facility_string": "ac, non ac, parkiran, wifi, kamar mandi luar, ruang santai,  jemuran, cctv 24 jam, Gudang, parkiran motor, galon, bantal  guling, seprai, lemari",
       "building_proximity": [
-        "Terletak di Joglo, Kecamatan Kembangan, Jakarta Barat atau jakbar",
+        "Dekat dengan Joglo, Kecamatan Kembangan, Jakarta Barat atau jakbar",
         "Dekat dengan Jalan Joglo Raya, jalan utama",
         "Dekat dengan Asoka Raya, jalan utama",
         "Dekat dengan OLX AUTO Joglo, lokasi penjualan mobil",
@@ -285,7 +287,7 @@
       "building_proximity_string": "BIN, Stasiun Pasar Minggu Baru, Stasiun Pasar Minggu Lama, Kalibata Mall, Busway Kalibata, RS Brawijaya Duren Tiga, RSUD Budhi Asih, Pancoran, Kuningan, Bandara Halim Perdana Kusuma, Sudirman",
       "building_facility_string": "Depan Kost Mesjid besar. Kamar memiliki Kamar mandi dalam, dapur dalam kamar dengan kompor, gas, wastafel, lemari, AC, kasur ukuran 90, rak sepatu, tempat sampah, keset, listrik token. Gratis: Mie instan, snacks atau roti Aoka, kopi atau teh, air minum galon dengan dispenser hot dan normal di lorong. Internet Free WiFi. Keamanan CCTV 24 jam dengan sensor gerak. Parkiran Hanya untuk motor. Memiliki area umum seperti Rooftop balkon bersama, ruang jemur, mesin cuci, setrika baju, kulkas bersama. Akses Jalan depan Lebar, bisa dilalui 2 mobil papasan.",
       "building_proximity": [
-        "Terletak di Pejaten Timur, Jakarta, Kota Jakarta Selatan atau jaksel",
+        "Dekat dengan Pejaten Timur, Jakarta, Kota Jakarta Selatan atau jaksel",
         "dekat dengan BIN atau Badan Intelejen Negara, lembaga intelijen di Jakarta",
         "dekat dengan Stasiun Pasar Minggu Baru, stasiun kereta",
         "dekat dengan Stasiun Pasar Minggu Lama, stasiun kereta",
@@ -295,6 +297,7 @@
         "dekat dengan RSUD Budhi Asih, rumah sakit umum daerah",
         "dekat dengan Pancoran, kawasan padat",
         "dekat dengan Kuningan, kawasan perkantoran",
+        "dekat dengan TB Simatupang",
         "dekat dengan Bandara Halim Perdana Kusuma, bandara di Jakarta Timur (Jaktim)",
         "dekat dengan Sudirman, kawasan di Jakarta Pusat (Jakpus)"
       ],
@@ -343,7 +346,7 @@
       "building_proximity_string": "Swiss Bellin Airport Hotel, Rawa Bokor, Tol Kunciran - Batuceper - Cengkareng, Kali Dadap, Bandara Soekarno Hatta, Tegal Alur, Rumah sakit Ciputra, CitraGarden City, Mayora Group Headquarters, daan mogot, terminal kalideres, cengkareng, green sedayu mall, palm bay waterpark",
       "building_facility_string": "Queen Size Bed 160 x 200 cm, Smart TV 32 inc, AC, Mini Fridge, Water Heater, Full body Mirror, Wardrobe, Working Desk, Smart Switch, Internet Wifi Masing2 Room, Laundry Max 15 Kg, Refill Mineral Water, In Room Smart Door lock, Access Card",
       "building_proximity": [
-        "Terletak di Sentra Benda, Rawa bokor, Tangerang Kota",
+        "Dekat dengan Sentra Benda, Rawa bokor, Tangerang Kota",
         "dekat dengan Swiss Bellin Airport Hotel, hotel",
         "dekat dengan Rawa Bokor, kawasan ramai",
         "dekat dengan Tol Kunciran - Batuceper - Cengkareng, jalan tol",
@@ -399,7 +402,7 @@
       "building_title": "Kost Tebet Timur Perempuan",
       "building_address": "Jalan Tebet Timur Dalam 1L No 243, Kecamatan Tebet, Jakarta Selatan, 12820",
       "building_proximity": [
-        "Terletak di Kecamatan Tebet, Jakarta Selatan atau jaksel",
+        "Dekat dengan Kecamatan Tebet, Jakarta Selatan atau jaksel",
         "dekat dengan Stasiun Tebet, stasiun di Jakarta Selatan (Jaksel)",
         "dekat dengan Tebet Eco Park, taman di Jakarta Selatan (Jaksel)",
         "dekat dengan Lapangan PSPT Tebet, lapangan di Jakarta Selatan (Jaksel)",
@@ -445,7 +448,7 @@
       "building_title": "Zamzam Mansion Syariah campur",
       "building_address": "Jalan Agung Raya 2 No 7 RT 05 RW 07 Lenteng Agung Jakarta Selatan",
       "building_proximity": [
-        "Terletak di Lenteng Agung Jakarta Selatan atau jaksel",
+        "Dekat dengan Lenteng Agung Jakarta Selatan atau jaksel",
         "dekat dengan Stasiun KA Lenteng Agung, stasiun kereta api di Jakarta Selatan (Jaksel)",
         "dekat dengan McDonald's Lenteng Agung, restoran cepat saji di Jakarta Selatan (Jaksel)",
         "dekat dengan Universitas Indonesia, universitas di Depok, 5 menit dengan kendaraan",
@@ -487,7 +490,7 @@
       "building_proximity_string": "Pusat Kota Dekat kemana mana, Senayan City, Universitas Pertamina, Univesitas Moestopo, Permata Hijau, Stasius Palmerah 5, Kantor Kompas, ITC Permata Hijau, Senayan Golf, Gelora Bung Karno, Eka Hospital, Plaza Senayan, Senayan City",
       "building_facility_string": "Fasilitas Kamar Reguler Kasur 120x200 Dipan AC Lemari Pakaian Laundry Bag Tirai Jendela Meja Bangku Kerja Kamar Mandi Dalam Shower Closet Duduk Rak Toilet Dapur Pribadi Kompor Gas 1 Isi Peralatan Makan Fasilitas Bersama Laundry Area Mesin Cuci Free Wifi Free Parkir Motor Dispenser Chiller Freezer Akses 24 Jam Free Laundry Senin Jumat 2 3pcs Hari",
       "building_proximity": [
-        "Terletak di Grogol Utara Kecamatan Kebayoran Lama Jakarta Selatan atau jaksel",
+        "Dekat dengan Grogol Utara Kecamatan Kebayoran Lama Jakarta Selatan atau jaksel",
         "dekat dengan Senayan City, pusat perbelanjaan di Jakarta Selatan (Jaksel)",
         "dekat dengan Universitas Pertamina, universitas di Jakarta Selatan (Jaksel)",
         "dekat dengan Universitas Moestopo, universitas di Jakarta Selatan (Jaksel)",
@@ -544,7 +547,7 @@
       "building_title": "RResidence Juraganan 1 Rt 08 campur",
       "building_address": "Jalan Juraganan 1 Rt 08 012 No 04 Grogol Utara Kecamatan Kebayoran Lama Jakarta Selatan 12210",
       "building_proximity": [
-        "Terletak di pusat kota, dekat dengan berbagai fasilitas",
+        "Dekat dengan pusat kota, dekat dengan berbagai fasilitas",
         "Dekat dengan Senayan City atau SC, pusat perbelanjaan",
         "Dekat dengan Universitas Pertamina, institusi pendidikan tinggi",
         "Dekat dengan Universitas Prof. Dr. Moestopo atau UPDM, universitas di Jakarta Selatan atau jaksel",
@@ -604,7 +607,7 @@
       "building_title": "FLAMINGO RESIDENCE campur",
       "building_address": "Jalan Setia Budi Barat Nomor 5, RT.4 RW.3, Kuningan, Setia Budi, Kecamatan Setiabudi, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12910",
       "building_proximity": [
-        "Terletak di Setiabudi, kawasan di Jakarta Selatan (Jaksel)",
+        "Dekat dengan Setiabudi, kawasan di Jakarta Selatan (Jaksel)",
         "Dekat dengan Kuningan, pusat bisnis di Jakarta Selatan (Jaksel)",
         "Dekat dengan Sudirman, kawasan perkantoran di Jakarta Pusat",
         "Dekat dengan Indofood Sudirman, kantor pusat Indofood di Sudirman, Jakarta Pusat (Jakpus)",
@@ -682,6 +685,9 @@
       "building_title": "KOST MUMER (Murah Meriah) Perempuan",
       "building_address": "Jalan Mangga Besar 9 gang 1 no 9 RT 11 RW 1 Kelurahan Tangki Jakarta Barat",
       "building_proximity": [
+        "Dekat dengan Jalan Mangga Besar",
+        "Dekat dengan Kelurahan Tangki",
+        "Dekat dengan Jakarta Barat atau Jakbar",
         "Dekat dengan Lokasari",
         "Dekat dengan Jalan Mangga Besar, jalan utama",
         "Dekat dengan Jalan Gajah Mada, jalan utama",
@@ -744,7 +750,7 @@
       "building_title": "Pana Kost Cab Pluit campur",
       "building_address": "Jalan Pluit Sakti VIII No 1 RT 8 RW 7 Pluit Kecamatan Penjaringan Kota jakarta Utara",
       "building_proximity": [
-        "Terletak di Pluit, kawasan di Jakarta Utara (Jakut)",
+        "Dekat dengan Pluit, kawasan di Jakarta Utara (Jakut)",
         "Dekat dengan Rumah Sakit Pantai Indah Kapuk, rumah sakit di Pluit",
         "Dekat dengan Waduk Pluit, danau buatan di Pluit",
         "Dekat dengan Rumah Sakit Pluit, fasilitas medis di Pluit",
@@ -814,7 +820,7 @@
       "building_title": "Kost Amira 23 Exclusive Bintaro Sektor 4 campur",
       "building_address": "Jalan Cucur Barat Blok B Pondok Karya Kecamatan Pondok aren, Tangerang Selatan, Banten, 15225",
       "building_proximity": [
-        "Terletak di Bintaro Sektor 4, Tangerang Selatan",
+        "Dekat dengan Bintaro Sektor 4, Tangerang Selatan",
         "Dekat dengan Mall Bintaro Plaza",
         "Dekat dengan Mall Bintaro Exchange",
         "Dekat dengan Mall Aeon",
@@ -859,6 +865,9 @@
       "building_title": "Kosan cempaka putih campur",
       "building_address": "Jalan Cempaka Putih Barat 4 No 10 Cempaka Putih Jakarta Pusat",
       "building_proximity": [
+        "Dekat dengan Jalan Cempaka Putih Barat",
+        "Dekat dengan Jalan Cempaka Putih",
+        "Dekat dengan Jakarta Pusat atau Jakpus",
         "Dekat dengan Universitas Yarsi",
         "Dekat dengan PT Taspen",
         "Dekat dengan RS Islam",
@@ -904,7 +913,7 @@
       "building_title": "kost campur",
       "building_address": "Jalan Taman Palem Mutiara, RT.7/RW.14, Cengkareng Timur, Kecamatan Cengkareng, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11730",
       "building_proximity": [
-        "Terletak di Taman Palem, Cengkareng Timur, Jakarta Barat atau Jakbar",
+        "Dekat dengan Taman Palem, Cengkareng Timur, Jakarta Barat atau Jakbar",
         "Dekat dengan Rumah Sakit Cinta Kasih Tzu Chi",
         "Dekat dengan Damai Indah Golf PIK Course",
         "Dekat dengan PIK Avenue",
@@ -962,7 +971,7 @@
       "building_title": "Kost Olive Bunga Rampai XI",
       "building_address": "Jalan Bunga Rampai 11 Gang 2 No 195 RT 14 RW 16 Kelurahan Malaka Jaya Kecamatan Duren Sawit Jakarta Timur",
       "building_proximity": [
-        "Terletak di Bunga Rampai, Kelurahan Malaka Jaya, Kecamatan Duren Sawit, Jakarta Timur atau Jaktim",
+        "Dekat dengan Bunga Rampai, Kelurahan Malaka Jaya, Kecamatan Duren Sawit, Jakarta Timur atau Jaktim",
         "Dekat dengan RS Islam Pondok Kopi",
         "Dekat dengan SD, SMP, SMA Negeri dan Swasta",
         "Dekat dengan Universitas Darma Persada",
@@ -1012,7 +1021,7 @@
       "building_title": "Rumah Prestasi kos Perempuan",
       "building_address": "Jalan Pemuda 1 No 16A Rawamangun Jakarta Timur",
       "building_proximity": [
-        "Terletak di Jalan Pemuda, Rawamangun, Jakarta Timur atau Jaktim",
+        "Dekat dengan Jalan Pemuda, Rawamangun, Jakarta Timur atau Jaktim",
         "Dekat dengan Universitas Ibnu Chaldun",
         "Dekat dengan Universitas Negeri Jakarta",
         "Dekat dengan Universitas Borobudur",
@@ -1132,7 +1141,7 @@
       "building_title": "KYANOS LIVING campur",
       "building_address": "Jalan Pada Mulya VI no 174a, Angke, Kecamatan Tambora, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11330",
       "building_proximity": [
-        "Terletak di Jalan Pada Mulya, Angke, Kecamatan Tambora, Jakarta Barat atau Jakbar",
+        "Dekat dengan Jalan Pada Mulya, Angke, Kecamatan Tambora, Jakarta Barat atau Jakbar",
         "Dekat dengan akses ke stasiun seperti Stasiun Angke dan Stasiun Duri",
         "Dekat dengan berbagai kuliner dan coffee shop",
         "100 meter menuju Halte Busway",
@@ -1199,7 +1208,7 @@
       "building_title": "MICASA Suites",
       "building_address": "Jalan Puskesmas No 35 22 RT 11 RW 7 Duri Kosambi Kecamatan Cengkareng Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11750",
       "building_proximity": [
-        "Terletak di Jalan Puskesmas, Duri Kosambi, Cengkareng, Jakarta Barat atau Jakbar",
+        "Dekat dengan Jalan Puskesmas, Duri Kosambi, Cengkareng, Jakarta Barat atau Jakbar",
         "Dekat dengan Stasiun Rawa Buaya",
         "Dekat dengan Tol Lingkar Luar",
         "Dekat dengan Orang Tua Group",
@@ -1245,7 +1254,7 @@
       "building_title": "THE COZY PRAMUKA",
       "building_address": "Jalan Pramuka Sari II No.8, RT.8/RW.8, Rawasari, Kecamatan Cempaka Putih, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10570",
       "building_proximity": [
-        "Terletak di Jalan Pramuka Sari, Rawasari, Kecamatan Cempaka Putih, Jakarta Pusat atau Jakpus",
+        "Dekat dengan Jalan Pramuka Sari, Rawasari, Kecamatan Cempaka Putih, Jakarta Pusat atau Jakpus",
         "Dekat dengan Universitas Negeri Jakarta atau UNJ",
         "Dekat dengan Tol Cililitan",
         "Dekat dengan UT Jakarta",
@@ -1298,7 +1307,7 @@
       "building_title": "Ruko Pertanian Utara campur",
       "building_address": "Jalan Pertanian Utara No.8, RW.1, Klender, Kecamatan Duren Sawit, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13470",
       "building_proximity": [
-        "Terletak di Pertanian Utara No.8, RW.1, Klender, Kecamatan Duren Sawit, Kota Jakarta Timur atau Jaktim",
+        "Dekat dengan Pertanian Utara No.8, RW.1, Klender, Kecamatan Duren Sawit, Kota Jakarta Timur atau Jaktim",
         "Dekat dengan Stasiun Klender",
         "Dekat dengan Ciplaz",
         "Dekat dengan Pulo Gadung",
@@ -1338,7 +1347,7 @@
       "building_title": "Damai Homestead",
       "building_address": "Jalan Damai No 21 RT 006 002 Sukabumi Selatan Permata Hijau Jakarta Barat",
       "building_proximity": [
-        "Terletak di perbatasan antara Jakarta Barat dengan Jakarta Selatan di Jalan Damai, Permata Hijau, Jakarta Barat atau Jakbar",
+        "Dekat dengan perbatasan antara Jakarta Barat dengan Jakarta Selatan di Jalan Damai, Permata Hijau, Jakarta Barat atau Jakbar",
         "Dekat dengan kawasan Permata Hijau",
         "5 menit menuju Stadion GBK dan area sekitarnya",
         "10 menit menuju Gandaria City atau Gancy",
@@ -1386,7 +1395,7 @@
       "building_title": "Apartemen Mediterania Marina Ancol",
       "building_address": "Jalan Karang Bolong Raya RT 8 RW 11 Ancol Kecamatan Pademangan Kota jakarta Utara Daerah Khusus Ibukota Jakarta 14430",
       "building_proximity": [
-        "Terletak di Jalan Karang Bolong Raya RT 8 RW 11 Ancol Kecamatan Pademangan Kota Jakarta Utara atau Jakut",
+        "Dekat dengan Jalan Karang Bolong Raya RT 8 RW 11 Ancol Kecamatan Pademangan Kota Jakarta Utara atau Jakut",
         "Dekat dengan WTC Mangga Dua",
         "Dekat dengan Mangga Besar",
         "Dekat dengan Mangga Dua Square",
@@ -1437,7 +1446,7 @@
       "building_title": "Kost Kebon Kacang 3 No 42d",
       "building_address": "Jalan Kebon Kacang 3 No 42d dan 80i Tanah Abang Jakarta Pusat",
       "building_proximity": [
-        "Terletak di Kebon Kacang 3 No 42d dan 80i Tanah Abang Jakarta Pusat atau Jakpus",
+        "Dekat dengan Kebon Kacang 3 No 42d dan 80i Tanah Abang Jakarta Pusat atau Jakpus",
         "Dekat dengan jalan KH Mas Mansyur atau Kiai Haji Mansyur",
         "Dekat dengan Thamrin City",
         "Dekat dengan jalan M Mashabi",
@@ -1487,7 +1496,7 @@
       "building_title": "Kosan Khusus Pria dengan 16 Kamar",
       "building_address": "Jalan Petamburan VII No 16 Rt 07 Rw 07, Tanah Abang, Jakarta Pusat, 10260",
       "building_proximity": [
-        "Terletak di Jalan Petamburan, Tanah Abang, Jakarta Pusat atau Jakpus",
+        "Dekat dengan Jalan Petamburan, Tanah Abang, Jakarta Pusat atau Jakpus",
         "Dekat dengan Petamburan",
         "Dekat dengan halte Busway Slipi",
         "Dekat dengan Tanah Abang",
@@ -1529,7 +1538,7 @@
       "building_title": "Kost De Luck Perempuan",
       "building_address": "Jalan Wijaya Kusuma 2 Blok TT 8A Kelurahan Wijaya Kusuma Kecamatan Grogol Petamburan Jakarta Barat",
       "building_proximity": [
-        "Terletak di Jalan Wijaya Kusuma 2 Blok TT 8A Kelurahan Wijaya Kusuma Kecamatan Grogol Petamburan Jakarta Barat atau Jakbar",
+        "Dekat dengan Jalan Wijaya Kusuma 2 Blok TT 8A Kelurahan Wijaya Kusuma Kecamatan Grogol Petamburan Jakarta Barat atau Jakbar",
         "Dekat dengan Jalan Pesing Polgar",
         "Dekat dengan Jalan Pangeran Tubagus Angke",
         "Dekat dengan Mandiri University Daan Mogot",
@@ -1584,7 +1593,7 @@
       "building_title": "GOHOME KOS HARMONI Campur",
       "building_address": "Jalan Harmoni Plaza Blok E 43 44 Kota Jakarta Pusat Daerah Khusus Ibukota Jakarta 10160",
       "building_proximity": [
-        "Terletak di Jalan Harmoni Plaza Blok E 43 44 Kota Jakarta Pusat atau Jakpus",
+        "Dekat dengan Jalan Harmoni Plaza Blok E 43 44 Kota Jakarta Pusat atau Jakpus",
         "Dekat dengan Harmoni",
         "Dekat dengan Monas",
         "Dekat dengan Vertu Harmoni Jakarta",
@@ -1647,7 +1656,7 @@
       "building_title": "Okaeri Kost campur",
       "building_address": "Jalan Mandala raya no 10 Tomang Jakarta Barat",
       "building_proximity": [
-        "Terletak di Jalan Mandala raya no 10 Tomang Jakarta Barat atau Jakbar",
+        "Dekat dengan Jalan Mandala raya no 10 Tomang Jakarta Barat atau Jakbar",
         "Dekat dengan Purwacaraka",
         "Dekat dengan Pagar Hijau Tomang, Jakarta Barat",
         "Dekat dengan Tol Tomang Tangerang",
@@ -1708,7 +1717,7 @@
       "building_title": "Kos Kalibata Tengah Perempuan",
       "building_address": "Jalan Kalibata Tengah XVI NO 16B RT RW 002 003 Jakarta Selatan Daerah Khusus Ibukota Jakarta 12740",
       "building_proximity": [
-        "Terletak di Jalan Kalibata Tengah XVI Jakarta Selatan atau Jaksel",
+        "Dekat dengan Jalan Kalibata Tengah XVI Jakarta Selatan atau Jaksel",
         "Dekat dengan Warunk WOW KWB",
         "Dekat dengan Gedung Bank Raya Indonesia",
         "Dekat dengan Jalan Haji Samali",
@@ -1749,7 +1758,7 @@
       "building_title": "The Suite At Menteng Square Tower C Campur",
       "building_address": "Jalan Matraman Raya No 30E RT 5 RW 6 Kenari Kecamatan Senen Kota Jakarta Pusat Daerah Khusus Ibukota Jakarta 10430",
       "building_proximity": [
-        "Terletak di Jalan Matraman Raya No 30E RT 5 RW 6 Kenari Kecamatan Senen Kota Jakarta Pusat atau Jakpus",
+        "Dekat dengan Jalan Matraman Raya No 30E RT 5 RW 6 Kenari Kecamatan Senen Kota Jakarta Pusat atau Jakpus",
         "Dekat dengan St. Carolus Hospital",
         "Dekat dengan Jalan Salemba Raya",
         "Dekat dengan Kampus Pascasarjana dan Doktoral Universitas Pertahanan",
@@ -1805,7 +1814,7 @@
       "building_title": "KOST ROA - Kost Bangunan Baru",
       "building_address": "Jalan Pertanian Selatan No 3 RT 13 RW 2 Klender Duren Sawit, Jakarta Timur, DKI Jakarta, 13470",
       "building_proximity": [
-        "Terletak di Jalan Pertanian Selatan No 3 RT 13 RW 2 Klender Duren Sawit, Jakarta Timur atau Jaktim",
+        "Dekat dengan Jalan Pertanian Selatan No 3 RT 13 RW 2 Klender Duren Sawit, Jakarta Timur atau Jaktim",
         "Dekat dengan Stasiun Klender",
         "Dekat dengan Halte Busway Klender",
         "Dekat dengan Jalan Cipinang Muara IV",
@@ -1857,7 +1866,7 @@
       "building_title": "RAKost Kemayoran",
       "building_address": "Jalan Mangga No 20 RT RW 002 005 Gunung Sahari Selatan Kemayoran Jakarta Pusat",
       "building_proximity": [
-        "Terletak di Jalan Mangga No 20 RT RW 002 005 Gunung Sahari Selatan Kemayoran Jakarta Pusat atau Jakpus",
+        "Dekat dengan Jalan Mangga No 20 RT RW 002 005 Gunung Sahari Selatan Kemayoran Jakarta Pusat atau Jakpus",
         "Dekat dengan Citra Tower Kemayoran",
         "Dekat dengan Mega Glodok Kemayoran",
         "Dekat dengan Hermina Tower",
@@ -1906,7 +1915,7 @@
       "building_title": "Kos Burgundy 2",
       "building_address": "Jalan Aster 1 RT 15 RW 01 Kelurahan Jati Pulo Kecamatan Palmerah Jakarta Barat",
       "building_proximity": [
-        "Terletak di Jalan Aster 1 RT 15 RW 01 Kelurahan Jati Pulo Kecamatan Palmerah Jakarta Barat atau Jakbar",
+        "Dekat dengan Jalan Aster 1 RT 15 RW 01 Kelurahan Jati Pulo Kecamatan Palmerah Jakarta Barat atau Jakbar",
         "Dekat dengan Taman Anggrek",
         "Dekat dengan Central Park",
         "Dekat dengan perkantoran elit di Jakarta",
@@ -1969,7 +1978,7 @@
       "building_title": "Kost Hana Perempuan",
       "building_address": "Jalan Raya Lenteng Agung Barat Gang Haji Tohir Rt 002 Rw 005 No 43/45 Lenteng Agung Jagakarsa Jakarta Selatan",
       "building_proximity": [
-        "Terletak di Jalan Raya Lenteng Agung Barat Gang Haji Tohir Lenteng Agung Jagakarsa Jakarta Selatan atau Jaksel",
+        "Dekat dengan Jalan Raya Lenteng Agung Barat Gang Haji Tohir Lenteng Agung Jagakarsa Jakarta Selatan atau Jaksel",
         "Dekat dengan Stasiun Lenteng Agung dan Pasar Lenteng Agung",
         "Dekat dengan Mixue dan berbagai warung makan",
         "Dekat dengan Stasiun Lenteng Agung (2 menit berjalan kaki)",
@@ -2027,7 +2036,7 @@
       "building_title": "Fortuna Residence",
       "building_address": "Jalan Pintu Besar Selatan no 69 Pinangsia Tamansari Jakarta Barat DKI Jakarta 11110",
       "building_proximity": [
-        "Terletak di Jalan Pintu Besar Selatan Pinangsia Tamansari Jakarta Barat atau Jakbar",
+        "Dekat dengan Jalan Pintu Besar Selatan Pinangsia Tamansari Jakarta Barat atau Jakbar",
         "Dekat dengan jalan raya protokol",
         "Dekat dengan halte busway",
         "Dekat dengan stasiun kereta api Jakarta Kota",
@@ -2075,7 +2084,7 @@
       "building_title": "Kos anggrek neli murni",
       "building_address": "Jalan Anggrek Neli Murni Blok C no 11 RT10 RW 01 Kemanggisan Kecamatan Palmerah Jakarta Barat 11480",
       "building_proximity": [
-        "Terletak di Jalan Anggrek Neli Murni Kemanggisan Kecamatan Palmerah Jakarta Barat atau Jakbar",
+        "Dekat dengan Jalan Anggrek Neli Murni Kemanggisan Kecamatan Palmerah Jakarta Barat atau Jakbar",
         "Dekat dengan Plaza Slipi Jaya",
         "Dekat dengan Menara Peninsula Hotel",
         "Dekat dengan Tol S Parman",
@@ -2138,7 +2147,7 @@
       "building_title": "Kos Mangga Besar",
       "building_address": "Jalan Raya Mangga Besar No 62B RT 6 RW 1 Taman Sari Kecamatan Taman Sari Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11150",
       "building_proximity": [
-        "Terletak di Jalan Raya Mangga Besar Taman Sari Kecamatan Taman Sari Kota Jakarta Barat atau Jakbar",
+        "Dekat dengan Jalan Raya Mangga Besar Taman Sari Kecamatan Taman Sari Kota Jakarta Barat atau Jakbar",
         "Dekat dengan Lokasari",
         "Dekat dengan Jalan Mangga Besar",
         "Dekat dengan Jalan Gajah Mada",
@@ -2206,7 +2215,7 @@
       "building_title": "Kontrakan Manggarai",
       "building_address": "Jalan Manggarai Utara 1 no 1 Jakarta Selatan",
       "building_proximity": [
-        "Terletak di Jalan Manggarai Utara Jakarta Selatan atau Jaksel",
+        "Dekat dengan Jalan Manggarai Utara Jakarta Selatan atau Jaksel",
         "Dekat dengan Lokasi strategis",
         "Dekat dengan Stasiun Manggarai",
         "Dekat dengan SMK Karya Guna",
@@ -2240,7 +2249,7 @@
       "building_title": "Alisa Kost",
       "building_address": "Jalan Makmur no 38B RT 003 RW 002 Kelurahan Susukan Kecamatan Ciracas Jakarta Timur",
       "building_proximity": [
-        "Terletak di Jalan Makmur Kelurahan Susukan Kecamatan Ciracas Jakarta Timur atau Jaktim",
+        "Dekat dengan Jalan Makmur Kelurahan Susukan Kecamatan Ciracas Jakarta Timur atau Jaktim",
         "Dekat dengan Mall Graha Cijantung (460m)",
         "Dekat dengan Pasar Rebo Cijantung (260m)",
         "Dekat dengan Gerbang Tol Gedong 2 (500m)",
@@ -2287,7 +2296,7 @@
       "building_title": "Kost InHome Area Tawakal",
       "building_address": "Jalan Tawakal 6A no 2A RT 008 RW 016 Kelurahan Tomang kecamatan Grogol petamburan Jakarta Barat",
       "building_proximity": [
-        "Terletak di Jalan Tawakal Kelurahan Tomang kecamatan Grogol petamburan Jakarta Barat atau Jakbar",
+        "Dekat dengan Jalan Tawakal Kelurahan Tomang kecamatan Grogol petamburan Jakarta Barat atau Jakbar",
         "Dekat dengan Plaza Slipi Jaya",
         "Dekat dengan Menara Peninsula Hotel",
         "Dekat dengan Tol S Parman",
@@ -2346,7 +2355,7 @@
       "building_title": "Kost Yuugen Cowo",
       "building_address": "Jalan Komplek IKPN Blok F No.14, RT.4/RW.4, Bintaro, Kecamatan Pesanggrahan, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12330",
       "building_proximity": [
-        "Terletak di Jalan Komplek IKPN Blok F, Bintaro, Kecamatan Pesanggrahan, Kota Jakarta Selatan atau Jaksel",
+        "Dekat dengan Jalan Komplek IKPN Blok F, Bintaro, Kecamatan Pesanggrahan, Kota Jakarta Selatan atau Jaksel",
         "Dekat dengan Pusat Perbelanjaan: Pasar Kebayoran",
         "Dekat dengan Bintaro Plaza",
         "Dekat dengan Pondok Indah Mall",
@@ -2399,7 +2408,7 @@
       "building_title": "Alcala Residence campur",
       "building_address": "Jalan Rambutan Barat 4 No 36 Tanjung Duren Utara Kecamatan Grogol petamburan Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11470",
       "building_proximity": [
-        "Terletak di Jalan Rambutan Barat 4 Tanjung Duren Utara Kecamatan Grogol petamburan Kota Jakarta Barat atau Jakbar",
+        "Dekat dengan Jalan Rambutan Barat 4 Tanjung Duren Utara Kecamatan Grogol petamburan Kota Jakarta Barat atau Jakbar",
         "Dekat dengan Stasiun Grogol",
         "Dekat dengan Halte Busway Grogol",
         "Dekat dengan Mall Central Park",
@@ -2460,7 +2469,7 @@
       "building_title": "Sambina Pluit campur",
       "building_address": "Jalan Carina Sayang II No.3, RT.16/RW.8, Penjaringan, Kecamatan Penjaringan, Jakarta Utara, Daerah Khusus Ibukota Jakarta 14440",
       "building_proximity": [
-        "Terletak di Jalan Carina Sayang II, Penjaringan, Kecamatan Penjaringan, Jakarta Utara atau Jakut",
+        "Dekat dengan Jalan Carina Sayang II, Penjaringan, Kecamatan Penjaringan, Jakarta Utara atau Jakut",
         "Dekat dengan Pluit",
         "Dekat dengan Rumah Sakit Pantai Indah Kapuk",
         "Dekat dengan Waduk Pluit",
@@ -2532,9 +2541,10 @@
       "building_title": "Kos RUMAHNADINE - Khusus Perempuan",
       "building_address": "Jalan Pepaya No 5 RT 3 RW 6 Kelurahan Pejaten Barat Kecamatan Pasar Minggu Kota Kabupaten Jakarta Selatan Kode Pos 12510",
       "building_proximity": [
-        "Terletak di Jalan Pepaya Kelurahan Pejaten Barat Kecamatan Pasar Minggu Kota Kabupaten Jakarta Selatan atau Jaksel",
+        "Dekat dengan Jalan Pepaya Kelurahan Pejaten Barat Kecamatan Pasar Minggu Kota Kabupaten Jakarta Selatan atau Jaksel",
         "Dekat dengan Universitas Nasional",
         "Dekat dengan Kalibata City",
+        "dekat dengan TB Simatupang",
         "Dekat dengan Jalan Raya Ragunan",
         "Dekat dengan Ramayana Pasar Minggu",
         "Dekat dengan Jalan Siaga Raya",
@@ -2567,7 +2577,7 @@
       "building_title": "Apartemen Bassura Tower C",
       "building_address": "Jalan Jendral Basuki Rachmat No 1A Cipinang Besar Selatan Kecamatan Jatinegara Kota Jakarta Timur Daerah Khusus Ibukota Jakarta 13410",
       "building_proximity": [
-        "Terletak di Jalan Jendral Basuki Rachmat Cipinang Besar Selatan Kecamatan Jatinegara Kota Jakarta Timur atau Jaktim",
+        "Dekat dengan Jalan Jendral Basuki Rachmat Cipinang Besar Selatan Kecamatan Jatinegara Kota Jakarta Timur atau Jaktim",
         "Dekat dengan Bassura City Mall",
         "Dekat dengan Prumpung Cipinang Cemetery",
         "Dekat dengan Gembrong Market",
@@ -2615,7 +2625,7 @@
       "building_title": "Studio 7 Puri",
       "building_address": "Komplek Perumahan Puri Kencana Blok K1 Kembangan Selatan, Kecamatan Kembangan, Jakarta Barat, DKI Jakarta, 11610",
       "building_proximity": [
-        "Terletak di Komplek Perumahan Puri Kencana Blok K1 Kembangan Selatan, Kecamatan Kembangan, Jakarta Barat atau Jakbar",
+        "Dekat dengan Komplek Perumahan Puri Kencana Blok K1 Kembangan Selatan, Kecamatan Kembangan, Jakarta Barat atau Jakbar",
         "Dekat dengan Hunian Puri Kencana",
         "Dekat dengan Tol Dalam Kota dan Luar Kota",
         "Dekat dengan Bandara Internasional Soekarno Hatta",
@@ -2665,7 +2675,7 @@
       "building_title": "Kost Jabu hasian",
       "building_address": "Jalan Asem II No.33, RT.1/RW.1, Cipete Selatan, Kecamatan Cilandak, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12410",
       "building_proximity": [
-        "Terletak di Jalan Asem II, Cipete Selatan, Kecamatan Cilandak, Kota Jakarta Selatan atau Jaksel",
+        "Dekat dengan Jalan Asem II, Cipete Selatan, Kecamatan Cilandak, Kota Jakarta Selatan atau Jaksel",
         "Dekat dengan Stasiun MRT Fatmawati",
         "Dekat dengan TB Simatupang",
         "Dekat dengan Blok M",
@@ -2710,7 +2720,7 @@
       "building_title": "Kos 111 cewek ",
       "building_address": "Jalan Haji Damir No.111, Joglo, Kecamatan Kembangan, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 10640",
       "building_proximity": [
-        "Terletak di Jalan Haji Damir, Joglo, Kecamatan Kembangan, Kota Jakarta Barat atau Jakbar",
+        "Dekat dengan Jalan Haji Damir, Joglo, Kecamatan Kembangan, Kota Jakarta Barat atau Jakbar",
         "Dekat dengan Jalan Joglo Raya",
         "Dekat dengan Jalan Asoka Raya",
         "Dekat dengan Kantor Desa Karang Tengah Babakan Madang",
