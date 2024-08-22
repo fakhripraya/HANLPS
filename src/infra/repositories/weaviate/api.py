@@ -167,10 +167,6 @@ class WeaviateAPI(WeaviateAPIInterface):
                     self._logger.log_info(f"{idx + 1}/{len(docs)} Loaded")
             failed_objs = buildings_collection.batch.failed_objects
             self._logger.log_info(f"Document failed batch objects load: {failed_objs}")
-            # building_proximity = list(doc["building_proximity"])
-            # building_facility = list(doc["building_facility"])
-
-            # longest = len(building_proximity) if len(building_proximity) > len(building_facility) else len(building_facility)
             
             temp_building_to_be_refered = []
             self._logger.log_info("Loading chunks")
@@ -179,17 +175,6 @@ class WeaviateAPI(WeaviateAPIInterface):
                     temp_chunk_uuids = []
                     self._logger.log_info(f"{[doc["id"]]}: Loading chunk")
                     for i, obj in enumerate(doc["chunks"]):
-                        # proximity_chunk = building_proximity[i] if i < len(building_proximity) else None
-                        # facility_chunk = building_facility[i] if i < len(building_facility) else None
-
-                        # chunks_uuid = batch.add_object(
-                        #     properties={
-                        #         "buildingProximity": proximity_chunk,
-                        #         "buildingFacility": facility_chunk,
-                        #     },
-                        #     references={"hasBuilding": uuid},
-                        # )
-                        # self._logger.log_info(f"[{chunks_uuid}]: Chunk Loaded")
                         self._logger.log_info(f"[Object - {i + 1}]: {obj}")
                         chunk_uuid = chunk_batch.add_object(
                             properties={
@@ -205,21 +190,24 @@ class WeaviateAPI(WeaviateAPIInterface):
                         "id": doc["id"],
                         "chunk_uuids": temp_chunk_uuids,
                     })
-                    
-            self._logger.log_info("Adding references")
-            with buildings_collection.batch.dynamic() as reference_batch:
+            failed_chunk_objs = building_chunks_collection.batch.failed_objects
+            self._logger.log_info(f"Chunks failed batch objects load: {failed_chunk_objs}")
+                   
+            self._logger.log_info("Adding chunks as document references")
+            with building_chunks_collection.batch.dynamic() as reference_batch:
                 for idx, doc in enumerate(temp_building_to_be_refered):
                     for i, obj in enumerate(doc["chunk_uuids"]):
-                        self._logger.log_info(f"[{doc["id"]}]: Add reference to chunk {obj["chunk_uuid"]}")
+                        self._logger.log_info(f"[{doc["id"]}]: Adding chunk {obj["chunk_uuid"]} as reference")
                         reference_batch.add_reference(
-                            from_property="hasChunks",
-                            from_uuid=doc["id"],
-                            to=obj["chunk_uuid"],
+                            from_property="hasBuilding",
+                            from_uuid=obj["chunk_uuid"],
+                            to=doc["id"],
                         )
-                        self._logger.log_info(f"[{obj["chunk_uuid"]}]: Reference added")
-                    self._logger.log_info(f"{idx + 1}/{len(docs)} Added references")
+                        self._logger.log_info(f"[{obj["chunk_uuid"]}]: Added as reference")
+                    self._logger.log_info(f"{idx + 1}/{len(docs)} documents done adding references")
             failed_references = building_chunks_collection.batch.failed_references
-            self._logger.log_info(f"References failed batch objects link: {failed_references}")
+            self._logger.log_info(f"Building to Chunk references failed batch objects link: {failed_references}")
+            
             self._logger.log_info("Successfully load documents")
         except Exception as e: 
             self._logger.log_exception(f"Failed to load documents, ERROR: {e}")

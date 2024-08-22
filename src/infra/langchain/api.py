@@ -191,8 +191,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         
         return self.feedback_prompt(prompt, session_id)
 
-    def analyze_prompt(self, prompt, session_id, filter_array, query = "") -> Message:
-        """ 
+    def analyze_prompt(self, prompt, session_id, filter_array, query="") -> Message:
+        """
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
         :param prompt: chat message to be analyzed.
@@ -203,94 +203,74 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         offset = 0
         start_time = time.time()
         building_list: list[Building] = []
+        seen_uuids = set()
         try:
-            #TODO: Query need to be more specific and semantic, and can't be pure user prompt cause the transformers still a little bit stupid or maybe im stupid?
-            #Example raw Query: {"building_proximity":"blok m"}
-            #Example processed Query: "Dekat dengan blok m"
             self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
-            # building_chunks_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
-            # self._logger.log_info("Execute query")
-            # response = building_chunks_collection.query.hybrid(
-            #     query=query,
-            #     target_vector="buildingDetails",
-            #     filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
-            #     limit=limit,
-            #     offset=offset,
-            #     return_references=[
-            #         QueryReference(
-            #             link_on="hasBuilding"
-            #         ),
-            #     ],
-            # )
-            
-            # self._logger.log_info(f"Object count: {len(response.objects)}")
-            # for obj in response.objects:
-            #     self._logger.log_info(f"Chunk object: {obj.properties}")
-            #     self._logger.log_info(f"Metadata: {obj.metadata}")
-            #     for ref_obj in obj.references["hasBuilding"].objects:
-            #         self._logger.log_info(f"Reference: {ref_obj.properties["buildingTitle"]}")      
-            #         building_instance = Building(
-            #             building_title=ref_obj.properties["buildingTitle"],
-            #             building_address=ref_obj.properties["buildingAddress"],
-            #             building_description=ref_obj.properties["buildingDescription"],
-            #             housing_price=ref_obj.properties["housingPrice"],
-            #             owner_name=ref_obj.properties["ownerName"],
-            #             owner_email=ref_obj.properties["ownerEmail"],
-            #             owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
-            #             owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
-            #             image_url=ref_obj.properties["imageURL"]
-            #         )
-            #         building_list.append(building_instance)
-            building_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-            self._logger.log_info("Execute query")
-            response = building_collection.query.hybrid(
-                query=query,
-                target_vector="buildingDetails",
-                filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
-                limit=limit,
-                offset=offset,
-                return_references=[
-                    QueryReference(
-                        include_vector=True,
-                        link_on="hasChunks"
-                    ),
-                ],
-            )
-            
-            self._logger.log_info(f"Object count: {len(response.objects)}")
-            for obj in response.objects:
-                self._logger.log_info(f"Object: {obj.properties["buildingTitle"]}")
-                self._logger.log_info(f"Metadata: {obj.metadata}")
-                for ref_obj in obj.references["hasChunks"].objects:
-                    self._logger.log_info(f"Reference: {ref_obj.properties}")      
-                building_instance = Building(
-                    building_title=obj.properties["buildingTitle"],
-                    building_address=obj.properties["buildingAddress"],
-                    building_description=obj.properties["buildingDescription"],
-                    housing_price=obj.properties["housingPrice"],
-                    owner_name=obj.properties["ownerName"],
-                    owner_email=obj.properties["ownerEmail"],
-                    owner_whatsapp=obj.properties["ownerWhatsapp"],
-                    owner_phone_number=obj.properties["ownerPhoneNumber"],
-                    image_url=obj.properties["imageURL"]
+            building_chunk_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
+
+            while len(building_list) < limit:
+                self._logger.log_info("Execute query")
+                response = building_chunk_collection.query.hybrid(
+                    query=query,
+                    target_vector="buildingDetails",
+                    filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
+                    limit=limit,
+                    offset=offset,
+                    return_references=[
+                        QueryReference(
+                            include_vector=True,
+                            link_on="hasBuilding"
+                        ),
+                    ],
                 )
-                building_list.append(building_instance)    
+
+                self._logger.log_info(f"Object count: {len(response.objects)}")
+                if not response.objects:
+                    break
+
+                for obj in response.objects:
+                    self._logger.log_info(f"[Object {obj.uuid}]: {obj.properties['chunk']}")
+                    for ref_obj in obj.references["hasBuilding"].objects:
+                        if ref_obj.uuid in seen_uuids:
+                            continue
+
+                        seen_uuids.add(ref_obj.uuid)
+                        building_instance = Building(
+                            building_title=ref_obj.properties["buildingTitle"],
+                            building_address=ref_obj.properties["buildingAddress"],
+                            building_description=ref_obj.properties["buildingDescription"],
+                            housing_price=ref_obj.properties["housingPrice"],
+                            owner_name=ref_obj.properties["ownerName"],
+                            owner_email=ref_obj.properties["ownerEmail"],
+                            owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
+                            owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
+                            image_url=ref_obj.properties["imageURL"]
+                        )
+                        building_list.append(building_instance)
+                        self._logger.log_info(f"Building instance added, length: {len(building_list)}")
+                        if len(building_list) >= limit:
+                            break
+                
+                    if len(building_list) >= limit:
+                        break
+                    
+                offset += limit 
             
             end_time = time.time()
-            elapsed_time = end_time - start_time 
-            self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\n Object filtered, remaining count: {str(len(building_list))}")
-        
+            elapsed_time = end_time - start_time
+            self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\nTotal object count: {str(len(building_list))}")
+
         except Exception as e:
             self._logger.log_exception(f"Failed do weaviate query, ERROR: {e}")
             raise Exception(e)
         finally:
             WeaviateAPI.close_connection_to_server(self)
             
-        if(len(building_list) == 0):
+        if len(building_list) == 0:
             output = self.feedback_prompt(prompt, session_id, True)
-            return output
-        
-        output = self.feedback_prompt(prompt, session_id, found=building_list)
+        else:
+            output = self.feedback_prompt(prompt, session_id, found=building_list)
+            
         return output
 
     def feedback_prompt(self, prompt, session_id, reask = False, found = None) -> Message:
