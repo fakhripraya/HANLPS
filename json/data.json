@@ -288,6 +288,8 @@
       "building_facility_string": "Depan Kost Mesjid besar. Kamar memiliki Kamar mandi dalam, dapur dalam kamar dengan kompor, gas, wastafel, lemari, AC, kasur ukuran 90, rak sepatu, tempat sampah, keset, listrik token. Gratis: Mie instan, snacks atau roti Aoka, kopi atau teh, air minum galon dengan dispenser hot dan normal di lorong. Internet Free WiFi. Keamanan CCTV 24 jam dengan sensor gerak. Parkiran Hanya untuk motor. Memiliki area umum seperti Rooftop balkon bersama, ruang jemur, mesin cuci, setrika baju, kulkas bersama. Akses Jalan depan Lebar, bisa dilalui 2 mobil papasan.",
       "building_proximity": [
         "Dekat dengan Pejaten Timur, Jakarta, Kota Jakarta Selatan atau jaksel",
+        "Dekat dengan Pejaten Village atau Penvil",
+        "Dekat dengan Plaza Oleos",
         "dekat dengan BIN atau Badan Intelejen Negara, lembaga intelijen di Jakarta",
         "dekat dengan Stasiun Pasar Minggu Baru, stasiun kereta",
         "dekat dengan Stasiun Pasar Minggu Lama, stasiun kereta",
@@ -1472,7 +1474,7 @@
         "Memiliki fasilitas bersama dapur umum",
         "Memiliki fasilitas bersama tempat menjemur"
       ],
-      "building_description": "Semua  Kamar Mandi Dalam, AC, TV, Lemari Pakaian, Kasur, Ranjang Kasur dan Free  Wi Fi, Parkir Motor  Fasilitas bersama  Dapur Umum dan Tempat Menjemur\nHarga: 1500000\nAlamat: Jalan Kebon Kacang 3 No 42d dan 80i Tanah Abang Jakarta Pusat\nCP: 085884805990",
+      "building_description": "Semua Kamar Mandi Dalam, AC, TV, Lemari Pakaian, Kasur, Ranjang Kasur dan Free  Wi Fi, Parkir Motor  Fasilitas bersama  Dapur Umum dan Tempat Menjemur\nHarga: 1500000\nAlamat: Jalan Kebon Kacang 3 No 42d dan 80i Tanah Abang Jakarta Pusat\nCP: 085884805990",
       "housing_price": 1500000,
       "owner_email": "",
       "owner_name": "",
@@ -2552,7 +2554,9 @@
         "Dekat dengan Jagakarsa",
         "Dekat dengan Tabebuya Park",
         "Dekat dengan Plataran Kinandari",
-        "Dekat dengan Spathodea Park"
+        "Dekat dengan Spathodea Park",
+        "Dekat dengan Pejaten Village atau Penvil",
+        "Dekat dengan Plaza Oleos"
       ],
       "building_facility": [],
       "building_description": "Kos Khusus Muslimah\n\n#RUMAHNADINE\nJL Pepaya No 5 RT 3 RW 6\nKode Pos 12510\nKelurahan Pejaten Barat\nKecamatan Pasar Minggu\nKota Kabupaten Jakarta Selatan\nHarga 23jt sd 25jt\nCP 081905056834\n\nKhusus Perempuan\nDilarang membawa hewan\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
@@ -2678,7 +2682,10 @@
         "Dekat dengan Jalan Asem II, Cipete Selatan, Kecamatan Cilandak, Kota Jakarta Selatan atau Jaksel",
         "Dekat dengan Stasiun MRT Fatmawati",
         "Dekat dengan TB Simatupang",
+        "Dekat dengan Melawai",
         "Dekat dengan Blok M",
+        "Dekat dengan Blok M Plaza",
+        "Dekat dengan Blok M Square",
         "Dekat dengan Bukit Golf Pondok Indah",
         "Dekat dengan Stasiun MRT Cipete Raya",
         "Dekat dengan Jalan Pangeran Antasari",
