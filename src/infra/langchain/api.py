@@ -185,7 +185,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 # building_query = str(building_dict)
                 building_query = self._query_parser.execute(building_dict)
             
-            self._logger.log_info(f"Query: {building_query}")
+            self._logger.log_info(f"Query:{building_query}")
             output = self.analyze_prompt(prompt, session_id, filter_array, building_query)
             return output
         
