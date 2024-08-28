@@ -15,8 +15,7 @@ class QueryParser(QueryParserInterface):
         key_prefix_pairs = {
             "building_title": "",
             "building_address": "Dekat dengan ",
-            "building_proximity": "Dekat dengan ",
-            "building_facility": "Memiliki fasilitas "
+            "building_proximity": "Dekat dengan "
         }
 
         for index, (key, prefix) in enumerate(key_prefix_pairs.items()):

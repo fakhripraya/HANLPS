@@ -51,7 +51,7 @@ filter_analyzer_template = """"
     building_title: null
     building_address: "Bandung"
     building_proximity: "gedung sate"
-    building_facility: "parkiran dalam, dapur bersama" # this applies for facility or other benefit
+    building_facility: "parkiran dalam, dapur bersama" # this mean it has the facility and it applies for other benefit too
     filter_type: "GREATER_THAN"
     less_than_price: null
     greater_than_price: 5000000
@@ -62,13 +62,13 @@ filter_analyzer_template = """"
     AI = "Maksudnya bandung ya kak?"
     Human = "Iya kak bandung, adakah?"
     AI = "Aku cariin ya kak, duduk manis dulu aja wkwkkw"
-    Human = "Eh kak budgetku cuman 4.5jt ada ga, tapi kamar mandi dalam ya"
+    Human = "Eh kak budgetku cuman 4.5jt ada ga, tapi kamar mandi dalam sama AC ya"
 
     Extracted Data:
     building_title: null
     building_address: "Gandaria"
-    building_proximity: "gancy, gandaria city"
-    building_facility: "kamar mandi dalam"
+    building_proximity: "gancy, gandaria"
+    building_facility: "kamar mandi dalam, Air Conditioner, AC" # watch the facility abbrevation aswell, if applicable
     filter_type: "AROUND"
     less_than_price: 5500000
     greater_than_price: 4500000

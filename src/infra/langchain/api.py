@@ -12,7 +12,7 @@ from configs.config import (
     GEMINI_API_KEY, USE_MODULE, MODULE_USED
 )
 from src.domain.entities.message.message import Message
-from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME, BUILDINGS_COLLECTION_NAME
+from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME
 from src.domain.prompt_templates import (
     chat_template,
     analyzer_template,
@@ -26,7 +26,7 @@ from src.infra.repositories.weaviate.query_parser.query_parser import QueryParse
 from src.infra.repositories.weaviate.api import WeaviateAPI
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.infra.repositories.weaviate.schema.collections.buildings.buildings import append_housing_price_filters
+from src.infra.repositories.weaviate.schema.collections.buildings.buildings import append_housing_price_filters, append_building_facility_filters
 from src.domain.entities.building.building import Building
 
 # Langchain and related libraries
@@ -162,27 +162,30 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             buildings_filter = BuildingsFilter(**data_dict)
             self._logger.log_info(f"Filters in Pydantic: {buildings_filter}")
 
-            filter_array: list = []
-            filter_array = append_housing_price_filters(buildings_filter, filter_array)
+            filter_array = None
+            filter_array = {
+                "housing_price" : append_housing_price_filters(buildings_filter, []),
+                "building_facility" : append_building_facility_filters(buildings_filter, [])
+            }
             self._logger.log_info(f"Filters array: {filter_array}")
             
+            #TODO: The building facility will be included as a filter later, at application scaling will be change into RAG validation parameter
             building_instance = None
             building_query = None
             filter_validation = any([
                 buildings_filter.building_title,
                 buildings_filter.building_address,
                 buildings_filter.building_proximity,
-                buildings_filter.building_facility
+                # buildings_filter.building_facility
             ])
             if(filter_validation):
                 building_instance = Building(
                     building_title=buildings_filter.building_title,
                     building_address=buildings_filter.building_address,
                     building_proximity=buildings_filter.building_proximity,
-                    building_facility=buildings_filter.building_facility
+                    # building_facility=buildings_filter.building_facility
                 )
                 building_dict = building_instance.to_dict()
-                # building_query = str(building_dict)
                 building_query = self._query_parser.execute(building_dict)
             
             self._logger.log_info(f"Query:{building_query}")
@@ -208,12 +211,17 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
             building_chunk_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
 
+            filters = None
+            if len(filter_array["housing_price"]) > 0:
+                filters = Filter.all_of(filter_array["housing_price"])
+            if len(filter_array["building_facility"]) > 0:
+                filters = filters | Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
             while len(building_list) < limit:
                 self._logger.log_info("Execute query")
                 response = building_chunk_collection.query.hybrid(
                     query=query,
                     target_vector="buildingDetails",
-                    filters=Filter.all_of(filter_array) if len(filter_array) > 0 else None,
+                    filters=filters,
                     limit=limit,
                     offset=offset,
                     return_references=[
