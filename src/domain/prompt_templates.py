@@ -64,14 +64,14 @@ filter_analyzer_template = """"
     AI = "Maksudnya bandung ya kak?"
     Human = "Iya kak bandung, adakah?"
     AI = "Aku cariin ya kak, duduk manis dulu aja wkwkkw"
-    Human = "Eh kak budgetku cuman 4.5jt ada ga, tapi kamar mandi dalam sama AC ya, trus kalo bisa bulanan dan boleh bawa hewan"
+    Human = "Eh kak budgetku cuman 4.5jt ada ga, tapi kamar mandi dalam sama AC ya, trus kalo bisa bulanan dan boleh bawa hewan kucing"
 
     Extracted Data:
     building_title: null
     building_address: "Gandaria"
     building_proximity: "gancy, gandaria"
     building_facility: "kamar mandi dalam, Air Conditioner, AC" # watch the facility abbrevation aswell, if applicable
-    building_note: "bulanan, boleh bawa hewan" # Some notes that the prompter asked
+    building_note: "bulanan, boleh bawa hewan, boleh bawa kucing" # Some notes that the prompter asked
     filter_type: "AROUND"
     less_than_price: 5500000
     greater_than_price: 4500000
