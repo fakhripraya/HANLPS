@@ -5,6 +5,7 @@ class BuildingsFilter(BaseModel):
     building_address: str | None = Field(description="The building location whether its a province, city, district, street, etc. If applicable.")
     building_proximity: str | None = Field(description="The proximity of the building, other than the address. If applicable.")
     building_facility: str | None = Field(description="The facility provided by the building. If applicable.")
+    building_note: str | None = Field(description="Anything the building noted that the prompter asked")
     filter_type: str | None = Field(description="Type of price filter (LESS_THAN, GREATER_THAN, AROUND)")
     less_than_price: float | None = Field(description="The maximum rent price, if applicable.")
     greater_than_price: float | None = Field(description="The minimum rent price, if applicable.")

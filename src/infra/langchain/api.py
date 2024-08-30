@@ -26,7 +26,7 @@ from src.infra.repositories.weaviate.query_parser.query_parser import QueryParse
 from src.infra.repositories.weaviate.api import WeaviateAPI
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.infra.repositories.weaviate.schema.collections.buildings.buildings import append_housing_price_filters, append_building_facility_filters
+from src.infra.repositories.weaviate.schema.collections.buildings.buildings import append_housing_price_filters, append_building_facility_filters, append_building_note_filters
 from src.domain.entities.building.building import Building
 
 # Langchain and related libraries
@@ -165,11 +165,11 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             filter_array = None
             filter_array = {
                 "housing_price" : append_housing_price_filters(buildings_filter, []),
-                "building_facility" : append_building_facility_filters(buildings_filter, [])
+                "building_facility" : append_building_facility_filters(buildings_filter, []),
+                "building_note" : append_building_note_filters(buildings_filter, [])
             }
             self._logger.log_info(f"Filters array: {filter_array}")
             
-            #TODO: The building facility will be included as a filter later, at application scaling will be change into RAG validation parameter
             building_instance = None
             building_query = None
             filter_validation = any([
@@ -216,6 +216,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 filters = Filter.all_of(filter_array["housing_price"])
             if len(filter_array["building_facility"]) > 0:
                 filters = filters | Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
+            if len(filter_array["building_note"]) > 0:
+                filters = filters | Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
             while len(building_list) < limit:
                 self._logger.log_info("Execute query")
                 response = building_chunk_collection.query.hybrid(

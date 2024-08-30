@@ -23,3 +23,12 @@ def append_building_facility_filters(buildings_filter: BuildingsFilter, filter_a
                 filter_array.append(Filter.by_property("chunk").like(f"*{k}*"))
     
     return filter_array
+
+def append_building_note_filters(buildings_filter: BuildingsFilter, filter_array: list) -> list:
+    if isinstance(buildings_filter.building_note, str):
+        result_list = [item.strip() for item in buildings_filter.building_note.split(',')]
+        if all(isinstance(item, str) for item in result_list):
+            for k in result_list:
+                filter_array.append(Filter.by_property("chunk").like(f"*{k}*"))
+    
+    return filter_array

@@ -37,6 +37,7 @@ filter_analyzer_template = """"
     building_address: "Jakarta"
     building_proximity: "PT Khong guan"
     building_facility: null
+    building_note: null
     filter_type: "LESS_THAN"
     less_than_price: 5000000
     greater_than_price: null
@@ -45,13 +46,14 @@ filter_analyzer_template = """"
     System = "Conversation Begin"
     Human = "Aku lagi nyari apartement di jakarta nih yang harganya diatas 5jtan"
     AI = "Aku cariin dulu ya kak"
-    Human = "Kak gajadi deh kayanya yang di bandung deket gedung sate aja deh, yang ada parkiran dalam dan dapur bersama ya"
+    Human = "Kak gajadi deh kayanya yang di bandung deket gedung sate aja deh, yang ada parkiran dalam dan dapur bersama ya, trus khusus perempuan"
 
     Extracted Data:
     building_title: null
     building_address: "Bandung"
     building_proximity: "gedung sate"
     building_facility: "parkiran dalam, dapur bersama" # this mean it has the facility and it applies for other benefit too
+    building_note: "perempuan" # Some notes that the prompter asked
     filter_type: "GREATER_THAN"
     less_than_price: null
     greater_than_price: 5000000
@@ -62,13 +64,14 @@ filter_analyzer_template = """"
     AI = "Maksudnya bandung ya kak?"
     Human = "Iya kak bandung, adakah?"
     AI = "Aku cariin ya kak, duduk manis dulu aja wkwkkw"
-    Human = "Eh kak budgetku cuman 4.5jt ada ga, tapi kamar mandi dalam sama AC ya"
+    Human = "Eh kak budgetku cuman 4.5jt ada ga, tapi kamar mandi dalam sama AC ya, trus kalo bisa bulanan dan boleh bawa hewan"
 
     Extracted Data:
     building_title: null
     building_address: "Gandaria"
     building_proximity: "gancy, gandaria"
     building_facility: "kamar mandi dalam, Air Conditioner, AC" # watch the facility abbrevation aswell, if applicable
+    building_note: "bulanan, boleh bawa hewan" # Some notes that the prompter asked
     filter_type: "AROUND"
     less_than_price: 5500000
     greater_than_price: 4500000
