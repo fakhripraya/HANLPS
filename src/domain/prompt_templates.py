@@ -16,7 +16,7 @@ analyzer_template = """
     """
     
 filter_analyzer_template = """"
-    Define the filter based on the prompt
+    Define Extracted Data based on the prompt and the conversation context
     Understand the context of the conversation
     
     history conversation: 
@@ -60,9 +60,9 @@ filter_analyzer_template = """"
     
     Third Example Conversation:
     System = "Conversation Begin"
-    Human = "Aku lagi nyari apartement di gandsaria deket gancy nih yang harganya 5jtan"
+    Human = "Aku lagi nyari apartement di gandsaria deket gancy nih"
     AI = "Maksudnya bandung ya kak?"
-    Human = "Iya kak bandung, adakah?"
+    Human = "Iya kak bandung, yang harganya 5jtan dong, adakah?"
     AI = "Aku cariin ya kak, duduk manis dulu aja wkwkkw"
     Human = "Eh kak budgetku cuman 4.5jt ada ga, tapi kamar mandi dalam sama AC ya, trus kalo bisa bulanan dan boleh bawa hewan kucing"
 
@@ -84,8 +84,7 @@ filter_analyzer_template = """"
     set all filter to be None
     
     NOTE:
-    ABOVE IS JUST EXAMPLE
-    TRUE CASE IS BASED ON THE INCOMING HUMAN INPUT
+    ABOVE IS JUST EXAMPLE, UNDERSTAND THE CONTEXT OF THE CONVERSATION HISTORY AND EXTRACT DATA BASED ON IT AND THE HUMAN INPUT
     
     3. Reply only with the extracted data that represented in JSON, without the backtick formatting.
 """
