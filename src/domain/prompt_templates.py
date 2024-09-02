@@ -6,11 +6,12 @@ analyzer_template = """
     Incoming human input
     Human: {prompts}
     
-    Analyze the incoming human input:
+    Analyze the incoming human input base on the history conversation context:
     - If the incoming input is to ask or re-ask for something regarding KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, etc. Please reply with True
     - If the incoming input is to ask or re-ask for advertising or for posting, just reply with False
     - If the incoming input is to ask or re-ask for something or just a normal chat, just reply with False
     - If the incoming input is to confirm any satisfaction, just reply with False
+    - If the incoming input seems to lack of info, just reply with False
     
     Only answer with True or False
     """
