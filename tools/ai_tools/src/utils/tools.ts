@@ -7,6 +7,65 @@ import {
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import inputJson from "../input_json/input.json" assert { type: "json" };
 
+const delay = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+export const removeSpecificFromString =
+  async (): Promise<void> => {
+    let masterData: MasterModel = inputJson as MasterModel;
+    try {
+      console.log(chalk.green("Start the removal loop"));
+      console.log(
+        chalk.green(`Lenght: ${masterData.data.length}`)
+      );
+      for (
+        let index = 0;
+        index < masterData.data.length;
+        index++
+      ) {
+        const temp_val = { ...masterData.data[index] };
+        if (temp_val) {
+          console.log(
+            chalk.green(`[${index + 1}]: Removing...`)
+          );
+          const temp = await customAIPrompt(
+            index,
+            temp_val.building_description,
+            `
+              I want you to make the same description as the information, 
+              the difference is the description i want is without the contact person or CP,
+              like without whatsapp or phone number.
+              
+              return only the string, don't add anything irrelevant
+            `
+          );
+
+          masterData.data[index].building_description =
+            temp;
+        } else {
+          console.log(
+            chalk.red(
+              `Error on index: ${index + 1}, data not found`
+            )
+          );
+        }
+      }
+    } catch (error) {
+      console.log(chalk.red(error as string));
+    } finally {
+      await fs.writeFile(
+        "src/output_json/ai_updated.json",
+        JSON.stringify(masterData, null, 2)
+      );
+
+      console.log(
+        chalk.green(
+          "Successfully added index to JSON data and saved as ai_updated.json"
+        )
+      );
+    }
+  };
+
 export const generativeLoopThroughArray =
   async (): Promise<void> => {
     let masterData: MasterModel = inputJson as MasterModel;
@@ -38,14 +97,12 @@ export const generativeLoopThroughArray =
           temp_val.owner_email = synced?.owner_email;
           sliced.push(synced ?? temp_val);
           console.log(
-            chalk.green(`Producing item no: ${index + 401}`)
+            chalk.green(`Producing item no: ${index + 1}`)
           );
         } else {
           console.log(
             chalk.red(
-              `Error on index: ${
-                index + 401
-              }, data not found`
+              `Error on index: ${index + 1}, data not found`
             )
           );
         }
@@ -132,5 +189,46 @@ export const syncData = async (
     );
     console.log(chalk.red(error as string));
     return;
+  }
+};
+
+export const customAIPrompt = async (
+  index: number,
+  field: any,
+  command: string
+): Promise<string | undefined> => {
+  if (!field) return;
+
+  const genAI = new GoogleGenerativeAI(
+    process.env.GEMINI_API_KEY ?? ""
+  );
+  const model = genAI.getGenerativeModel({
+    model: process.env.GEMINI_MODEL ?? "",
+  });
+
+  const prompt = `
+    I have an information and a command that will alter the field value based on it.
+
+    The information:
+    ${field}
+
+    The Command:
+    ${command}
+
+    return the processed field in string format
+  `;
+
+  try {
+    const result = await model.generateContent([prompt]);
+    const json_obj = result.response.text();
+    await delay(5000);
+
+    return json_obj;
+  } catch (error: any) {
+    console.log(
+      chalk.red(
+        `Error removal on index: ${index} caused by ${error}, Skipping...`
+      )
+    );
   }
 };

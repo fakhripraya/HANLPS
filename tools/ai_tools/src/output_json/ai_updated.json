@@ -2369,8 +2369,6 @@
         "Dekat dengan Kota Jakarta Selatan atau Jaksel",
         "Dekat dengan Pasar Kebayoran",
         "Dekat dengan Bintaro Plaza",
-        "Dekat dengan Tanah Kusir",
-        "Dekat dengan Pondok Pinang",
         "Dekat dengan Pondok Indah Mall",
         "Dekat dengan Gandaria City Mall atau Gancy",
         "Dekat dengan Stasiun Kebayoran",
@@ -4666,7 +4664,6 @@
     {
       "building_title": "Kost Khusus Putri Eksklusif dengan Dapur Pribadi",
       "building_address": "Jalan Assofa 4 no 36 rt 7/1 Sukabumi Utara Kebon Jeruk Jakarta Barat",
-      "building_proximity_string": "",
       "building_proximity": [
         "Dekat dengan Jakarta Barat atau Jakbar",
         "Dekat dengan Jakarta Selatan atau Jaksel",
@@ -4679,7 +4676,6 @@
         "Dekat dengan Kemandoran",
         "Dekat dengan Cidodol"
       ],
-      "building_facility_string": "",
       "building_facility": [
         "Properti ini menyediakan WiFi dengan kecepatan 100 Mbps",
         "AC dan exhaust fan",
@@ -4693,7 +4689,6 @@
         "Pembersihan kamar mandi setiap bulan",
         "Tersedia detergen dan softener"
       ],
-      "building_description": "Kost Khusus Putri Eksklusif dengan Dapur Pribadi terletak diperbatasan Jakarta Barat dan Jakarta Selatan\nHunian hanya 4 kamar sangat Nyaman, Privasi, Modern dan Aesthetic\n\nFasilitas :\nWiFi 100 Mbps\nAC & Exhaust Fan\nTV Smart 32\\\"\nSpringbed 120 x 200\nBed Cover\nLemari meja kursi\nShower Closet duduk\nKitchen Kabinet\nWastafel\nKompor gas\nAlat makan\nKulkas\nDispenser\nMesin Cuci\n\nFree Cuci AC tiap 2 bulan\nFree Cleaning Kamar mandi tiap 1 bulan\nFree Detergen & Softener\n\nHarga Rp 2.400.000\nJalan Assofa 4 no 36 rt 7/1 Sukabumi Utara Kebon Jeruk Jakarta Barat\nmaps kost hesti assofa\n\nKhusus Perempuan\nDilarang membawa hewan\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
       "housing_price": 2400000,
       "owner_email": "",
       "owner_name": "",
@@ -5962,7 +5957,9 @@
         "Dekat dengan Jalan Cipinang Besar",
         "Dekat dengan Institut Transportasi dan Logistik Trisakti"
       ],
-      "building_facility": ["Khusus perempuan"],
+      "building_facility": [
+        "Khusus perempuan"
+      ],
       "building_description": "Khusus perempuan\nTidak boleh membawa hewan\nDeskripsi: kos muslimah STIS/kos ungu I. bersih, nyaman dan luas sangat cocok untuk mahasiswi dan karyawati. lokasi kos dekat kampus STIS, terminal kp melayu. free wifi dan listrik\nHarga sewa perbulan: lt 3 600.000, lt 2 600.000-750.000. deposit 200.000\nKota: jakarta timur\nAlamat: jl kebon nanas utara II no:37 rt 004 rw 07 13340 jakarta timur\n\nKhusus Perempuan\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran. \n",
       "housing_price": 600000,
       "owner_email": "",
@@ -6704,7 +6701,10 @@
         "Dekat dengan Monas",
         "Dekat dengan Taman Ismail Marzuki"
       ],
-      "building_facility": ["Kos campur", "Bisa Pasutri"],
+      "building_facility": [
+        "Kos campur",
+        "Bisa Pasutri"
+      ],
       "building_description": "Kosku Monas\nAlamat Jl Kb Jahe Il No 24 RT 14 RW 2 Petojo Sel Kecamatan Gambir Jakarta Pusat\nTerdiri dari 4 type kamar\n1 Kamar Standard with Twin Bed and Shared Bathroom\n2 Kamar Superior with Single Bed\n3 Kamar Superior with Queen Bed\n4 Kamar Deluxe with External Window\nBerdua tambah 300 000 untuk pasutri \nMinumum sewa 1 bulan\nHarga start 3 2\nInfo lebih lanjut \n",
       "housing_price": 3200000,
       "owner_email": "",
@@ -6776,7 +6776,6 @@
     {
       "building_title": "KOST MUSLIMAH",
       "building_address": "Jalan Tanah Ara RT 01 12 RW.12, Pondok Pinang, Kecamatan Kebayoran. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12310",
-      "building_proximity_string": "",
       "building_proximity": [
         "Dekat dengan Halte Transjakarta RA Kartini (5 menit)",
         "Dekat dengan Jalan Tanah Ara",
@@ -6793,7 +6792,6 @@
         "Dekat dengan ITC Fatmawati",
         "Dekat dengan Golf Course Pondok Indah"
       ],
-      "building_facility_string": "",
       "building_facility": [
         "Memiliki kasur & bantal",
         "Memiliki kipas angin",
@@ -6803,7 +6801,6 @@
         "Memiliki tempat jemuran",
         "Khusus Perempuan"
       ],
-      "building_description": "KOST MUSLIMAH\nKost khusus wanita muslimah WNI\nSatu kamar hanya diisi 1 satu orang saja\n\nFasilitas lengkap :\n- Kasur & bantal\n- Kipas Angin\n- Lemari + Cermin\n- Kamar mandi di dalam terdapat ember & gayung\n- Listrik token tiap kamar\n- Tempat jemuran\n- Tidak diperkenankan membawa hewan peliharaan\n\nDekat akses transportasi :\n- 5 menit ke Halte Transjakarta RA Kartini\n- 10 menit ke MRT Lebak Bulus\n- 10 menit ke Stasiun Kebayoran\n- 10 menit ke Terminal AKAP Pondok Pinang\nDekat minimarket dan aneka kuliner\n\nLokasi : Jl Tanah Ara RT 01 12 Pondok Pinang Kebayoran Lama Jakarta Selatan Belakang Snapy\\n\\n650 000 bulan tidak termasuk token listrik\n\nKhusus Perempuan\nDilarang membawa hewan\nWASPADA TERHADAP PENIPUAN\\nIngat tetap berhati hati terhadap penipuan Pastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
       "housing_price": 650000,
       "owner_email": "",
       "owner_name": "",
@@ -6898,7 +6895,9 @@
         "Dekat dengan Lebak Bulus MRT Station",
         "Dekat dengan Fatmawati MRT Station"
       ],
-      "building_facility": ["Kos Campur"],
+      "building_facility": [
+        "Kos Campur"
+      ],
       "building_description": "Kos di Apt Bumimas, Cilandak Barat, dekat sekali ke stasiun MRT\nKamar besar + kmr mandi dlm berdua masing masing Rp 3.5 juta per bulan, sendiri Rp 4.5 juta sebulan; kamar sedang kamar mandi diluar berdua masing masing Rp 3 juta sebulan, sendiri Rp 4 juta; kamar kecil kamar mandi luar berdua masing masing Rp 2.5 juta sebulan, sendiri Rp 3.5 juta sebulan.\nAvailable mulai Mar 2024\nJln Terogong Raya no. 18, Cilandak Barat\nDilarang membawa hewan\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran. \n",
       "housing_price": 2500000,
       "owner_email": "",
@@ -9228,7 +9227,9 @@
         "Dekat dengan Kantor Tol Becakayu",
         "Dekat dengan Gedung Mulia dan Raja"
       ],
-      "building_facility": ["Khusus Perempuan"],
+      "building_facility": [
+        "Khusus Perempuan"
+      ],
       "building_description": "kos-kosan\nKhusus perempuan\nTidak boleh membawa hewan\n\nKos muslimah STIS/kos ungu I.\nbersih,nyaman dan luas sangat cocok untuk mahasiswi dan karyawati.\nlokasi kos dekat kampus STIS,terminal kp melayu.free wifi dan listrik\n\nHarga sewa perbulan:\nLantai 3 = 600.000\nLantai 2 = 600.000 - 750.000\n\ndeposit 200.000\n\nKota: jakarta timur\nAlamat: Jalan kebon nanas utara II No.37 RT 004 RW 07, Cipinang Cempedak, Jatinegara jakarta timur, 13340 \n\nKhusus Perempuan\nDilarang membawa hewan\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran. \n",
       "housing_price": "0600000",
       "owner_email": "",

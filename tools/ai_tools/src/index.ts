@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
-import { generativeLoopThroughArray } from "./utils/tools.js";
+import {
+  generativeLoopThroughArray,
+  removeSpecificFromString,
+} from "./utils/tools.js";
 
 // Add this to your index.ts
 import * as commander from "commander";
@@ -16,6 +19,15 @@ program
   )
   .action(async () => {
     await generativeLoopThroughArray();
+  });
+
+program
+  .command("remove")
+  .description(
+    "Removal loop through the array of elements in the data with AI"
+  )
+  .action(async () => {
+    await removeSpecificFromString();
   });
 
 program.parse(process.argv);

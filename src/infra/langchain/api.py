@@ -252,8 +252,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                             housing_price=ref_obj.properties["housingPrice"],
                             owner_name=ref_obj.properties["ownerName"],
                             owner_email=ref_obj.properties["ownerEmail"],
-                            owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
-                            owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
+                            #owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
+                            #owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
                             image_url=ref_obj.properties["imageURL"]
                         )
                         building_list.append(building_instance)
