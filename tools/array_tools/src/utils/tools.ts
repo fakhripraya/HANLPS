@@ -53,9 +53,9 @@ const migrateKey = async (): Promise<void> => {
             building_address:
               new_val.building_address ?? "",
             building_facility:
-              new_val.building_facility ?? "",
+              new_val.building_facility ?? [],
             building_proximity:
-              new_val.building_proximity ?? "",
+              new_val.building_proximity ?? [],
             building_description:
               new_val.building_description ?? "",
             housing_price: new_val.housing_price ?? "",

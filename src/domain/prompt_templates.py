@@ -83,6 +83,7 @@ filter_analyzer_template = """"
     less_than_price: Rp.xxx + 10 percent
     - if the user ask for any price or "harganya bebas deh" or something like that
     set all filter to be None
+    - if the user ask about gender for the note, extract in only 3 value between "Perempuan", "Lelaki", or "Campur"
     
     NOTE:
     ABOVE IS JUST EXAMPLE, UNDERSTAND THE CONTEXT OF THE CONVERSATION HISTORY AND EXTRACT DATA BASED ON IT AND THE HUMAN INPUT

@@ -19,13 +19,24 @@ program
   .description(
     "Slice the array of elements in the data based on start and end"
   )
+  .requiredOption(
+    "-s, --start  [value]",
+    "Start value of an array to be sliced"
+  )
+  .requiredOption(
+    "-e, --end  [value]",
+    "End value of an array to be sliced"
+  )
   .option(
     "--images",
     "Slice the image urls from each element data"
   )
-  .action(async (_, options) => {
+  .action(async (options) => {
     if (options.images)
-      await sliceImageURLElements(1, undefined);
+      await sliceImageURLElements(
+        options.start,
+        options.end
+      );
   });
 
 program
