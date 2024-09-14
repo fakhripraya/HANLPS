@@ -12,8 +12,11 @@ RUN pip3 install --no-cache-dir --user -r /app/requirements.txt
 # Copy the rest of the application code
 COPY . /app
 
-# Set environment variables from .env
-ENV $(cat .env.local | xargs)
+# Copy the .env file into the container (optional)
+COPY .env.local /app/.env.local
+
+# Set environment variables from the .env file in entrypoint script (or use runtime `--env-file` option)
+# ENTRYPOINT ["sh", "-c", "export $(cat .env.local | xargs) && exec python3 main.py"]
 
 # Expose port
 EXPOSE 52002

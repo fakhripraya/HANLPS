@@ -34,10 +34,11 @@ class GRPCApp:
 
     def create_server(self):
         """Create the GRPC server and start it."""
+        self.logger.log_info("Creating GRPC server")
         try:
-            self.grpc_server.add_insecure_port(INSECURE_PORT)
+            self.grpc_server.add_insecure_port(f"[::]:{INSECURE_PORT}")
             self.grpc_server.start()
-            self.logger.log_info(f"GRPC server started on port {INSECURE_PORT}")
+            self.logger.log_info(f"GRPC server started on port [::]:{INSECURE_PORT}")
 
             self.grpc_server.wait_for_termination()
         except KeyboardInterrupt:
