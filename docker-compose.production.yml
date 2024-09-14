@@ -1,0 +1,38 @@
+services:
+  reverse-proxy:
+    image: traefik:v3.1
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - web
+
+  hanlps:
+    build:
+      context: .
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.production
+    deploy:
+      mode: replicated
+      replicas: 3
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hanlps.rule=Host(`api.yourdomain.com`) && PathPrefix(`/hanlps`)"
+      - "traefik.http.routers.hanlps.entrypoints=web"
+      - "traefik.http.routers.hanlps.service=hanlps"
+      - "traefik.http.services.hanlps.loadbalancer.server.port=50052"
+      - "traefik.http.services.hanlps.loadbalancer.server.scheme=h2c"
+    networks:
+      - web
+networks:
+  web:
+    driver: bridge

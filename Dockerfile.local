@@ -1,0 +1,22 @@
+FROM python:3.12.2
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements file first (to leverage Docker cache if unchanged)
+COPY requirements/linux/requirements.txt /app/requirements.txt
+
+# Install Python dependencies
+RUN pip3 install --no-cache-dir --user -r /app/requirements.txt
+
+# Copy the rest of the application code
+COPY . /app
+
+# Set environment variables from .env
+ENV $(cat .env.local | xargs)
+
+# Expose port
+EXPOSE 52002
+
+# Specify the command to run your app
+CMD ["python3", "main.py"]

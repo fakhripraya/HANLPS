@@ -1,30 +1,38 @@
 # HANLPS (Highly Accurate Natural Language Processing Service)
+
 # Instalation
 
 ## Create the virtual environment:
+
 ```
 python -m venv venv
 
 ```
 
 ## Run the virtual environment:
+
 ### Windows
+
 ```
 venv\Scripts\activate
 
 ```
+
 ### Linux/MacOS
+
 ```
 source venv/bin/activate
 ```
 
 ## Install the required Python packages:
+
 ```
 pip install -r requirements.txt
 pre-commit install
 ```
 
 # Run the App
+
 ```
 python main.py
 ```
@@ -46,5 +54,5 @@ python -m grpc_tools.protoc -I=proto --python_out=proto --grpc_python_out=proto 
 
 # Dependencies
 
-grpcio grpcio-tools python-dotenv openai langchain langchain_community weaviate-client
-langchain-weaviate langchain_huggingface langchain_google_genai cerberus unstructured pytest tiktoken
+grpcio grpcio-tools python-dotenv openai langchain langchain-community weaviate-client
+langchain-weaviate langchain-huggingface langchain-google-genai cerberus unstructured pytest tiktoken
