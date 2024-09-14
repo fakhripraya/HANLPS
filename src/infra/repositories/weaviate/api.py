@@ -4,7 +4,15 @@
 import json
 import weaviate as weaviate_lib
 from weaviate.config import AdditionalConfig, ConnectionConfig , Timeout
-from configs.config import OPENAI_API_KEY, GEMINI_API_KEY, OPENAI_ORGANIZATION_ID
+from configs.config import (
+    OPENAI_API_KEY,
+    GEMINI_API_KEY,
+    OPENAI_ORGANIZATION_ID,
+    WEAVIATE_GRPC_HOST,
+    WEAVIATE_GRPC_PORT,
+    WEAVIATE_REST_HOST,
+    WEAVIATE_REST_PORT
+)
 from src.domain.constants import OPENAI, GEMINI
 from src.interactor.interfaces.repositories.weaviate.api import WeaviateAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
@@ -73,7 +81,13 @@ class WeaviateAPI(WeaviateAPIInterface):
         Connect the weaviate instance with openai module
         """
         self._logger.log_info("Connecting weaviate client with OpenAI")
-        return weaviate_lib.connect_to_local(
+        return weaviate_lib.connect_to_custom(
+            http_host=WEAVIATE_REST_HOST,
+            http_port=WEAVIATE_REST_PORT,
+            http_secure=False,
+            grpc_host=WEAVIATE_GRPC_HOST,
+            grpc_port=WEAVIATE_GRPC_PORT,
+            grpc_secure=False,
             headers={
                 "X-OpenAI-Api-Key": OPENAI_API_KEY,
                 "X-OpenAI-Organization": OPENAI_ORGANIZATION_ID
@@ -83,7 +97,7 @@ class WeaviateAPI(WeaviateAPIInterface):
                     session_pool_max_retries=3,
                 ),
                 timeout=Timeout(query=60, insert=120),
-            ),
+            )
         )
     
     def connect_with_google(self) -> weaviate_lib.WeaviateClient:
