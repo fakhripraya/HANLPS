@@ -18,7 +18,9 @@ COPY . /app
 # Copy the .env file into the container (optional)
 COPY .env.local /app/.env.local
 
+# Ensure that python stdio or stderr is not buffered and straight to the terminal
 ENV PYTHONUNBUFFERED 1
+
 # Set environment variables from the .env file in entrypoint script (or use runtime `--env-file` option)
 # ENTRYPOINT ["sh", "-c", "export $(cat .env.local | xargs) && exec python3 main.py"]
 
