@@ -34,8 +34,8 @@ class GRPCApp:
 
     def create_server(self):
         """Create the GRPC server and start it."""
-        self.logger.log_info("Creating GRPC server")
         try:
+            self.logger.log_info(f"Creating GRPC for port [::]:{INSECURE_PORT}")
             self.grpc_server.add_insecure_port(f"[::]:{INSECURE_PORT}")
             self.grpc_server.start()
             self.logger.log_info(f"GRPC server started on port [::]:{INSECURE_PORT}")
@@ -50,8 +50,7 @@ class GRPCApp:
 
     def stop_server(self):
         """Stop the GRPC server."""
-        if self.llm._weaviate_client and self.llm._weaviate_client.is_live:
-            self.llm._weaviate_client.close()
+        self.llm.close_connection_to_server()
         if self.grpc_server:
             self.grpc_server.stop(0)
         
