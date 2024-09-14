@@ -22,7 +22,7 @@ ENV PYTHONUNBUFFERED 1
 # ENTRYPOINT ["sh", "-c", "export $(cat .env.local | xargs) && exec python3 main.py"]
 
 # Expose port
-EXPOSE 52002
+EXPOSE 50052
 
 # Specify the command to run your app
 CMD ["python", "main.py"]
