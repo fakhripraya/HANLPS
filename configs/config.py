@@ -4,6 +4,7 @@
 import os
 
 IN_DEVELOPMENT = bool(str(os.getenv("IN_DEVELOPMENT")))
+LOG_VERBOSE = bool(str(os.getenv("LOG_VERBOSE")))
 INSECURE_PORT = str(os.getenv("INSECURE_PORT"))
 
 LLM_USED = str(os.getenv("LLM_USED"))

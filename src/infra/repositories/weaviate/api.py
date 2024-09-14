@@ -106,7 +106,13 @@ class WeaviateAPI(WeaviateAPIInterface):
         """
         # Currently has bug to use this header, only vertex is avail for now
         self._logger.log_info("Connecting weaviate client with Google")
-        return weaviate_lib.connect_to_local(
+        return weaviate_lib.connect_to_custom(
+            http_host=WEAVIATE_REST_HOST,
+            http_port=WEAVIATE_REST_PORT,
+            http_secure=False,
+            grpc_host=WEAVIATE_GRPC_HOST,
+            grpc_port=WEAVIATE_GRPC_PORT,
+            grpc_secure=False,
             headers={
              "X-Google-Studio-Api-Key": GEMINI_API_KEY,
             },
