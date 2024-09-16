@@ -7,7 +7,7 @@ WORKDIR /app
 COPY requirements/linux/requirements.txt /app/requirements.txt
 
 # Install Python dependencies
-RUN pip3 install --no-cache-dir --user -r /app/requirements.txt
+RUN pip3 install --no-compile --no-cache-dir --user -r /app/requirements.txt
 
 # Copy the rest of the application code
 COPY . /app
@@ -17,6 +17,9 @@ COPY .env.local /app/.env.local
 
 # Ensure that python stdio or stderr is not buffered and straight to the terminal
 ENV PYTHONUNBUFFERED 1
+
+# Prevent python from generating .pyc files you don't need
+ENV PYTHONDONTWRITEBYTECODE=1
 
 # Set environment variables from the .env file in entrypoint script (or use runtime `--env-file` option)
 # ENTRYPOINT ["sh", "-c", "export $(cat .env.local | xargs) && exec python3 main.py"]
