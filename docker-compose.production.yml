@@ -29,7 +29,7 @@ services:
       - "traefik.http.routers.hanlps.rule=Host(`api.yourdomain.com`) && PathPrefix(`/hanlps`)"
       - "traefik.http.routers.hanlps.entrypoints=web"
       - "traefik.http.routers.hanlps.service=hanlps"
-      - "traefik.http.services.hanlps.loadbalancer.server.port=50052"
+      - "traefik.http.services.hanlps.loadbalancer.server.port=50053"
       - "traefik.http.services.hanlps.loadbalancer.server.scheme=h2c"
     networks:
       - web
