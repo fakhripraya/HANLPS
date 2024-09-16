@@ -28,7 +28,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # ENTRYPOINT ["sh", "-c", "export $(cat .env.local | xargs) && exec python3 main.py"]
 
 # Expose port
-EXPOSE 50052
+EXPOSE 50053
 
 # Specify the command to run your app
 CMD ["python", "main.py"]
