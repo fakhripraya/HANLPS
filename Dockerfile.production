@@ -7,7 +7,7 @@ RUN apt-get update
 WORKDIR /app
 
 # Copy the requirements file first (to leverage Docker cache if unchanged)
-COPY requirements.txt /app/requirements.txt
+COPY requirements/linux/requirements.txt /app/requirements.txt
 
 # Install Python dependencies
 RUN pip3 install --no-compile --no-cache-dir --user -r /app/requirements.txt
