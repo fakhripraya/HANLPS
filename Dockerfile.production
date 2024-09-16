@@ -16,7 +16,7 @@ RUN pip3 install --no-compile --no-cache-dir --user -r /app/requirements.txt
 COPY . /app
 
 # Copy the .env file into the container (optional)
-COPY .env.local /app/.env.local
+COPY .env.production /app/.env.production
 
 # Ensure that python stdio or stderr is not buffered and straight to the terminal
 ENV PYTHONUNBUFFERED 1
