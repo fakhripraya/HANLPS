@@ -86,10 +86,10 @@ class WeaviateAPI(WeaviateAPIInterface):
         return weaviate_lib.connect_to_custom(
             http_host=WEAVIATE_REST_HOST,
             http_port=WEAVIATE_REST_PORT,
-            http_secure=WEAVIATE_SECURE,
+            http_secure=WEAVIATE_SECURE is True,
             grpc_host=WEAVIATE_GRPC_HOST,
             grpc_port=WEAVIATE_GRPC_PORT,
-            grpc_secure=WEAVIATE_SECURE,
+            grpc_secure=WEAVIATE_SECURE is True,
             headers={
                 "X-OpenAI-Api-Key": OPENAI_API_KEY,
                 "X-OpenAI-Organization": OPENAI_ORGANIZATION_ID
@@ -111,10 +111,10 @@ class WeaviateAPI(WeaviateAPIInterface):
         return weaviate_lib.connect_to_custom(
             http_host=WEAVIATE_REST_HOST,
             http_port=WEAVIATE_REST_PORT,
-            http_secure=WEAVIATE_SECURE,
+            http_secure=WEAVIATE_SECURE is True,
             grpc_host=WEAVIATE_GRPC_HOST,
             grpc_port=WEAVIATE_GRPC_PORT,
-            grpc_secure=WEAVIATE_SECURE,
+            grpc_secure=WEAVIATE_SECURE is True,
             headers={
              "X-Google-Studio-Api-Key": GEMINI_API_KEY,
             },
