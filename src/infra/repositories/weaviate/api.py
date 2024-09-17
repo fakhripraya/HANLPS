@@ -82,6 +82,7 @@ class WeaviateAPI(WeaviateAPIInterface):
         Connect the weaviate instance with openai module
         """
         self._logger.log_info("Connecting weaviate client with OpenAI")
+        self._logger.log_info(f"Websecure: {WEAVIATE_SECURE}")
         return weaviate_lib.connect_to_custom(
             http_host=WEAVIATE_REST_HOST,
             http_port=WEAVIATE_REST_PORT,
