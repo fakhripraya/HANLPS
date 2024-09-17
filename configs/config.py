@@ -11,6 +11,7 @@ LLM_USED = str(os.getenv("LLM_USED"))
 USE_MODULE = str(os.getenv("USE_MODULE"))
 MODULE_USED = str(os.getenv("MODULE_USED"))
 
+WEAVIATE_SECURE = bool(os.getenv("WEAVIATE_SECURE"))
 WEAVIATE_REST_HOST = str(os.getenv("WEAVIATE_REST_HOST"))
 WEAVIATE_REST_PORT = int(os.getenv("WEAVIATE_REST_PORT"))
 WEAVIATE_GRPC_HOST = str(os.getenv("WEAVIATE_GRPC_HOST"))
