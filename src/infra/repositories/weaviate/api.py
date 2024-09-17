@@ -11,7 +11,8 @@ from configs.config import (
     WEAVIATE_GRPC_HOST,
     WEAVIATE_GRPC_PORT,
     WEAVIATE_REST_HOST,
-    WEAVIATE_REST_PORT
+    WEAVIATE_REST_PORT,
+    IN_DEVELOPMENT
 )
 from src.domain.constants import OPENAI, GEMINI
 from src.interactor.interfaces.repositories.weaviate.api import WeaviateAPIInterface
@@ -84,10 +85,10 @@ class WeaviateAPI(WeaviateAPIInterface):
         return weaviate_lib.connect_to_custom(
             http_host=WEAVIATE_REST_HOST,
             http_port=WEAVIATE_REST_PORT,
-            http_secure=False,
+            http_secure=False if IN_DEVELOPMENT else True,
             grpc_host=WEAVIATE_GRPC_HOST,
             grpc_port=WEAVIATE_GRPC_PORT,
-            grpc_secure=False,
+            grpc_secure=False if IN_DEVELOPMENT else True,
             headers={
                 "X-OpenAI-Api-Key": OPENAI_API_KEY,
                 "X-OpenAI-Organization": OPENAI_ORGANIZATION_ID
@@ -109,10 +110,10 @@ class WeaviateAPI(WeaviateAPIInterface):
         return weaviate_lib.connect_to_custom(
             http_host=WEAVIATE_REST_HOST,
             http_port=WEAVIATE_REST_PORT,
-            http_secure=False,
+            http_secure=False if IN_DEVELOPMENT else True,
             grpc_host=WEAVIATE_GRPC_HOST,
             grpc_port=WEAVIATE_GRPC_PORT,
-            grpc_secure=False,
+            grpc_secure=False if IN_DEVELOPMENT else True,
             headers={
              "X-Google-Studio-Api-Key": GEMINI_API_KEY,
             },
