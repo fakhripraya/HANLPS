@@ -214,10 +214,10 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             filters = None
             if len(filter_array["housing_price"]) > 0:
                 filters = Filter.all_of(filter_array["housing_price"])
-            if len(filter_array["building_facility"]) > 0:
-                filters = filters | Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
-            if len(filter_array["building_note"]) > 0:
-                filters = filters | Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
+            # if len(filter_array["building_facility"]) > 0:
+            #     filters = filters | Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
+            # if len(filter_array["building_note"]) > 0:
+            #     filters = filters | Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
             while len(building_list) < limit:
                 self._logger.log_info("Execute query")
                 response = building_chunk_collection.query.hybrid(
