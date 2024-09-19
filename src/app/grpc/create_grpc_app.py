@@ -4,7 +4,7 @@
 import grpc
 import sys
 sys.path.append("./protofile")
-from configs.config import INSECURE_PORT, OPENAI_API_KEY, LLM_USED, IN_DEVELOPMENT
+from configs.config import INSECURE_PORT, OPENAI_API_KEY, LLM_USED
 from protofile.messaging.proto import messaging_pb2_grpc as handler
 from concurrent import futures
 from src.app.grpc.servicer.messaging_servicer import MessagingServicer
@@ -35,11 +35,10 @@ class GRPCApp:
     def create_server(self):
         """Create the GRPC server and start it."""
         try:
-            use_port = INSECURE_PORT if IN_DEVELOPMENT else 0
-            self.grpc_server.add_insecure_port(f"[::]:{use_port}")
+            self.logger.log_info(f"Creating GRPC for port [::]:{INSECURE_PORT}")
+            self.grpc_server.add_insecure_port(f"[::]:{INSECURE_PORT}")
             self.grpc_server.start()
-            if IN_DEVELOPMENT: self.logger.log_info(f"GRPC server started on port [::]:{INSECURE_PORT}")
-            else: self.logger.log_info(f"A GRPC server has been started")
+            self.logger.log_info(f"GRPC server started on port [::]:{INSECURE_PORT}")
 
             self.grpc_server.wait_for_termination()
         except KeyboardInterrupt:
