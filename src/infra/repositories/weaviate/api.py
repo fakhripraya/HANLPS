@@ -96,6 +96,8 @@ class WeaviateAPI(WeaviateAPIInterface):
             additional_config=AdditionalConfig(
                 connection=ConnectionConfig(
                     session_pool_max_retries=3,
+                    session_pool_connections=20,
+                    session_pool_maxsize=100
                 ),
                 timeout=Timeout(query=60, insert=120),
             )

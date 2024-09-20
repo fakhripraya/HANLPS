@@ -4,6 +4,7 @@
 # Standard and third-party libraries
 import time
 import json
+import socket
 
 # Source-specific imports
 from configs.config import (
@@ -207,74 +208,87 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         start_time = time.time()
         building_list: list[Building] = []
         seen_uuids = set()
-        try:
-            self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
-            building_chunk_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
+        retries = 0
+        max_retries = 3
+        retry_delay_in_sec = 1
+        while retries < max_retries:
+            try:
+                self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
+                building_chunk_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
 
-            filters = None
-            if len(filter_array["housing_price"]) > 0:
-                filters = Filter.all_of(filter_array["housing_price"])
-            # if len(filter_array["building_facility"]) > 0:
-            #     filters = filters | Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
-            # if len(filter_array["building_note"]) > 0:
-            #     filters = filters | Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
-            while len(building_list) < limit:
-                self._logger.log_info("Execute query")
-                response = building_chunk_collection.query.hybrid(
-                    query=query,
-                    target_vector="buildingDetails",
-                    filters=filters,
-                    limit=limit,
-                    offset=offset,
-                    return_references=[
-                        QueryReference(
-                            include_vector=True,
-                            link_on="hasBuilding"
-                        ),
-                    ],
-                )
+                filters = None
+                if len(filter_array["housing_price"]) > 0:
+                    filters = Filter.all_of(filter_array["housing_price"])
+                # if len(filter_array["building_facility"]) > 0:
+                #     filters = filters | Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
+                # if len(filter_array["building_note"]) > 0:
+                #     filters = filters | Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
+                while len(building_list) < limit:
+                    self._logger.log_info("Execute query")
+                    response = building_chunk_collection.query.hybrid(
+                        query=query,
+                        target_vector="buildingDetails",
+                        filters=filters,
+                        limit=limit,
+                        offset=offset,
+                        return_references=[
+                            QueryReference(
+                                include_vector=True,
+                                link_on="hasBuilding"
+                            ),
+                        ],
+                    )
 
-                self._logger.log_info(f"Object count: {len(response.objects)}")
-                if not response.objects:
-                    break
+                    self._logger.log_info(f"Object count: {len(response.objects)}")
+                    if not response.objects:
+                        break
 
-                for obj in response.objects:
-                    self._logger.log_info(f"[Object {obj.uuid}]: {obj.properties['chunk']}")
-                    for ref_obj in obj.references["hasBuilding"].objects:
-                        if ref_obj.uuid in seen_uuids:
-                            continue
+                    for obj in response.objects:
+                        self._logger.log_info(f"[Object {obj.uuid}]: {obj.properties['chunk']}")
+                        for ref_obj in obj.references["hasBuilding"].objects:
+                            if ref_obj.uuid in seen_uuids:
+                                continue
 
-                        seen_uuids.add(ref_obj.uuid)
-                        building_instance = Building(
-                            building_title=ref_obj.properties["buildingTitle"],
-                            building_address=ref_obj.properties["buildingAddress"],
-                            building_description=ref_obj.properties["buildingDescription"],
-                            housing_price=ref_obj.properties["housingPrice"],
-                            owner_name=ref_obj.properties["ownerName"],
-                            owner_email=ref_obj.properties["ownerEmail"],
-                            #owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
-                            #owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
-                            image_url=ref_obj.properties["imageURL"]
-                        )
-                        building_list.append(building_instance)
-                        self._logger.log_info(f"Building instance added, length: {len(building_list)}")
+                            seen_uuids.add(ref_obj.uuid)
+                            building_instance = Building(
+                                building_title=ref_obj.properties["buildingTitle"],
+                                building_address=ref_obj.properties["buildingAddress"],
+                                building_description=ref_obj.properties["buildingDescription"],
+                                housing_price=ref_obj.properties["housingPrice"],
+                                owner_name=ref_obj.properties["ownerName"],
+                                owner_email=ref_obj.properties["ownerEmail"],
+                                #owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
+                                #owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
+                                image_url=ref_obj.properties["imageURL"]
+                            )
+                            building_list.append(building_instance)
+                            self._logger.log_info(f"Building instance added, length: {len(building_list)}")
+                            if len(building_list) >= limit:
+                                break
+                    
                         if len(building_list) >= limit:
                             break
+                        
+                    offset += limit 
                 
-                    if len(building_list) >= limit:
-                        break
-                    
-                offset += limit 
-            
-            end_time = time.time()
-            elapsed_time = end_time - start_time
-            self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\nTotal object count: {str(len(building_list))}")
+                end_time = time.time()
+                elapsed_time = end_time - start_time
+                self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\nTotal object count: {str(len(building_list))}")
 
-        except Exception as e:
-            self._logger.log_exception(f"Failed do weaviate query, ERROR: {e}")
-            raise Exception(e)
-        finally:
-            WeaviateAPI.close_connection_to_server(self)
+            except socket.gaierror as e:
+                if e.errno == -2:
+                    retries += 1
+                    print(f"Attempt {retries} failed: {e}. Retrying in {retry_delay_in_sec} seconds...")
+                    time.sleep(retry_delay_in_sec)
+                else:
+                    print(f"Different socket error occurred: {e}")
+            except Exception as e:
+                self._logger.log_exception(f"Failed do weaviate query, ERROR: {e}")
+                raise Exception(e)
+            finally:
+                WeaviateAPI.close_connection_to_server(self)
+        else:
+            print(f"Weaviate operation failed after {max_retries} retries.")
             
         if len(building_list) == 0:
             output = self.feedback_prompt(prompt, session_id, True)
