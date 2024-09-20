@@ -274,7 +274,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 end_time = time.time()
                 elapsed_time = end_time - start_time
                 self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\nTotal object count: {str(len(building_list))}")
-
+                break
             except socket.gaierror as e:
                 if e.errno == -2:
                     retries += 1
