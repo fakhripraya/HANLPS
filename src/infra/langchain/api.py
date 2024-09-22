@@ -275,16 +275,11 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 elapsed_time = end_time - start_time
                 self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\nTotal object count: {str(len(building_list))}")
                 break
-            except socket.gaierror as e:
-                if e.errno == -2:
-                    retries += 1
-                    print(f"Attempt {retries} failed: {e}. Retrying in {retry_delay_in_sec} seconds...")
-                    time.sleep(retry_delay_in_sec)
-                else:
-                    print(f"Different socket error occurred: {e}")
             except Exception as e:
                 self._logger.log_exception(f"Failed do weaviate query, ERROR: {e}")
-                raise Exception(e)
+                print(f"Attempt {retries} failed: {e}. Retrying in {retry_delay_in_sec} seconds...")
+                retries += 1
+                time.sleep(retry_delay_in_sec)
             finally:
                 WeaviateAPI.close_connection_to_server(self)
         else:
