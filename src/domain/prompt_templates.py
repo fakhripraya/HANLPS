@@ -8,10 +8,7 @@ analyzer_template = """
     
     Analyze the incoming human input based on the history conversation context:
     - If the incoming input is contextually asking you to find KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, APARTMENTS, or BOARDING HOUSES. Please reply with True
-    - If the incoming input is contextually asking for advertising or for posting, just reply with False
-    - If the incoming input is contextually doing a normal chat, just reply with False
-    - If the incoming input is contextually confirm any satisfaction, just reply with False
-    - If the incoming input seems to be lacking of info, just reply with False
+    - Other than that. Please reply with False
     
     Only answer with True or False
     """
