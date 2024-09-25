@@ -12,7 +12,6 @@ from configs.config import (
     WEAVIATE_GRPC_PORT,
     WEAVIATE_REST_HOST,
     WEAVIATE_REST_PORT,
-    WEAVIATE_SECURE
 )
 from src.domain.constants import OPENAI, GEMINI
 from src.interactor.interfaces.repositories.weaviate.api import WeaviateAPIInterface

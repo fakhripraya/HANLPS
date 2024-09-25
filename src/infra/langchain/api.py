@@ -226,7 +226,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 
                 while len(building_list) < limit:
                     self._logger.log_info("Execute query")
-                    response = building_chunk_collection.query.hybrid(
+                    response = building_chunk_collection.query.near_text(
                         query=query,
                         target_vector="buildingDetails",
                         filters=filters,
