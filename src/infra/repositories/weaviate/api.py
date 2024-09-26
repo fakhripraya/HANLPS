@@ -99,7 +99,7 @@ class WeaviateAPI(WeaviateAPIInterface):
                     session_pool_maxsize=100
                 ),
                 timeout=Timeout(query=60, insert=120),
-            )
+            ),
             skip_init_checks=True
         )
     
