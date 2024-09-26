@@ -100,6 +100,7 @@ class WeaviateAPI(WeaviateAPIInterface):
                 ),
                 timeout=Timeout(query=60, insert=120),
             )
+            skip_init_checks=True
         )
     
     def connect_with_google(self) -> weaviate_lib.WeaviateClient:
