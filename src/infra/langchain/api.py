@@ -137,7 +137,11 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         conversation = None
         if session_id in self._store:
             conversation = self._store[session_id]
-            self._logger.log_info(conversation)
+            
+            # Only let 10 message in the chat history for context window efficiency
+            while len(self._store[session_id].messages) > 10:
+                self._store[session_id].messages.pop(0)
+            self._logger.log_info(conversation.messages)
             
         templates = self._templates["analyzer_template"]
         result: str = self._prompt_parser.execute(

@@ -1,18 +1,18 @@
 """ Module for PromptParser class."""
 
-from src.interactor.interfaces.prompt_parser.prompt_parser import PromptParserInterface
+from typing import Any
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from langchain_openai.chat_models import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableParallel
 
-class PromptParser(PromptParserInterface):
+class PromptParser():
     """ PromptParser class.
     """
     def __init__(self, llm_client: ChatOpenAI):
         self._client = llm_client
 
-    def execute(self, input: dict, templates) -> str:
+    def execute(self, input: dict, templates: dict[list[str], Any]) -> str:
         """ Parse the incoming prompt.
         :param prompt: Prompt to be parse.
         :return: output

@@ -10,5 +10,5 @@ class MessagingPresenterInterface(ABC):
     """
     @abstractmethod
     def present(self, output_dto: MessagingOutputDto) -> dict:
-        """ Present the Profession
+        """ Present the Messages
         """

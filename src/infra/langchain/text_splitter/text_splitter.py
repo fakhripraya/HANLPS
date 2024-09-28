@@ -17,7 +17,7 @@ class LangchainTextSplitter():
             self,
             data
     ):
-        """ This method is splitter the document text.
+        """ This method is to split the document text.
         :param data: The input data transfer object.
         :type data: Any
         :return: Any

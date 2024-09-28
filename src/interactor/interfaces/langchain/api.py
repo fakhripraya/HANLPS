@@ -18,6 +18,7 @@ class LangchainAPIInterface(ABC):
         Create OpenAI LLM and register it as dependency
         """
     
+    @abstractmethod
     def create_gemini_llm(self) -> None:
         """ 
         Create Gemini LLM and register it as dependency
@@ -32,7 +33,6 @@ class LangchainAPIInterface(ABC):
     @abstractmethod
     def get_session_history(self, session_id) -> BaseChatMessageHistory:
         """ Get message history by session id
-
         :param session_id: session id
         :return: BaseChatMessageHistory
         """
