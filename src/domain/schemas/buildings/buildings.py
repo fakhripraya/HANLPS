@@ -28,6 +28,12 @@ def create_buildings_vectordb_schema(client: WeaviateClient, logger: LoggerInter
                     skip_vectorization=True
                 ),
                 wvc.config.Property(
+                    name="buildingGeolocation",
+                    data_type=wvc.config.DataType.GEO_COORDINATES,
+                    vectorize_property_name=False,
+                    skip_vectorization=True
+                ),
+                wvc.config.Property(
                     name="housingPrice",
                     data_type=wvc.config.DataType.NUMBER,
                     vectorize_property_name=False,

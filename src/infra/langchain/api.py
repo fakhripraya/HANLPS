@@ -4,7 +4,6 @@
 # Standard and third-party libraries
 import time
 import json
-import socket
 
 # Source-specific imports
 from configs.config import (
@@ -27,8 +26,14 @@ from src.infra.repositories.weaviate.query_parser.query_parser import QueryParse
 from src.infra.repositories.weaviate.api import WeaviateAPI
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.infra.repositories.weaviate.schema.collections.buildings.buildings import append_housing_price_filters, append_building_facility_filters, append_building_note_filters
+from src.infra.repositories.weaviate.schema.collections.buildings.buildings import (
+    append_housing_price_filters,
+    append_building_facility_filters,
+    append_building_note_filters,
+    append_building_geolocation_filters
+)
 from src.domain.entities.building.building import Building
+from src.infra.geocoding.api import GeocodingAPI
 
 # Langchain and related libraries
 from langchain_core.prompts.chat import SystemMessagePromptTemplate
@@ -77,6 +82,12 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             "building_found_template": building_found_template,
         }
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self):
+        WeaviateAPI.close_connection_to_server()
+        
     def create_open_ai_llm(self) -> None:
         """ 
         Create OpenAI LLM and register it as dependency
@@ -170,26 +181,32 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             filter_array = None
             filter_array = {
                 "housing_price" : append_housing_price_filters(buildings_filter, []),
-                "building_facility" : append_building_facility_filters(buildings_filter, []),
-                "building_note" : append_building_note_filters(buildings_filter, [])
+                # "building_facility" : append_building_facility_filters(buildings_filter, []),
+                # "building_note" : append_building_note_filters(buildings_filter, [])
             }
+            with GeocodingAPI(self._logger) as obj:
+                    geocode_data = obj.execute_geocode_by_address(buildings_filter.building_address)
+                    self._logger.log_info(f"Got geocode data: {geocode_data}")
+                    lat_long = geocode_data[0]['geometry']['location']
+                    filter_array["building_geolocation"] = append_building_geolocation_filters(lat_long, [])               
             self._logger.log_info(f"Filters array: {filter_array}")
             
             building_instance = None
             building_query = None
             filter_validation = any([
                 buildings_filter.building_title,
-                buildings_filter.building_address,
+                # buildings_filter.building_address,
                 buildings_filter.building_proximity,
-                # buildings_filter.building_facility
+                buildings_filter.building_facility
             ])
             if(filter_validation):
                 building_instance = Building(
                     building_title=buildings_filter.building_title,
-                    building_address=buildings_filter.building_address,
+                    # building_address=buildings_filter.building_address,
                     building_proximity=buildings_filter.building_proximity,
-                    # building_facility=buildings_filter.building_facility
-                )
+                    building_facility=buildings_filter.building_facility
+                ) 
+                    
                 building_dict = building_instance.to_dict()
                 building_query = self._query_parser.execute(building_dict)
             
@@ -223,10 +240,12 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 filters = None
                 if len(filter_array["housing_price"]) > 0:
                     filters = Filter.all_of(filter_array["housing_price"])
-                if len(filter_array["building_facility"]) > 0:
-                    filters = filters & Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
-                if len(filter_array["building_note"]) > 0:
-                    filters = filters & Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
+                # if len(filter_array["building_facility"]) > 0:
+                #     filters = filters & Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
+                # if len(filter_array["building_note"]) > 0:
+                #     filters = filters & Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
+                if len(filter_array["building_geolocation"]) > 0:
+                    filters = filters & Filter.any_of(filter_array["building_geolocation"]) if filters else Filter.any_of(filter_array["building_geolocation"])
                 
                 while len(building_list) < limit:
                     self._logger.log_info("Execute query")

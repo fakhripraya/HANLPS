@@ -1,5 +1,6 @@
 """ This module is responsible for all reverse geocoding method.
 """
+from googlemaps import Client, geocoding
 
 class ReverseGeocodeModules():
     """ This class is responsible for reverse geocoding method
@@ -7,7 +8,7 @@ class ReverseGeocodeModules():
 
     def __init__(
             self,
-            client,
+            client: Client,
     ):
         self._client = client
 
@@ -23,5 +24,5 @@ class ReverseGeocodeModules():
         :type long: str
         :return: str
         """
-        result = self.client.reverse_geocode((lat, long), enable_address_descriptor=True)
+        result = geocoding.reverse_geocode(self._client, (lat, long))
         return result

@@ -54,6 +54,12 @@ class WeaviateAPI(WeaviateAPIInterface):
         finally:
             self.close_connection_to_server()
       
+    def __enter__(self):
+        return self
+
+    def __exit__(self):
+        self.close_connection_to_server()
+        
     def connect_to_server(self, with_modules, module_used) -> weaviate_lib.WeaviateClient:
         if with_modules == 1 and module_used == OPENAI:
             return self.connect_with_openai()
@@ -173,6 +179,7 @@ class WeaviateAPI(WeaviateAPIInterface):
                             "buildingTitle": doc["building_title"],
                             "buildingAddress": doc["building_address"],
                             "buildingDescription": doc["building_description"],
+                            "buildingGeolocation": doc["building_geolocation"],
                             "housingPrice": float(doc["housing_price"]),
                             "ownerName": doc["owner_name"],
                             "ownerWhatsapp": doc["owner_whatsapp"],
