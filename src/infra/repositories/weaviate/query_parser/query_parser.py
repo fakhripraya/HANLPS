@@ -15,6 +15,7 @@ class QueryParser(QueryParserInterface):
         key_prefix_pairs = {
             "building_title": "",
             "building_facility": "Memiliki fasilitas",
+            "building_note": "",
             "building_proximity": "Dekat dengan "
         }
 

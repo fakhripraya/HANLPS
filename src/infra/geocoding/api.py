@@ -23,7 +23,9 @@ class GeocodingAPI(GeocodingAPIInterface):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        print(f"Releasing {self.resource}")
+        print(f"Exiting Type:{exc_type}")
+        print(f"Exiting Val :{exc_val}")
+        print(f"Exiting TB :{exc_tb}")
         
     def execute_geocode_by_address(self, address) -> str:
         """ 

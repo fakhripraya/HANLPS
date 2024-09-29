@@ -181,8 +181,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             filter_array = None
             filter_array = {
                 "housing_price" : append_housing_price_filters(buildings_filter, []),
-                # "building_facility" : append_building_facility_filters(buildings_filter, []),
-                # "building_note" : append_building_note_filters(buildings_filter, [])
             }
             with GeocodingAPI(self._logger) as obj:
                     geocode_data = obj.execute_geocode_by_address(buildings_filter.building_address)
@@ -195,16 +193,16 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             building_query = None
             filter_validation = any([
                 buildings_filter.building_title,
-                # buildings_filter.building_address,
                 buildings_filter.building_proximity,
-                buildings_filter.building_facility
+                buildings_filter.building_facility,
+                buildings_filter.building_note
             ])
             if(filter_validation):
                 building_instance = Building(
                     building_title=buildings_filter.building_title,
-                    # building_address=buildings_filter.building_address,
                     building_proximity=buildings_filter.building_proximity,
-                    building_facility=buildings_filter.building_facility
+                    building_facility=buildings_filter.building_facility,
+                    building_note=buildings_filter.building_note
                 ) 
                     
                 building_dict = building_instance.to_dict()
@@ -240,10 +238,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 filters = None
                 if len(filter_array["housing_price"]) > 0:
                     filters = Filter.all_of(filter_array["housing_price"])
-                # if len(filter_array["building_facility"]) > 0:
-                #     filters = filters & Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
-                # if len(filter_array["building_note"]) > 0:
-                #     filters = filters & Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
                 if len(filter_array["building_geolocation"]) > 0:
                     filters = filters & Filter.any_of(filter_array["building_geolocation"]) if filters else Filter.any_of(filter_array["building_geolocation"])
                 

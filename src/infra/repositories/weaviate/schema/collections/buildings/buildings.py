@@ -15,26 +15,8 @@ def append_housing_price_filters(buildings_filter: BuildingsFilter, filter_array
         
     return filter_array
 
-def append_building_facility_filters(buildings_filter: BuildingsFilter, filter_array: list) -> list:
-    if isinstance(buildings_filter.building_facility, str):
-        result_list = [item.strip() for item in buildings_filter.building_facility.split(',')]
-        if all(isinstance(item, str) for item in result_list):
-            for k in result_list:
-                filter_array.append(Filter.by_ref(link_on="hasBuilding").by_property("buildingDescription").like(f"*{k}*"))
-    
-    return filter_array
-
-
-def append_building_note_filters(buildings_filter: BuildingsFilter, filter_array: list) -> list:
-    if isinstance(buildings_filter.building_note, str):
-        result_list = [item.strip() for item in buildings_filter.building_note.split(',')]
-        if all(isinstance(item, str) for item in result_list):
-            for k in result_list:
-                filter_array.append(Filter.by_ref(link_on="hasBuilding").by_property("buildingDescription").like(f"*{k}*"))
-    
-    return filter_array
 def append_building_geolocation_filters(lat_long: str, filter_array: list) -> list:
-    if isinstance(lat_long, str):
+    if lat_long is not None:
         filter_array.append(Filter.by_ref(link_on="hasBuilding").by_property("buildingGeolocation").within_geo_range(coordinate=GeoCoordinate(
                 latitude=float(lat_long['lat']),
                 longitude=float(lat_long['lng'])
