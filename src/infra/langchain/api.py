@@ -230,6 +230,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         retries = 0
         max_retries = 3
         retry_delay_in_sec = 1
+        geolocation_stages = [2000, 5000, 10000]
+        geolocation_stage_index = 0
         while retries < max_retries:
             try:
                 self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
@@ -238,6 +240,10 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 filters = None
                 if len(filter_array["housing_price"]) > 0:
                     filters = Filter.all_of(filter_array["housing_price"])
+                if len(filter_array["building_facility"]) > 0:
+                    filters = filters & Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
+                if len(filter_array["building_note"]) > 0:
+                    filters = filters & Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
                 if len(filter_array["building_geolocation"]) > 0:
                     filters = filters & Filter.any_of(filter_array["building_geolocation"]) if filters else Filter.any_of(filter_array["building_geolocation"])
                 
