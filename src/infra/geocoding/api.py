@@ -1,6 +1,7 @@
 """ Module for GeocodingAPI
 """
 import googlemaps
+import traceback
 from configs.config import (
     GOOGLE_MAPS_API_KEY
 )
@@ -23,9 +24,9 @@ class GeocodingAPI(GeocodingAPIInterface):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        print(f"Exiting Type:{exc_type}")
-        print(f"Exiting Val :{exc_val}")
-        print(f"Exiting TB :{exc_tb}")
+        if exc_type is not None:
+            self._logger.log_exception(f"[{exc_type}]: {exc_val}")
+            self._logger.log_exception(f"Traceback: {traceback.format_tb(exc_tb)}")
         
     def execute_geocode_by_address(self, address) -> str:
         """ 

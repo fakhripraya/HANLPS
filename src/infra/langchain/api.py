@@ -4,6 +4,7 @@
 # Standard and third-party libraries
 import time
 import json
+import traceback
 
 # Source-specific imports
 from configs.config import (
@@ -87,7 +88,10 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     def __enter__(self):
         return self
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is not None:
+            self._logger.log_exception(f"[{exc_type}]: {exc_val}")
+            self._logger.log_exception(f"Traceback: {traceback.format_tb(exc_tb)}")
         WeaviateAPI.close_connection_to_server()
         
     def create_open_ai_llm(self) -> None:

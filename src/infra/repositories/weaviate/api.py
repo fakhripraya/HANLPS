@@ -3,6 +3,7 @@
 
 import json
 import weaviate as weaviate_lib
+import traceback
 from weaviate.config import AdditionalConfig, ConnectionConfig , Timeout
 from configs.config import (
     OPENAI_API_KEY,
@@ -50,14 +51,17 @@ class WeaviateAPI(WeaviateAPIInterface):
         except Exception as e:
             if self._weaviate_client is not None:
                 self._weaviate_client.close()
-            logger.log_critical(f"Failed to start weaviate client, ERROR: {e}")
+            self._logger.log_critical(f"Failed to start weaviate client, ERROR: {e}")
         finally:
             self.close_connection_to_server()
       
     def __enter__(self):
         return self
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is not None:
+            self._logger.log_exception(f"[{exc_type}]: {exc_val}")
+            self._logger.log_exception(f"Traceback: {traceback.format_tb(exc_tb)}")
         self.close_connection_to_server()
         
     def connect_to_server(self, with_modules, module_used) -> weaviate_lib.WeaviateClient:
