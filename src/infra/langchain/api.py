@@ -132,7 +132,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
 
     def get_session_history(self, session_id) -> BaseChatMessageHistory:
         """ Get message history by session id
-        :param session_id: session id
+        :param session_id: chat session id
         :return: BaseChatMessageHistory
         """
         if session_id not in self._store:
@@ -143,6 +143,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
+        :param session_id: chat session id.
         :param prompt: chat message to be analyzed.
         """
         self._logger.log_info(f"Session: {session_id}")
@@ -150,7 +151,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         conversation = None
         if session_id in self._store:
             conversation = self._store[session_id]
-            
             # Only let 10 message in the chat history for context window efficiency
             while len(self._store[session_id].messages) > 10:
                 self._store[session_id].messages.pop(0)
@@ -254,59 +254,61 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             try:
                 self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
                 building_chunk_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
-                    
-                while geolocation_stage_index < len(geolocation_stages):
-                    if callable(filter_array.get("building_geolocation")):
+                is_geofilter_callable = callable(filter_array.get("building_geolocation"))
+                
+                while len(building_list) < limit:
+                    if is_geofilter_callable:
+                        self._logger.log_info(f"Trying to get location at: {geolocation_stages[geolocation_stage_index]} distance")
                         geo_filter = filter_array["building_geolocation"](geolocation_stages[geolocation_stage_index])
-                        if geo_filter and len(geo_filter) > 0:
-                            filters = filters & Filter.any_of(geo_filter) if filters else Filter.any_of(geo_filter)
+                        filters = filters & Filter.any_of(geo_filter) if filters else Filter.any_of(geo_filter) 
                     
-                    self._logger.log_info(f"Trying to get location at: {geolocation_stages[geolocation_stage_index]} distance")
-                    while len(building_list) < limit:
-                        self._logger.log_info("Execute query")
-                        response = query_building_with_reference(
-                            building_chunk_collection,
-                            query,
-                            filters,
-                            limit,
-                            offset
-                        )
+                    self._logger.log_info(f"Execute query with query: {query}")
+                    response = query_building_with_reference(
+                        building_chunk_collection,
+                        query,
+                        filters,
+                        limit,
+                        offset
+                    )
 
-                        self._logger.log_info(f"Object count: {len(response.objects)}")
-                        if not response.objects:
-                            self._logger.log_info(f"Failed to get location at: {geolocation_stages[geolocation_stage_index]} distance")
+                    if not response.objects:
+                        if(is_geofilter_callable and geolocation_stage_index < len(geolocation_stage_index)):
+                            self._logger.log_info(f"Failed to get location at: {geolocation_stages[geolocation_stage_index]} distance, with query {query}")
                             geolocation_stage_index += 1
                             offset = 0
+                        else:
+                            self._logger.log_info(f"Failed to get location with query: {query}")
                             break
 
-                        for obj in response.objects:
-                            self._logger.log_info(f"[Object {obj.uuid}]: {obj.properties['chunk']}")
-                            for ref_obj in obj.references["hasBuilding"].objects:
-                                if ref_obj.uuid in seen_uuids:
-                                    continue
+                    self._logger.log_info(f"Queried object found count: {len(response.objects)}")
+                    for obj in response.objects:
+                        self._logger.log_info(f"[Object {obj.uuid}]: {obj.properties['chunk']}")
+                        for ref_obj in obj.references["hasBuilding"].objects:
+                            if ref_obj.uuid in seen_uuids:
+                                continue
 
-                                seen_uuids.add(ref_obj.uuid)
-                                building_instance = Building(
-                                    building_title=ref_obj.properties["buildingTitle"],
-                                    building_address=ref_obj.properties["buildingAddress"],
-                                    building_description=ref_obj.properties["buildingDescription"],
-                                    housing_price=ref_obj.properties["housingPrice"],
-                                    owner_name=ref_obj.properties["ownerName"],
-                                    owner_email=ref_obj.properties["ownerEmail"],
-                                    #owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
-                                    #owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
-                                    image_url=ref_obj.properties["imageURL"]
-                                )
-                                building_list.append(building_instance)
-                                self._logger.log_info(f"Building instance added, length: {len(building_list)}")
-                                if len(building_list) >= limit:
-                                    break
-                        
+                            seen_uuids.add(ref_obj.uuid)
+                            building_instance = Building(
+                                building_title=ref_obj.properties["buildingTitle"],
+                                building_address=ref_obj.properties["buildingAddress"],
+                                building_description=ref_obj.properties["buildingDescription"],
+                                housing_price=ref_obj.properties["housingPrice"],
+                                owner_name=ref_obj.properties["ownerName"],
+                                owner_email=ref_obj.properties["ownerEmail"],
+                                #owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
+                                #owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
+                                image_url=ref_obj.properties["imageURL"]
+                            )
+                            building_list.append(building_instance)
+                            self._logger.log_info(f"Building instance added, length: {len(building_list)}")
                             if len(building_list) >= limit:
                                 break
-                            
-                        offset += limit 
-                
+                    
+                        if len(building_list) >= limit:
+                            break
+                        
+                    offset += limit 
+            
                 end_time = time.time()
                 elapsed_time = end_time - start_time
                 self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\nTotal object count: {str(len(building_list))}")

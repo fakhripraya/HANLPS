@@ -31,22 +31,23 @@ class LangchainAPIInterface(ABC):
         """
         
     @abstractmethod
-    def get_session_history(self, session_id) -> BaseChatMessageHistory:
-        """ Get message history by session id
-        :param session_id: session id
+    def get_session_history(self, session_id: str) -> BaseChatMessageHistory:
+         """ Get message history by session id
+        :param session_id: chat session id
         :return: BaseChatMessageHistory
         """
 
     @abstractmethod
-    def analyze_prompt(self, sessionid: str, prompt: str) -> Message:
+    def analyze_prompt(self, session_id: str, prompt: str) -> Message:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
+        :param session_id: chat session id.
         :param prompt: chat message to be analyzed.
         """
 
     @abstractmethod
-    def vector_db_retrieval(self, prompt: str, sessionId: str, filter_array: dict[str, list], query: str) -> Message:
+    def vector_db_retrieval(self, prompt: str, session_id: str, filter_array: dict[str, list], query: str) -> Message:
         """
         Vector database data retrieval process
         :param prompt: chat message to be analyzed.
@@ -56,7 +57,7 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def feedback_prompt(self, prompt: str, sessionId: str, reask: bool, found: list[Building] | None) -> Message:
+    def feedback_prompt(self, prompt: str, session_id: str, reask: bool, found: list[Building] | None) -> Message:
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
