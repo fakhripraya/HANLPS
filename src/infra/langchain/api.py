@@ -191,13 +191,23 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 "building_note" : append_building_note_filters(buildings_filter, []),
             }
             with GeocodingAPI(self._logger) as obj:
-                    geocode_data = obj.execute_geocode_by_address(buildings_filter.building_address)
-                    self._logger.log_info(f"Got geocode data: {geocode_data}")
-                    if (len(geocode_data) > 0):
-                        lat_long = geocode_data[0]['geometry']['location']
-                        filter_array["building_geolocation"] = lambda distance: append_building_geolocation_filters(lat_long, distance , [])               
-            self._logger.log_info(f"Filters array: {filter_array}")
+                try:
+                    query = None
+                    if(buildings_filter.building_address is not None):
+                        query = buildings_filter.building_address
+                    else:
+                        query = buildings_filter.building_proximity
+                        
+                    if(query is not None):
+                        geocode_data = obj.execute_geocode_by_address(query)
+                        self._logger.log_info(f"Got geocode data: {geocode_data}")
+                        if (len(geocode_data) > 0):
+                            lat_long = geocode_data[0]['geometry']['location']
+                            filter_array["building_geolocation"] = lambda distance: append_building_geolocation_filters(lat_long, distance , [])    
+                except Exception as e:
+                    self._logger.log_exception(f"Error Geocode: {e}")
             
+            self._logger.log_info(f"Filters array: {filter_array}")
             building_instance = None
             building_query = None
             filter_validation = any([
@@ -246,13 +256,13 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         geolocation_stage_index = 0
         
         # Setup fixed filters
-        filters = None
+        fixed_filters = None
         if len(filter_array["housing_price"]) > 0:
-            filters = Filter.all_of(filter_array["housing_price"])
+            fixed_filters = Filter.all_of(filter_array["housing_price"])
         if len(filter_array["building_facility"]) > 0:
-            filters = filters & Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
+            fixed_filters = fixed_filters & Filter.any_of(filter_array["building_facility"]) if fixed_filters else Filter.any_of(filter_array["building_facility"])
         if len(filter_array["building_note"]) > 0:
-            filters = filters & Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
+            fixed_filters = fixed_filters & Filter.any_of(filter_array["building_note"]) if fixed_filters else Filter.any_of(filter_array["building_note"])
         
         while retries < max_retries:
             try:
@@ -261,11 +271,17 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 is_geofilter_callable = callable(filter_array.get("building_geolocation"))
                 
                 while len(building_list) < limit:
-                    if is_geofilter_callable:
-                        self._logger.log_info(f"Trying to get location at: {geolocation_stages[geolocation_stage_index]} distance")
-                        geo_filter = filter_array["building_geolocation"](geolocation_stages[geolocation_stage_index])
-                        filters = filters & Filter.any_of(geo_filter) if filters else Filter.any_of(geo_filter) 
+                    filters = None
+                    geofilter = None
+                    with_geofilter = is_geofilter_callable and geolocation_stage_index < len(geolocation_stages)
                     
+                    if with_geofilter:
+                        self._logger.log_info(f"Trying to get location at: {geolocation_stages[geolocation_stage_index]} distance")
+                        geofilter = filter_array["building_geolocation"](geolocation_stages[geolocation_stage_index])
+                    
+                    if geofilter:
+                        filters = fixed_filters & Filter.any_of(geofilter) if fixed_filters else Filter.any_of(geofilter)
+                        
                     self._logger.log_info(f"Execute query with query: {query}")
                     response = query_building_with_reference(
                         building_chunk_collection,
@@ -274,9 +290,9 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                         limit,
                         offset
                     )
-
+                    
                     if not response.objects:
-                        if(is_geofilter_callable and geolocation_stage_index < len(geolocation_stage_index)):
+                        if with_geofilter:
                             self._logger.log_info(f"Failed to get location at: {geolocation_stages[geolocation_stage_index]} distance, with query {query}")
                             geolocation_stage_index += 1
                             offset = 0
