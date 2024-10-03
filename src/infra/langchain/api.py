@@ -282,11 +282,11 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
 
                     self._logger.log_info(f"Queried object found count: {len(response.objects)}")
                     for obj in response.objects:
-                        self._logger.log_info(f"[Object {obj.uuid}]: {obj.properties['chunk']}")
                         for ref_obj in obj.references["hasBuilding"].objects:
                             if ref_obj.uuid in seen_uuids:
                                 continue
 
+                            self._logger.log_info(f"[{ref_obj.uuid}]: Adding building {ref_obj.properties["buildingTitle"]}")
                             seen_uuids.add(ref_obj.uuid)
                             building_instance = Building(
                                 building_title=ref_obj.properties["buildingTitle"],
@@ -300,7 +300,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                                 image_url=ref_obj.properties["imageURL"]
                             )
                             building_list.append(building_instance)
-                            self._logger.log_info(f"Building instance added, length: {len(building_list)}")
+                            self._logger.log_info(f"Building object added, length: {len(building_list)}")
                             if len(building_list) >= limit:
                                 break
                     
