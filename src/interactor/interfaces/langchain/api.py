@@ -38,21 +38,21 @@ class LangchainAPIInterface(ABC):
         """
 
     @abstractmethod
-    def receive_prompt(self, sessionid: str, prompt: str) -> Message:
-        """ 
-        Receive prompt, receive the prompt from the client app
-        :param sessionid: chat conversation session Id.
-        :param prompt: chat message to be analyzed.
-        """
-
-    @abstractmethod
-    def analyze_prompt(self, prompt: str, sessionId: str, filter_array: list, query: str) -> Message:
+    def analyze_prompt(self, sessionid: str, prompt: str) -> Message:
         """ 
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
         :param prompt: chat message to be analyzed.
+        """
+
+    @abstractmethod
+    def vector_db_retrieval(self, prompt: str, sessionId: str, filter_array: dict[str, list], query: str) -> Message:
+        """
+        Vector database data retrieval process
+        :param prompt: chat message to be analyzed.
+        :param session_id: session id of the chat.
         :param filter_array: filters that needed for prompt analysis.
-        :param query: formatted accurate query for the vector DB based on the user input.
+        :param query: query for vector data retrieval with weaviate.
         """
 
     @abstractmethod
@@ -60,7 +60,9 @@ class LangchainAPIInterface(ABC):
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
+        :param session_id: session id of the chat.
         :param reask: reask flag.
+        :param found: data found elements.
         """
 
     @abstractmethod

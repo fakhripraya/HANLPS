@@ -12,6 +12,7 @@ class Building:
     building_address: Optional[str] = None
     building_proximity: Optional[str] = None
     building_facility: Optional[str] = None
+    building_note: Optional[str] = None
     building_description: Optional[str] = None
     housing_price: Optional[Union[str, float]] = None
     owner_name: Optional[str] = None
@@ -39,6 +40,7 @@ class Building:
                 f"building_address={self.building_address}, "
                 f"building_proximity={self.building_proximity}, "
                 f"building_facility={self.building_facility}, "
+                f"building_note={self.building_note}, "
                 f"building_description={self.building_description}, "
                 f"housing_price={self.housing_price}, "
                 f"owner_name={self.owner_name}, "

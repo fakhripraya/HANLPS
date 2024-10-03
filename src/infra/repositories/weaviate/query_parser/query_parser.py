@@ -1,30 +1,31 @@
 """ Module for QueryParser class."""
 
-from src.interactor.interfaces.repositories.weaviate.query_parser import QueryParserInterface
+from typing import Any
 
-class QueryParser(QueryParserInterface):
+class QueryParser():
     """ QueryParser class.
     """
 
-    def execute(self , dict) -> str:
+    def execute(self , dict: dict[str, Any]) -> str:
         """ Parse the incoming query.
-        :return: output
+        :return: parsed_query
         """
-        output = ""
+        parsed_query = ""
 
         key_prefix_pairs = {
             "building_title": "",
+            "building_address": "Beralamat di ",
+            "building_proximity": "Dekat dengan ",
             "building_facility": "Memiliki fasilitas",
             "building_note": "",
-            "building_proximity": "Dekat dengan "
         }
 
         for index, (key, prefix) in enumerate(key_prefix_pairs.items()):
             if dict.get(key):
                 if index > 0:
-                    output += " "
-                output += prefix + dict[key]
+                    parsed_query += " "
+                parsed_query += prefix + dict[key]
 
-        return output
+        return parsed_query
         
         

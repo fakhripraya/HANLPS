@@ -46,8 +46,10 @@ from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_openai.chat_models import ChatOpenAI
 from langchain_huggingface import HuggingFacePipeline
 from langchain_google_genai import ChatGoogleGenerativeAI
+
+# Weaviate
+from src.infra.repositories.weaviate.query.query import query_building_with_reference
 from weaviate.classes.query import Filter
-from weaviate.classes.query import QueryReference
 
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
     """ LangchainAPI class.
@@ -130,7 +132,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
 
     def get_session_history(self, session_id) -> BaseChatMessageHistory:
         """ Get message history by session id
-
         :param session_id: session id
         :return: BaseChatMessageHistory
         """
@@ -138,9 +139,10 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             self._store[session_id] = ChatMessageHistory()
         return self._store[session_id]
 
-    def receive_prompt(self, session_id, prompt) -> Message:
+    def analyze_prompt(self, session_id, prompt) -> Message:
         """ 
-        Receive prompt, receive the prompt from the client app
+        Analyze prompt, define whether the prompt is a direct
+        command, a simple chat, etc.
         :param prompt: chat message to be analyzed.
         """
         self._logger.log_info(f"Session: {session_id}")
@@ -181,18 +183,22 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             filter_array = None
             filter_array = {
                 "housing_price" : append_housing_price_filters(buildings_filter, []),
+                "building_facility" : append_building_facility_filters(buildings_filter, []),
+                "building_note" : append_building_note_filters(buildings_filter, []),
             }
             with GeocodingAPI(self._logger) as obj:
                     geocode_data = obj.execute_geocode_by_address(buildings_filter.building_address)
                     self._logger.log_info(f"Got geocode data: {geocode_data}")
-                    lat_long = geocode_data[0]['geometry']['location']
-                    filter_array["building_geolocation"] = append_building_geolocation_filters(lat_long, [])               
+                    if (len(geocode_data) > 0):
+                        lat_long = geocode_data[0]['geometry']['location']
+                        filter_array["building_geolocation"] = lambda distance: append_building_geolocation_filters(lat_long, distance , [])               
             self._logger.log_info(f"Filters array: {filter_array}")
             
             building_instance = None
             building_query = None
             filter_validation = any([
                 buildings_filter.building_title,
+                buildings_filter.building_address,
                 buildings_filter.building_proximity,
                 buildings_filter.building_facility,
                 buildings_filter.building_note
@@ -200,6 +206,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             if(filter_validation):
                 building_instance = Building(
                     building_title=buildings_filter.building_title,
+                    building_address=buildings_filter.building_address,
                     building_proximity=buildings_filter.building_proximity,
                     building_facility=buildings_filter.building_facility,
                     building_note=buildings_filter.building_note
@@ -209,17 +216,18 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 building_query = self._query_parser.execute(building_dict)
             
             self._logger.log_info(f"Query:{building_query}")
-            output = self.analyze_prompt(prompt, session_id, filter_array, building_query)
+            output = self.vector_db_retrieval(prompt, session_id, filter_array, building_query)
             return output
         
         return self.feedback_prompt(prompt, session_id)
 
-    def analyze_prompt(self, prompt, session_id, filter_array, query="") -> Message:
+    def vector_db_retrieval(self, prompt, session_id, filter_array, query="") -> Message:
         """
-        Analyze prompt, define whether the prompt is a direct
-        command, a simple chat, etc.
+        Vector database data retrieval process
         :param prompt: chat message to be analyzed.
+        :param session_id: session id of the chat.
         :param filter_array: filters that needed for prompt analysis.
+        :param query: query for vector data retrieval with weaviate.
         """
         response = None
         limit = 10
@@ -232,68 +240,72 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         retry_delay_in_sec = 1
         geolocation_stages = [2000, 5000, 10000]
         geolocation_stage_index = 0
+        
+        # Setup fixed filters
+        filters = None
+        if len(filter_array["housing_price"]) > 0:
+            filters = Filter.all_of(filter_array["housing_price"])
+        if len(filter_array["building_facility"]) > 0:
+            filters = filters & Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
+        if len(filter_array["building_note"]) > 0:
+            filters = filters & Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
+        
         while retries < max_retries:
             try:
                 self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
                 building_chunk_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
+                    
+                while geolocation_stage_index < len(geolocation_stages):
+                    if callable(filter_array.get("building_geolocation")):
+                        geo_filter = filter_array["building_geolocation"](geolocation_stages[geolocation_stage_index])
+                        if geo_filter and len(geo_filter) > 0:
+                            filters = filters & Filter.any_of(geo_filter) if filters else Filter.any_of(geo_filter)
+                    
+                    self._logger.log_info(f"Trying to get location at: {geolocation_stages[geolocation_stage_index]} distance")
+                    while len(building_list) < limit:
+                        self._logger.log_info("Execute query")
+                        response = query_building_with_reference(
+                            building_chunk_collection,
+                            query,
+                            filters,
+                            limit,
+                            offset
+                        )
 
-                filters = None
-                if len(filter_array["housing_price"]) > 0:
-                    filters = Filter.all_of(filter_array["housing_price"])
-                if len(filter_array["building_facility"]) > 0:
-                    filters = filters & Filter.any_of(filter_array["building_facility"]) if filters else Filter.any_of(filter_array["building_facility"])
-                if len(filter_array["building_note"]) > 0:
-                    filters = filters & Filter.any_of(filter_array["building_note"]) if filters else Filter.any_of(filter_array["building_note"])
-                if len(filter_array["building_geolocation"]) > 0:
-                    filters = filters & Filter.any_of(filter_array["building_geolocation"]) if filters else Filter.any_of(filter_array["building_geolocation"])
-                
-                while len(building_list) < limit:
-                    self._logger.log_info("Execute query")
-                    response = building_chunk_collection.query.hybrid(
-                        query=query,
-                        target_vector="buildingDetails",
-                        filters=filters,
-                        limit=limit,
-                        offset=offset,
-                        return_references=[
-                            QueryReference(
-                                include_vector=True,
-                                link_on="hasBuilding"
-                            ),
-                        ],
-                    )
+                        self._logger.log_info(f"Object count: {len(response.objects)}")
+                        if not response.objects:
+                            self._logger.log_info(f"Failed to get location at: {geolocation_stages[geolocation_stage_index]} distance")
+                            geolocation_stage_index += 1
+                            offset = 0
+                            break
 
-                    self._logger.log_info(f"Object count: {len(response.objects)}")
-                    if not response.objects:
-                        break
+                        for obj in response.objects:
+                            self._logger.log_info(f"[Object {obj.uuid}]: {obj.properties['chunk']}")
+                            for ref_obj in obj.references["hasBuilding"].objects:
+                                if ref_obj.uuid in seen_uuids:
+                                    continue
 
-                    for obj in response.objects:
-                        self._logger.log_info(f"[Object {obj.uuid}]: {obj.properties['chunk']}")
-                        for ref_obj in obj.references["hasBuilding"].objects:
-                            if ref_obj.uuid in seen_uuids:
-                                continue
-
-                            seen_uuids.add(ref_obj.uuid)
-                            building_instance = Building(
-                                building_title=ref_obj.properties["buildingTitle"],
-                                building_address=ref_obj.properties["buildingAddress"],
-                                building_description=ref_obj.properties["buildingDescription"],
-                                housing_price=ref_obj.properties["housingPrice"],
-                                owner_name=ref_obj.properties["ownerName"],
-                                owner_email=ref_obj.properties["ownerEmail"],
-                                #owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
-                                #owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
-                                image_url=ref_obj.properties["imageURL"]
-                            )
-                            building_list.append(building_instance)
-                            self._logger.log_info(f"Building instance added, length: {len(building_list)}")
+                                seen_uuids.add(ref_obj.uuid)
+                                building_instance = Building(
+                                    building_title=ref_obj.properties["buildingTitle"],
+                                    building_address=ref_obj.properties["buildingAddress"],
+                                    building_description=ref_obj.properties["buildingDescription"],
+                                    housing_price=ref_obj.properties["housingPrice"],
+                                    owner_name=ref_obj.properties["ownerName"],
+                                    owner_email=ref_obj.properties["ownerEmail"],
+                                    #owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
+                                    #owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
+                                    image_url=ref_obj.properties["imageURL"]
+                                )
+                                building_list.append(building_instance)
+                                self._logger.log_info(f"Building instance added, length: {len(building_list)}")
+                                if len(building_list) >= limit:
+                                    break
+                        
                             if len(building_list) >= limit:
                                 break
-                    
-                        if len(building_list) >= limit:
-                            break
-                        
-                    offset += limit 
+                            
+                        offset += limit 
                 
                 end_time = time.time()
                 elapsed_time = end_time - start_time
@@ -320,7 +332,9 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         """ 
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
+        :param session_id: session id of the chat.
         :param reask: reask flag.
+        :param found: data found elements.
         """
         self._logger.log_info(f"Is reask for something is necessary: {reask}")
         self._logger.log_info(f"Is search found: {True if found else False}")
@@ -350,7 +364,10 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         """ 
         Respond the receiving prompt with the processed feedback
         command, a simple chat, etc.
-        :param prompt: chat message to be analyzed.
+        :param template: chat prompt template.
+        :param input_variables: input variables for the prompt template.
+        :param runnable_input: list of runnable template for langchain pipe.
+        :param session_id: session id of the chat.
         """
         system_message = SystemMessagePromptTemplate(
             prompt=PromptTemplate(
