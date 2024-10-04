@@ -39,6 +39,6 @@ def append_building_geolocation_filters(lat_long: str, distance: float, filter_a
         filter_array.append(Filter.by_ref(link_on="hasBuilding").by_property("buildingGeolocation").within_geo_range(coordinate=GeoCoordinate(
                 latitude=float(lat_long['lat']),
                 longitude=float(lat_long['lng'])
-            ), distance=2000))
+            ), distance=distance))
     
     return filter_array
