@@ -220,8 +220,8 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 buildings_filter.building_facility,
                 buildings_filter.building_note
             ])):
-                building_instance.building_title=buildings_filter.building_title,
-                building_instance.building_facility=buildings_filter.building_facility,
+                building_instance.building_title=buildings_filter.building_title
+                building_instance.building_facility=buildings_filter.building_facility
                 building_instance.building_note=buildings_filter.building_note      
                 
                 building_query = self._query_parser.execute(building_instance.to_dict())
