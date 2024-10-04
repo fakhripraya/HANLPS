@@ -190,16 +190,24 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 "building_facility" : append_building_facility_filters(buildings_filter, []),
                 "building_note" : append_building_note_filters(buildings_filter, []),
             }
+            
+            building_instance = None
+            building_query = None
+            
+            if(any([
+                buildings_filter.building_address,
+                buildings_filter.building_proximity,
+            ])):
+                building_instance = Building(
+                    building_address=buildings_filter.building_address,
+                    building_proximity=buildings_filter.building_proximity,
+                ) 
+                
+                building_query = self._query_parser.execute(building_instance.to_dict())
             with GeocodingAPI(self._logger) as obj:
                 try:
-                    query = None
-                    if(buildings_filter.building_address is not None):
-                        query = buildings_filter.building_address
-                    else:
-                        query = buildings_filter.building_proximity
-                        
-                    if(query is not None):
-                        geocode_data = obj.execute_geocode_by_address(query)
+                    if(building_query is not None):
+                        geocode_data = obj.execute_geocode_by_address(building_query)
                         self._logger.log_info(f"Got geocode data: {geocode_data}")
                         if (len(geocode_data) > 0):
                             lat_long = geocode_data[0]['geometry']['location']
@@ -207,26 +215,16 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 except Exception as e:
                     self._logger.log_exception(f"Error Geocode: {e}")
             
-            building_instance = None
-            building_query = None
-            filter_validation = any([
+            if(any([
                 buildings_filter.building_title,
-                buildings_filter.building_address,
-                buildings_filter.building_proximity,
                 buildings_filter.building_facility,
                 buildings_filter.building_note
-            ])
-            if(filter_validation):
-                building_instance = Building(
-                    building_title=buildings_filter.building_title,
-                    building_address=buildings_filter.building_address,
-                    building_proximity=buildings_filter.building_proximity,
-                    building_facility=buildings_filter.building_facility,
-                    building_note=buildings_filter.building_note
-                ) 
-                    
-                building_dict = building_instance.to_dict()
-                building_query = self._query_parser.execute(building_dict)
+            ])):
+                building_instance.building_title=buildings_filter.building_title,
+                building_instance.building_facility=buildings_filter.building_facility,
+                building_instance.building_note=buildings_filter.building_note      
+                
+                building_query = self._query_parser.execute(building_instance.to_dict())
             
             self._logger.log_info(f"Query:{building_query}")
             output = self.vector_db_retrieval(prompt, session_id, filter_array, building_query)
