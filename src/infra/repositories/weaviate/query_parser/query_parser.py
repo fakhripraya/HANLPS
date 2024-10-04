@@ -6,7 +6,7 @@ class QueryParser():
     """ QueryParser class.
     """
 
-    def execute(self , dict: dict[str, Any], key_prefix_pairs: dict[str, str] | None) -> str:
+    def execute(self , dict: dict[str, Any], key_prefix_pairs: dict[str, str] | None = None) -> str:
         """ Parse the incoming dictionary into desirable query.
         :return: parsed_query
         """
