@@ -207,7 +207,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 except Exception as e:
                     self._logger.log_exception(f"Error Geocode: {e}")
             
-            self._logger.log_info(f"Filters array: {filter_array}")
             building_instance = None
             building_query = None
             filter_validation = any([
@@ -283,6 +282,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                         filters = fixed_filters & Filter.any_of(geofilter) if fixed_filters else Filter.any_of(geofilter)
                         
                     self._logger.log_info(f"Execute query with query: {query}")
+                    self._logger.log_info(f"Executing with filters: {filter_array}")
                     response = query_building_with_reference(
                         building_chunk_collection,
                         query,

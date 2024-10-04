@@ -21,5 +21,13 @@ class GeocodeModules():
         :type address: str
         :return: str
         """
-        result = geocoding.geocode(self._client, address)
+        result = geocoding.geocode(
+            self._client,
+            address,
+            components={
+                "country": "ID"
+            },
+            region="id",
+            language="id"
+        )
         return result
