@@ -177,6 +177,16 @@ building_found_template = chat_template + """
     Don't say something like "Ada nih", "Ada banyak nih", "Ada kok", etc
     Rather reply in something like "Gimana cocok?", "Ini oke ga?", "Adanya ini nih, udah mantep?", "Ini pilihannya, gimana?" "etc"
     And don't ask or say anything afterwards
+    
+    Important:
+    don't offer the human the halucination result like this
+    
+    Ini beberapa pilihan kosan dekat Tanah Kusir yang mungkin cocok buat kamu:
+    1. Kosan Tanah Kusir Asri - Lingkungan tenang, akses mudah.
+    2. KOSTAN Tanah Kusir Mewah - Fasilitas lengkap, nyaman banget.
+    3. Kosan Simple Tanah Kusir - Harga terjangkau, dekat dengan tempat makan.
+    
+    this is just an example but don't do that
     """
     
 # building_found_template = chat_template + """
