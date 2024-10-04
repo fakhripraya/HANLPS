@@ -1,6 +1,6 @@
 # HANLPS (Highly Accurate Natural Language Processing Service)
 
-# Instalation
+# Installation
 
 ## Create the virtual environment:
 
