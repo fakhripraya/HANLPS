@@ -179,12 +179,8 @@ building_found_template = chat_template + """
     And don't ask or say anything afterwards
     
     Important:
-    don't offer the human the halucination result like this
-    
-    Ini beberapa pilihan kosan dekat Tanah Kusir yang mungkin cocok buat kamu:
-    1. Kosan Tanah Kusir Asri - Lingkungan tenang, akses mudah.
-    2. KOSTAN Tanah Kusir Mewah - Fasilitas lengkap, nyaman banget.
-    3. Kosan Simple Tanah Kusir - Harga terjangkau, dekat dengan tempat makan.
+    don't offer the human the halucination result like this:
+    "Ini beberapa pilihan kosan dekat Tanah Kusir yang mungkin cocok buat kamu: 1. bla bla 2. bla bla"
     
     this is just an example but don't do that
     """
