@@ -40,7 +40,7 @@ def query_building_with_chunk_as_reference(
         limit=limit,
         offset=offset,
         return_references=[
-            QueryReference(include_vector=True, link_on="hasChunk"),
+            QueryReference(include_vector=True, link_on="hasChunks"),
         ],
     )
 
