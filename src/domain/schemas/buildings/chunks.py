@@ -73,4 +73,11 @@ def create_building_chunks_vectordb_schema(
             ],
         )
 
+        building_collection = client.collections.get(BUILDINGS_COLLECTION_NAME)
+        building_collection.config.add_reference(
+            wvc.config.ReferenceProperty(
+                name="hasChunks", target_collection=BUILDING_CHUNKS_COLLECTION_NAME
+            )
+        )
+
         logger.log_info(f"Successfully create collection: {new_collection}")

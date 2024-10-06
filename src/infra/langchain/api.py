@@ -13,7 +13,7 @@ from configs.config import (
     GEMINI_API_KEY, USE_MODULE, MODULE_USED, OPENAI_ANALYZER_MODEL
 )
 from src.domain.entities.message.message import Message
-from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME
+from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME, BUILDINGS_COLLECTION_NAME
 from src.domain.prompt_templates import (
     chat_template,
     analyzer_template,
@@ -49,7 +49,7 @@ from langchain_huggingface import HuggingFacePipeline
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Weaviate
-from src.infra.repositories.weaviate.query.query import query_building_with_reference
+from src.infra.repositories.weaviate.query.query import query_building_with_building_as_reference, query_building_with_chunk_as_reference
 from weaviate.classes.query import Filter
 
 class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
@@ -198,22 +198,25 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             }
             
             building_instance = None
-            building_query = None
+            location_query = None
+            facility_query = None
             
             if(any([
+                buildings_filter.building_title,
                 buildings_filter.building_address,
                 buildings_filter.building_proximity,
             ])):
                 building_instance = Building(
+                    building_title=buildings_filter.building_title,
                     building_address=buildings_filter.building_address,
                     building_proximity=buildings_filter.building_proximity,
                 ) 
+                location_query = self._query_parser.execute(building_instance.to_dict())
                 
-                building_query = self._query_parser.execute(building_instance.to_dict())
             with GeocodingAPI(self._logger) as obj:
                 try:
-                    if(building_query is not None):
-                        geocode_data = obj.execute_geocode_by_address(building_query)
+                    if(location_query is not None):
+                        geocode_data = obj.execute_geocode_by_address(location_query)
                         self._logger.log_info(f"Got geocode data: {geocode_data}")
                         if (len(geocode_data) > 0):
                             lat_long = geocode_data[0]['geometry']['location']
@@ -226,19 +229,21 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 buildings_filter.building_facility,
                 buildings_filter.building_note
             ])):
-                building_instance.building_title=buildings_filter.building_title
-                building_instance.building_facility=buildings_filter.building_facility
-                building_instance.building_note=buildings_filter.building_note      
-                
-                building_query = self._query_parser.execute(building_instance.to_dict())
+                facilitat_query_instance = Building(
+                    building_title=buildings_filter.building_title,
+                    building_address=buildings_filter.building_address,
+                    building_proximity=buildings_filter.building_proximity,
+                )       
+                facility_query = self._query_parser.execute(facilitat_query_instance.to_dict())
             
-            self._logger.log_info(f"Query:{building_query}")
-            output = self.vector_db_retrieval(prompt, session_id, filter_array, building_query)
+            self._logger.log_info(f"Facility Query:{facility_query}")
+            self._logger.log_info(f"Location Query:{location_query}")
+            output = self.vector_db_retrieval(prompt, session_id, filter_array, facility_query, location_query)
             return output
         
         return self.feedback_prompt(prompt, session_id)
 
-    def vector_db_retrieval(self, prompt, session_id, filter_array, query="") -> Message:
+    def vector_db_retrieval(self, prompt, session_id, filter_array, facility_query="", location_query="") -> Message:
         """
         Vector database data retrieval process
         :param prompt: chat message to be analyzed.
@@ -262,38 +267,48 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         fixed_filters = None
         if len(filter_array["housing_price"]) > 0:
             fixed_filters = Filter.all_of(filter_array["housing_price"])
+            
+        chunk_collection_filters = fixed_filters
         if len(filter_array["building_facility"]) > 0:
-            fixed_filters = fixed_filters & Filter.any_of(filter_array["building_facility"]) if fixed_filters else Filter.any_of(filter_array["building_facility"])
+            chunk_collection_filters = chunk_collection_filters & Filter.any_of(filter_array["building_facility"]) if chunk_collection_filters else Filter.any_of(filter_array["building_facility"])
         if len(filter_array["building_note"]) > 0:
-            fixed_filters = fixed_filters & Filter.any_of(filter_array["building_note"]) if fixed_filters else Filter.any_of(filter_array["building_note"])
+            chunk_collection_filters = chunk_collection_filters & Filter.any_of(filter_array["building_note"]) if chunk_collection_filters else Filter.any_of(filter_array["building_note"])    
         
         while retries < max_retries:
             try:
                 self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
+                building_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
                 building_chunk_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
                 is_geofilter_callable = callable(filter_array.get("building_geolocation"))
                 
                 while len(building_list) < limit:
                     filters = None
-                    geofilter = None
                     with_geofilter = is_geofilter_callable and geolocation_stage_index < len(geolocation_stages)
                     
                     if with_geofilter:
-                        self._logger.log_info(f"Trying to get location at: {geolocation_stages[geolocation_stage_index]} distance")
                         geofilter = filter_array["building_geolocation"](geolocation_stages[geolocation_stage_index])
-                    
-                    if geofilter:
                         filters = fixed_filters & Filter.any_of(geofilter) if fixed_filters else Filter.any_of(geofilter)
-                        
-                    self._logger.log_info(f"Execute query with query: {query}")
-                    self._logger.log_info(f"Executing with filters: {filter_array}")
-                    response = query_building_with_reference(
-                        building_chunk_collection,
-                        query,
-                        filters,
-                        limit,
-                        offset
-                    )
+                        self._logger.log_info(f"Execute query with facility query: {facility_query}")
+                        self._logger.log_info(f"Trying to get location at: {geolocation_stages[geolocation_stage_index]} distance")
+                        self._logger.log_info(f"Executing with filters: {filter_array}")
+                        response = query_building_with_chunk_as_reference(
+                            building_collection,
+                            facility_query,
+                            filters,
+                            limit,
+                            offset
+                        )
+                    else:
+                        self._logger.log_info(f"Execute query with location query: {location_query}")
+                        self._logger.log_info(f"Executing with filters: {filter_array}")
+                        filters = chunk_collection_filters
+                        response = query_building_with_building_as_reference(
+                            building_chunk_collection,
+                            location_query,
+                            filters,
+                            limit,
+                            offset
+                        )
                     
                     if not response.objects:
                         if with_geofilter:

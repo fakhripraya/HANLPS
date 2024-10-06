@@ -242,6 +242,21 @@ class WeaviateAPI(WeaviateAPIInterface):
             failed_references = building_chunks_collection.batch.failed_references
             self._logger.log_info(f"Building to Chunk references failed batch objects link: {failed_references}")
             
+            self._logger.log_info("Adding building as document references")
+            with buildings_collection.batch.dynamic() as building_reference_batch:
+                for idx, doc in enumerate(temp_building_to_be_refered):
+                    for i, obj in enumerate(doc["chunk_uuids"]):
+                        self._logger.log_info(f"[{obj["chunk_uuid"]}]: Adding building {doc["id"]} as reference")
+                        building_reference_batch.add_reference(
+                            from_property="hasChunks",
+                            from_uuid=doc["id"],
+                            to=obj["chunk_uuid"],
+                        )
+                    self._logger.log_info(f"[{doc["id"]}]: Added as reference")
+                    self._logger.log_info(f"{idx + 1}/{len(docs)} documents done adding references")
+            failed_references = buildings_collection.batch.failed_references
+            self._logger.log_info(f"Building to Chunk references failed batch objects link: {failed_references}")
+            
             self._logger.log_info("Successfully load documents")
         except Exception as e: 
             self._logger.log_exception(f"Failed to load documents, ERROR: {e}")

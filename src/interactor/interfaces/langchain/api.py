@@ -51,14 +51,20 @@ class LangchainAPIInterface(ABC):
 
     @abstractmethod
     def vector_db_retrieval(
-        self, prompt: str, session_id: str, filter_array: dict[str, list], query: str
+        self,
+        prompt: str,
+        session_id: str,
+        filter_array: dict[str, list],
+        facility_query: str,
+        location_query: str,
     ) -> Message:
         """
         Vector database data retrieval process
         :param prompt: chat message to be analyzed.
         :param session_id: session id of the chat.
         :param filter_array: filters that needed for prompt analysis.
-        :param query: query for vector data retrieval with weaviate.
+        :param facility_query: query by facility to retrieve vector data from weaviate.
+        :param location_query: query by location to retrieve vector data from weaviate.
         """
 
     @abstractmethod
