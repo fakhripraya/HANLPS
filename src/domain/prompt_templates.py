@@ -7,11 +7,9 @@ analyzer_template = """
     Human: {prompts}
     
     Analyze the incoming human input based on the history conversation context:
-    - If the incoming input by context asking you to find KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, APARTMENTS, or BOARDING HOUSES. Please reply with True
-    - If the incoming input by context asking for advertising or for posting, just reply with False
-    - If the incoming input by context confirm any satisfaction, just reply with False
-    - If the incoming input by context seems to be lacking of info, just reply with False
-    - Other than that. Please reply with False
+    - Reply True if the incoming input implies asking about KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, APARTMENTS, or BOARDING HOUSES.
+    - Reply False if it implies asking for advertising, posting, expresses satisfaction, or disappointment.
+    - For any other scenario, reply False.
     
     Only answer with True or False
     """

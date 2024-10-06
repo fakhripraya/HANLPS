@@ -4,6 +4,9 @@
 from abc import ABC, abstractmethod
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables import Runnable
+from langchain_openai.chat_models import ChatOpenAI
+from langchain_huggingface import HuggingFacePipeline
+from langchain_google_genai import ChatGoogleGenerativeAI
 from src.domain.entities.building.building import Building
 from src.domain.entities.message.message import Message
 from typing import Any
@@ -13,19 +16,19 @@ class LangchainAPIInterface(ABC):
     """
 
     @abstractmethod
-    def create_open_ai_llm(self) -> None:
+    def create_open_ai_llm(self, llm_model: str) -> ChatOpenAI:
         """ 
         Create OpenAI LLM and register it as dependency
         """
     
     @abstractmethod
-    def create_gemini_llm(self) -> None:
+    def create_gemini_llm(self, llm_model: str) -> ChatGoogleGenerativeAI:
         """ 
         Create Gemini LLM and register it as dependency
         """
     
     @abstractmethod
-    def create_huggingface_llm(self) -> None:
+    def create_huggingface_llm(self, llm_model: str) -> HuggingFacePipeline:
         """ 
         Create Huggingface LLM and register it as dependency
         """

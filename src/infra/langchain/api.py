@@ -10,7 +10,7 @@ import traceback
 from configs.config import (
     ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER,
     OPENAI_MODEL, HUGGINGFACE_MODEL, GEMINI_MODEL,
-    GEMINI_API_KEY, USE_MODULE, MODULE_USED
+    GEMINI_API_KEY, USE_MODULE, MODULE_USED, OPENAI_ANALYZER_MODEL
 )
 from src.domain.entities.message.message import Message
 from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME
@@ -62,16 +62,20 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         self._store = {}
         
         if llm_type == OPENAI:
-            self.create_open_ai_llm()
+            self._client = self.create_open_ai_llm(OPENAI_MODEL)
+            self._analyzer_client = self.create_open_ai_llm(OPENAI_ANALYZER_MODEL)
         elif llm_type == HUGGING_FACE:
-            self.create_huggingface_llm()
+            self._client = self.create_huggingface_llm(HUGGINGFACE_MODEL)
+            self._analyzer_client = self.create_huggingface_llm(HUGGINGFACE_MODEL)
         elif llm_type == GEMINI:
-            self.create_gemini_llm()
+            self._client = self.create_gemini_llm(GEMINI_MODEL)
+            self._analyzer_client = self.create_huggingface_llm(GEMINI_MODEL)
         else:
             raise Exception("No LLM Found")
         
         WeaviateAPI.__init__(self, int(USE_MODULE), MODULE_USED, self._logger)
         self._prompt_parser = PromptParser(self._client)
+        self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
         self._query_parser = QueryParser()
         self._templates = {
             "filter_analyzer_template": [
@@ -94,37 +98,37 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             self._logger.log_exception(f"Traceback: {traceback.format_tb(exc_tb)}")
         WeaviateAPI.close_connection_to_server()
         
-    def create_open_ai_llm(self) -> None:
+    def create_open_ai_llm(self, llm_model) -> ChatOpenAI:
         """ 
         Create OpenAI LLM and register it as dependency
         """
-        client = ChatOpenAI(model=OPENAI_MODEL, api_key=self._api_key)
-        self._client = client
+        client = ChatOpenAI(model=llm_model, api_key=self._api_key)
+        return client
         
-    def create_gemini_llm(self) -> None:
+    def create_gemini_llm(self, llm_model) -> ChatGoogleGenerativeAI:
         """ 
         Create Gemini LLM and register it as dependency
         """
         baseUrl = 'https://generativelanguage.googleapis.com'
         version = 'v1beta'
         client = ChatGoogleGenerativeAI(
-            model=GEMINI_MODEL,
+            model=llm_model,
             google_api_key=GEMINI_API_KEY,
             temperature=0,
             baseUrl=baseUrl,
             max_retries=3,
             version=version
         )
-        self._client = client
+        return client
         
-    def create_huggingface_llm(self) -> None:
+    def create_huggingface_llm(self, llm_model) -> HuggingFacePipeline:
         """ 
         Create Huggingface LLM and register it as dependency
         """
         # NOTE 
         # doesn't support Bahasa Indonesia 
         client = HuggingFacePipeline.from_model_id(
-            model_id=HUGGINGFACE_MODEL,
+            model_id=llm_model,
             task="text-generation",
             pipeline_kwargs={
                 "max_new_tokens": 100,
@@ -132,7 +136,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
                 "temperature": 0.1,
             },
         )
-        self._client = client
+        return client
 
     def get_session_history(self, session_id) -> BaseChatMessageHistory:
         """ Get message history by session id
@@ -158,10 +162,10 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
             # Only let 10 message in the chat history for context window efficiency
             while len(self._store[session_id].messages) > 10:
                 self._store[session_id].messages.pop(0)
-            self._logger.log_info(conversation.messages)
+            self._logger.log_info(conversation)
             
         templates = self._templates["analyzer_template"]
-        result: str = self._prompt_parser.execute(
+        result: str = self._analyzer_prompt_parser.execute(
             {"prompts": prompt, "conversations": conversation if conversation else ""},
             templates
         )
