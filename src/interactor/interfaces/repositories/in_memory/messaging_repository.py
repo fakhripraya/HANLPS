@@ -5,9 +5,9 @@ from abc import ABC, abstractmethod
 from typing import Optional
 from src.domain.entities.message.message import Message
 
+
 class MessagingRepositoryInterface(ABC):
-    """ This class is the interface for the MessagingRepository
-    """
+    """This class is the interface for the MessagingRepository"""
 
     @abstractmethod
     def create(
@@ -16,7 +16,7 @@ class MessagingRepositoryInterface(ABC):
         output: str,
         output_content: list[str] | None,
     ) -> Optional[Message]:
-        """ Create a Message
+        """Create a Message
 
         :param input: Input message
         :param output: Output message

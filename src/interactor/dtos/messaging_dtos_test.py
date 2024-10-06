@@ -4,6 +4,7 @@
 
 from .messaging_dtos import MessagingInputDto
 
+
 def test_messaging_dto_valid(fixture_messaging_developer):
     input_dto = MessagingInputDto(
         content=fixture_messaging_developer["content"],

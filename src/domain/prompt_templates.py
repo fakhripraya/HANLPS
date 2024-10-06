@@ -13,7 +13,7 @@ analyzer_template = """
     
     Only answer with True or False
     """
-    
+
 filter_analyzer_template = """"
     Define Extracted Data based on the prompt and the conversation context
     Understand the context of the conversation
@@ -113,7 +113,9 @@ chat_template = """
     As an AI you also need to improvise in replying the input, be creative, BEHAVE LIKE HUMAN
     """
 
-reask_template = chat_template + """
+reask_template = (
+    chat_template
+    + """
     Understand the context of the conversation.
 
     You have done the searching for the object and still got 0 results.
@@ -163,8 +165,11 @@ reask_template = chat_template + """
 
     The Human input: {prompts}
 """
+)
 
-building_found_template = chat_template + """
+building_found_template = (
+    chat_template
+    + """
     Understand the context of the conversation
     You have done the searching and found some of the possible result by the human input reference,
     
@@ -182,41 +187,42 @@ building_found_template = chat_template + """
     
     this is just an example but don't do that
     """
-    
+)
+
 # building_found_template = chat_template + """
 #     Understand the context of the conversation
 #     You have done the searching and found some of the possible result by the human input reference,
-    
+
 #     This is the result:
 #     {result}
-    
-#     This is The Human input: 
+
+#     This is The Human input:
 #     {prompts}
-    
+
 #     As an AI you need to reply the human input like these possible cases
-    
+
 #     Example 1
 #     Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
 #     Result context: the search result seems to have low similarity with the human input
-#     AI supposed to reply: 
+#     AI supposed to reply:
 #     Ini ya kak, maaf kalau kurang mirip tapi adanya ini, boleh tolong detailin lagi kak?
-    
+
 #     Example 2
 #     Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
 #     Result context: the search result seems to have medium similarity with the human input
-#     AI supposed to reply: 
+#     AI supposed to reply:
 #     Ini ya kak, kira kira gimana kak?
-    
+
 #     Example 3
 #     Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
 #     Result context: the search result seems to have high similarity with the human input
-#     AI supposed to reply: 
+#     AI supposed to reply:
 #     Kita nemu nih kak!, bener ga yang ini?
-    
+
 #     Example 4
 #     If you didn't found anything just reply in something or the search result seems to have completely different similarities with the human input
 #     AI Reply: kayanya belum bisa nemuin yang ditempat itu deh kak, ini aja yang aku temuin
-    
+
 #     NOTE:
 #     DON'T GIVE THE RESULT DETAIL, THIS INSTRUCTION MEANT JUST TO REPLY SEMANTICALLY
 #     """

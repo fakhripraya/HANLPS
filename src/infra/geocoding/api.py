@@ -1,17 +1,17 @@
 """ Module for GeocodingAPI
 """
+
 import googlemaps
 import traceback
-from configs.config import (
-    GOOGLE_MAPS_API_KEY
-)
+from configs.config import GOOGLE_MAPS_API_KEY
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.interactor.interfaces.geocoding.api import GeocodingAPIInterface
 from src.infra.geocoding.geocode.geocode import GeocodeModules
 from src.infra.geocoding.reverse_geocode.reverse_geocode import ReverseGeocodeModules
 
+
 class GeocodingAPI(GeocodingAPIInterface):
-    
+
     def __init__(self, logger: LoggerInterface) -> None:
         try:
             self._logger = logger
@@ -19,7 +19,7 @@ class GeocodingAPI(GeocodingAPIInterface):
             self._client = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
         except Exception as e:
             self._logger.log_critical(f"Failed to start maps client, ERROR: {e}")
-            
+
     def __enter__(self):
         return self
 
@@ -27,17 +27,17 @@ class GeocodingAPI(GeocodingAPIInterface):
         if exc_type is not None:
             self._logger.log_exception(f"[{exc_type}]: {exc_val}")
             self._logger.log_exception(f"Traceback: {traceback.format_tb(exc_tb)}")
-        
+
     def execute_geocode_by_address(self, address) -> str:
-        """ 
+        """
         Execute geocode method by address
         """
         module = GeocodeModules(self._client)
         data = module.execute(address)
         return data
-        
+
     def execute_reverse_geocode(self, lat, long) -> str:
-        """ 
+        """
         Execute reverse geocode method
         """
         module = ReverseGeocodeModules(self._client)

@@ -3,6 +3,7 @@
 
 import grpc
 import sys
+
 sys.path.append("./protofile")
 from configs.config import INSECURE_PORT, OPENAI_API_KEY, LLM_USED
 from protofile.messaging.proto import messaging_pb2_grpc as handler
@@ -12,6 +13,7 @@ from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.langchain.api import LangchainAPI
 
+
 class GRPCApp:
     def __init__(self, logger: LoggerInterface):
         self.logger = logger
@@ -19,15 +21,17 @@ class GRPCApp:
         self.grpc_server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
         # register grpc handler
-        handler.add_MessagingServiceServicer_to_server(MessagingServicer(self.logger, self.llm), self.grpc_server)
+        handler.add_MessagingServiceServicer_to_server(
+            MessagingServicer(self.logger, self.llm), self.grpc_server
+        )
 
     def define_llm_type(self):
         """define llm type"""
-        if(LLM_USED == str(OPENAI)):
+        if LLM_USED == str(OPENAI):
             return OPENAI
-        elif(LLM_USED == str(HUGGING_FACE)):
+        elif LLM_USED == str(HUGGING_FACE):
             return HUGGING_FACE
-        elif(LLM_USED == str(GEMINI)):
+        elif LLM_USED == str(GEMINI):
             return GEMINI
         else:
             raise Exception("Invalid LLM type")
@@ -53,4 +57,3 @@ class GRPCApp:
         self.llm.close_connection_to_server()
         if self.grpc_server:
             self.grpc_server.stop(0)
-        

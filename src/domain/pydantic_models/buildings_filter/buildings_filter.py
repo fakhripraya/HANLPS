@@ -1,26 +1,47 @@
 from pydantic import BaseModel, Field, model_validator
 
+
 class BuildingsFilter(BaseModel):
-    building_title: str | None = Field(description="The title of the building, if applicable")
-    building_address: str | None = Field(description="The building location whether its a province, city, district, street, etc. If applicable.")
-    building_proximity: str | None = Field(description="The proximity of the building, other than the address. If applicable.")
-    building_facility: str | None = Field(description="The facility provided by the building. If applicable.")
-    building_note: str | None = Field(description="Anything the building noted that the prompter asked")
-    filter_type: str | None = Field(description="Type of price filter (LESS_THAN, GREATER_THAN, AROUND)")
-    less_than_price: float | None = Field(description="The maximum rent price, if applicable.")
-    greater_than_price: float | None = Field(description="The minimum rent price, if applicable.")
-    
-    @model_validator(mode='before')
+    building_title: str | None = Field(
+        description="The title of the building, if applicable"
+    )
+    building_address: str | None = Field(
+        description="The building location whether its a province, city, district, street, etc. If applicable."
+    )
+    building_proximity: str | None = Field(
+        description="The proximity of the building, other than the address. If applicable."
+    )
+    building_facility: str | None = Field(
+        description="The facility provided by the building. If applicable."
+    )
+    building_note: str | None = Field(
+        description="Anything the building noted that the prompter asked"
+    )
+    filter_type: str | None = Field(
+        description="Type of price filter (LESS_THAN, GREATER_THAN, AROUND)"
+    )
+    less_than_price: float | None = Field(
+        description="The maximum rent price, if applicable."
+    )
+    greater_than_price: float | None = Field(
+        description="The minimum rent price, if applicable."
+    )
+
+    @model_validator(mode="before")
     def convert_prices(cls, values):
-        values['less_than_price'] = cls.convert_price(values.get('less_than_price'))
-        values['greater_than_price'] = cls.convert_price(values.get('greater_than_price'))
+        values["less_than_price"] = cls.convert_price(values.get("less_than_price"))
+        values["greater_than_price"] = cls.convert_price(
+            values.get("greater_than_price")
+        )
         return values
-    
+
     @staticmethod
     def convert_price(price: float) -> float:
         if price is not None:
             # Assuming that the input is given in millions (e.g., 1.5 means 1,500,000)
-            if price < 100:  # If the price is less than 100, it's likely given in millions
+            if (
+                price < 100
+            ):  # If the price is less than 100, it's likely given in millions
                 return price * 1_000_000
-        
+
         return price

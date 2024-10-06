@@ -1,16 +1,17 @@
 """ Module for the MessagingPresenter
 """
 
-from src.interactor.dtos.messaging_dtos \
-    import MessagingOutputDto
-from src.interactor.interfaces.presenters.message_presenter \
-    import MessagingPresenterInterface
+from src.interactor.dtos.messaging_dtos import MessagingOutputDto
+from src.interactor.interfaces.presenters.message_presenter import (
+    MessagingPresenterInterface,
+)
+
 
 class MessagingPresenter(MessagingPresenterInterface):
-    """ Class for the MessagingPresenter
-    """
+    """Class for the MessagingPresenter"""
+
     def present(self, output_dto: MessagingOutputDto) -> dict:
-        """ Present the Message in dictionary
+        """Present the Message in dictionary
         :param output_dto: MessagingOutputDto
         :return: Dict
         """

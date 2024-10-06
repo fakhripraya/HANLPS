@@ -3,15 +3,16 @@
 
 from cerberus import Validator
 
+
 class BaseInputValidator:
-    """ This class provides the base class for input validation
-    """
+    """This class provides the base class for input validation"""
+
     def __init__(self, data: dict[str, str]):
         self.data = data
         self.errors: dict = {}
 
     def verify(self, schema: dict) -> None:
-        """ Validates the input data against the provided schema
+        """Validates the input data against the provided schema
         :param schema: The schema to validate against
         :return: None
         :raises ValueError: If the input data is invalid.
