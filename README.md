@@ -1,6 +1,8 @@
 # HANLPS
 
-## Highly Accurate Natural Language Processing Service
+HANLPS or Highly Accurate Natural Language Processing Service
+is an AI focus location retrieval backend service mainly to fetch location based on the input
+this service used GRPC Protocol to communicate
 
 ## Installation
 
