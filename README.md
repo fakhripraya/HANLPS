@@ -61,7 +61,7 @@ python -m grpc_tools.protoc -I=proto --python_out=proto --grpc_python_out=proto 
 grpcio grpcio-tools python-dotenv openai langchain langchain-community weaviate-client
 langchain-weaviate langchain-huggingface langchain-google-genai cerberus unstructured pytest tiktoken
 
-### Features to be added
+### Features / Fix to be added
 
 - Chat context hallucination
   - An ability to understand the context of the chat well
