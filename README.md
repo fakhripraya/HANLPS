@@ -1,4 +1,6 @@
-# HANLPS ## (Highly Accurate Natural Language Processing Service)
+# HANLPS
+
+## Highly Accurate Natural Language Processing Service
 
 ## Installation
 
