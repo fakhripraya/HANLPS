@@ -28,8 +28,8 @@ class WeaviateAPI(WeaviateAPIInterface):
     """
 
     def __init__(self, logger: LoggerInterface) -> None: 
-        self._logger.log_info("Initializing Weaviate instance")
         self._logger = logger
+        self._logger.log_info("Initializing Weaviate instance")
       
     def __enter__(self):
         return self
@@ -40,8 +40,8 @@ class WeaviateAPI(WeaviateAPIInterface):
             self._logger.log_exception(f"Traceback: {traceback.format_tb(exc_tb)}")
         
     def migrate_datas(self) -> None:
-        weaviate_client = None
         try:
+            weaviate_client = None
             self._logger.log_info("Migrating weaviate collections")
             
             # connect to weaviate client to load document
@@ -58,7 +58,7 @@ class WeaviateAPI(WeaviateAPIInterface):
             schema.create_collections()
 
             # load initial documents
-            self.load_buildings_from_document_json()
+            self.load_buildings_from_document_json(weaviate_client)
             
             self._logger.log_info("Weaviate client successfully initialized")
         except Exception as e:

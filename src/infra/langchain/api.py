@@ -287,10 +287,11 @@ class LangchainAPI(LangchainAPIInterface):
                             if len(filter_array["housing_price"]) > 0:
                                 filters = Filter.all_of(filter_array["housing_price"](False))
                                 
-                            geofilter = filter_array["building_geolocation"](geolocation_stages[geolocation_stage_index])
+                            distance = geolocation_stages[geolocation_stage_index]
+                            geofilter = filter_array["building_geolocation"](distance)
                             filters = filters & Filter.any_of(geofilter) if filters else Filter.any_of(geofilter)
                             self._logger.log_info(f"Execute query with facility query: {facility_query}")
-                            self._logger.log_info(f"Trying to get location at: {geolocation_stages[geolocation_stage_index]} distance")
+                            self._logger.log_info(f"Trying to get location at: {distance} distance")
                             self._logger.log_info(f"Executing with filters: {filter_array}")
                             response = query_building(
                                 building_collection,
@@ -316,7 +317,7 @@ class LangchainAPI(LangchainAPIInterface):
                         
                         if not response.objects:
                             if with_geofilter:
-                                self._logger.log_info(f"Failed to get location at: {geolocation_stages[geolocation_stage_index]} distance, with query {facility_query}")
+                                self._logger.log_info(f"Failed to get location at: {distance} distance, with query {facility_query}")
                                 geolocation_stage_index += 1
                                 offset = 0
                             else:
