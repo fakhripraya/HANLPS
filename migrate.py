@@ -1,4 +1,4 @@
-""" Weaviate migrate
+""" Function to migrate imported Weaviate collections to the instance
 """
 
 from src.infra.repositories.weaviate.api import WeaviateAPI

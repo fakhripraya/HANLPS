@@ -42,25 +42,27 @@ class WeaviateAPI(WeaviateAPIInterface):
     def migrate_datas(self) -> None:
         try:
             weaviate_client = None
-            self._logger.log_info("Migrating weaviate collections")
             
             # connect to weaviate client to load document
+            self._logger.log_info("Connecting to the Weaviate client")  
             weaviate_client = self.connect_to_server(int(USE_MODULE), MODULE_USED)
-            self._logger.log_info("Weaviate client successfully connected")  
+            self._logger.log_info("Successfully connected")  
             
             # init schemas
-            self._logger.log_info("Deleting all existing Weaviate collections")
+            self._logger.log_info("Migrating imported collections to the instance")
+            self._logger.log_info("Deleting all existing collections")
             weaviate_client.collections.delete(BUILDINGS_COLLECTION_NAME)
             weaviate_client.collections.delete(BUILDING_CHUNKS_COLLECTION_NAME)
             
-            self._logger.log_info("Creating new Weaviate collections")
+            self._logger.log_info("Creating new collections")
             schema = WeaviateSchemasManagement(weaviate_client, self._logger)
             schema.create_collections()
 
             # load initial documents
+            self._logger.log_info("Load created collections into the instance")
             self.load_buildings_from_document_json(weaviate_client)
             
-            self._logger.log_info("Weaviate client successfully initialized")
+            self._logger.log_info("Successfully migrate imported collections to the instance")
         except Exception as e:
             if weaviate_client is not None:
                 weaviate_client.close()
