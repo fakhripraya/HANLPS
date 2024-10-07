@@ -1,4 +1,4 @@
-# HANLPS (Highly Accurate Natural Language Processing Service)
+# HANLPS ## (Highly Accurate Natural Language Processing Service)
 
 ## Installation
 
@@ -57,7 +57,7 @@ python -m grpc_tools.protoc -I=proto --python_out=proto --grpc_python_out=proto 
 grpcio grpcio-tools python-dotenv openai langchain langchain-community weaviate-client
 langchain-weaviate langchain-huggingface langchain-google-genai cerberus unstructured pytest tiktoken
 
-### FEATURE TO BE ADDED
+### Features to be added
 
 - Chat context hallucination
   - An ability to understand the context of the chat well
