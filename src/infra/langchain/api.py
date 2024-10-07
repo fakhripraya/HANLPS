@@ -257,7 +257,6 @@ class LangchainAPI(LangchainAPIInterface):
         seen_uuids = set()
         retries = 0
         max_retries = 3
-        retry_delay_in_sec = 1
         
         # Geolocation radius stages
         # Add more stages to use multiple stages
@@ -379,9 +378,8 @@ class LangchainAPI(LangchainAPIInterface):
                     if retries == max_retries:
                         self._logger.log_exception(f"Weaviate operation failed after {max_retries} retries.")
                     else:
-                        self._logger.log_warning(f"Attempt {retries} failed: {e}. Retrying in {retry_delay_in_sec} seconds...")
+                        self._logger.log_warning(f"Attempt {retries} failed: {e}. Retrying...")
                         retries += 1
-                        time.sleep(retry_delay_in_sec)
                 finally:
                     weaviate_client.close_connection_to_server(self, connected)
                 
