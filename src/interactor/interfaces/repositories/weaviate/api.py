@@ -9,13 +9,11 @@ class WeaviateAPIInterface(ABC):
     """WeaviateAPIInterface class provides an interface for weaviate API."""
 
     @abstractmethod
-    def migrate_datas(
-        self
-    ) -> None:
+    def migrate_datas(self) -> None:
         """
         Connect the weaviate instance locally
         """
-        
+
     @abstractmethod
     def connect_to_server(
         self, with_modules: int, module_used: str
@@ -43,23 +41,23 @@ class WeaviateAPIInterface(ABC):
         """
 
     @abstractmethod
-    def load_buildings_from_document_csv(self, weaviate_client: weaviate_lib.WeaviateClient) -> None:
-        """
-        Load and insert new objects of building and insert it to db from document csv
-        """
-
-    @abstractmethod
-    def load_buildings_from_document_json(self, weaviate_client: weaviate_lib.WeaviateClient) -> None:
+    def load_buildings_from_document_json(
+        self, weaviate_client: weaviate_lib.WeaviateClient
+    ) -> None:
         """
         Load and insert new objects of building and insert it to db from json document
         """
 
     @abstractmethod
-    def load_data_to_db(self, docs: list[dict], weaviate_client: weaviate_lib.WeaviateClient) -> None:
+    def load_data_to_db(
+        self, docs: list[dict], weaviate_client: weaviate_lib.WeaviateClient
+    ) -> None:
         """
         Insert a list of data to weaviate from documents
         """
 
     @abstractmethod
-    def close_connection_to_server(self, weaviate_client: weaviate_lib.WeaviateClient) -> None:
+    def close_connection_to_server(
+        self, weaviate_client: weaviate_lib.WeaviateClient
+    ) -> None:
         """Close the connection to Weaviate server"""

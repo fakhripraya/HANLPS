@@ -20,7 +20,6 @@ from src.domain.constants import OPENAI, GEMINI
 from src.interactor.interfaces.repositories.weaviate.api import WeaviateAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.repositories.weaviate.schema.schema import WeaviateSchemasManagement
-from src.infra.langchain.document_loader.document_loader import LangchainDocumentLoader
 from src.domain.constants import BUILDINGS_COLLECTION_NAME, BUILDING_CHUNKS_COLLECTION_NAME
 
 class WeaviateAPI(WeaviateAPIInterface):
@@ -145,20 +144,6 @@ class WeaviateAPI(WeaviateAPIInterface):
                 timeout=Timeout(query=60, insert=120),
             ),
         )
-            
-    def load_buildings_from_document_csv(self, weaviate_client) -> None:
-        """ 
-        Load and insert new objects of building and insert it to db from document csv
-        """
-        # migrate data object
-        try:
-            self._logger.log_info(f"Loading documents")
-            loader = LangchainDocumentLoader("csv", './csvs/sheet.csv', "**/*.csv")
-            docs = loader.execute()
-            self.load_data_to_db(docs, weaviate_client)
-        except Exception as e: 
-            self._logger.log_exception(f"Failed to load csvs documents to weaviate, ERROR: {e}")
-            raise Exception(e)
         
     def load_buildings_from_document_json(self, weaviate_client) -> None:
         """ 

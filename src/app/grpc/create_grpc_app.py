@@ -17,8 +17,14 @@ from src.infra.langchain.api import LangchainAPI
 class GRPCApp:
     def __init__(self, logger: LoggerInterface):
         self.logger = logger
+
+        grpc_max_workers = 10
+        self.logger.log_info(f"Creating GRPC server with {grpc_max_workers} workers")
+        self.grpc_server = grpc.server(
+            futures.ThreadPoolExecutor(max_workers=grpc_max_workers)
+        )
+
         self.llm = LangchainAPI(self.define_llm_type(), OPENAI_API_KEY, self.logger)
-        self.grpc_server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
         # register grpc handler
         handler.add_MessagingServiceServicer_to_server(
@@ -39,7 +45,7 @@ class GRPCApp:
     def create_server(self):
         """Create the GRPC server and start it."""
         try:
-            self.logger.log_info(f"Creating GRPC for port [::]:{INSECURE_PORT}")
+            self.logger.log_info(f"Connecting GRPC app to port [::]:{INSECURE_PORT}")
             self.grpc_server.add_insecure_port(f"[::]:{INSECURE_PORT}")
             self.grpc_server.start()
             self.logger.log_info(f"GRPC server started on port [::]:{INSECURE_PORT}")
@@ -54,6 +60,5 @@ class GRPCApp:
 
     def stop_server(self):
         """Stop the GRPC server."""
-        self.llm.close_connection_to_server()
         if self.grpc_server:
             self.grpc_server.stop(0)

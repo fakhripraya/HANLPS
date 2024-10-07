@@ -56,3 +56,11 @@ python -m grpc_tools.protoc -I=proto --python_out=proto --grpc_python_out=proto 
 
 grpcio grpcio-tools python-dotenv openai langchain langchain-community weaviate-client
 langchain-weaviate langchain-huggingface langchain-google-genai cerberus unstructured pytest tiktoken
+
+# FEATURE TO BE ADDED
+
+- Chat context hallucination
+  - An ability to understand the context of the chat well
+- Multi or singular object referencing
+  - An ability to refer to the fetched objects from the DB
+  - Implement RAG usability on referencing
