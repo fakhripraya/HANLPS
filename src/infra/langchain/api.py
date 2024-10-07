@@ -227,12 +227,12 @@ class LangchainAPI(LangchainAPIInterface):
                 buildings_filter.building_facility,
                 buildings_filter.building_note
             ])):
-                facilitat_query_instance = Building(
+                facility_query_instance = Building(
                     building_title=buildings_filter.building_title,
                     building_address=buildings_filter.building_address,
                     building_proximity=buildings_filter.building_proximity,
                 )       
-                facility_query = self._query_parser.execute(facilitat_query_instance.to_dict())
+                facility_query = self._query_parser.execute(facility_query_instance.to_dict())
             
             self._logger.log_info(f"Facility Query:{facility_query}")
             self._logger.log_info(f"Location Query:{location_query}")
