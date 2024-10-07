@@ -1,23 +1,29 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "../python-clean-architecture-example"
-		},
-		{
-			"path": "../Langchain-Full-Course"
-		},
-		{
-			"path": "../forefront-hermes"
-		},
-		{
-			"path": "../forefront-olympus"
-		},
-		{
-			"path": "../Cosine"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../cosine-tools"
+    },
+    {
+      "path": "../cosine-orchestration"
+    },
+    {
+      "path": "../forefront-hermes"
+    },
+    {
+      "path": "../forefront-olympus"
+    },
+    {
+      "path": "../forefront-postgirl"
+    },
+    {
+      "path": "../Cosine"
+    },
+    {
+      "path": "../Littlecamp"
+    }
+  ],
+  "settings": {}
 }
