@@ -26,7 +26,7 @@ def query_building_with_building_as_reference(
     return response
 
 
-def query_building_with_chunk_as_reference(
+def query_building(
     collection: Collection[WeaviateProperties, None],
     query: str,
     filters: _Filters,
@@ -39,9 +39,6 @@ def query_building_with_chunk_as_reference(
         filters=filters,
         limit=limit,
         offset=offset,
-        return_references=[
-            QueryReference(include_vector=True, link_on="hasChunks"),
-        ],
     )
 
     return response

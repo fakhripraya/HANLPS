@@ -13,6 +13,8 @@ from configs.config import (
     WEAVIATE_GRPC_PORT,
     WEAVIATE_REST_HOST,
     WEAVIATE_REST_PORT,
+    USE_MODULE,
+    MODULE_USED
 )
 from src.domain.constants import OPENAI, GEMINI
 from src.interactor.interfaces.repositories.weaviate.api import WeaviateAPIInterface
@@ -25,35 +27,9 @@ class WeaviateAPI(WeaviateAPIInterface):
     """ WeaviateAPI class.
     """
 
-    def __init__(self, with_modules: int, module_used: str | None, logger: LoggerInterface) -> None: 
-        try:
-            self._weaviate_client = None
-            self._logger = logger
-            self._logger.log_info("Initializing Weaviate client")
-            
-            # connect to weaviate client to load document
-            self._weaviate_client = self.connect_to_server(with_modules, module_used)
-            self._logger.log_info("Weaviate client successfully connected")  
-            
-            # init schemas
-            self._logger.log_info("Deleting all existing Weaviate collections")
-            self._weaviate_client.collections.delete(BUILDINGS_COLLECTION_NAME)
-            self._weaviate_client.collections.delete(BUILDING_CHUNKS_COLLECTION_NAME)
-            
-            self._logger.log_info("Creating new Weaviate collections")
-            schema = WeaviateSchemasManagement(self._weaviate_client, self._logger)
-            schema.create_collections()
-
-            # load initial documents
-            self.load_buildings_from_document_json()
-            
-            self._logger.log_info("Weaviate client successfully initialized")
-        except Exception as e:
-            if self._weaviate_client is not None:
-                self._weaviate_client.close()
-            self._logger.log_critical(f"Failed to start weaviate client, ERROR: {e}")
-        finally:
-            self.close_connection_to_server()
+    def __init__(self, logger: LoggerInterface) -> None: 
+        self._logger.log_info("Initializing Weaviate instance")
+        self._logger = logger
       
     def __enter__(self):
         return self
@@ -62,15 +38,46 @@ class WeaviateAPI(WeaviateAPIInterface):
         if exc_type is not None:
             self._logger.log_exception(f"[{exc_type}]: {exc_val}")
             self._logger.log_exception(f"Traceback: {traceback.format_tb(exc_tb)}")
-        self.close_connection_to_server()
         
+    def migrate_datas(self) -> None:
+        weaviate_client = None
+        try:
+            self._logger.log_info("Migrating weaviate collections")
+            
+            # connect to weaviate client to load document
+            weaviate_client = self.connect_to_server(int(USE_MODULE), MODULE_USED)
+            self._logger.log_info("Weaviate client successfully connected")  
+            
+            # init schemas
+            self._logger.log_info("Deleting all existing Weaviate collections")
+            weaviate_client.collections.delete(BUILDINGS_COLLECTION_NAME)
+            weaviate_client.collections.delete(BUILDING_CHUNKS_COLLECTION_NAME)
+            
+            self._logger.log_info("Creating new Weaviate collections")
+            schema = WeaviateSchemasManagement(weaviate_client, self._logger)
+            schema.create_collections()
+
+            # load initial documents
+            self.load_buildings_from_document_json()
+            
+            self._logger.log_info("Weaviate client successfully initialized")
+        except Exception as e:
+            if weaviate_client is not None:
+                weaviate_client.close()
+            self._logger.log_critical(f"Failed to Migrate weaviate collections, ERROR: {e}")
+        finally:
+            self.close_connection_to_server(weaviate_client)
+            
     def connect_to_server(self, with_modules, module_used) -> weaviate_lib.WeaviateClient:
-        if with_modules == 1 and module_used == OPENAI:
-            return self.connect_with_openai()
-        elif with_modules == 1 and module_used == GEMINI:
-            return self.connect_with_google()
-        else:
-            return self.connect_locally()
+        try:
+            if with_modules == 1 and module_used == OPENAI:
+                return self.connect_with_openai()
+            elif with_modules == 1 and module_used == GEMINI:
+                return self.connect_with_google()
+            else:
+                return self.connect_locally()
+        except Exception as e:
+            self._logger.log_critical(f"Failed to connect to the weaviate instance, ERROR: {e}")
             
     def connect_locally(self) -> weaviate_lib.WeaviateClient:
         """ 
@@ -137,7 +144,7 @@ class WeaviateAPI(WeaviateAPIInterface):
             ),
         )
             
-    def load_buildings_from_document_csv(self) -> None:
+    def load_buildings_from_document_csv(self, weaviate_client) -> None:
         """ 
         Load and insert new objects of building and insert it to db from document csv
         """
@@ -146,12 +153,12 @@ class WeaviateAPI(WeaviateAPIInterface):
             self._logger.log_info(f"Loading documents")
             loader = LangchainDocumentLoader("csv", './csvs/sheet.csv', "**/*.csv")
             docs = loader.execute()
-            self.load_data_to_db(docs)
+            self.load_data_to_db(docs, weaviate_client)
         except Exception as e: 
             self._logger.log_exception(f"Failed to load csvs documents to weaviate, ERROR: {e}")
             raise Exception(e)
         
-    def load_buildings_from_document_json(self) -> None:
+    def load_buildings_from_document_json(self, weaviate_client) -> None:
         """ 
         Load and insert new objects of building and insert it to db from document csv
         """
@@ -161,18 +168,18 @@ class WeaviateAPI(WeaviateAPIInterface):
             with open('./json/data.json', 'r', encoding='utf-8') as file:
                 docs = json.load(file)["data"]
                 if isinstance(docs, list) and all(isinstance(item, dict) for item in docs):
-                    self.load_data_to_db(docs)
+                    self.load_data_to_db(docs, weaviate_client)
                 else:
                     raise TypeError("The loaded data is not of type list[dict]")
         except Exception as e: 
             self._logger.log_exception(f"Failed to load json documents to weaviate, ERROR: {e}")
             raise Exception(e)
         
-    def load_data_to_db(self, docs) -> None:
+    def load_data_to_db(self, docs, weaviate_client) -> None:
         try:
             self._logger.log_info(f"0/{len(docs)} Loaded")
-            buildings_collection =  self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-            building_chunks_collection =  self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
+            buildings_collection =  weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
+            building_chunks_collection =  weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
             
             temp_building = []
             self._logger.log_info("Loading documents")
@@ -262,7 +269,7 @@ class WeaviateAPI(WeaviateAPIInterface):
             self._logger.log_exception(f"Failed to load documents, ERROR: {e}")
             raise Exception(e)
           
-    def close_connection_to_server(self) -> None:
+    def close_connection_to_server(self, weaviate_client) -> None:
         """Close the connection to Weaviate server"""
-        if self._weaviate_client and self._weaviate_client.is_live:
-            self._weaviate_client.close()
+        if weaviate_client and weaviate_client.is_live:
+            weaviate_client.close()

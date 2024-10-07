@@ -49,10 +49,10 @@ from langchain_huggingface import HuggingFacePipeline
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Weaviate
-from src.infra.repositories.weaviate.query.query import query_building_with_building_as_reference, query_building_with_chunk_as_reference
+from src.infra.repositories.weaviate.query.query import query_building_with_building_as_reference, query_building
 from weaviate.classes.query import Filter
 
-class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
+class LangchainAPI(LangchainAPIInterface):
     """ LangchainAPI class.
     """
 
@@ -73,7 +73,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         else:
             raise Exception("No LLM Found")
         
-        WeaviateAPI.__init__(self, int(USE_MODULE), MODULE_USED, self._logger)
         self._prompt_parser = PromptParser(self._client)
         self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
         self._query_parser = QueryParser()
@@ -96,7 +95,6 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         if exc_type is not None:
             self._logger.log_exception(f"[{exc_type}]: {exc_val}")
             self._logger.log_exception(f"Traceback: {traceback.format_tb(exc_tb)}")
-        WeaviateAPI.close_connection_to_server()
         
     def create_open_ai_llm(self, llm_model) -> ChatOpenAI:
         """ 
@@ -192,7 +190,7 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
 
             filter_array = None
             filter_array = {
-                "housing_price" : append_housing_price_filters(buildings_filter, []),
+                "housing_price" : lambda with_reference: append_housing_price_filters(buildings_filter, [], with_reference),
                 "building_facility" : append_building_facility_filters(buildings_filter, []),
                 "building_note" : append_building_note_filters(buildings_filter, []),
             }
@@ -260,108 +258,132 @@ class LangchainAPI(LangchainAPIInterface, WeaviateAPI):
         retries = 0
         max_retries = 3
         retry_delay_in_sec = 1
-        geolocation_stages = [2000, 5000, 10000]
+        
+        # Geolocation radius stages
+        # Add more stages to use multiple stages
+        geolocation_stages = [7000]
         geolocation_stage_index = 0
         
         # Setup fixed filters
-        fixed_filters = None
-        if len(filter_array["housing_price"]) > 0:
-            fixed_filters = Filter.all_of(filter_array["housing_price"])
-            
-        chunk_collection_filters = fixed_filters
+        chunk_collection_filters = None
         if len(filter_array["building_facility"]) > 0:
-            chunk_collection_filters = chunk_collection_filters & Filter.any_of(filter_array["building_facility"]) if chunk_collection_filters else Filter.any_of(filter_array["building_facility"])
+            chunk_collection_filters = Filter.any_of(filter_array["building_facility"])
         if len(filter_array["building_note"]) > 0:
             chunk_collection_filters = chunk_collection_filters & Filter.any_of(filter_array["building_note"]) if chunk_collection_filters else Filter.any_of(filter_array["building_note"])    
         
-        while retries < max_retries:
-            try:
-                self._weaviate_client = WeaviateAPI.connect_to_server(self, int(USE_MODULE), MODULE_USED)
-                building_collection = self._weaviate_client.collections.get(BUILDINGS_COLLECTION_NAME)
-                building_chunk_collection = self._weaviate_client.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
-                is_geofilter_callable = callable(filter_array.get("building_geolocation"))
-                
-                while len(building_list) < limit:
-                    filters = None
-                    with_geofilter = is_geofilter_callable and geolocation_stage_index < len(geolocation_stages)
+        with WeaviateAPI(self._logger) as weaviate_client:
+            while retries < max_retries:
+                try:
+                    connected = weaviate_client.connect_to_server(int(USE_MODULE), MODULE_USED)
+                    building_collection = connected.collections.get(BUILDINGS_COLLECTION_NAME)
+                    building_chunk_collection = connected.collections.get(BUILDING_CHUNKS_COLLECTION_NAME)
+                    is_geofilter_callable = callable(filter_array.get("building_geolocation"))
                     
-                    if with_geofilter:
-                        geofilter = filter_array["building_geolocation"](geolocation_stages[geolocation_stage_index])
-                        filters = fixed_filters & Filter.any_of(geofilter) if fixed_filters else Filter.any_of(geofilter)
-                        self._logger.log_info(f"Execute query with facility query: {facility_query}")
-                        self._logger.log_info(f"Trying to get location at: {geolocation_stages[geolocation_stage_index]} distance")
-                        self._logger.log_info(f"Executing with filters: {filter_array}")
-                        response = query_building_with_chunk_as_reference(
-                            building_collection,
-                            facility_query,
-                            filters,
-                            limit,
-                            offset
-                        )
-                    else:
-                        self._logger.log_info(f"Execute query with location query: {location_query}")
-                        self._logger.log_info(f"Executing with filters: {filter_array}")
-                        filters = chunk_collection_filters
-                        response = query_building_with_building_as_reference(
-                            building_chunk_collection,
-                            location_query,
-                            filters,
-                            limit,
-                            offset
-                        )
-                    
-                    if not response.objects:
+                    while len(building_list) < limit:
+                        filters = None
+                        with_geofilter = is_geofilter_callable and geolocation_stage_index < len(geolocation_stages)
+                        
                         if with_geofilter:
-                            self._logger.log_info(f"Failed to get location at: {geolocation_stages[geolocation_stage_index]} distance, with query {query}")
-                            geolocation_stage_index += 1
-                            offset = 0
-                        else:
-                            self._logger.log_info(f"Failed to get location with query: {query}")
-                            break
-
-                    self._logger.log_info(f"Queried object found count: {len(response.objects)}")
-                    for obj in response.objects:
-                        for ref_obj in obj.references["hasBuilding"].objects:
-                            if ref_obj.uuid in seen_uuids:
-                                continue
-
-                            self._logger.log_info(f"[{ref_obj.uuid}]: Adding building {ref_obj.properties["buildingTitle"]}")
-                            seen_uuids.add(ref_obj.uuid)
-                            building_instance = Building(
-                                building_title=ref_obj.properties["buildingTitle"],
-                                building_address=ref_obj.properties["buildingAddress"],
-                                building_description=ref_obj.properties["buildingDescription"],
-                                housing_price=ref_obj.properties["housingPrice"],
-                                owner_name=ref_obj.properties["ownerName"],
-                                owner_email=ref_obj.properties["ownerEmail"],
-                                #owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
-                                #owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
-                                image_url=ref_obj.properties["imageURL"]
+                            if len(filter_array["housing_price"]) > 0:
+                                filters = Filter.all_of(filter_array["housing_price"](False))
+                                
+                            geofilter = filter_array["building_geolocation"](geolocation_stages[geolocation_stage_index])
+                            filters = filters & Filter.any_of(geofilter) if filters else Filter.any_of(geofilter)
+                            self._logger.log_info(f"Execute query with facility query: {facility_query}")
+                            self._logger.log_info(f"Trying to get location at: {geolocation_stages[geolocation_stage_index]} distance")
+                            self._logger.log_info(f"Executing with filters: {filter_array}")
+                            response = query_building(
+                                building_collection,
+                                facility_query,
+                                filters,
+                                limit,
+                                offset
                             )
-                            building_list.append(building_instance)
-                            self._logger.log_info(f"Building object added, length: {len(building_list)}")
+                        else:
+                            if len(filter_array["housing_price"]) > 0:
+                                filters = Filter.all_of(filter_array["housing_price"](True))
+                                
+                            self._logger.log_info(f"Execute query with location query: {location_query}")
+                            self._logger.log_info(f"Executing with filters: {filter_array}")
+                            filters = filters & chunk_collection_filters if chunk_collection_filters else filters
+                            response = query_building_with_building_as_reference(
+                                building_chunk_collection,
+                                location_query,
+                                filters,
+                                limit,
+                                offset
+                            )
+                        
+                        if not response.objects:
+                            if with_geofilter:
+                                self._logger.log_info(f"Failed to get location at: {geolocation_stages[geolocation_stage_index]} distance, with query {facility_query}")
+                                geolocation_stage_index += 1
+                                offset = 0
+                            else:
+                                self._logger.log_info(f"Failed to get location with query: {location_query}")
+                                break
+
+                        self._logger.log_info(f"Queried object found count: {len(response.objects)}")
+                        for obj in response.objects:
+                            if with_geofilter:
+                                self._logger.log_info(f"[{obj.uuid}]: Adding building {obj.properties["buildingTitle"]}")
+                                seen_uuids.add(obj.uuid)
+                                building_instance = Building(
+                                    building_title=obj.properties["buildingTitle"],
+                                    building_address=obj.properties["buildingAddress"],
+                                    building_description=obj.properties["buildingDescription"],
+                                    housing_price=obj.properties["housingPrice"],
+                                    owner_name=obj.properties["ownerName"],
+                                    owner_email=obj.properties["ownerEmail"],
+                                    owner_whatsapp=obj.properties["ownerWhatsapp"],
+                                    owner_phone_number=obj.properties["ownerPhoneNumber"],
+                                    image_url=obj.properties["imageURL"]
+                                )
+                                building_list.append(building_instance)
+                                self._logger.log_info(f"Building object added, length: {len(building_list)}")
+                            else:
+                                for ref_obj in obj.references["hasBuilding"].objects:
+                                    if ref_obj.uuid in seen_uuids:
+                                        continue
+
+                                    self._logger.log_info(f"[{ref_obj.uuid}]: Adding building {ref_obj.properties["buildingTitle"]}")
+                                    seen_uuids.add(ref_obj.uuid)
+                                    building_instance = Building(
+                                        building_title=ref_obj.properties["buildingTitle"],
+                                        building_address=ref_obj.properties["buildingAddress"],
+                                        building_description=ref_obj.properties["buildingDescription"],
+                                        housing_price=ref_obj.properties["housingPrice"],
+                                        owner_name=ref_obj.properties["ownerName"],
+                                        owner_email=ref_obj.properties["ownerEmail"],
+                                        owner_whatsapp=ref_obj.properties["ownerWhatsapp"],
+                                        owner_phone_number=ref_obj.properties["ownerPhoneNumber"],
+                                        image_url=ref_obj.properties["imageURL"]
+                                    )
+                                    building_list.append(building_instance)
+                                    self._logger.log_info(f"Building object added, length: {len(building_list)}")
+                                    if len(building_list) >= limit:
+                                        break
+                        
                             if len(building_list) >= limit:
                                 break
-                    
-                        if len(building_list) >= limit:
-                            break
-                        
-                    offset += limit 
-            
-                end_time = time.time()
-                elapsed_time = end_time - start_time
-                self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\nTotal object count: {str(len(building_list))}")
-                break
-            except Exception as e:
-                self._logger.log_exception(f"Failed do weaviate query, ERROR: {e}")
-                print(f"Attempt {retries} failed: {e}. Retrying in {retry_delay_in_sec} seconds...")
-                retries += 1
-                time.sleep(retry_delay_in_sec)
-            finally:
-                WeaviateAPI.close_connection_to_server(self)
-        else:
-            print(f"Weaviate operation failed after {max_retries} retries.")
-            
+                            
+                        offset += limit 
+                
+                    end_time = time.time()
+                    elapsed_time = end_time - start_time
+                    self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\nTotal object count: {str(len(building_list))}")
+                    break
+                except Exception as e:
+                    self._logger.log_exception(f"Failed do weaviate query, ERROR: {e}")
+                    if retries == max_retries:
+                        self._logger.log_exception(f"Weaviate operation failed after {max_retries} retries.")
+                    else:
+                        self._logger.log_warning(f"Attempt {retries} failed: {e}. Retrying in {retry_delay_in_sec} seconds...")
+                        retries += 1
+                        time.sleep(retry_delay_in_sec)
+                finally:
+                    weaviate_client.close_connection_to_server(self, connected)
+                
         if len(building_list) == 0:
             output = self.feedback_prompt(prompt, session_id, True)
         else:

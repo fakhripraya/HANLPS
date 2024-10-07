@@ -6,30 +6,33 @@ from weaviate.classes.query import Filter, GeoCoordinate
 
 
 def append_housing_price_filters(
-    buildings_filter: BuildingsFilter, filter_array: list
+    buildings_filter: BuildingsFilter,
+    filter_array: list,
+    with_reference: bool = False
 ) -> list:
+    base_filter = Filter.by_ref(link_on="hasBuilding") if with_reference else Filter
     if isinstance(buildings_filter.less_than_price, float) and isinstance(
         buildings_filter.greater_than_price, float
     ):
         filter_array.append(
-            Filter.by_ref(link_on="hasBuilding")
+            base_filter
             .by_property("housingPrice")
             .greater_or_equal(buildings_filter.greater_than_price)
         )
         filter_array.append(
-            Filter.by_ref(link_on="hasBuilding")
+            base_filter
             .by_property("housingPrice")
             .less_or_equal(buildings_filter.less_than_price)
         )
     elif isinstance(buildings_filter.greater_than_price, float):
         filter_array.append(
-            Filter.by_ref(link_on="hasBuilding")
+            base_filter
             .by_property("housingPrice")
             .greater_or_equal(buildings_filter.greater_than_price)
         )
     elif isinstance(buildings_filter.less_than_price, float):
         filter_array.append(
-            Filter.by_ref(link_on="hasBuilding")
+            base_filter
             .by_property("housingPrice")
             .less_or_equal(buildings_filter.less_than_price)
         )
@@ -78,7 +81,7 @@ def append_building_geolocation_filters(
 ) -> list:
     if lat_long is not None:
         filter_array.append(
-            Filter.by_ref(link_on="hasBuilding")
+            Filter
             .by_property("buildingGeolocation")
             .within_geo_range(
                 coordinate=GeoCoordinate(
