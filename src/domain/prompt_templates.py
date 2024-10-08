@@ -1,3 +1,20 @@
+# analyzer_template = """
+#     Understand the context of the conversation
+#     history conversation:
+#     {conversations}
+
+#     Incoming human input
+#     Human: {prompts}
+
+#     Analyze the incoming human input based on the history conversation context:
+#     - Reply True if the incoming input implies asking about KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, APARTMENTS, or BOARDING HOUSES.
+#     - Reply False if the incoming input is asking location outside of Jakarta, Tangerang, Bogor, Banten or JABODETABEK.
+#     - Reply False if it implies asking for advertising, posting, expresses satisfaction, or disappointment.
+#     - For any other scenario, reply False.
+
+#     Only answer with True or False
+#     """
+
 analyzer_template = """
     Understand the context of the conversation
     history conversation: 
@@ -6,10 +23,7 @@ analyzer_template = """
     Incoming human input
     Human: {prompts}
     
-    Analyze the incoming human input based on the history conversation context:
-    - Reply True if the incoming input implies asking about KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, APARTMENTS, or BOARDING HOUSES.
-    - Reply False if it implies asking for advertising, posting, expresses satisfaction, or disappointment.
-    - For any other scenario, reply False.
+    Analyze the incoming human input based on the history conversation context
     
     Only answer with True or False
     """
