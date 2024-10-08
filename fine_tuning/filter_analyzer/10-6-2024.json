@@ -1,0 +1,310 @@
+[
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Understand the context of the conversation and define the extracted data based on the prompt and the conversation context. 1. analyze the context of the incoming input based on the conversation, 2. simulate extracting data from the conversation."
+      },
+      {
+        "role": "user",
+        "content": "Info kontrakan di bogor"
+      },
+      {
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "id": "call_id",
+            "type": "function",
+            "function": {
+              "name": "generate_location_details_data",
+              "arguments": "{\"building_address\": \"bogor\"}"
+            }
+          }
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "generate_location_details_data",
+          "description": "Define the extracted data based on the prompt and the conversation context into location details.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "building_title": {
+                "type": "string",
+                "description": "The title of the building, if applicable"
+              },
+              "building_address": {
+                "type": "string",
+                "description": "The building location whether its a province, city, district, street, etc. If applicable."
+              },
+              "building_proximity": {
+                "type": "string",
+                "description": "The proximity of the building, other than the address. If applicable."
+              },
+              "building_facility": {
+                "type": "string",
+                "description": "The facility provided by the building. If applicable."
+              },
+              "building_note": {
+                "type": "string",
+                "description": "Anything the building noted that the prompter asked"
+              },
+              "filter_type": {
+                "type": "string",
+                "enum": [
+                  "AROUND",
+                  "LESS_THAN",
+                  "GREATER_THAN",
+                  "null"
+                ],
+                "description": "Type of price filter as enum (LESS_THAN, GREATER_THAN, AROUND)"
+              },
+              "less_than_price": {
+                "type": "float",
+                "description": "The maximum rent price, if applicable."
+              },
+              "greater_than_price": {
+                "type": "float",
+                "description": "The minimum rent price, if applicable."
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Understand the context of the conversation and define the extracted data based on the prompt and the conversation context. 1. analyze the context of the incoming input based on the conversation, 2. simulate extracting data from the conversation."
+      },
+      {
+        "role": "user",
+        "content": "Info kontrakan di jakarta selatan deket menara astra harga di 1.5an"
+      },
+      {
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "id": "call_id",
+            "type": "function",
+            "function": {
+              "name": "generate_location_details_data",
+              "arguments": "{\"building_address\": \"jakarta selatan\", \"building_proximity\": \"menara astra\", \"filter_type\": \"AROUND\", \"less_than_price\": \"1.750.000\", \"greater_than_price\": \"1.250.000\"}"
+            }
+          }
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "generate_location_details_data",
+          "description": "Define the extracted data based on the prompt and the conversation context into location details.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "building_title": {
+                "type": "string",
+                "description": "The title of the building, if applicable"
+              },
+              "building_address": {
+                "type": "string",
+                "description": "The building location whether its a province, city, district, street, etc. If applicable."
+              },
+              "building_proximity": {
+                "type": "string",
+                "description": "The proximity of the building, other than the address. If applicable."
+              },
+              "building_facility": {
+                "type": "string",
+                "description": "The facility provided by the building. If applicable."
+              },
+              "building_note": {
+                "type": "string",
+                "description": "Anything the building noted that the prompter asked"
+              },
+              "filter_type": {
+                "type": "string",
+                "enum": [
+                  "AROUND",
+                  "LESS_THAN",
+                  "GREATER_THAN",
+                  "null"
+                ],
+                "description": "Type of price filter as enum (LESS_THAN, GREATER_THAN, AROUND)"
+              },
+              "less_than_price": {
+                "type": "float",
+                "description": "The maximum rent price, if applicable."
+              },
+              "greater_than_price": {
+                "type": "float",
+                "description": "The minimum rent price, if applicable."
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Understand the context of the conversation and define the extracted data based on the prompt and the conversation context. 1. analyze the context of the incoming input based on the conversation, 2. simulate extracting data from the conversation."
+      },
+      {
+        "role": "user",
+        "content": "Info deket menara indomaret pik harga di 1jtan"
+      },
+      {
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "id": "call_id",
+            "type": "function",
+            "function": {
+              "name": "generate_location_details_data",
+              "arguments": "{\"building_proximity\": \"menara indomaret pik\", \"filter_type\": \"AROUND\", \"less_than_price\": \"1.250.000\", \"greater_than_price\": \"750.000\"}"
+            }
+          }
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "generate_location_details_data",
+          "description": "Define the extracted data based on the prompt and the conversation context into location details.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "building_title": {
+                "type": "string",
+                "description": "The title of the building, if applicable"
+              },
+              "building_address": {
+                "type": "string",
+                "description": "The building location whether its a province, city, district, street, etc. If applicable."
+              },
+              "building_proximity": {
+                "type": "string",
+                "description": "The proximity of the building, other than the address. If applicable."
+              },
+              "building_facility": {
+                "type": "string",
+                "description": "The facility provided by the building. If applicable."
+              },
+              "building_note": {
+                "type": "string",
+                "description": "Anything the building noted that the prompter asked"
+              },
+              "filter_type": {
+                "type": "string",
+                "enum": [
+                  "AROUND",
+                  "LESS_THAN",
+                  "GREATER_THAN",
+                  "null"
+                ],
+                "description": "Type of price filter as enum (LESS_THAN, GREATER_THAN, AROUND)"
+              },
+              "less_than_price": {
+                "type": "float",
+                "description": "The maximum rent price, if applicable."
+              },
+              "greater_than_price": {
+                "type": "float",
+                "description": "The minimum rent price, if applicable."
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "messages": [
+      {
+        "role": "system",
+        "content": "Understand the context of the conversation and define the extracted data based on the prompt and the conversation context. 1. analyze the context of the incoming input based on the conversation, 2. simulate extracting data from the conversation."
+      },
+      {
+        "role": "user",
+        "content": "Info deket jalan haji sueb"
+      },
+      {
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "id": "call_id",
+            "type": "function",
+            "function": {
+              "name": "generate_location_details_data",
+              "arguments": "{\"building_address\": \"jalan haji sueb\"}"
+            }
+          }
+        ]
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "generate_location_details_data",
+          "description": "Define the extracted data based on the prompt and the conversation context into location details.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "building_title": {
+                "type": "string",
+                "description": "The title of the building, if applicable"
+              },
+              "building_address": {
+                "type": "string",
+                "description": "The building location whether its a province, city, district, street, etc. If applicable."
+              },
+              "building_proximity": {
+                "type": "string",
+                "description": "The proximity of the building, other than the address. If applicable."
+              },
+              "building_facility": {
+                "type": "string",
+                "description": "The facility provided by the building. If applicable."
+              },
+              "building_note": {
+                "type": "string",
+                "description": "Anything the building noted that the prompter asked"
+              },
+              "filter_type": {
+                "type": "string",
+                "enum": [
+                  "AROUND",
+                  "LESS_THAN",
+                  "GREATER_THAN",
+                  "null"
+                ],
+                "description": "Type of price filter as enum (LESS_THAN, GREATER_THAN, AROUND)"
+              },
+              "less_than_price": {
+                "type": "float",
+                "description": "The maximum rent price, if applicable."
+              },
+              "greater_than_price": {
+                "type": "float",
+                "description": "The minimum rent price, if applicable."
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+]
