@@ -229,8 +229,8 @@ class LangchainAPI(LangchainAPIInterface):
             ])):
                 facility_query_instance = Building(
                     building_title=buildings_filter.building_title,
-                    building_address=buildings_filter.building_address,
-                    building_proximity=buildings_filter.building_proximity,
+                    building_facility=buildings_filter.building_facility,
+                    building_note=buildings_filter.building_note,
                 )       
                 facility_query = self._query_parser.execute(facility_query_instance.to_dict())
             
