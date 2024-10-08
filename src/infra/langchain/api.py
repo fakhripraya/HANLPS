@@ -260,7 +260,7 @@ class LangchainAPI(LangchainAPIInterface):
         
         # Geolocation radius stages
         # Add more stages to use multiple stages
-        geolocation_stages = [7000]
+        geolocation_stages = [6000]
         geolocation_stage_index = 0
         
         # Setup fixed filters
@@ -283,15 +283,17 @@ class LangchainAPI(LangchainAPIInterface):
                         with_geofilter = is_geofilter_callable and geolocation_stage_index < len(geolocation_stages)
                         
                         if with_geofilter:
-                            if len(filter_array["housing_price"]) > 0:
-                                filters = Filter.all_of(filter_array["housing_price"](False))
+                            housing_price_filter = filter_array["housing_price"](False)
+                            if len(housing_price_filter) > 0:
+                                filters = Filter.all_of(housing_price_filter)
                                 
                             distance = geolocation_stages[geolocation_stage_index]
                             geofilter = filter_array["building_geolocation"](distance)
                             filters = filters & Filter.any_of(geofilter) if filters else Filter.any_of(geofilter)
+                            
                             self._logger.log_info(f"Execute query with facility query: {facility_query}")
                             self._logger.log_info(f"Trying to get location at: {distance} distance")
-                            self._logger.log_info(f"Executing with filters: {filter_array}")
+                            self._logger.log_info(f"Executing with filters: {filters}")
                             response = query_building(
                                 building_collection,
                                 facility_query,
@@ -300,12 +302,13 @@ class LangchainAPI(LangchainAPIInterface):
                                 offset
                             )
                         else:
-                            if len(filter_array["housing_price"]) > 0:
-                                filters = Filter.all_of(filter_array["housing_price"](True))
+                            housing_price_filter = filter_array["housing_price"](True)
+                            if len(housing_price_filter) > 0:
+                                filters = Filter.all_of(housing_price_filter)
+                            filters = filters & chunk_collection_filters if chunk_collection_filters else filters
                                 
                             self._logger.log_info(f"Execute query with location query: {location_query}")
-                            self._logger.log_info(f"Executing with filters: {filter_array}")
-                            filters = filters & chunk_collection_filters if chunk_collection_filters else filters
+                            self._logger.log_info(f"Executing with filters: {filters}")
                             response = query_building_with_building_as_reference(
                                 building_chunk_collection,
                                 location_query,
@@ -381,7 +384,7 @@ class LangchainAPI(LangchainAPIInterface):
                         self._logger.log_warning(f"Attempt {retries} failed: {e}. Retrying...")
                         retries += 1
                 finally:
-                    weaviate_client.close_connection_to_server(self, connected)
+                    weaviate_client.close_connection_to_server(connected)
                 
         if len(building_list) == 0:
             output = self.feedback_prompt(prompt, session_id, True)
