@@ -10,7 +10,7 @@ import traceback
 from configs.config import (
     ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER,
     OPENAI_MODEL, HUGGINGFACE_MODEL, GEMINI_MODEL,
-    GEMINI_API_KEY, USE_MODULE, MODULE_USED, OPENAI_ANALYZER_MODEL
+    GEMINI_API_KEY, USE_MODULE, MODULE_USED, OPENAI_ANALYZER_MODEL, OPENAI_FILTER_DATA_STRUCTURER_MODEL
 )
 from src.domain.entities.message.message import Message
 from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME, BUILDINGS_COLLECTION_NAME
@@ -61,20 +61,7 @@ class LangchainAPI(LangchainAPIInterface):
         self._logger = logger
         self._store = {}
         
-        if llm_type == OPENAI:
-            self._client = self.create_open_ai_llm(OPENAI_MODEL)
-            self._analyzer_client = self.create_open_ai_llm(OPENAI_ANALYZER_MODEL)
-        elif llm_type == HUGGING_FACE:
-            self._client = self.create_huggingface_llm(HUGGINGFACE_MODEL)
-            self._analyzer_client = self.create_huggingface_llm(HUGGINGFACE_MODEL)
-        elif llm_type == GEMINI:
-            self._client = self.create_gemini_llm(GEMINI_MODEL)
-            self._analyzer_client = self.create_huggingface_llm(GEMINI_MODEL)
-        else:
-            raise Exception("No LLM Found")
-        
-        self._prompt_parser = PromptParser(self._client)
-        self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
+        self.init_llm(llm_type)
         self._query_parser = QueryParser()
         self._templates = {
             "filter_analyzer_template": [
@@ -96,6 +83,29 @@ class LangchainAPI(LangchainAPIInterface):
             self._logger.log_exception(f"[{exc_type}]: {exc_val}")
             self._logger.log_exception(f"Traceback: {traceback.format_tb(exc_tb)}")
         
+    def init_llm(self, llm_type) -> None:
+        if llm_type == OPENAI:
+            print(OPENAI_MODEL)
+            print(OPENAI_ANALYZER_MODEL)
+            print(OPENAI_FILTER_DATA_STRUCTURER_MODEL)
+            self._client = self.create_open_ai_llm(OPENAI_MODEL)
+            self._analyzer_client = self.create_open_ai_llm(OPENAI_ANALYZER_MODEL)
+            self._filter_data_structurer_client = self.create_open_ai_llm(OPENAI_FILTER_DATA_STRUCTURER_MODEL)
+        elif llm_type == HUGGING_FACE:
+            self._client = self.create_huggingface_llm(HUGGINGFACE_MODEL)
+            self._analyzer_client = self.create_huggingface_llm(HUGGINGFACE_MODEL)
+            self._filter_data_structurer_client = self.create_open_ai_llm(HUGGINGFACE_MODEL)
+        elif llm_type == GEMINI:
+            self._client = self.create_gemini_llm(GEMINI_MODEL)
+            self._analyzer_client = self.create_huggingface_llm(GEMINI_MODEL)
+            self._filter_data_structurer_client = self.create_open_ai_llm(GEMINI_MODEL)
+        else:
+            raise Exception("No LLM Found")
+        
+        self._prompt_parser = PromptParser(self._client)
+        self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
+        self._filter_data_structurer_prompt_parser = PromptParser(self._filter_data_structurer_client)
+
     def create_open_ai_llm(self, llm_model) -> ChatOpenAI:
         """ 
         Create OpenAI LLM and register it as dependency
@@ -175,7 +185,7 @@ class LangchainAPI(LangchainAPIInterface):
         self._logger.log_info(f"Is asking for boarding house: {result}")
         if result == "True":
             templates = self._templates["filter_analyzer_template"]
-            result: str = self._prompt_parser.execute(
+            result: str = self._filter_data_structurer_prompt_parser.execute(
                 {"prompts": prompt, "conversations": conversation if conversation else ""},
                 templates
             )

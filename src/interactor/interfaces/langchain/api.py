@@ -16,6 +16,12 @@ class LangchainAPIInterface(ABC):
     """LangchainAPIInterface class provides an interface for langchain API."""
 
     @abstractmethod
+    def init_llm(self, llm_type: str) -> None:
+        """
+        Initialize LLMs and prompt parsers
+        """
+
+    @abstractmethod
     def create_open_ai_llm(self, llm_model: str) -> ChatOpenAI:
         """
         Create OpenAI LLM and register it as dependency

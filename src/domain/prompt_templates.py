@@ -29,8 +29,7 @@ analyzer_template = """
     """
 
 filter_analyzer_template = """"
-    Define structured data based on the prompt and the conversation context
-    Understand the context of the conversation
+    Extract structured data based on the prompt using the conversation context
     
     history conversation: 
     {conversations}
@@ -44,23 +43,26 @@ filter_analyzer_template = """"
     4. If the input implies desires for cheap prices, set the price to be LESS_THAN 1500000 and if it implies for high budget set the price to be GREATER_THAN 2000000 this applies only if the input gave no budget
     5. the enum for gender is [Lelaki, Perempuan, Campur, Bebas]
 
-    provide the following fields in a JSON dict, where applicable: \"building_title\", \"building_address\", \"building_proximity\", \"building_facility\", \"building_note\", \"filter_type\", \"less_than_price\", and \"greater_than_price\".
+    only provide the following fields in a JSON dict, where applicable: \"building_title\", \"building_address\", \"building_proximity\", \"building_facility\", \"building_note\", \"filter_type\", \"less_than_price\", and \"greater_than_price\".
 
-    NOTE: filter price can't be less than or equal 0 if the filter reach 0 or minus, give 0 value
+    NOTE: 
+    - filter price can't be less than or equal 0 if the filter reach 0 or minus, give 0 value
+    - nullify previous asked filter price if building title provided
+    - null is not string and number are float so don't make it string
     """
 # filter_analyzer_template = """"
 #     Define Extracted Data based on the prompt and the conversation context
 #     Understand the context of the conversation
-    
-#     history conversation: 
+
+#     history conversation:
 #     {conversations}
-    
+
 #     Incoming human input
 #     Human: {prompts}
-    
+
 #     1. We analyze the context of the incoming input based on the conversation
 #     2. We simulate extracting data from the conversation.
-    
+
 #     First Example Conversation:
 #     System = "Conversation Begin"
 #     Human = "Aku lagi nyari apartement di jakarta nih yang deket PT Khong guan harganya dibawah 5jtan"
@@ -74,7 +76,7 @@ filter_analyzer_template = """"
 #     filter_type: "LESS_THAN"
 #     less_than_price: 5000000
 #     greater_than_price: null
-    
+
 #     Second Example Conversation:
 #     System = "Conversation Begin"
 #     Human = "Aku lagi nyari apartement di jakarta nih yang harganya diatas 5jtan"
@@ -90,7 +92,7 @@ filter_analyzer_template = """"
 #     filter_type: "GREATER_THAN"
 #     less_than_price: null
 #     greater_than_price: 5000000
-    
+
 #     Third Example Conversation:
 #     System = "Conversation Begin"
 #     Human = "Aku lagi nyari apartement di gandsaria deket gancy nih"
@@ -108,18 +110,18 @@ filter_analyzer_template = """"
 #     filter_type: "AROUND"
 #     less_than_price: 5500000
 #     greater_than_price: 4500000
-    
+
 #     NOTE:
 #     - if you determine the filter type to be AROUND, make sure to range the price between
-#     greater_than_price: Rp.xxx - 10 percent 
+#     greater_than_price: Rp.xxx - 10 percent
 #     less_than_price: Rp.xxx + 10 percent
 #     - if the user ask for any price or "harganya bebas deh" or something like that
 #     set all filter to be None
 #     - if the user ask about gender for the note, extract in only 3 value between "Perempuan", "Lelaki", or "Campur"
-    
+
 #     NOTE:
 #     ABOVE IS JUST EXAMPLE, UNDERSTAND THE CONTEXT OF THE CONVERSATION HISTORY AND EXTRACT DATA BASED ON IT AND THE HUMAN INPUT
-    
+
 #     3. Reply only with the extracted data that represented in JSON, without the backtick formatting.
 # """
 
