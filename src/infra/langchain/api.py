@@ -315,7 +315,11 @@ class LangchainAPI(LangchainAPIInterface):
                             housing_price_filter = filter_array["housing_price"](True)
                             if len(housing_price_filter) > 0:
                                 filters = Filter.all_of(housing_price_filter)
-                            filters = filters & chunk_collection_filters if chunk_collection_filters else filters
+                                
+                            if filters and chunk_collection_filters:
+                                filters = filters & chunk_collection_filters
+                            elif not filters:
+                                filters = chunk_collection_filters
                                 
                             self._logger.log_info(f"Execute query with location query: {location_query}")
                             self._logger.log_info(f"Executing with filters: {filters}")

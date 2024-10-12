@@ -1,30 +1,17 @@
-# analyzer_template = """
-#     Understand the context of the conversation
-#     history conversation:
-#     {conversations}
-
-#     Incoming human input
-#     Human: {prompts}
-
-#     Analyze the incoming human input based on the history conversation context:
-#     - Reply True if the incoming input implies asking about KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, APARTMENTS, or BOARDING HOUSES.
-#     - Reply False if the incoming input is asking location outside of Jakarta, Tangerang, Bogor, Banten or JABODETABEK.
-#     - Reply False if it implies asking for advertising, posting, expresses satisfaction, or disappointment.
-#     - For any other scenario, reply False.
-
-#     Only answer with True or False
-#     """
-
 analyzer_template = """
     Understand the context of the conversation
-    history conversation: 
+    history conversation:
     {conversations}
-    
+
     Incoming human input
     Human: {prompts}
-    
-    Analyze the incoming human input based on the history conversation context
-    
+
+    Analyze the incoming human input based on the history conversation context:
+    - Reply True if the incoming input implies asking about KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, APARTMENTS, or BOARDING HOUSES.
+    - Reply False if the incoming input is asking location outside of Jakarta, Tangerang, Bogor, Banten or JABODETABEK.
+    - Reply False if it implies asking for advertising, posting, expresses satisfaction, or disappointment.
+    - For any other scenario, reply False.
+
     Only answer with True or False
     """
 
@@ -37,18 +24,83 @@ filter_analyzer_template = """"
     Incoming human input
     Human: {prompts}
 
-    1. analyze the context of the incoming input based on the conversation
-    2. simulate extracting data from the conversation
-    3. If the filter type is to be AROUND, make sure to adjust the price for greater_than_price: xxx - 250000 and less_than_price: xxx + 250000
+    1. Analyze the context of the incoming input based on the conversation
+    2. Simulate extracting data from the conversation
     4. If the input implies desires for cheap prices, set the price to be LESS_THAN 1500000 and if it implies for high budget set the price to be GREATER_THAN 2000000 this applies only if the input gave no budget
-    5. the enum for gender is [Lelaki, Perempuan, Campur, Bebas]
+    5. The enum for gender is [Lelaki, Perempuan, Campur, Bebas]
 
-    only provide the following fields in a JSON dict, where applicable: \"building_title\", \"building_address\", \"building_proximity\", \"building_facility\", \"building_note\", \"filter_type\", \"less_than_price\", and \"greater_than_price\".
+    First Example Conversation:
+    System = "Conversation Begin"
+    Human = "Aku lagi nyari apartement di jakarta nih yang deket PT Khong guan harganya dibawah 5jtan"
+
+    Extracted Data:
+    building_title: null
+    building_address: "Jakarta"
+    building_proximity: "PT Khong guan"
+    building_facility: null
+    building_note: null
+    filter_type: "LESS_THAN"
+    less_than_price: 5000000
+    greater_than_price: null
+
+    Second Example Conversation:
+    System = "Conversation Begin"
+    Human = "Aku lagi nyari apartement di jakarta nih yang harganya diatas 5jtan"
+    AI = "Kalau ini gimana kak? ini harga diatas 5 juta"
+    Human = "Kak gajadi deh kayanya yang di bandung deket gedung sate aja deh, yang ada parkiran dalam dan dapur bersama ya, trus khusus perempuan"
+
+    Extracted Data:
+    building_title: null
+    building_address: "Bandung"
+    building_proximity: "gedung sate"
+    building_facility: "parkiran dalam, dapur bersama" this mean it has the facility and it applies for other benefit too
+    building_note: "perempuan" Some notes that the prompter asked
+    filter_type: "GREATER_THAN"
+    less_than_price: null
+    greater_than_price: 5000000
+
+    Third Example Conversation:
+    System = "Conversation Begin"
+    Human = "Aku lagi nyari apartement di gandsaria deket gancy nih"
+    AI = "Maksudnya gandaria ya kak?"
+    Human = "Iya kak gandaria, yang harganya 2.5 - 5jtan dong, adakah?" this input is giving the price range
+    AI = "Kalau ini gimana kak? ini deket gancy"
+    Human = "kurang kak, mau pake kamar mandi dalam sama AC ya, trus kalo bisa bulanan dan boleh bawa hewan kucing"
+
+    Extracted Data:
+    building_title: null
+    building_address: "gandaria"
+    building_proximity: "gancy"
+    building_facility: "kamar mandi dalam, Air Conditioner, AC" watch the facility abbrevation aswell, if applicable
+    building_note: "bulanan, boleh bawa hewan, boleh bawa kucing" Some notes that the prompter asked
+    filter_type: "AROUND"
+    less_than_price: 5000000
+    greater_than_price: 2500000
+    
+    Fourth Example Conversation:
+    System = "Conversation Begin"
+    Human = "Aku lagi nyari kosan di palmerah, yang harganya 2jtan dong" this is not giving any price range
+    AI = "Kalau ini gimana kak? ini deket palmerah harga 2jtan"
+    Human = "mau pake kamar mandi dalam sama AC juga dong"
+
+    Extracted Data:
+    building_title: null
+    building_address: "palmerah"
+    building_proximity: null
+    building_facility: "kamar mandi dalam, Air Conditioner, AC" watch the facility abbrevation aswell, if applicable
+    building_note: null
+    filter_type: "AROUND"
+    less_than_price: 2250000
+    greater_than_price: 1750000
+
+    only provide the following fields in a JSON dict, where applicable: \"building_title\", \"building_address\", \"building_proximity\", \"building_facility\", \"building_note\", \"filter_type\", less_than_price, and greater_than_price.
 
     NOTE: 
     - filter price can't be less than or equal 0 if the filter reach 0 or minus, give 0 value
+    - for filter type AROUND and is not a price range, make sure to adjust the price for greater_than_price: xxx - 250000 and less_than_price: xxx + 250000
     - nullify previous asked filter price if building title provided
-    - null is not string and number are float so don't make it string
+    - null value are not string 
+    - numbers are float not string
     """
 # filter_analyzer_template = """"
 #     Define Extracted Data based on the prompt and the conversation context
@@ -191,7 +243,7 @@ reask_template = (
     Explanation: There is no problem with the human prompt, but there is no such detail in the database, the result count is 0.
     AI supposed to reply: Aku gabisa nemuin yang kaya gitu kak, bisa detailin ulang?
 
-    Do not advertise something else like this, or anything similar:
+    Do not advertise any platform, any instances, or anything similar:
     Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
     AI supposed to not reply: Maaf, aku belum punya informasi tentang kosan di Cimanggis. Kamu bisa coba cari di website properti seperti: Rumah123, Lamudi, OLX, Tokopedia. Atau kamu bisa coba tanya di grup Facebook atau forum online yang membahas tentang kosan di Cimanggis. Semoga kamu bisa menemukan kosan yang sesuai dengan kebutuhanmu!
 
@@ -218,8 +270,8 @@ building_found_template = (
     And don't ask or say anything afterwards
     
     Important:
-    don't offer the human the halucination result like this:
-    "Ini beberapa pilihan kosan dekat Tanah Kusir yang mungkin cocok buat kamu: 1. bla bla 2. bla bla"
+    don't reply in offering like this:
+    "Ini beberapa pilihan kosan dekat Tanah Kusir yang mungkin cocok buat kamu: 1. kosan a 2. kosan b 3. kosan c"
     
     this is just an example but don't do that
     """
