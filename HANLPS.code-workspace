@@ -23,6 +23,9 @@
     },
     {
       "path": "../Littlecamp"
+    },
+    {
+      "path": "../wg-mothership"
     }
   ],
   "settings": {}
