@@ -8,12 +8,19 @@ import traceback
 
 # Source-specific imports
 from configs.config import (
-    ADVERTISING_PIC_NUMBER, SERVICE_PIC_NUMBER,
-    OPENAI_MODEL, HUGGINGFACE_MODEL, GEMINI_MODEL,
-    GEMINI_API_KEY, USE_MODULE, MODULE_USED, OPENAI_ANALYZER_MODEL, OPENAI_FILTER_DATA_STRUCTURER_MODEL
+    ADVERTISING_PIC_NUMBER,
+    SERVICE_PIC_NUMBER,
+    OPENAI_MODEL,
+    GEMINI_MODEL,
+    GEMINI_API_KEY,
+    USE_MODULE,
+    MODULE_USED,
+    OPENAI_API_KEY, 
+    OPENAI_ANALYZER_MODEL,
+    OPENAI_FILTER_DATA_STRUCTURER_MODEL
 )
 from src.domain.entities.message.message import Message
-from src.domain.constants import OPENAI, HUGGING_FACE, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME, BUILDINGS_COLLECTION_NAME
+from src.domain.constants import OPENAI, GEMINI, BUILDING_CHUNKS_COLLECTION_NAME, BUILDINGS_COLLECTION_NAME
 from src.domain.prompt_templates import (
     chat_template,
     analyzer_template,
@@ -23,8 +30,8 @@ from src.domain.prompt_templates import (
 )
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
 from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
-from src.infra.repositories.weaviate.query_parser.query_parser import QueryParser
-from src.infra.repositories.weaviate.api import WeaviateAPI
+from src.infra.langchain.chat_message_history.chat_message_history import DequeChatMessageHistory
+from src.infra.langchain.llm.llm import create_open_ai_llm, create_gemini_llm
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.repositories.weaviate.schema.collections.buildings.buildings import (
@@ -42,13 +49,11 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.runnables import Runnable
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
-from langchain_openai.chat_models import ChatOpenAI
-from langchain_huggingface import HuggingFacePipeline
-from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Weaviate
+from src.infra.repositories.weaviate.api import WeaviateAPI
+from src.infra.repositories.weaviate.query_parser.query_parser import QueryParser
 from src.infra.repositories.weaviate.query.query import query_building_with_building_as_reference, query_building
 from weaviate.classes.query import Filter
 
@@ -56,12 +61,13 @@ class LangchainAPI(LangchainAPIInterface):
     """ LangchainAPI class.
     """
 
-    def __init__(self, llm_type: str, api_key: str, logger: LoggerInterface) -> None: 
-        self._api_key = api_key
+    def __init__(self, llm_type: str, logger: LoggerInterface) -> None: 
         self._logger = logger
         self._store = {}
-        
-        self.init_llm(llm_type)
+        self._llm_type = llm_type
+        self._client = None
+        self._analyzer_client = None
+        self._filter_data_structurer_client = None
         self._query_parser = QueryParser()
         self._templates = {
             "filter_analyzer_template": [
@@ -74,77 +80,36 @@ class LangchainAPI(LangchainAPIInterface):
             "reask_template": reask_template,
             "building_found_template": building_found_template,
         }
+        
+        self.connect_llm(llm_type)
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type is not None:
-            self._logger.log_exception(f"[{exc_type}]: {exc_val}")
-            self._logger.log_exception(f"Traceback: {traceback.format_tb(exc_tb)}")
+            self._logger.log_error(f"[{exc_type}]: {exc_val}")
+            self._logger.log_error(f"Traceback: {traceback.format_tb(exc_tb)}")
         
-    def init_llm(self, llm_type) -> None:
-        if llm_type == OPENAI:
-            print(OPENAI_MODEL)
-            print(OPENAI_ANALYZER_MODEL)
-            print(OPENAI_FILTER_DATA_STRUCTURER_MODEL)
-            self._client = self.create_open_ai_llm(OPENAI_MODEL)
-            self._analyzer_client = self.create_open_ai_llm(OPENAI_ANALYZER_MODEL)
-            self._filter_data_structurer_client = self.create_open_ai_llm(OPENAI_FILTER_DATA_STRUCTURER_MODEL)
-        elif llm_type == HUGGING_FACE:
-            self._client = self.create_huggingface_llm(HUGGINGFACE_MODEL)
-            self._analyzer_client = self.create_huggingface_llm(HUGGINGFACE_MODEL)
-            self._filter_data_structurer_client = self.create_open_ai_llm(HUGGINGFACE_MODEL)
-        elif llm_type == GEMINI:
-            self._client = self.create_gemini_llm(GEMINI_MODEL)
-            self._analyzer_client = self.create_huggingface_llm(GEMINI_MODEL)
-            self._filter_data_structurer_client = self.create_open_ai_llm(GEMINI_MODEL)
-        else:
-            raise Exception("No LLM Found")
-        
-        self._prompt_parser = PromptParser(self._client)
-        self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
-        self._filter_data_structurer_prompt_parser = PromptParser(self._filter_data_structurer_client)
-
-    def create_open_ai_llm(self, llm_model) -> ChatOpenAI:
-        """ 
-        Create OpenAI LLM and register it as dependency
+    def connect_llm(self) -> None:
         """
-        client = ChatOpenAI(model=llm_model, api_key=self._api_key)
-        return client
-        
-    def create_gemini_llm(self, llm_model) -> ChatGoogleGenerativeAI:
-        """ 
-        Create Gemini LLM and register it as dependency
+        Connect selected LLM and initialize prompt parsers
         """
-        baseUrl = 'https://generativelanguage.googleapis.com'
-        version = 'v1beta'
-        client = ChatGoogleGenerativeAI(
-            model=llm_model,
-            google_api_key=GEMINI_API_KEY,
-            temperature=0,
-            baseUrl=baseUrl,
-            max_retries=3,
-            version=version
-        )
-        return client
-        
-    def create_huggingface_llm(self, llm_model) -> HuggingFacePipeline:
-        """ 
-        Create Huggingface LLM and register it as dependency
-        """
-        # NOTE 
-        # doesn't support Bahasa Indonesia 
-        client = HuggingFacePipeline.from_model_id(
-            model_id=llm_model,
-            task="text-generation",
-            pipeline_kwargs={
-                "max_new_tokens": 100,
-                "top_k": 50,
-                "temperature": 0.1,
-            },
-        )
-        return client
+        if not self._client:
+            if self._llm_type == OPENAI:
+                self._client = create_open_ai_llm(OPENAI_MODEL, OPENAI_API_KEY)
+                self._analyzer_client = create_open_ai_llm(OPENAI_ANALYZER_MODEL, OPENAI_API_KEY)
+                self._filter_data_structurer_client = create_open_ai_llm(OPENAI_FILTER_DATA_STRUCTURER_MODEL, OPENAI_API_KEY)
+            elif self._llm_type == GEMINI:
+                self._client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
+                self._analyzer_client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
+                self._filter_data_structurer_client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
+            else:
+                raise Exception("No LLM Found")
+            
+            self._prompt_parser = PromptParser(self._client)
+            self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
+            self._filter_data_structurer_prompt_parser = PromptParser(self._filter_data_structurer_client)
 
     def get_session_history(self, session_id) -> BaseChatMessageHistory:
         """ Get message history by session id
@@ -152,7 +117,7 @@ class LangchainAPI(LangchainAPIInterface):
         :return: BaseChatMessageHistory
         """
         if session_id not in self._store:
-            self._store[session_id] = ChatMessageHistory()
+            self._store[session_id] = DequeChatMessageHistory(maxlen=10)
         return self._store[session_id]
 
     def analyze_prompt(self, session_id, prompt) -> Message:
@@ -162,17 +127,14 @@ class LangchainAPI(LangchainAPIInterface):
         :param session_id: chat session id.
         :param prompt: chat message to be analyzed.
         """
-        self._logger.log_info(f"Session: {session_id}")
-        self._logger.log_info(f"User prompt: {prompt}")
+        self._logger.log_info(f"[{session_id}]: User prompt: {prompt}")
         conversation = None
         if session_id in self._store:
             conversation = self._store[session_id]
             # Only let 10 message in the chat history for context window efficiency
             while len(self._store[session_id].messages) > 10:
                 self._store[session_id].messages.pop(0)
-            self._logger.log_info(f"\n---------------------------conversation of user {session_id}---------------------------")
-            self._logger.log_info(conversation)
-            self._logger.log_info(f"\n---------------------------end of conversation user {session_id}---------------------------")
+            self._logger.log_info(f"---------------------------conversation of user {session_id}---------------------------\n{conversation}\n---------------------------end of conversation user {session_id}---------------------------")
             
         templates = self._templates["analyzer_template"]
         result: str = self._analyzer_prompt_parser.execute(
@@ -182,7 +144,7 @@ class LangchainAPI(LangchainAPIInterface):
         result = result.strip()
         
         # using string to avoid truthy context of boolean
-        self._logger.log_info(f"Is asking for boarding house: {result}")
+        self._logger.log_info(f"[{session_id}]: Is asking for boarding house: {result}")
         if result == "True":
             templates = self._templates["filter_analyzer_template"]
             result: str = self._filter_data_structurer_prompt_parser.execute(
@@ -190,13 +152,10 @@ class LangchainAPI(LangchainAPIInterface):
                 templates
             )
             
-            self._logger.log_info(f"Filters: {result}")
             json_result = result.strip("`").strip("json").strip("`").strip()
-            self._logger.log_info(f"Stripped: {json_result}")
-            
             data_dict = json.loads(json_result)
             buildings_filter = BuildingsFilter(**data_dict)
-            self._logger.log_info(f"Filters in Pydantic: {buildings_filter}")
+            self._logger.log_debug(f"[{session_id}]: Filters - {buildings_filter}")
 
             filter_array = None
             filter_array = {
@@ -212,11 +171,11 @@ class LangchainAPI(LangchainAPIInterface):
                     if(query is not None):
                         geocode_data = obj.execute_geocode_by_address(query)
                         if (len(geocode_data) > 0):
-                            self._logger.log_info(f"Got geocode data: {geocode_data}")
+                            self._logger.log_debug(f"[{session_id}]: Got geocode data: {geocode_data}")
                             lat_long = geocode_data[0]['geometry']['location']
                             filter_array["building_geolocation"] = lambda distance: append_building_geolocation_filters(lat_long, distance , [])    
                 except Exception as e:
-                    self._logger.log_exception(f"Error Geocode: {e}")
+                    self._logger.log_exception(f"[{session_id}]: Error Geocode: {e}")
             
             location_query = None
             facility_query = None           
@@ -231,6 +190,7 @@ class LangchainAPI(LangchainAPIInterface):
                     building_proximity=buildings_filter.building_proximity,
                 ) 
                 location_query = self._query_parser.execute(building_instance.to_dict())
+                self._logger.log_debug(f"[{session_id}]: Location Query:{location_query}")
             
             if(any([
                 buildings_filter.building_title,
@@ -243,9 +203,8 @@ class LangchainAPI(LangchainAPIInterface):
                     building_note=buildings_filter.building_note,
                 )       
                 facility_query = self._query_parser.execute(facility_query_instance.to_dict())
+                self._logger.log_debug(f"[{session_id}]: Facility Query:{facility_query}")
             
-            self._logger.log_info(f"Facility Query:{facility_query}")
-            self._logger.log_info(f"Location Query:{location_query}")
             output = self.vector_db_retrieval(prompt, session_id, filter_array, facility_query, location_query)
             return output
         
@@ -301,9 +260,7 @@ class LangchainAPI(LangchainAPIInterface):
                             geofilter = filter_array["building_geolocation"](distance)
                             filters = filters & Filter.any_of(geofilter) if filters else Filter.any_of(geofilter)
                             
-                            self._logger.log_info(f"Execute query with facility query: {facility_query}")
-                            self._logger.log_info(f"Trying to get location at: {distance} distance")
-                            self._logger.log_info(f"Executing with filters: {filters}")
+                            self._logger.log_info(f"[{session_id}]: Execute query with facility query: {facility_query}\nLocation at: {distance}\nFilters: {filters}")
                             response = query_building(
                                 building_collection,
                                 facility_query,
@@ -321,8 +278,7 @@ class LangchainAPI(LangchainAPIInterface):
                             elif not filters:
                                 filters = chunk_collection_filters
                                 
-                            self._logger.log_info(f"Execute query with location query: {location_query}")
-                            self._logger.log_info(f"Executing with filters: {filters}")
+                            self._logger.log_info(f"[{session_id}]: Execute query with location query: {facility_query}\nFilters: {filters}")
                             response = query_building_with_building_as_reference(
                                 building_chunk_collection,
                                 location_query,
@@ -333,17 +289,16 @@ class LangchainAPI(LangchainAPIInterface):
                         
                         if not response.objects:
                             if with_geofilter:
-                                self._logger.log_info(f"Failed to get location at: {distance} distance, with query {facility_query}")
+                                self._logger.log_debug(f"[{session_id}]: Failed to get location at: {distance} distance, with query {facility_query}")
                                 geolocation_stage_index += 1
                                 offset = 0
                             else:
-                                self._logger.log_info(f"Failed to get location with query: {location_query}")
+                                self._logger.log_debug(f"[{session_id}]: Failed to get location with query: {location_query}")
                                 break
 
-                        self._logger.log_info(f"Queried object found count: {len(response.objects)}")
+                        self._logger.log_debug(f"[{session_id}]: Queried object found count: {len(response.objects)}")
                         for obj in response.objects:
                             if with_geofilter:
-                                self._logger.log_info(f"[{obj.uuid}]: Adding building {obj.properties["buildingTitle"]}")
                                 seen_uuids.add(obj.uuid)
                                 building_instance = Building(
                                     building_title=obj.properties["buildingTitle"],
@@ -357,13 +312,11 @@ class LangchainAPI(LangchainAPIInterface):
                                     image_url=obj.properties["imageURL"]
                                 )
                                 building_list.append(building_instance)
-                                self._logger.log_info(f"Building object added, length: {len(building_list)}")
                             else:
                                 for ref_obj in obj.references["hasBuilding"].objects:
                                     if ref_obj.uuid in seen_uuids:
                                         continue
 
-                                    self._logger.log_info(f"[{ref_obj.uuid}]: Adding building {ref_obj.properties["buildingTitle"]}")
                                     seen_uuids.add(ref_obj.uuid)
                                     building_instance = Building(
                                         building_title=ref_obj.properties["buildingTitle"],
@@ -377,7 +330,6 @@ class LangchainAPI(LangchainAPIInterface):
                                         image_url=ref_obj.properties["imageURL"]
                                     )
                                     building_list.append(building_instance)
-                                    self._logger.log_info(f"Building object added, length: {len(building_list)}")
                                     if len(building_list) >= limit:
                                         break
                         
@@ -388,14 +340,13 @@ class LangchainAPI(LangchainAPIInterface):
                 
                     end_time = time.time()
                     elapsed_time = end_time - start_time
-                    self._logger.log_info(f"Time taken to execute query and process results: {elapsed_time} seconds.\nTotal object count: {str(len(building_list))}")
+                    self._logger.log_info(f"[{session_id}]: Time taken to execute query and process results: {elapsed_time} seconds.\nTotal object count: {str(len(building_list))}")
                     break
                 except Exception as e:
-                    self._logger.log_exception(f"Failed do weaviate query, ERROR: {e}")
                     if retries == max_retries:
-                        self._logger.log_exception(f"Weaviate operation failed after {max_retries} retries.")
+                        self._logger.log_exception(f"[{session_id}]: Failed do weaviate query, ERROR: {e}\nWeaviate operation failed after {max_retries} retries.")
                     else:
-                        self._logger.log_warning(f"Attempt {retries} failed: {e}. Retrying...")
+                        self._logger.log_warning(f"[{session_id}]: Failed do weaviate query, ERROR: {e}\nAttempt {retries} failed: {e}.")
                         retries += 1
                 finally:
                     weaviate_client.close_connection_to_server(connected)
@@ -415,9 +366,7 @@ class LangchainAPI(LangchainAPIInterface):
         :param reask: reask flag.
         :param found: data found elements.
         """
-        self._logger.log_info(f"Is reask for something is necessary: {reask}")
-        self._logger.log_info(f"Is search found: {True if found else False}")
-        
+        self._logger.log_info(f"[{session_id}]: Is reask for something is necessary: {reask}\nIs search found: {True if found else False}")
         template = self._templates["reask_template"] if reask else self._templates["chat_template"]
         if found:
             template = self._templates["building_found_template"]
@@ -474,5 +423,4 @@ class LangchainAPI(LangchainAPIInterface):
             config={"configurable": {"session_id": session_id}}
         )
         
-        self._logger.log_info(f"AI Result: {result}")
         return result

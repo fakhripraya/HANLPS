@@ -24,7 +24,7 @@ class GRPCApp:
             futures.ThreadPoolExecutor(max_workers=grpc_max_workers)
         )
 
-        self.llm = LangchainAPI(self.define_llm_type(), OPENAI_API_KEY, self.logger)
+        self.llm = LangchainAPI(self.define_llm_type(), self.logger)
 
         # register grpc handler
         handler.add_MessagingServiceServicer_to_server(
@@ -53,6 +53,14 @@ class GRPCApp:
             self.grpc_server.wait_for_termination()
         except KeyboardInterrupt:
             self.logger.log_info("Server has been stopped with keyboard interaction")
+        except MemoryError as me:
+            self.logger.log_critical(f"Ran out of memory: {me}")
+        except grpc.RpcError as rpc_error:
+            self.logger.log_critical(f"gRPC error occurred: {rpc_error}")
+        except OSError as os_error:
+            self.logger.log_critical(f"Operating system error: {os_error}")
+        except RuntimeError as runtime_error:
+            self.logger.log_critical(f"Runtime error occurred: {runtime_error}")
         except Exception as e:
             self.logger.log_exception(f"Failed to serve the app: {e}")
         finally:
