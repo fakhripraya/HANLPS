@@ -14,7 +14,7 @@ def create_grpc_test_client_app(logger: LoggerInterface):
         try:
             run_test(stub, logger)
         except Exception as e:
-            logger.log_exception(f"Failed to serve the app: {e}")
+            logger.log_critical(f"Failed to serve the app: {e}")
 
 
 def run_test(stub: messaging_pb2_grpc.MessagingStub, logger: LoggerInterface) -> None:

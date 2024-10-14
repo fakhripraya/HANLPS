@@ -16,20 +16,23 @@ from src.infra.langchain.api import LangchainAPI
 
 class GRPCApp:
     def __init__(self, logger: LoggerInterface):
-        self.logger = logger
+        try:
+            self.logger = logger
 
-        grpc_max_workers = 10
-        self.logger.log_info(f"Creating GRPC server with {grpc_max_workers} workers")
-        self.grpc_server = grpc.server(
-            futures.ThreadPoolExecutor(max_workers=grpc_max_workers)
-        )
+            grpc_max_workers = 10
+            self.logger.log_info(f"Creating GRPC server with {grpc_max_workers} workers")
+            self.grpc_server = grpc.server(
+                futures.ThreadPoolExecutor(max_workers=grpc_max_workers)
+            )
 
-        self.llm = LangchainAPI(self.define_llm_type(), self.logger)
+            self.llm = LangchainAPI(self.define_llm_type(), self.logger)
 
-        # register grpc handler
-        handler.add_MessagingServiceServicer_to_server(
-            MessagingServicer(self.logger, self.llm), self.grpc_server
-        )
+            # register grpc handler
+            handler.add_MessagingServiceServicer_to_server(
+                MessagingServicer(self.logger, self.llm), self.grpc_server
+            )
+        except Exception as e:
+            self.logger.log_critical(f"Error initializing App Instance: {e}")
 
     def define_llm_type(self):
         """define llm type"""
@@ -52,7 +55,7 @@ class GRPCApp:
 
             self.grpc_server.wait_for_termination()
         except KeyboardInterrupt:
-            self.logger.log_info("Server has been stopped with keyboard interaction")
+            self.logger.log_exception("Server has been stopped with keyboard interaction")
         except MemoryError as me:
             self.logger.log_critical(f"Ran out of memory: {me}")
         except grpc.RpcError as rpc_error:
@@ -62,7 +65,7 @@ class GRPCApp:
         except RuntimeError as runtime_error:
             self.logger.log_critical(f"Runtime error occurred: {runtime_error}")
         except Exception as e:
-            self.logger.log_exception(f"Failed to serve the app: {e}")
+            self.logger.log_critical(f"Failed to serve the app: {e}")
         finally:
             self.stop_server()
 
