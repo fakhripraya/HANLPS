@@ -16,10 +16,10 @@ from src.infra.langchain.api import LangchainAPI
 class MessagingController(MessagingControllerInterface):
     """Create Messaging Controller Class"""
 
-    def __init__(self, logger: LoggerInterface, llm: LangchainAPI):
-        self.logger = logger
-        self.llm = llm
-        self.input_dto: MessagingInputDto
+    def __init__(self, logger: LoggerInterface, langchain_api: LangchainAPI):
+        self._logger = logger
+        self._langchain_api = langchain_api
+        self._input_dto: MessagingInputDto
 
     def get_message(self, grpc_message) -> None:
         """Get Message packet from the GRPC Client
@@ -29,7 +29,7 @@ class MessagingController(MessagingControllerInterface):
         if grpc_message.content is not None:
             sessionId = str(grpc_message.sessionId)
             content = str(grpc_message.content)
-            self.input_dto = MessagingInputDto(sessionId, content)
+            self._input_dto = MessagingInputDto(sessionId, content)
         else:
             raise ValueError("Missing message content")
 
@@ -39,6 +39,6 @@ class MessagingController(MessagingControllerInterface):
         """
         repository = MessagingInMemoryRepository()
         presenter = MessagingPresenter()
-        use_case = MessagingUseCase(self.logger, presenter, repository, self.llm)
-        result = use_case.execute(self.input_dto)
+        use_case = MessagingUseCase(self._logger, presenter, repository, self._langchain_api)
+        result = use_case.execute(self._input_dto)
         return result

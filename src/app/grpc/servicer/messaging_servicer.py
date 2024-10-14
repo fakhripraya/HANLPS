@@ -6,21 +6,21 @@ from src.app.grpc.controller.messaging_controller import MessagingController
 
 class MessagingServicer(messaging_pb2_grpc.MessagingServiceServicer):
 
-    def __init__(self, logger: LoggerInterface, llm: LangchainAPI):
-        self.logger = logger
-        self.llm = llm
+    def __init__(self, logger: LoggerInterface, langchain_api: LangchainAPI):
+        self._logger = logger
+        self._langchain_api = langchain_api
 
     def textMessaging(self, request, context):
         try:
-            controller = MessagingController(self.logger, self.llm)
+            controller = MessagingController(self._logger, self._langchain_api)
             controller.get_message(request)
             result = controller.execute()
 
-            self.logger.log_info("Result Generated")
+            self._logger.log_info("Result Generated")
             return messaging.MessageResponse(
                 input=result["input"],
                 output=result["output"],
                 output_content=result["output_content"],
             )
         except Exception as e:
-            self.logger.log_exception(f"Exception: {e}")
+            self._logger.log_exception(f"Exception: {e}")
