@@ -15,7 +15,7 @@ class QueryParser:
         parsed_query = ""
 
         key_prefix_pairs_default = {
-            "building_title": "",
+            "building_title": "Hunian ",
             "building_address": "Beralamat di ",
             "building_proximity": "Dekat dengan ",
             "building_facility": "Memiliki fasilitas ",
