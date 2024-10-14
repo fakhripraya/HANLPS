@@ -205,10 +205,21 @@ class LangchainAPI(LangchainAPIInterface):
                 "building_note" : append_building_note_filters(buildings_filter, []),
             }
             
-            building_instance = None
-            location_query = None
-            facility_query = None
+            building_instance = None         
+            with GeocodingAPI(self._logger) as obj:
+                try:
+                    query = buildings_filter.building_title if buildings_filter.building_title else buildings_filter.building_proximity
+                    if(query is not None):
+                        geocode_data = obj.execute_geocode_by_address(query)
+                        if (len(geocode_data) > 0):
+                            self._logger.log_info(f"Got geocode data: {geocode_data}")
+                            lat_long = geocode_data[0]['geometry']['location']
+                            filter_array["building_geolocation"] = lambda distance: append_building_geolocation_filters(lat_long, distance , [])    
+                except Exception as e:
+                    self._logger.log_exception(f"Error Geocode: {e}")
             
+            location_query = None
+            facility_query = None           
             if(any([
                 buildings_filter.building_title,
                 buildings_filter.building_address,
@@ -220,17 +231,6 @@ class LangchainAPI(LangchainAPIInterface):
                     building_proximity=buildings_filter.building_proximity,
                 ) 
                 location_query = self._query_parser.execute(building_instance.to_dict())
-                
-            with GeocodingAPI(self._logger) as obj:
-                try:
-                    if(location_query is not None):
-                        geocode_data = obj.execute_geocode_by_address(location_query)
-                        self._logger.log_info(f"Got geocode data: {geocode_data}")
-                        if (len(geocode_data) > 0):
-                            lat_long = geocode_data[0]['geometry']['location']
-                            filter_array["building_geolocation"] = lambda distance: append_building_geolocation_filters(lat_long, distance , [])    
-                except Exception as e:
-                    self._logger.log_exception(f"Error Geocode: {e}")
             
             if(any([
                 buildings_filter.building_title,
