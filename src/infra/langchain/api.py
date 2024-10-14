@@ -95,21 +95,24 @@ class LangchainAPI(LangchainAPIInterface):
         """
         Connect selected LLM and initialize prompt parsers
         """
-        if not self._client:
-            if self._llm_type == OPENAI:
-                self._client = create_open_ai_llm(OPENAI_MODEL, OPENAI_API_KEY)
-                self._analyzer_client = create_open_ai_llm(OPENAI_ANALYZER_MODEL, OPENAI_API_KEY)
-                self._filter_data_structurer_client = create_open_ai_llm(OPENAI_FILTER_DATA_STRUCTURER_MODEL, OPENAI_API_KEY)
-            elif self._llm_type == GEMINI:
-                self._client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
-                self._analyzer_client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
-                self._filter_data_structurer_client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
-            else:
-                raise Exception("No LLM Found")
-            
-            self._prompt_parser = PromptParser(self._client)
-            self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
-            self._filter_data_structurer_prompt_parser = PromptParser(self._filter_data_structurer_client)
+        try:
+            if not self._client:
+                if self._llm_type == OPENAI:
+                    self._client = create_open_ai_llm(OPENAI_MODEL, OPENAI_API_KEY)
+                    self._analyzer_client = create_open_ai_llm(OPENAI_ANALYZER_MODEL, OPENAI_API_KEY)
+                    self._filter_data_structurer_client = create_open_ai_llm(OPENAI_FILTER_DATA_STRUCTURER_MODEL, OPENAI_API_KEY)
+                elif self._llm_type == GEMINI:
+                    self._client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
+                    self._analyzer_client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
+                    self._filter_data_structurer_client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
+                else:
+                    raise ValueError("No LLM Found")
+                
+                self._prompt_parser = PromptParser(self._client)
+                self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
+                self._filter_data_structurer_prompt_parser = PromptParser(self._filter_data_structurer_client)
+        except Exception as e:
+            self._logger.log_exception(f"Error connecting LLM: {e}")
 
     def get_session_history(self, session_id) -> BaseChatMessageHistory:
         """ Get message history by session id
