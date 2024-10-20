@@ -1,30 +1,43 @@
 {
   "folders": [
     {
+      "name": "HANLPS",
       "path": "."
     },
     {
+      "name": "cosine-tools",
       "path": "../cosine-tools"
     },
     {
+      "name": "cosine-orchestration",
       "path": "../cosine-orchestration"
     },
     {
+      "name": "forefront-zeus",
+      "path": "../forefront-zeus"
+    },
+    {
+      "name": "forefront-hermes",
       "path": "../forefront-hermes"
     },
     {
+      "name": "forefront-olympus",
       "path": "../forefront-olympus"
     },
     {
+      "name": "forefront-postgirl",
       "path": "../forefront-postgirl"
     },
     {
+      "name": "Cosine",
       "path": "../Cosine"
     },
     {
+      "name": "Littlecamp",
       "path": "../Littlecamp"
     },
     {
+      "name": "wg-mothership",
       "path": "../wg-mothership"
     }
   ],
