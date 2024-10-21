@@ -287,7 +287,7 @@ class LangchainAPI(LangchainAPIInterface):
 
         # Geolocation radius stages
         # Add more stages to use multiple stages
-        geolocation_stages = [6000]
+        geolocation_stages = [5000]
         geolocation_stage_index = 0
 
         # Setup fixed filters
@@ -338,7 +338,7 @@ class LangchainAPI(LangchainAPIInterface):
                             )
 
                             self._logger.log_info(
-                                f"[{session_id}]: Execute query with facility query: {facility_query}\nLocation at: {distance}\nFilters: {filters}"
+                                f"[{session_id}]: Execute with facility query: {facility_query}\nLocation at: {distance}\nFilters: {filters}"
                             )
                             response = query_building(
                                 building_collection,
@@ -358,7 +358,7 @@ class LangchainAPI(LangchainAPIInterface):
                                 filters = chunk_collection_filters
 
                             self._logger.log_info(
-                                f"[{session_id}]: Execute query with location query: {location_query}\nFilters: {filters}"
+                                f"[{session_id}]: Execute with location query: {location_query}\nFilters: {filters}"
                             )
                             response = query_building_with_building_as_reference(
                                 building_chunk_collection,
