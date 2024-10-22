@@ -6494,7 +6494,7 @@
         "latitude": -6.298136,
         "longitude": 106.849173
       },
-      "housing_price": "1800000",
+      "housing_price": 1800000,
       "owner_name": "",
       "owner_whatsapp": "CP: 081219649651",
       "owner_phone_number": "",
@@ -6624,7 +6624,7 @@
         "latitude": -6.228365,
         "longitude": 106.868869
       },
-      "housing_price": "800000",
+      "housing_price": 800000,
       "owner_name": "",
       "owner_whatsapp": "081932755919",
       "owner_phone_number": "081932755919",
@@ -10098,7 +10098,7 @@
         "latitude": -6.228007,
         "longitude": 106.865917
       },
-      "housing_price": "2100000",
+      "housing_price": 2100000,
       "owner_name": "",
       "owner_whatsapp": "08138425 2346",
       "owner_phone_number": "08138425 2346",
@@ -10162,7 +10162,7 @@
         "latitude": -6.192947,
         "longitude": 106.884356
       },
-      "housing_price": "1450000",
+      "housing_price": 1450000,
       "owner_name": "",
       "owner_whatsapp": "0821 13380223",
       "owner_phone_number": "0821 13380223",
@@ -10263,7 +10263,7 @@
         "latitude": -6.229898,
         "longitude": 106.872998
       },
-      "housing_price": "0600000",
+      "housing_price": 600000,
       "owner_name": "",
       "owner_whatsapp": "089651592188",
       "owner_phone_number": "089651592188",
@@ -13695,7 +13695,7 @@
         "latitude": -6.2277153,
         "longitude": 106.8691404
       },
-      "housing_price": "800000",
+      "housing_price": 800000,
       "owner_name": "",
       "owner_whatsapp": "081932755919",
       "owner_phone_number": "081932755919",
@@ -13987,7 +13987,7 @@
         "latitude": -6.2277153,
         "longitude": 106.8691404
       },
-      "housing_price": "800000",
+      "housing_price": 800000,
       "owner_name": "",
       "owner_whatsapp": "081932755919",
       "owner_phone_number": "081932755919",
@@ -14901,7 +14901,7 @@
         "latitude": -6.1732787,
         "longitude": 106.7949664
       },
-      "housing_price": "1700000",
+      "housing_price": 1700000,
       "owner_name": "",
       "owner_whatsapp": "08121049942",
       "owner_phone_number": "08121049942",
@@ -15161,36 +15161,6 @@
       "isReady": false
     },
     {
-      "index": 366,
-      "building_title": "Hunian Jl Petamburan VII No 16 Rt 07 Rw 07 Di Jakarta Pusat Slipi",
-      "building_address": "Jl Petamburan VII No 16 Rt 07 Rw 07 Di Jakarta Pusat Slipi",
-      "building_facility": [
-        "Fasilitas:\n* Bed Uk 100x200\n* Kipas Angin\n* Bantal\n* Lemari Pakaian\n* Jendela di setiap kamar\n\nFasilitas Umum\n# Kamar Mandi\n#Wastafel\n# Wifii"
-      ],
-      "building_proximity": [
-        "Lokasi strategis:\n- 1",
-        "2 km / 3 menit ke halte Busway slipi\n- 4",
-        "7 km / 9 menit ke Tanah Abang\n- 1",
-        "8 km / 4 menit ke BNI Pejompongan\n- 2",
-        "6 km / 5 menit ke Bendungan hilir\n- 1",
-        "8 km / 4 menit ke stasiun Palmerah"
-      ],
-      "building_description": "My Kost Budget\nKosan Khusus Pria/wanita dengan 16 Kamar di Petamburan nyaman dan bersih.\n\nLokasi strategis:\n- 1,2 km / 3 menit ke halte Busway slipi\n- 4,7 km / 9 menit ke Tanah Abang\n- 1,8 km / 4 menit ke BNI Pejompongan\n- 2,6 km / 5 menit ke Bendungan hilir\n- 1,8 km / 4 menit ke stasiun Palmerah\n\nFasilitas:\n* Bed Uk 100x200\n* Kipas Angin\n* Bantal\n* Lemari Pakaian\n* Jendela di setiap kamar\n\nFasilitas Umum\n# Kamar Mandi\n#Wastafel\n# Wifii \n\nHarga Kos Rp 1000000\n\nNoted:\n- Ketika masuk penghuni di wajibkan membayar Deposit sebesar 500rb\n- Uang deposit akan dikembalikan pada akhir sewa apabila penyewa memberikan info 1 bulan sebelum nya dan tidak ada kerusakan di dalam kamar atau area kos yang di sebabkan oleh penyewa\n- Kos dibayarkan setiap tanggal 1\n\nAlamat:\nJl Petamburan VII No 16 Rt 07 Rw 07 Di Jakarta Pusat Slipi\nCp Diah 08115728877\n\n*Kos campur\n**Dilarang membawa hewan\n\n⚠️WASPADA TERHADAP PENIPUAN⚠️\nIngat tetap berhati-hati terhadap penipuan\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
-      "building_geolocation": {
-        "latitude": -6.202048899999999,
-        "longitude": 106.8023437
-      },
-      "housing_price": 1000000,
-      "owner_name": "",
-      "owner_whatsapp": "08115728877",
-      "owner_phone_number": "08115728877",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/372996054_845369110724985_1542443015678178973_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi45NjB4OTYwLnNkci5mMzA4MDgifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3D_IFJ3blq628Q7kNvgFujg4K%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzE5NzM3NDg4OTk1ODczMjAxNg%253D%253D.2-ccb7-5%26oh%3D00_AYA0AnszU7X2qmXAvEbQFRds1KYmgz0mVEl52ZtGGKNrzg%26oe%3D66968274%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
       "index": 367,
       "building_title": "Hunian Tower A, lantai 9 no 22",
       "building_address": "Tower A, lantai 9 no 22",
@@ -15238,7 +15208,7 @@
         "latitude": -6.1732787,
         "longitude": 106.7949664
       },
-      "housing_price": "1700000",
+      "housing_price": 1700000,
       "owner_name": "",
       "owner_whatsapp": "08121049942",
       "owner_phone_number": "08121049942",
@@ -15331,7 +15301,7 @@
         "latitude": -6.273758399999999,
         "longitude": 106.7288862
       },
-      "housing_price": "1750000",
+      "housing_price": 1750000,
       "owner_name": "",
       "owner_whatsapp": "08111291899",
       "owner_phone_number": "08111291899",
@@ -15391,7 +15361,7 @@
         "latitude": -6.2453531,
         "longitude": 106.8268801
       },
-      "housing_price": "1000000",
+      "housing_price": 1000000,
       "owner_name": "",
       "owner_whatsapp": "089602472199",
       "owner_phone_number": "089602472199",
@@ -15611,31 +15581,6 @@
       "isReady": false
     },
     {
-      "index": 381,
-      "building_title": "Hunian Jl Petamburan VII No 16 Rt 07 Rw 07 Di Jakarta Pusat Slipi",
-      "building_address": "Jl Petamburan VII No 16 Rt 07 Rw 07 Di Jakarta Pusat Slipi",
-      "building_facility": [
-        "Facilities:\n* Bed Size 100x200\n* Fan\n* Pillow\n* Wardrobe\n* Window in every room\n\nCommon Facilities:\n# Bathroom\n# Sink\n# Wifi"
-      ],
-      "building_proximity": [
-        "Strategically located:\n- 1.2 km / 3 minutes to Slipi Busway stop\n- 4.7 km / 9 minutes to Tanah Abang\n- 1.8 km / 4 minutes to BNI Pejompongan\n- 2.6 km / 5 minutes to Bendungan Hilir\n- 1.8 km / 4 minutes to Palmerah station"
-      ],
-      "building_description": "My Kost Budget\nKost Khusus Pria/wanita dengan 16 Kamar di Petamburan nyaman dan bersih.\n\nLokasi strategis :\n- 1,2 km / 3 menit ke halte Busway slipi\n- 4,7 km / 9 menit ke Tanah Abang\n- 1,8 km / 4 menit ke BNI Pejompongan\n- 2,6 km / 5 menit ke Bendungan hilir\n- 1,8 km / 4 menit ke stasiun Palmerah\n\nFasilitas :\n* Bed Uk. 100x200\n* Kipas Angin\n* Bantal\n* Lemari Pakaian\n* Jendela di setiap kamar\n\nFasilitas Umum\n# Kamar Mandi\n#Wastafel\n# Wifii \n\nHarga Kos Rp. 1,000,000\n\nNoted :\n- Ketika masuk penghuni di wajibkan membayar Deposit sebesar 500rb\n- Uang deposit akan dikembalikan pada akhir sewa apabila penyewa memberikan info 1 bulan sebelum nya dan tidak ada kerusakan di dalam kamar atau area kos yang di sebabkan oleh penyewa.\n- Kos dibayarkan setiap tanggal 1\n\nAlamat :\nJl. Petamburan VII No. 16 Rt. 07 Rw. 07 Di Jakarta Pusat, Slipi\nCp. Diah. 08115728877\n\n*Kos campur\n**Dilarang membawa hewan\n\n⚠️WASPADA TERHADAP PENIPUAN⚠️\nIngat, tetap berhati-hati terhadap penipuan.\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
-      "building_geolocation": {
-        "latitude": -6.202048899999999,
-        "longitude": 106.8023437
-      },
-      "housing_price": 1000000,
-      "owner_name": "",
-      "owner_whatsapp": "08115728877",
-      "owner_phone_number": "08115728877",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/372996054_845369110724985_1542443015678178973_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi45NjB4OTYwLnNkci5mMzA4MDgifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3D_IFJ3blq628Q7kNvgFujg4K%26gid%3Dcdcc3b14805441fab7f3c1121c466863%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzE5MjMwMTM5MjczMTM4Mzc0Nw%253D%253D.2-ccb7-5%26oh%3D00_AYBqxCBiLjk2Lz4q0QMx4Npf9kjlVAROTjE2PlDNN7WjHA%26oe%3D66968274%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
       "index": 382,
       "building_title": "Hunian Tower A, Lantai 9 No 22",
       "building_address": "Tower A, Lantai 9 No 22",
@@ -15788,7 +15733,7 @@
         "latitude": -6.273758399999999,
         "longitude": 106.7288862
       },
-      "housing_price": "1750000",
+      "housing_price": 1750000,
       "owner_name": "",
       "owner_whatsapp": "08111291899",
       "owner_phone_number": "08111291899",
@@ -16142,31 +16087,6 @@
       "isReady": false
     },
     {
-      "index": 397,
-      "building_title": "Hunian Jl Petamburan VII No 16 Rt 07 Rw 07 Di Jakarta Pusat Slipi",
-      "building_address": "Jl Petamburan VII No 16 Rt 07 Rw 07 Di Jakarta Pusat Slipi",
-      "building_facility": [
-        "Bed Uk 100x200 Kipas Angin Bantal Lemari Pakaian Jendela di setiap kamar Kamar Mandi Wastafel Wifii"
-      ],
-      "building_proximity": [
-        "1 2 km 3 menit ke halte Busway slipi 4 7 km 9 menit ke Tanah Abang 1 8 km 4 menit ke BNI Pejompongan 2 6 km 5 menit ke Bendungan hilir 1 8 km 4 menit ke stasiun Palmerah"
-      ],
-      "building_description": "My Kost Budget\nKosan Khusus Pria wanita dengan 16 Kamar di Petamburan nyaman dan bersih\n\nLokasi strategis \n- 1 2 km 3 menit ke halte Busway slipi\n- 4 7 km 9 menit ke Tanah Abang\n- 1 8 km 4 menit ke BNI Pejompongan\n- 2 6 km 5 menit ke Bendungan hilir\n- 1 8 km 4 menit ke stasiun Palmerah\n\nFasilitas \n* Bed Uk 100x200\n* Kipas Angin\n* Bantal\n* Lemari Pakaian\n* Jendela di setiap kamar\n\nFasilitas Umum\n# Kamar Mandi\n#Wastafel\n# Wifii \n\nHarga Kos Rp 1 000 000\n\nNoted \n- Ketika masuk penghuni di wajibkan membayar Deposit sebesar 500rb\n- Uang deposit akan dikembalikan pada akhir sewa apabila penyewa memberikan info 1 bulan sebelum nya dan tidak ada kerusakan di dalam kamar atau area kos yang di sebabkan oleh penyewa\n- Kos dibayarkan setiap tanggal 1\n\nAlamat \nJl Petamburan VII No 16 Rt 07 Rw 07 Di Jakarta Pusat Slipi\nCp Diah 08115728877\n\n*Kos campur\n**Dilarang membawa hewan\n\n⚠️WASPADA TERHADAP PENIPUAN⚠️\nIngat tetap berhati hati terhadap penipuan \nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
-      "building_geolocation": {
-        "latitude": -6.202048899999999,
-        "longitude": 106.8023437
-      },
-      "housing_price": 1000000,
-      "owner_name": "",
-      "owner_whatsapp": "08115728877",
-      "owner_phone_number": "08115728877",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/372996054_845369110724985_1542443015678178973_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi45NjB4OTYwLnNkci5mMzA4MDgifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3D_IFJ3blq628Q7kNvgFujg4K%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzE4NzIyODAwMzc4NDIyMjY0NQ%253D%253D.2-ccb7-5%26oh%3D00_AYA0AnszU7X2qmXAvEbQFRds1KYmgz0mVEl52ZtGGKNrzg%26oe%3D66968274%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
       "index": 398,
       "building_title": "Hunian Jl Setiabudi Tengah No 15 Jakarta Selatan 12910",
       "building_address": "Jl Setiabudi Tengah No 15 Jakarta Selatan 12910",
@@ -16321,7 +16241,7 @@
         "latitude": -6.273758399999999,
         "longitude": 106.7288862
       },
-      "housing_price": "1750000",
+      "housing_price": 1750000,
       "owner_name": "",
       "owner_whatsapp": "08111291899",
       "owner_phone_number": "08111291899",
@@ -16407,7 +16327,7 @@
         "latitude": -6.2327029,
         "longitude": 106.8606139
       },
-      "housing_price": "1950000",
+      "housing_price": 1950000,
       "owner_name": "",
       "owner_whatsapp": "082122225494",
       "owner_phone_number": "082122225494",
@@ -16555,36 +16475,6 @@
       "isReady": false
     },
     {
-      "index": 410,
-      "building_title": "Hunian Jl Petamburan VII No 16 Rt 07 Rw 07 Di Jakarta Pusat Slipi",
-      "building_address": "Jl Petamburan VII No 16 Rt 07 Rw 07 Di Jakarta Pusat Slipi",
-      "building_facility": [
-        "Fasilitas: Bed Uk 100x200 Kipas Angin Bantal Lemari Pakaian Jendela di setiap kamar Fasilitas Umum Kamar Mandi Wastafel Wifii"
-      ],
-      "building_proximity": [
-        "Lokasi strategis: 1",
-        "2 km / 3 menit ke halte Busway slipi 4",
-        "7 km / 9 menit ke Tanah Abang 1",
-        "8 km / 4 menit ke BNI Pejompongan 2",
-        "6 km / 5 menit ke Bendungan hilir 1",
-        "8 km / 4 menit ke stasiun Palmerah"
-      ],
-      "building_description": "My Kost Budget\nKosan Khusus Pria/wanita dengan 16 Kamar di Petamburan nyaman dan bersih.\n\nLokasi strategis:\n- 1,2 km / 3 menit ke halte Busway slipi\n- 4,7 km / 9 menit ke Tanah Abang\n- 1,8 km / 4 menit ke BNI Pejompongan\n- 2,6 km / 5 menit ke Bendungan hilir\n- 1,8 km / 4 menit ke stasiun Palmerah\n\nFasilitas:\n* Bed Uk 100x200\n* Kipas Angin\n* Bantal\n* Lemari Pakaian\n* Jendela di setiap kamar\n\nFasilitas Umum\n# Kamar Mandi\n#Wastafel\n# Wifii \n\nHarga Kos Rp 1,000,000\n\nNoted:\n- Ketika masuk penghuni di wajibkan membayar Deposit sebesar 500rb\n- Uang deposit akan dikembalikan pada akhir sewa apabila penyewa memberikan info 1 bulan sebelum nya dan tidak ada kerusakan di dalam kamar atau area kos yang di sebabkan oleh penyewa\n- Kos dibayarkan setiap tanggal 1\n\nAlamat:\nJl Petamburan VII No 16 Rt 07 Rw 07 Di Jakarta Pusat Slipi\nCp Diah 08115728877\n\n*Kos campur\n**Dilarang membawa hewan\n\n⚠️WASPADA TERHADAP PENIPUAN⚠️\nIngat tetap berhati-hati terhadap penipuan \nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
-      "building_geolocation": {
-        "latitude": -6.202048899999999,
-        "longitude": 106.8023437
-      },
-      "housing_price": 1000000,
-      "owner_name": "",
-      "owner_whatsapp": "08115728877",
-      "owner_phone_number": "08115728877",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/372996054_845369110724985_1542443015678178973_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi45NjB4OTYwLnNkci5mMzA4MDgifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3D_IFJ3blq628Q7kNvgFujg4K%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzE4MjE1NDU3NDUzMDAxNzUwNg%253D%253D.2-ccb7-5%26oh%3D00_AYA0AnszU7X2qmXAvEbQFRds1KYmgz0mVEl52ZtGGKNrzg%26oe%3D66968274%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
       "index": 411,
       "building_title": "Hunian Jl Setiabudi Tengah No 15 Jakarta Selatan 12910",
       "building_address": "Jl Setiabudi Tengah No 15 Jakarta Selatan 12910",
@@ -16677,7 +16567,7 @@
         "latitude": -6.273758399999999,
         "longitude": 106.7288862
       },
-      "housing_price": "1750000",
+      "housing_price": 1750000,
       "owner_name": "",
       "owner_whatsapp": "08111291899",
       "owner_phone_number": "08111291899",
@@ -19610,36 +19500,6 @@
       "isReady": false
     },
     {
-      "index": 502,
-      "building_title": "Hunian Jl Petamburan VII No 16 Rt 07 Rw 07",
-      "building_address": "Jl Petamburan VII No 16 Rt 07 Rw 07",
-      "building_facility": [
-        "Fasilitas: * Bed Uk 100x200 * Kipas Angin * Bantal * Lemari Pakaian * Jendela di setiap kamar Fasilitas Umum # Kamar Mandi # Wastafel # Wifii"
-      ],
-      "building_proximity": [
-        "Lokasi strategis: - 1",
-        "2 km / 3 menit ke halte Busway slipi - 4",
-        "7 km / 9 menit ke Tanah Abang - 1",
-        "8 km / 4 menit ke BNI Pejompongan - 2",
-        "6 km / 5 menit ke Bendungan hilir - 1",
-        "8 km / 4 menit ke stasiun Palmerah"
-      ],
-      "building_description": "My Kost Budget Kosan dengan 8 Khusus untuk Pria di Petamburan nyaman dan bersih. Lokasi strategis: - 1,2 km / 3 menit ke halte Busway slipi - 4,7 km / 9 menit ke Tanah Abang - 1,8 km / 4 menit ke BNI Pejompongan - 2,6 km / 5 menit ke Bendungan hilir - 1,8 km / 4 menit ke stasiun Palmerah Fasilitas: * Bed Uk 100x200 * Kipas Angin * Bantal * Lemari Pakaian * Jendela di setiap kamar Fasilitas Umum # Kamar Mandi # Wastafel # Wifii Harga Kos Rp 1,200,000 Noted: - Ketika masuk penghuni di wajibkan membayar Deposit sebesar 500rb - Uang deposit akan dikembalikan pada akhir sewa apabila penyewa memberikan info 1 bulan sebelum nya dan tidak ada kerusakan di dalam kamar atau area kos yang di sebabkan oleh penyewa - Kos dibayarkan tanggal 1 setiap bulan Alamat: Jl Petamburan VII No 16 Rt 07 Rw 07 Cp Diah 08115728877 ⚠️ Nomor telepon yang tercantum di atas adalah nomor yang diberikan langsung oleh pemilik kosan WASPADA TERHADAP PENIPUAN⚠️",
-      "building_geolocation": {
-        "latitude": -6.202048899999999,
-        "longitude": 106.8023437
-      },
-      "housing_price": 1200000,
-      "owner_name": "",
-      "owner_whatsapp": "08115728877",
-      "owner_phone_number": "08115728877",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/352092776_275145058305882_5607027594468393442_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNTM2eDE1MzYuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D106%26_nc_ohc%3DEGHkC4z7Ob0Q7kNvgGf2KKO%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzEyMzM1NzExOTY1NTMyOTA1MQ%253D%253D.2-ccb7-5%26oh%3D00_AYDDkDSYBJk9FyUrZlHFzETHjlBj__yRiicMsexU2W0vuw%26oe%3D66966C37%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
       "index": 503,
       "building_title": "Hunian Jl Cempaka Putih Tengah 27",
       "building_address": "Jl Cempaka Putih Tengah 27",
@@ -19771,36 +19631,6 @@
       "owner_email": "",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/347229785_620323556783185_5389669498267049492_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMjAweDEyMDAuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D101%26_nc_ohc%3DsIGB-lAZgJcQ7kNvgHuqCcn%26gid%3Dedc49c5c7d684483b9599fdf20687e8c%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzExODkxNzg3MzQxMDQ0MTM5Nw%253D%253D.2-ccb7-5%26oh%3D00_AYBVOlu0_YLZ3DeYRP4N5KBdmjiMJfR8flItd-1q4O_IXw%26oe%3D66968FCE%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 507,
-      "building_title": "Hunian Jl Petamburan VII No 16 Rt 07 Rw 07",
-      "building_address": "Jl Petamburan VII No 16 Rt 07 Rw 07",
-      "building_facility": [
-        "Fasilitas : * Bed Uk 100x200 * Kipas Angin * Bantal * Lemari Pakaian * Jendela di setiap kamar Fasilitas Umum # Kamar Mandi # Wastafel # Wifii"
-      ],
-      "building_proximity": [
-        "Lokasi strategis : - 1",
-        "2 km / 3 menit ke halte Busway slipi - 4",
-        "7 km / 9 menit ke Tanah Abang - 1",
-        "8 km / 4 menit ke BNI Pejompongan - 2",
-        "6 km / 5 menit ke Bendungan hilir - 1",
-        "8 km / 4 menit ke stasiun Palmerah"
-      ],
-      "building_description": "My Kost Budget\nKosan dengan 8 Khusus untuk Pria di Petamburan nyaman dan bersih.\n\nLokasi strategis :\n- 1,2 km / 3 menit ke halte Busway slipi\n- 4,7 km / 9 menit ke Tanah Abang\n- 1,8 km / 4 menit ke BNI Pejompongan\n- 2,6 km / 5 menit ke Bendungan hilir\n- 1,8 km / 4 menit ke stasiun Palmerah\n\nFasilitas :\n* Bed Uk 100x200\n* Kipas Angin\n* Bantal\n* Lemari Pakaian\n* Jendela di setiap kamar\n\nFasilitas Umum\n# Kamar Mandi\n# Wastafel\n# Wifii \n\nHarga Kos Rp 1000000\n\nNoted :\n- Ketika masuk penghuni di wajibkan membayar Deposit sebesar 500rb\n- Uang deposit akan dikembalikan pada akhir sewa apabila penyewa memberikan info 1 bulan sebelum nya dan tidak ada kerusakan di dalam kamar atau area kos yang di sebabkan oleh penyewa\n- Kos dibayarkan tanggal 1 setiap bulan\n\nAlamat :\nJl Petamburan VII No 16 Rt 07 Rw 07\nCp Diah 08115728877\n\n⚠️ Nomor telepon yang tercantum di atas adalah nomor yang diberikan langsung oleh pemilik kosan WASPADA TERHADAP PENIPUAN⚠️",
-      "building_geolocation": {
-        "latitude": -6.202048899999999,
-        "longitude": 106.8023437
-      },
-      "housing_price": 1000000,
-      "owner_name": "",
-      "owner_whatsapp": "08115728877",
-      "owner_phone_number": "08115728877",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/352214574_569645561744922_8487131709602249264_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNTM2eDE1MzYuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D106%26_nc_ohc%3DQKwC38FUHV8Q7kNvgHArH9u%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzExODI4Mjg3MTMyODAxMTUzMQ%253D%253D.2-ccb7-5%26oh%3D00_AYAnHdLEaiidJQYdVThz4-IdCpZ-Roz3SXKYToR3wTcsTA%26oe%3D66967842%26_nc_sid%3Df93d1f"
       ],
       "isReady": false
     },
@@ -20746,7 +20576,7 @@
         "latitude": -6.2018754,
         "longitude": 106.8688565
       },
-      "housing_price": "1900000",
+      "housing_price": 1900000,
       "owner_name": "",
       "owner_whatsapp": "081291704585",
       "owner_phone_number": "081291704585",
@@ -20778,176 +20608,6 @@
       "owner_email": "",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/352385804_726404269492794_728028044187670998_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi45NjB4OTYwLnNkci5mMzA4MDgifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D106%26_nc_ohc%3DULbwztnxaEgQ7kNvgG7E2pI%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzEyMDUxODQxNTM2NzA4NDU3Nw%253D%253D.2-ccb7-5%26oh%3D00_AYAi98Mc5SzXQ9EBXOTsiCwy3W2JRqoYCI_qic6kOeZgkw%26oe%3D669680BB%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 537,
-      "building_title": "Hunian Jl Petamburan VII No 16 Rt 07 Rw 07",
-      "building_address": "Jl Petamburan VII No 16 Rt 07 Rw 07",
-      "building_facility": [
-        "Bed Uk 100x200\nKipas Angin\nBantal\nLemari Pakaian\nJendela di setiap kamar\nKamar Mandi\nWastafel\nWifii"
-      ],
-      "building_proximity": [
-        "1",
-        "2 km / 3 menit ke halte Busway slipi\n4",
-        "7 km / 9 menit ke Tanah Abang\n1",
-        "8 km / 4 menit ke BNI Pejompongan\n2",
-        "6 km / 5 menit ke Bendungan hilir\n1",
-        "8 km / 4 menit ke stasiun Palmerah"
-      ],
-      "building_description": "My Kost Budget\nKosan dengan 8 Khusus untuk Pria di Petamburan nyaman dan bersih.\n\nLokasi strategis :\n- 1,2 km / 3 menit ke halte Busway slipi\n- 4,7 km / 9 menit ke Tanah Abang\n- 1,8 km / 4 menit ke BNI Pejompongan\n- 2,6 km / 5 menit ke Bendungan hilir\n- 1,8 km / 4 menit ke stasiun Palmerah\n\nFasilitas :\n* Bed Uk 100x200\n* Kipas Angin\n* Bantal\n* Lemari Pakaian\n* Jendela di setiap kamar\n\nFasilitas Umum\n# Kamar Mandi\n# Wastafel\n# Wifii \n\nHarga Kos Rp 1200000\n\nNoted :\n- Ketika masuk penghuni di wajibkan membayar Deposit sebesar 500rb\n- Uang deposit akan dikembalikan pada akhir sewa apabila penyewa memberikan info 1 bulan sebelum nya dan tidak ada kerusakan di dalam kamar atau area kos yang di sebabkan oleh penyewa.\n- Kos dibayarkan tanggal 1 setiap bulan\n\nAlamat :\nJl Petamburan VII No 16 Rt 07 Rw 07\nCp Diah 08115728877\n\n⚠️ Nomor telepon yang tercantum di atas adalah nomor yang diberikan langsung oleh pemilik kosan WASPADA TERHADAP PENIPUAN⚠️",
-      "building_geolocation": {
-        "latitude": -6.202048899999999,
-        "longitude": 106.8023437
-      },
-      "housing_price": 1200000,
-      "owner_name": "",
-      "owner_whatsapp": "08115728877",
-      "owner_phone_number": "08115728877",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/352092776_275145058305882_5607027594468393442_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNTM2eDE1MzYuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D106%26_nc_ohc%3DEGHkC4z7Ob0Q7kNvgGf2KKO%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzEyMzM1NzExOTY1NTMyOTA1MQ%253D%253D.2-ccb7-5%26oh%3D00_AYDDkDSYBJk9FyUrZlHFzETHjlBj__yRiicMsexU2W0vuw%26oe%3D66966C37%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 538,
-      "building_title": "Hunian Perumahan Dream Residence 2 Pondok Petir",
-      "building_address": "Perumahan Dream Residence 2 Pondok Petir",
-      "building_facility": [
-        "2 CCTV in front of the house",
-        "listrik token 1.300 watt",
-        "BEBAS BANJIR"
-      ],
-      "building_proximity": [
-        "Strategically located and busy",
-        "near public facilities",
-        "schools",
-        "mosques",
-        "government offices",
-        "many food and beverage sellers and various necessities all the way to the house",
-        "Jalan masuk perumahan diapit Alfamart and Indomaret"
-      ],
-      "building_description": "Disewakan rumah\n\nLokasi strategis dan ramai, dekat fasilitas umum, sekolah, masjid, kantor pemerintahan, banyak penjual makanan minuman dan aneka kebutuhan sepanjang jalan menuju rumah\n\nSudah dipasang 2 cctv di depan rumah\n\nlistrik token 1.300 watt\n\nJalan masuk perumahan diapit Alfamart dan Indomaret\n\nBEBAS BANJIR\n\nsewa 22 juta / th\n\nRumah kontrakan keluarga atau single\n\nBoleh membawa hewan kucing\n\nAlamat :\nPerumahan Dream Residence 2\nPondok Petir\n\nCP :\nFebri 08999374240\n\nIG :\n@f362i \n\n⚠️ Nomor telepon yang tercantum di atas adalah nomor yang diberikan langsung oleh pemilik kosan. WASPADA TERHADAP PENIPUAN⚠️",
-      "building_geolocation": {
-        "latitude": -6.365217800000001,
-        "longitude": 106.7240833
-      },
-      "housing_price": 1833333,
-      "owner_name": "",
-      "owner_whatsapp": "08999374240",
-      "owner_phone_number": "08999374240",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/353394209_785654346696462_8882688456440007349_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMjAweDEyMDAuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D106%26_nc_ohc%3D5hYCfsGKFJUQ7kNvgGHXRz3%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzEyMjYwMjE0NjU3Nzk5NDU4Nw%253D%253D.2-ccb7-5%26oh%3D00_AYCeW8rt1njYmtdEoaS_zi2k_MwLb3JGVlyEXHYQQ0_KeA%26oe%3D669685B3%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 539,
-      "building_title": "Hunian Jalan Raya Ahmad Yani No 30BM Matraman Jakarta Timur",
-      "building_address": "Jalan Raya Ahmad Yani No 30BM Matraman Jakarta Timur",
-      "building_facility": [
-        "Kamar Ac",
-        "kmr mandi dalam",
-        "garasi motor",
-        "dapur umum",
-        "mesin cuci bersama",
-        "ruang jemur"
-      ],
-      "building_proximity": [
-        "pinggir jalan raya Ahmad Yani dekat Halte Busway utan kayu"
-      ],
-      "building_description": "Kos Pria/wanita di pinggir jalan raya Ahmad Yani dekat Halte Busway utan kayu. Kamar Ac, kmr mandi dalam harga 1.900/bln sudah termasuk listrik air dan wifi, garasi motor, dapur umum, mesin cuci bersama dan ruang jemur. langsung hub wa 081291704585\n\nJalan Raya Ahmad Yani No 30BM (dekat halte busway Utan Kayu-Rawamangun), Matraman, Jakarta Timur\n\n⚠️ Nomor telepon yang tercantum di atas adalah nomor yang diberikan langsung oleh pemilik kosan. WASPADA TERHADAP PENIPUAN⚠️",
-      "building_geolocation": {
-        "latitude": -6.2018754,
-        "longitude": 106.8688565
-      },
-      "housing_price": "1900000",
-      "owner_name": "",
-      "owner_whatsapp": "081291704585",
-      "owner_phone_number": "081291704585",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/353395899_785659980029232_7096157340740633603_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMjAweDEyMDAuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D100%26_nc_ohc%3DbzrDf5j7P1sQ7kNvgGKycIS%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzEyMjUwODc5NDY2NzM0OTY4MA%253D%253D.2-ccb7-5%26oh%3D00_AYCJRJRWpJOps2ZqXKugufVXb3giBFAtSSLzaXYdRz4XQw%26oe%3D6696798F%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 540,
-      "building_title": "Hunian Jl Parapat I/II No 2 Rt 003//015 Cibodas Baru Kec Cibodas Kota Tangerang Banten 15138",
-      "building_address": "Jl Parapat I/II No 2 Rt 003//015 Cibodas Baru Kec Cibodas Kota Tangerang Banten 15138",
-      "building_facility": [
-        "Kasur TV Bantal Guling Sprei AC Kamar Mandi Dalam Shower Closet duduk Lemari Jendela menghadap luar Free Wifi Free Parkir Dapur Bersama Peralatan masak makan Kulkas Bersama Dispencer Bersama Jemuran Bersama Akses 24 Jam"
-      ],
-      "building_proximity": [
-        "Dekat dari SuperMall Karawaci Dekat dengan UPH Dekat dengan akses Tol"
-      ],
-      "building_description": "Kost Campur dengan suasana Asri Sejuk dan Nyaman\nBoleh membawa kucing kesayanganmu\n\nFasilitas\n• Kasur \n• TV\n• Bantal Guling Sprei\n• AC\n• Kamar Mandi Dalam Shower Closet duduk\n• Lemari\n• Jendela menghadap luar\n• Free Wifi\n• Free Parkir\n• Dapur Bersama Peralatan masak makan\n• Kulkas Bersama\n• Dispencer Bersama\n• Jemuran Bersama\n• Akses 24 Jam\n\nJl Parapat I/II No 2\nRt 003//015 Cibodas Baru Kec Cibodas Kota Tangerang Banten 15138\n\nDekat dari SuperMall Karawaci\nDekat dengan UPH\nDekat dengan akses Tol\n\nHarga 1600000 month normal\n‼️ LAGI DISCOUNT JADI 1400000 Month‼️\nFor inquries private viewing \nPlease contact\n@RResidence_\n+62 85173020187\nWA Available\n\n⚠️ Nomor telepon yang tercantum di atas adalah nomor yang diberikan langsung oleh pemilik kosan WASPADA TERHADAP PENIPUAN⚠️",
-      "building_geolocation": {
-        "latitude": -6.212153199999999,
-        "longitude": 106.6030658
-      },
-      "housing_price": 1400000,
-      "owner_name": "",
-      "owner_whatsapp": "+62 85173020187",
-      "owner_phone_number": "+62 85173020187",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/349358435_2312226135611904_3717009445519653914_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi41NTh4NTU4LnNkci5mMzA4MDgifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D100%26_nc_ohc%3Deba_1kfTY6IQ7kNvgGj-P8-%26gid%3D2ae35e95161b4256aaa625ad7f5e0f99%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzEyMTk2Nzk2MzY4NzU1OTIyMw%253D%253D.2-ccb7-5%26oh%3D00_AYBDw0_gZcJee1t2fDWF0prKD84XoeXeCbHjyNbfD9FtOg%26oe%3D66969AF1%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 541,
-      "building_title": "Hunian Jl Palmerah Barat no 106B",
-      "building_address": "Jl Palmerah Barat no 106B",
-      "building_facility": [
-        "Full Furnish",
-        "fasilitas lengkap + Wi-Fi"
-      ],
-      "building_proximity": [
-        "daerah Palmerah",
-        "Jakarta Barat",
-        "dekat stasiun dan halte busway",
-        "450M dari gedung kompas gramedia Palmerah"
-      ],
-      "building_description": "Kost Full Furnish daerah Palmerah, Jakarta Barat, fasilitas lengkap + Wi-Fi, dekat stasiun dan halte busway, 450M dari gedung kompas gramedia Palmerah\n2400000 (blm termasuk listrik dan deposit 1jt)\nJl Palmerah Barat no 106B (Maps: M2 Indah Kost Palmerah)\n081510088587\n\nKosan Campur\n⚠️ Nomor telepon yang tercantum di atas adalah nomor yang diberikan langsung oleh pemilik kosan. WASPADA TERHADAP PENIPUAN⚠️",
-      "building_geolocation": {
-        "latitude": -6.2074598,
-        "longitude": 106.7914274
-      },
-      "housing_price": 2400000,
-      "owner_name": "",
-      "owner_whatsapp": "081510088587",
-      "owner_phone_number": "081510088587",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/348844051_271863845218993_3310889366966438931_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDgweDEwODAuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D101%26_nc_ohc%3DLe9s9-XP_xYQ7kNvgFSl24y%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzEyMTg0NzE4NDYxMDI0MDk4Ng%253D%253D.2-ccb7-5%26oh%3D00_AYAKlWB8b9q2YMfMc0RM4nig1bnqbniURgR08UCKhhFjFw%26oe%3D66967276%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 542,
-      "building_title": "Hunian Jl Kalibata Raya No 1 Rawa Jati Pancoran Daerah Khusus Ibukota Jakarta 12750",
-      "building_address": "Jl Kalibata Raya No 1 Rawa Jati Pancoran Daerah Khusus Ibukota Jakarta 12750",
-      "building_facility": [
-        "Full furnished langsung siap huni 2 kamar tidur 1 ruang tamu Kitchen set 1 kamar mandi Balkon Lokasi strategis"
-      ],
-      "building_proximity": ["Kalibata City"],
-      "building_description": "Apartemen Kalibata City Tower Damar lt 19\nFull furnished langsung siap huni\n2 kamar tidur\n1 ruang tamu\nKitchen set\n1 kamar mandi\nBalkon\nLokasi strategis\nInfo lebih lanjut langsung DM ig @dewianggriani95 yaa ..\nTanya2 gratis ..\n\nRp 3 500 000\nJl Kalibata Raya No 1 Rawa Jati Pancoran Daerah Khusus Ibukota Jakarta 12750\n081319803138\n\n⚠️ Nomor telepon yang tercantum di atas adalah nomor yang diberikan langsung oleh pemilik kosan WASPADA TERHADAP PENIPUAN⚠️",
-      "building_geolocation": {
-        "latitude": -6.258505100000001,
-        "longitude": 106.8608674
-      },
-      "housing_price": 3500000,
-      "owner_name": "",
-      "owner_whatsapp": "081319803138",
-      "owner_phone_number": "081319803138",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/352804197_784799116781985_636864469953620463_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNTM2eDE1MzYuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3Df_sxt6eyIdMQ7kNvgEnNnej%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzEyMTg0NzE2NTY2Njk5MjI1MQ%253D%253D.2-ccb7-5%26oh%3D00_AYD22qGrD87nP9DM26e4pdO674rsEAo5C0QhMyAqxy6FCA%26oe%3D66966AAF%26_nc_sid%3Df93d1f"
       ],
       "isReady": false
     }
