@@ -29,7 +29,7 @@ from src.domain.constants import (
 from src.domain.prompt_templates import (
     chat_template,
     analyzer_template,
-    filter_analyzer_template,
+    filter_data_structurer_analyzer_template,
     reask_template,
     building_found_template,
 )
@@ -82,8 +82,8 @@ class LangchainAPI(LangchainAPIInterface):
         self._filter_data_structurer_client = None
         self._query_parser = QueryParser()
         self._templates = {
-            "filter_analyzer_template": [
-                ChatPromptTemplate.from_template(filter_analyzer_template),
+            "filter_data_structurer_analyzer_template": [
+                ChatPromptTemplate.from_template(filter_data_structurer_analyzer_template),
             ],
             "analyzer_template": [
                 ChatPromptTemplate.from_template(analyzer_template),
@@ -173,7 +173,7 @@ class LangchainAPI(LangchainAPIInterface):
         # using string to avoid truthy context of boolean
         self._logger.log_info(f"[{session_id}]: Is asking for boarding house: {result}")
         if result == "True":
-            templates = self._templates["filter_analyzer_template"]
+            templates = self._templates["filter_data_structurer_analyzer_template"]
             result: str = self._filter_data_structurer_prompt_parser.execute(
                 {
                     "prompts": prompt,

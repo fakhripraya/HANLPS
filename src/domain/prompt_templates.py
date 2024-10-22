@@ -15,7 +15,7 @@ analyzer_template = """
     Only answer with True or False
     """
 
-filter_analyzer_template = """"
+filter_data_structurer_analyzer_template = """"
     Extract structured data based on the prompt using the conversation context
     
     history conversation: 
