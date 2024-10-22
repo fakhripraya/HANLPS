@@ -5,14 +5,6 @@
       "path": "."
     },
     {
-      "name": "cosine-tools",
-      "path": "../cosine-tools"
-    },
-    {
-      "name": "cosine-orchestration",
-      "path": "../cosine-orchestration"
-    },
-    {
       "name": "forefront-zeus",
       "path": "../forefront-zeus"
     },
@@ -29,12 +21,20 @@
       "path": "../forefront-postgirl"
     },
     {
+      "name": "Littlecamp",
+      "path": "../Littlecamp"
+    },
+    {
       "name": "Cosine",
       "path": "../Cosine"
     },
     {
-      "name": "Littlecamp",
-      "path": "../Littlecamp"
+      "name": "cosine-tools",
+      "path": "../cosine-tools"
+    },
+    {
+      "name": "cosine-orchestration",
+      "path": "../cosine-orchestration"
     },
     {
       "name": "wg-mothership",
