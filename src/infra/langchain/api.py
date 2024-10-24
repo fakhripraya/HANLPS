@@ -83,7 +83,9 @@ class LangchainAPI(LangchainAPIInterface):
         self._query_parser = QueryParser()
         self._templates = {
             "filter_data_structurer_analyzer_template": [
-                ChatPromptTemplate.from_template(filter_data_structurer_analyzer_template),
+                ChatPromptTemplate.from_template(
+                    filter_data_structurer_analyzer_template
+                ),
             ],
             "analyzer_template": [
                 ChatPromptTemplate.from_template(analyzer_template),
@@ -287,7 +289,7 @@ class LangchainAPI(LangchainAPIInterface):
 
         # Geolocation radius stages
         # Add more stages to use multiple stages
-        geolocation_stages = [5000]
+        geolocation_stages = [3000]
         geolocation_stage_index = 0
 
         # Setup fixed filters
