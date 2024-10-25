@@ -204,8 +204,8 @@ class LangchainAPI(LangchainAPIInterface):
             with GeocodingAPI(self._logger) as obj:
                 try:
                     query = (
-                        buildings_filter.building_title
-                        if buildings_filter.building_title
+                        buildings_filter.building_address
+                        if buildings_filter.building_address
                         else buildings_filter.building_proximity
                     )
                     if query is not None:
