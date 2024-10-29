@@ -18,7 +18,7 @@ analyzer_template = """
 filter_data_structurer_analyzer_template = """"
     Extract structured data based on the prompt using the conversation context
     
-    history conversation: 
+    History conversation
     {conversations}
     
     Incoming human input
@@ -29,9 +29,33 @@ filter_data_structurer_analyzer_template = """"
     4. If the input implies desires for cheap prices, set the price to be LESS_THAN 1500000 and if it implies for high budget set the price to be GREATER_THAN 2000000 this applies only if the input gave no budget
     5. The enum for gender is [Lelaki, Perempuan, Campur, Bebas]
 
-    First Example Conversation:
-    System = "Conversation Begin"
-    Human = "Aku lagi nyari apartement di jakarta nih yang deket PT Khong guan harganya dibawah 5jtan"
+    Rules: 
+    1. Filter price can't be less than or equal 0 if the filter reach 0 or minus, give 0 value
+    2. For filter type AROUND and is not a price range, make sure to adjust the price for greater_than_price: xxx subtracted by 250000 and less_than_price: xxx added by 250000
+    3. Nullify previous asked filter price if building title provided
+    4. Null value are not string 
+    5. Numbers are float not string
+    6. The price number are in floating number type as we won't accept any currency symbol
+
+    Extracted Data Identification:
+    building_title: This is the title of the building
+    building_address: This is the address or the area of where the building in
+    building_proximity: This is the proximity around the building or the building area
+    building_facility: This is the list of facility that the building has
+    building_note: This is some random note that need to be put in mind, this can be rules, or anything to be noted
+    filter_type: This is the filter type in enums [LESS_THAN, GREATER_THAN, AROUND] that is based on the chat context
+    less_than_price: This is the price value that follows the "filter_type" property value, the value is determined if the "filter_type" is either "LESS_THAN" or "AROUND"
+    greater_than_price: This is the price value that follows the "filter_type" property value, the value is determined if the "filter_type" is either "GREATER_THAN" or "AROUND"
+
+    Only provide the following fields in a JSON dict, where applicable: \"building_title\", \"building_address\", \"building_proximity\", \"building_facility\", \"building_note\", \"filter_type\", less_than_price, and greater_than_price.
+
+    First Example:
+
+    History conversation
+    None
+
+    Incoming human input
+    Aku lagi nyari apartement di jakarta nih yang deket PT Khong guan harganya dibawah 5jtan
 
     Extracted Data:
     building_title: null
@@ -43,139 +67,89 @@ filter_data_structurer_analyzer_template = """"
     less_than_price: 5000000
     greater_than_price: null
 
+    Explanation:
+    1. The human wanted an apartment in any Jakarta region that has nearby PT Khong guan building with rent price that less than 5000000
+
     Second Example Conversation:
-    System = "Conversation Begin"
-    Human = "Aku lagi nyari apartement di jakarta nih yang harganya diatas 5jtan"
-    AI = "Kalau ini gimana kak? ini harga diatas 5 juta"
-    Human = "Kak gajadi deh kayanya yang di bandung deket gedung sate aja deh, yang ada parkiran dalam dan dapur bersama ya, trus khusus perempuan"
+
+    History conversation
+    Human = Aku lagi nyari apartement di jakarta nih yang harganya diatas 5jtan
+    AI = Kalau ini gimana kak? ini harga diatas 5 juta (showing the list of apartments)
+
+    Incoming human input
+    Kak gajadi deh kayanya yang di bandung deket gedung sate aja deh, yang ada parkiran dalam dan dapur bersama ya, trus khusus perempuan
 
     Extracted Data:
     building_title: null
     building_address: "Bandung"
     building_proximity: "gedung sate"
-    building_facility: "parkiran dalam, dapur bersama" this mean it has the facility and it applies for other benefit too
+    building_facility: "parkiran dalam, dapur bersama"
     building_note: "perempuan" Some notes that the prompter asked
     filter_type: "GREATER_THAN"
     less_than_price: null
     greater_than_price: 5000000
 
-    Third Example Conversation:
-    System = "Conversation Begin"
-    Human = "Aku lagi nyari apartement di gandsaria deket gancy nih"
-    AI = "Maksudnya gandaria ya kak?"
-    Human = "Iya kak gandaria, yang harganya 2.5 - 5jtan dong, adakah?" this input is giving the price range
-    AI = "Kalau ini gimana kak? ini deket gancy"
-    Human = "kurang kak, mau pake kamar mandi dalam sama AC ya, trus kalo bisa bulanan dan boleh bawa hewan kucing"
+    Explanation:
+    1. Initially the human wanted an apartment in any Jakarta region, with rent price that less than 5000000.
+    2. But after the AI gave the human the list of apartments, the human has a sudden change in mind that he wanted an apartment in any Bandung region that has nearby Gedung sate building
+    3. Has "parkiran dalam" and "dapur bersama" which we put in "building_facility" property because it's a facility
+    4. And the human also asked for specific rule of the apartment that allow only woman to rent the apartment, because of this we put the value in "building_note" property
+    5. The human also change The rent price requirement to be greater than 5000000
+
+    Third Example Conversation
+
+    History conversation
+    Human = Aku lagi nyari apartement di gandsaria deket gancy nih
+    AI = Maksudnya gandaria ya kak?
+    Human = Iya kak gandaria, yang harganya 2.5 - 5jtan dong, adakah?
+    AI = Kalau ini gimana kak? ini deket gancy (showing the list of apartments)
+
+    Incoming human input
+    Kurang kak, mau pake kamar mandi dalam sama AC ya, trus kalo bisa bulanan dan boleh bawa hewan kucing
 
     Extracted Data:
     building_title: null
     building_address: "gandaria"
     building_proximity: "gancy"
-    building_facility: "kamar mandi dalam, Air Conditioner, AC" watch the facility abbrevation aswell, if applicable
-    building_note: "bulanan, boleh bawa hewan, boleh bawa kucing" Some notes that the prompter asked
+    building_facility: "kamar mandi dalam, Air Conditioner, AC"
+    building_note: "bulanan, boleh bawa hewan, boleh bawa kucing"
     filter_type: "AROUND"
     less_than_price: 5000000
     greater_than_price: 2500000
+
+    Explanation:
+    1. We can see the human seems to have typo in the writting as we can see that he wrote gandsaria instead of gandaria, so you need to be careful of those kind of typo
+    2. Then he also asked for the building with gancy or Gandaria city in its proximity, remind that gancy is not a type so once again you need to be careful of those kind of things
+    3. Now that you know the area is Gandaria, we can assume that the human wanted an apartment in Gandaria area, with Gancy as its proximity,
+    4. With the rent price ranging between less than 5000000 but greater than 2500000, making the value of "filter_type" to be "AROUND".
+    5. But after the AI gave the human the list of apartments, he suddenly change his mind that he wanted an apartment with more facility to be noted
+    6. The human wants an apartment that has "kamar mandi dalam, Air Conditioner, and AC" which we put in "building_facility" property because it's a facility, you also need to watch the facility abbrevation aswell, if applicable
+    7. And the human also asked for specific rule of the apartment that allow the tenant to bring any kind of pets and specifically for "kucing", the human also noting the rules of how tenant pay rent, in this case the rent payment that he want is monthly, because of this we put those value in "building_note" property
     
     Fourth Example Conversation:
-    System = "Conversation Begin"
-    Human = "Aku lagi nyari kosan di palmerah, yang harganya 2jtan dong" this is not giving any price range
-    AI = "Kalau ini gimana kak? ini deket palmerah harga 2jtan"
-    Human = "mau pake kamar mandi dalam sama AC juga dong"
+
+    History conversation
+    Human = Aku lagi nyari kosan di palmerah, yang harganya 2jtan dong
+    AI = Kalau ini gimana kak? ini deket palmerah harga 2jtan (showing the list of kosans)
+
+    Incoming human input
+    Mau pake kamar mandi dalam sama AC juga dong
 
     Extracted Data:
     building_title: null
     building_address: "palmerah"
     building_proximity: null
-    building_facility: "kamar mandi dalam, Air Conditioner, AC" watch the facility abbrevation aswell, if applicable
+    building_facility: "kamar mandi dalam, Air Conditioner, AC"
     building_note: null
     filter_type: "AROUND"
     less_than_price: 2250000
     greater_than_price: 1750000
 
-    only provide the following fields in a JSON dict, where applicable: \"building_title\", \"building_address\", \"building_proximity\", \"building_facility\", \"building_note\", \"filter_type\", less_than_price, and greater_than_price.
-
-    NOTE: 
-    - filter price can't be less than or equal 0 if the filter reach 0 or minus, give 0 value
-    - for filter type AROUND and is not a price range, make sure to adjust the price for greater_than_price: xxx - 250000 and less_than_price: xxx + 250000
-    - nullify previous asked filter price if building title provided
-    - null value are not string 
-    - numbers are float not string
+    Explanation:
+    1. Initially the human wanted a kosan or boarding houses in Palmerah area, that has the price ranging around 2000000
+    2. The user implied to give a price range that in this case is "2jtan" or 2 jutaan or around 2 million, making the filter_type to be "AROUND" and following the rules above, the value of less_than_price and greater_than_price need to be adjusted
+    3. After the AI shows the list of kosans, the human add more requirement to the AI that he also wanted a kosan that has "kamar mandi dalam, Air Conditioner, and AC" which we put in "building_facility"
     """
-# filter_analyzer_template = """"
-#     Define Extracted Data based on the prompt and the conversation context
-#     Understand the context of the conversation
-
-#     history conversation:
-#     {conversations}
-
-#     Incoming human input
-#     Human: {prompts}
-
-#     1. We analyze the context of the incoming input based on the conversation
-#     2. We simulate extracting data from the conversation.
-
-#     First Example Conversation:
-#     System = "Conversation Begin"
-#     Human = "Aku lagi nyari apartement di jakarta nih yang deket PT Khong guan harganya dibawah 5jtan"
-
-#     Extracted Data:
-#     building_title: null
-#     building_address: "Jakarta"
-#     building_proximity: "PT Khong guan"
-#     building_facility: null
-#     building_note: null
-#     filter_type: "LESS_THAN"
-#     less_than_price: 5000000
-#     greater_than_price: null
-
-#     Second Example Conversation:
-#     System = "Conversation Begin"
-#     Human = "Aku lagi nyari apartement di jakarta nih yang harganya diatas 5jtan"
-#     AI = "Aku cariin dulu ya kak"
-#     Human = "Kak gajadi deh kayanya yang di bandung deket gedung sate aja deh, yang ada parkiran dalam dan dapur bersama ya, trus khusus perempuan"
-
-#     Extracted Data:
-#     building_title: null
-#     building_address: "Bandung"
-#     building_proximity: "gedung sate"
-#     building_facility: "parkiran dalam, dapur bersama" # this mean it has the facility and it applies for other benefit too
-#     building_note: "perempuan" # Some notes that the prompter asked
-#     filter_type: "GREATER_THAN"
-#     less_than_price: null
-#     greater_than_price: 5000000
-
-#     Third Example Conversation:
-#     System = "Conversation Begin"
-#     Human = "Aku lagi nyari apartement di gandsaria deket gancy nih"
-#     AI = "Maksudnya bandung ya kak?"
-#     Human = "Iya kak bandung, yang harganya 5jtan dong, adakah?"
-#     AI = "Aku cariin ya kak, duduk manis dulu aja wkwkkw"
-#     Human = "Eh kak budgetku cuman 4.5jt ada ga, tapi kamar mandi dalam sama AC ya, trus kalo bisa bulanan dan boleh bawa hewan kucing"
-
-#     Extracted Data:
-#     building_title: null
-#     building_address: "Gandaria"
-#     building_proximity: "gancy, gandaria"
-#     building_facility: "kamar mandi dalam, Air Conditioner, AC" # watch the facility abbrevation aswell, if applicable
-#     building_note: "bulanan, boleh bawa hewan, boleh bawa kucing" # Some notes that the prompter asked
-#     filter_type: "AROUND"
-#     less_than_price: 5500000
-#     greater_than_price: 4500000
-
-#     NOTE:
-#     - if you determine the filter type to be AROUND, make sure to range the price between
-#     greater_than_price: Rp.xxx - 10 percent
-#     less_than_price: Rp.xxx + 10 percent
-#     - if the user ask for any price or "harganya bebas deh" or something like that
-#     set all filter to be None
-#     - if the user ask about gender for the note, extract in only 3 value between "Perempuan", "Lelaki", or "Campur"
-
-#     NOTE:
-#     ABOVE IS JUST EXAMPLE, UNDERSTAND THE CONTEXT OF THE CONVERSATION HISTORY AND EXTRACT DATA BASED ON IT AND THE HUMAN INPUT
-
-#     3. Reply only with the extracted data that represented in JSON, without the backtick formatting.
-# """
 
 chat_template = """
     You are an AI who spoke mainly in Bahasa Indonesia language but can also speak different language
@@ -276,41 +250,3 @@ building_found_template = (
     this is just an example but don't do that
     """
 )
-
-# building_found_template = chat_template + """
-#     Understand the context of the conversation
-#     You have done the searching and found some of the possible result by the human input reference,
-
-#     This is the result:
-#     {result}
-
-#     This is The Human input:
-#     {prompts}
-
-#     As an AI you need to reply the human input like these possible cases
-
-#     Example 1
-#     Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
-#     Result context: the search result seems to have low similarity with the human input
-#     AI supposed to reply:
-#     Ini ya kak, maaf kalau kurang mirip tapi adanya ini, boleh tolong detailin lagi kak?
-
-#     Example 2
-#     Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
-#     Result context: the search result seems to have medium similarity with the human input
-#     AI supposed to reply:
-#     Ini ya kak, kira kira gimana kak?
-
-#     Example 3
-#     Human: kak mau kosan di kebayoran dong harga 1.5jtan, ada kamar mandi dalam, kamarnya lega, dapur bersama kak ada?
-#     Result context: the search result seems to have high similarity with the human input
-#     AI supposed to reply:
-#     Kita nemu nih kak!, bener ga yang ini?
-
-#     Example 4
-#     If you didn't found anything just reply in something or the search result seems to have completely different similarities with the human input
-#     AI Reply: kayanya belum bisa nemuin yang ditempat itu deh kak, ini aja yang aku temuin
-
-#     NOTE:
-#     DON'T GIVE THE RESULT DETAIL, THIS INSTRUCTION MEANT JUST TO REPLY SEMANTICALLY
-#     """
