@@ -24,6 +24,7 @@ from src.domain.constants import (
     OPENAI,
     GEMINI,
     BUILDINGS_COLLECTION_NAME,
+    BUILDING_CHUNKS_COLLECTION_NAME,
 )
 from src.domain.prompt_templates import (
     chat_template,
@@ -275,13 +276,15 @@ class LangchainAPI(LangchainAPIInterface):
         :param prompt: chat message to be analyzed.
         :param session_id: session id of the chat.
         :param filter_array: filters that needed for prompt analysis.
-        :param query: query for vector data retrieval with weaviate.
+        :param facility_query: query by facility to retrieve vector data from weaviate.
+        :param location_query: query by location to retrieve vector data from weaviate.
         """
         response = None
         limit = 10
         offset = 0
         start_time = time.time()
         building_list: list[Building] = []
+        seen_uuids = set()
         retries = 0
         max_retries = 3
 
@@ -309,6 +312,9 @@ class LangchainAPI(LangchainAPIInterface):
                     )
                     building_collection = connected.collections.get(
                         BUILDINGS_COLLECTION_NAME
+                    )
+                    building_chunk_collection = connected.collections.get(
+                        BUILDING_CHUNKS_COLLECTION_NAME
                     )
                     is_geofilter_callable = callable(
                         filter_array.get("building_geolocation")
@@ -344,34 +350,97 @@ class LangchainAPI(LangchainAPIInterface):
                                 limit,
                                 offset,
                             )
+                        else:
+                            housing_price_filter = filter_array["housing_price"](True)
+                            if len(housing_price_filter) > 0:
+                                filters = Filter.all_of(housing_price_filter)
+                            if filters and chunk_collection_filters:
+                                filters = filters & chunk_collection_filters
+                            elif not filters:
+                                filters = chunk_collection_filters
+                            self._logger.log_info(
+                                f"[{session_id}]: Execute with location query: {location_query}\nFilters: {filters}"
+                            )
+                            response = query_building_with_building_as_reference(
+                                building_chunk_collection,
+                                location_query,
+                                filters,
+                                limit,
+                                offset,
+                            )
 
                             if not response.objects:
-                                self._logger.log_debug(
-                                    f"[{session_id}]: Failed to get location at: {distance} distance, with query {facility_query}"
-                                )
-                                geolocation_stage_index += 1
-                                offset = 0
+                                if with_geofilter:
+                                    self._logger.log_debug(
+                                        f"[{session_id}]: Failed to get location at: {distance} distance, with query {facility_query}"
+                                    )
+                                    geolocation_stage_index += 1
+                                    offset = 0
+                                else:
+                                    self._logger.log_debug(
+                                        f"[{session_id}]: Failed to get location with query: {location_query}"
+                                    )
+                                    break
 
                             self._logger.log_debug(
                                 f"[{session_id}]: Queried object found count: {len(response.objects)}"
                             )
                             for obj in response.objects:
-                                building_instance = Building(
-                                    building_title=obj.properties["buildingTitle"],
-                                    building_address=obj.properties["buildingAddress"],
-                                    building_description=obj.properties[
-                                        "buildingDescription"
-                                    ],
-                                    housing_price=obj.properties["housingPrice"],
-                                    owner_name=obj.properties["ownerName"],
-                                    owner_email=obj.properties["ownerEmail"],
-                                    owner_whatsapp=obj.properties["ownerWhatsapp"],
-                                    owner_phone_number=obj.properties[
-                                        "ownerPhoneNumber"
-                                    ],
-                                    image_url=obj.properties["imageURL"],
-                                )
-                                building_list.append(building_instance)
+                                if with_geofilter:
+                                    seen_uuids.add(obj.uuid)
+                                    building_instance = Building(
+                                        building_title=obj.properties["buildingTitle"],
+                                        building_address=obj.properties[
+                                            "buildingAddress"
+                                        ],
+                                        building_description=obj.properties[
+                                            "buildingDescription"
+                                        ],
+                                        housing_price=obj.properties["housingPrice"],
+                                        owner_name=obj.properties["ownerName"],
+                                        owner_email=obj.properties["ownerEmail"],
+                                        owner_whatsapp=obj.properties["ownerWhatsapp"],
+                                        owner_phone_number=obj.properties[
+                                            "ownerPhoneNumber"
+                                        ],
+                                        image_url=obj.properties["imageURL"],
+                                    )
+                                    building_list.append(building_instance)
+                                else:
+                                    for ref_obj in obj.references[
+                                        "hasBuilding"
+                                    ].objects:
+                                        if ref_obj.uuid in seen_uuids:
+                                            continue
+                                        seen_uuids.add(ref_obj.uuid)
+                                        building_instance = Building(
+                                            building_title=ref_obj.properties[
+                                                "buildingTitle"
+                                            ],
+                                            building_address=ref_obj.properties[
+                                                "buildingAddress"
+                                            ],
+                                            building_description=ref_obj.properties[
+                                                "buildingDescription"
+                                            ],
+                                            housing_price=ref_obj.properties[
+                                                "housingPrice"
+                                            ],
+                                            owner_name=ref_obj.properties["ownerName"],
+                                            owner_email=ref_obj.properties[
+                                                "ownerEmail"
+                                            ],
+                                            owner_whatsapp=ref_obj.properties[
+                                                "ownerWhatsapp"
+                                            ],
+                                            owner_phone_number=ref_obj.properties[
+                                                "ownerPhoneNumber"
+                                            ],
+                                            image_url=ref_obj.properties["imageURL"],
+                                        )
+                                        building_list.append(building_instance)
+                                        if len(building_list) >= limit:
+                                            break
 
                                 if len(building_list) >= limit:
                                     break
