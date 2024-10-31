@@ -27,7 +27,7 @@ from src.domain.constants import (
     BUILDING_CHUNKS_COLLECTION_NAME,
 )
 from src.domain.prompt_templates import (
-    chat_template,
+    default_reply_template,
     analyzer_template,
     filter_data_structurer_analyzer_template,
     reask_template,
@@ -90,7 +90,7 @@ class LangchainAPI(LangchainAPIInterface):
             "analyzer_template": [
                 ChatPromptTemplate.from_template(analyzer_template),
             ],
-            "chat_template": chat_template,
+            "default_reply_template": default_reply_template,
             "reask_template": reask_template,
             "building_found_template": building_found_template,
         }
@@ -369,83 +369,77 @@ class LangchainAPI(LangchainAPIInterface):
                                 offset,
                             )
 
-                            if not response.objects:
-                                if with_geofilter:
-                                    self._logger.log_debug(
-                                        f"[{session_id}]: Failed to get location at: {distance} distance, with query {facility_query}"
-                                    )
-                                    geolocation_stage_index += 1
-                                    offset = 0
-                                else:
-                                    self._logger.log_debug(
-                                        f"[{session_id}]: Failed to get location with query: {location_query}"
-                                    )
-                                    break
+                        if not response.objects:
+                            if with_geofilter:
+                                self._logger.log_debug(
+                                    f"[{session_id}]: Failed to get location at: {distance} distance, with query {facility_query}"
+                                )
+                                geolocation_stage_index += 1
+                                offset = 0
+                            else:
+                                self._logger.log_debug(
+                                    f"[{session_id}]: Failed to get location with query: {location_query}"
+                                )
+                                break
 
-                            self._logger.log_debug(
-                                f"[{session_id}]: Queried object found count: {len(response.objects)}"
-                            )
-                            for obj in response.objects:
-                                if with_geofilter:
-                                    seen_uuids.add(obj.uuid)
+                        self._logger.log_debug(
+                            f"[{session_id}]: Queried object found count: {len(response.objects)}"
+                        )
+                        for obj in response.objects:
+                            if with_geofilter:
+                                seen_uuids.add(obj.uuid)
+                                building_instance = Building(
+                                    building_title=obj.properties["buildingTitle"],
+                                    building_address=obj.properties["buildingAddress"],
+                                    building_description=obj.properties[
+                                        "buildingDescription"
+                                    ],
+                                    housing_price=obj.properties["housingPrice"],
+                                    owner_name=obj.properties["ownerName"],
+                                    owner_email=obj.properties["ownerEmail"],
+                                    owner_whatsapp=obj.properties["ownerWhatsapp"],
+                                    owner_phone_number=obj.properties[
+                                        "ownerPhoneNumber"
+                                    ],
+                                    image_url=obj.properties["imageURL"],
+                                )
+                                building_list.append(building_instance)
+                            else:
+                                for ref_obj in obj.references["hasBuilding"].objects:
+                                    if ref_obj.uuid in seen_uuids:
+                                        continue
+                                    seen_uuids.add(ref_obj.uuid)
                                     building_instance = Building(
-                                        building_title=obj.properties["buildingTitle"],
-                                        building_address=obj.properties[
+                                        building_title=ref_obj.properties[
+                                            "buildingTitle"
+                                        ],
+                                        building_address=ref_obj.properties[
                                             "buildingAddress"
                                         ],
-                                        building_description=obj.properties[
+                                        building_description=ref_obj.properties[
                                             "buildingDescription"
                                         ],
-                                        housing_price=obj.properties["housingPrice"],
-                                        owner_name=obj.properties["ownerName"],
-                                        owner_email=obj.properties["ownerEmail"],
-                                        owner_whatsapp=obj.properties["ownerWhatsapp"],
-                                        owner_phone_number=obj.properties[
+                                        housing_price=ref_obj.properties[
+                                            "housingPrice"
+                                        ],
+                                        owner_name=ref_obj.properties["ownerName"],
+                                        owner_email=ref_obj.properties["ownerEmail"],
+                                        owner_whatsapp=ref_obj.properties[
+                                            "ownerWhatsapp"
+                                        ],
+                                        owner_phone_number=ref_obj.properties[
                                             "ownerPhoneNumber"
                                         ],
-                                        image_url=obj.properties["imageURL"],
+                                        image_url=ref_obj.properties["imageURL"],
                                     )
                                     building_list.append(building_instance)
-                                else:
-                                    for ref_obj in obj.references[
-                                        "hasBuilding"
-                                    ].objects:
-                                        if ref_obj.uuid in seen_uuids:
-                                            continue
-                                        seen_uuids.add(ref_obj.uuid)
-                                        building_instance = Building(
-                                            building_title=ref_obj.properties[
-                                                "buildingTitle"
-                                            ],
-                                            building_address=ref_obj.properties[
-                                                "buildingAddress"
-                                            ],
-                                            building_description=ref_obj.properties[
-                                                "buildingDescription"
-                                            ],
-                                            housing_price=ref_obj.properties[
-                                                "housingPrice"
-                                            ],
-                                            owner_name=ref_obj.properties["ownerName"],
-                                            owner_email=ref_obj.properties[
-                                                "ownerEmail"
-                                            ],
-                                            owner_whatsapp=ref_obj.properties[
-                                                "ownerWhatsapp"
-                                            ],
-                                            owner_phone_number=ref_obj.properties[
-                                                "ownerPhoneNumber"
-                                            ],
-                                            image_url=ref_obj.properties["imageURL"],
-                                        )
-                                        building_list.append(building_instance)
-                                        if len(building_list) >= limit:
-                                            break
+                                    if len(building_list) >= limit:
+                                        break
 
-                                if len(building_list) >= limit:
-                                    break
+                            if len(building_list) >= limit:
+                                break
 
-                            offset += limit
+                        offset += limit
 
                     end_time = time.time()
                     elapsed_time = end_time - start_time
@@ -487,7 +481,7 @@ class LangchainAPI(LangchainAPIInterface):
         template = (
             self._templates["reask_template"]
             if reask
-            else self._templates["chat_template"]
+            else self._templates["default_reply_template"]
         )
         if found:
             template = self._templates["building_found_template"]
