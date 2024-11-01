@@ -1,4 +1,10 @@
 analyzer_template = """
+    You are an AI chat analyzer 
+    
+    Your job is:
+    1. Analyze whether the incoming human input implies asking about kosan, kostan, kost, kos-kosan, kontrakan, apartments, or any kind of boarding houses based on the history conversation context
+    2. Extract structured data based on the human input using the conversation context, Use Extracted Data Identifaction below for the output of this prompt
+    
     Understand the context of the conversation
     History conversation:
     {conversations}
@@ -6,38 +12,133 @@ analyzer_template = """
     Incoming human input
     {prompts}
 
-    Analyze the incoming human input based on the history conversation context:
-    1. Reply True if the incoming input implies asking about KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, APARTMENTS, or BOARDING HOUSES.
-    2. Reply False if the incoming input is asking location outside of Jakarta, Tangerang, Bogor, Banten or JABODETABEK.
-    3. Reply False if it implies asking for advertising, posting, expresses satisfaction, or disappointment.
-    4. For any other scenario, reply False.
-
+    Extracted Data Identification:
+    human_implied_task: This is a string enum value in python, the value can only be one of these enums extracted based on your analysis:
+        - RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS: This enum applied if the human ask you to retrieve for kosan/boarding houses based on the human input criteria 
+        - GIVE_AND_EXPLAIN_THE_IMPLIED_BUILDING_DETAILS: This enum applied if the human ask you to give/explain the implied building details that the human ask, these detail could be:
+            + title
+            + address
+            + facilities
+            + proximities
+            + owner whatsapp
+            + owner phone number
+        - COMPARE_BETWEEN_BUILDINGS: This enum applied if the human ask you to compare between fetched kosan/boarding houses
+        - ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM: This enum applied if the human ask you to save kosan/boarding houses to the system
+        - VAGUE: This enum applied if the human input implying human hallucination, lack of information, odd structure of conversation, etc
+        - CASUAL_CONVERSATION: This enum applied if the human input is just having a normal conversation, inside or outside the context of searching boarding houses
+    
     Rules:
-    1.Only answer with True or False
+    1. Only provide the output in a JSON dict.
+    
+    These are the example of conversation using Bahasa Indonesia
+    First Conversation Example:
+    History conversation:
+    None
+    
+    Incoming human input:
+    Cariin aku kosan dong di daerah manggarai
+    
+    Expected output:
+    human_implied_task: "RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS"
+        
+    Explanation:
+    Based on the context of the conversation, the human does currently searching for boarding houses
+    The human implied that he want you to look for him a boarding house or a list of boarding houses in an area called manggarai
+    
+    Second Conversation Example:
+    History conversation:
+    Human: Cariin aku kosan dong di daerah manggarai, harga 2jtan
+    System: (Fetched some list of kosan)
+    AI: Ini gimana ? semua kosan ini berada di manggarai dengan harga 2 jutaan. cocok ?
+    
+    Incoming human input:
+    Coba kosan nomor 1 sama 3 fasilitasnya apa aja
+    
+    Expected output:
+    human_implied_task: "GIVE_AND_EXPLAIN_THE_IMPLIED_BUILDING_DETAILS"
+        
+    Explanation:
+    Based on the context of the conversation, the human does currently searching for boarding houses
+    The human implied that he want the detail facility of boarding house number 1 and number 3 based on the boarding houses that the system fetched
+    
+    Third Conversation Example:
+    History conversation:
+    Human: Cariin aku kosan dong di daerah manggarai, harga 2jtan
+    System: (Fetched some list of kosan)
+    AI: Ini gimana ? semua kosan ini berada di manggarai dengan harga 2 jutaan. cocok ?
+    
+    Incoming human input:
+    jarak kosan nomor 1 atau 3 ke manggarai berapaan kira - kira ?
+    
+    Expected output:
+    human_implied_task: "COMPARE_BETWEEN_BUILDINGS"
+        
+    Explanation:
+    Based on the context of the conversation, the human does currently searching for boarding houses
+    The human ask about how close manggarai to kosan number 1 and kosan number 3
+    
+    Fourth Conversation Example:
+    History conversation:
+    Human: Cariin aku kosan dong di daerah manggarai, harga 2jtan
+    System: (Fetched some list of kosan)
+    AI: Ini gimana ? semua kosan ini berada di manggarai dengan harga 2 jutaan. cocok ?
+    
+    Incoming human input:
+    Save kosan nomor 1 dong
+    
+    Expected output:
+    human_implied_task: "ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM"
+        
+    Explanation:
+    Based on the context of the conversation, the human does currently searching for boarding houses
+    The human ask you the AI to save the kosan number 1 to the system
+    
+    Fifth Conversation Example:
+    History conversation:
+    Human: cariin kosan di deket binus dong
+    System: (Fetched some list of kosan)
+    AI: Ini gimana ? semua kosan ini berada di binus. cocok ?
+    
+    Incoming human input:
+    Mantep, btw gua mau iklanin kostan gua sebenernya, bagi kontak personnya dong buat iklan
+    
+    Expected output:
+    human_implied_task: "CASUAL_CONVERSATION"
+        
+    Explanation:
+    Based on the context of the conversation, the human is asking about contact person for advertising his boarding house, not giving a specific task
+    
+    Sixth Conversation Example:
+    History conversation:
+    None
+    
+    Incoming human input:
+    Itu kosan nomor 3 dan nomor 4 fasilitasnya apa aja
+    
+    Expected output:
+    human_implied_task: "VAGUE"
+        
+    Explanation:
+    Based on the context of the conversation, the human is hallucinating because we can see that in the history of conversation, there are no existing conversation showing the human is asking to search for kosan/boarding houses
+    Hence why the value is "VAGUE"
     """
 
 filter_data_structurer_analyzer_template = """"
-    Extract structured data based on the prompt using the conversation context
+    You are an AI chat analyzer that extract structured output
     
+    Your job is to:
+    1. Analyze the context of the incoming input based on the conversation
+    2. Extract structured data based on the human input using the conversation context. 
+    4. If the input implies desires for cheap prices, set the price to be LESS_THAN 1500000 and if it implies for high budget set the price to be GREATER_THAN 2000000 this applies only if the input gave no budget
+    5. The enum for gender is [Lelaki, Perempuan, Campur, Bebas]
+    
+    Understand the context of the conversation
     History conversation
     {conversations}
     
     Incoming human input
     Human: {prompts}
-
-    1. Analyze the context of the incoming input based on the conversation
-    2. Simulate extracting data from the conversation
-    4. If the input implies desires for cheap prices, set the price to be LESS_THAN 1500000 and if it implies for high budget set the price to be GREATER_THAN 2000000 this applies only if the input gave no budget
-    5. The enum for gender is [Lelaki, Perempuan, Campur, Bebas]
-
-    Rules: 
-    1. Filter price can't be less than or equal 0 if the filter reach 0 or minus, give 0 value
-    2. For filter type AROUND and is not a price range, make sure to adjust the price for greater_than_price: xxx subtracted by 250000 and less_than_price: xxx added by 250000
-    3. Nullify previous asked filter price if building title provided
-    4. Null value are not string 
-    5. Numbers are float not string
-    6. The price number are in floating number type as we won't accept any currency symbol
-
+    
     Extracted Data Identification:
     building_title: This is the title of the building
     building_address: This is the address or the area of where the building in
@@ -48,8 +149,16 @@ filter_data_structurer_analyzer_template = """"
     less_than_price: This is the price value that follows the "filter_type" property value, the value is determined if the "filter_type" is either "LESS_THAN" or "AROUND"
     greater_than_price: This is the price value that follows the "filter_type" property value, the value is determined if the "filter_type" is either "GREATER_THAN" or "AROUND"
 
-    Only provide the following fields in a JSON dict, where applicable: \"building_title\", \"building_address\", \"building_proximity\", \"building_facility\", \"building_note\", \"filter_type\", less_than_price, and greater_than_price.
+    Rules: 
+    1. Filter price can't be less than or equal 0 if the filter reach 0 or minus, give 0 value
+    2. For filter type AROUND and is not a price range, make sure to adjust the price for greater_than_price: xxx subtracted by 250000 and less_than_price: xxx added by 250000
+    3. Nullify previous asked filter price if building title provided
+    4. Null value are not string 
+    5. Numbers are float not string
+    6. The price number are in floating number type as we won't accept any currency symbol
+    7. Only provide the following fields in a JSON dict, where applicable: \"building_title\", \"building_address\", \"building_proximity\", \"building_facility\", \"building_note\", \"filter_type\", less_than_price, and greater_than_price.
 
+    These are the example of conversation using Bahasa Indonesia
     First Example:
 
     History conversation
@@ -150,6 +259,22 @@ filter_data_structurer_analyzer_template = """"
     1. Initially the human wanted a kosan or boarding houses in Palmerah area, that has the price ranging around 2000000
     2. The user implied to give a price range that in this case is "2jtan" or 2 jutaan or around 2 million, making the filter_type to be "AROUND" and following the rules above, the value of less_than_price and greater_than_price need to be adjusted
     3. After the AI shows the list of kosans, the human add more requirement to the AI that he also wanted a kosan that has "kamar mandi dalam, Air Conditioner, and AC" which we put in "building_facility"
+    """
+
+seen_buildings_template = """
+    Buildings fetched by the System so far:
+    
+    {seen_buildings}
+    """
+
+building_object_template = """
+    Building title: {title}
+    Building address: {address}
+    Building facilities: {facilities}
+    Building rent price: {price}
+    Owner name: {name}
+    Owner whatsapp: {whatsapp}
+    Owner phone Number: {phonenumber}
     """
 
 chat_template = """
@@ -254,8 +379,8 @@ building_found_template = (
     {result}
     
     1. As an AI you need to reply the human input based on the result you have found
-    2. If the result is not None, question the human whether the input is right or there is still some information missing
-    3. If the result is available, reask the human to verify whether the result found is either satisfying or disappointing
+    2. Question the human whether the input is right or there is still some information missing
+    3. Reask the human to verify whether the result found is either satisfying or disappointing
 
     First Example
     History of the conversation:
@@ -353,6 +478,7 @@ building_found_template = (
     1. Reply in a helpful manner and ask the user if the results is whether fit the human need or not, for example like "Gimana cocok?", "Ini oke ga?", "Adanya ini nih, udah mantep?", "Ini pilihannya, gimana?", and etc
     2. Don't say anything outside the conversation context
     3. Important! don't offer anything to the human, especially offering any platform outside Pintrail
+    4. Don't reply in a long output, simplify it
 
     Summary:
     You can reply anything related to the system and the human as long as it follows the conversation context, but be helpful as much as you can

@@ -31,6 +31,8 @@ from src.domain.prompt_templates import (
     analyzer_template,
     filter_data_structurer_analyzer_template,
     reask_template,
+    seen_buildings_template,
+    building_object_template,
     building_found_template,
 )
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
@@ -38,11 +40,11 @@ from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
 from src.infra.langchain.llm.llm import create_open_ai_llm, create_gemini_llm
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.infra.repositories.weaviate.schema.collections.buildings.buildings import (
+from src.infra.repositories.weaviate.filters.buildings.buildings import (
     append_housing_price_filters,
     append_building_facility_filters,
     append_building_note_filters,
-    append_building_geolocation_filters,
+    append_building_geolocation_filter,
 )
 from src.domain.entities.building.building import Building
 from src.infra.geocoding.api import GeocodingAPI
@@ -68,6 +70,9 @@ from src.infra.repositories.weaviate.query.query import (
     query_building,
 )
 from weaviate.classes.query import Filter
+from weaviate.collections.collection import CrossReferences
+from weaviate.collections.classes.types import WeaviateProperties
+from weaviate.collections.classes.internal import QueryReturn, Object
 
 
 class LangchainAPI(LangchainAPIInterface):
@@ -90,12 +95,13 @@ class LangchainAPI(LangchainAPIInterface):
             "analyzer_template": [
                 ChatPromptTemplate.from_template(analyzer_template),
             ],
+            "seen_buildings_template": seen_buildings_template,
             "default_reply_template": default_reply_template,
             "reask_template": reask_template,
             "building_found_template": building_found_template,
         }
 
-        self.connect_llm()
+        self._connect_llm()
 
     def __enter__(self):
         return self
@@ -105,48 +111,6 @@ class LangchainAPI(LangchainAPIInterface):
             self._logger.log_error(f"[{exc_type}]: {exc_val}")
             self._logger.log_error(f"Traceback: {traceback.format_tb(exc_tb)}")
 
-    def connect_llm(self) -> None:
-        """
-        Connect selected LLM and initialize prompt parsers
-        """
-        try:
-            if not self._client:
-                if self._llm_type == OPENAI:
-                    self._client = create_open_ai_llm(OPENAI_MODEL, OPENAI_API_KEY)
-                    self._analyzer_client = create_open_ai_llm(
-                        OPENAI_ANALYZER_MODEL, OPENAI_API_KEY
-                    )
-                    self._filter_data_structurer_client = create_open_ai_llm(
-                        OPENAI_FILTER_DATA_STRUCTURER_MODEL, OPENAI_API_KEY
-                    )
-                elif self._llm_type == GEMINI:
-                    self._client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
-                    self._analyzer_client = create_gemini_llm(
-                        GEMINI_MODEL, GEMINI_API_KEY
-                    )
-                    self._filter_data_structurer_client = create_gemini_llm(
-                        GEMINI_MODEL, GEMINI_API_KEY
-                    )
-                else:
-                    raise ValueError("No LLM Found")
-
-                self._prompt_parser = PromptParser(self._client)
-                self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
-                self._filter_data_structurer_prompt_parser = PromptParser(
-                    self._filter_data_structurer_client
-                )
-        except Exception as e:
-            self._logger.log_exception(f"Error connecting LLM: {e}")
-
-    def get_session_history(self, session_id) -> BaseChatMessageHistory:
-        """Get message history by session id
-        :param session_id: chat session id
-        :return: BaseChatMessageHistory
-        """
-        if session_id not in self._store:
-            self._store[session_id] = ChatMessageHistory()
-        return self._store[session_id]
-
     def analyze_prompt(self, session_id, prompt) -> Message:
         """
         Analyze prompt, define whether the prompt is a direct
@@ -155,26 +119,33 @@ class LangchainAPI(LangchainAPIInterface):
         :param prompt: chat message to be analyzed.
         """
         self._logger.log_info(f"[{session_id}]: User prompt: {prompt}")
-        conversation = None
-        if session_id in self._store:
-            conversation = self._store[session_id]
-            # Only let 10 message in the chat history for context window efficiency
-            while len(self._store[session_id].messages) > 10:
-                self._store[session_id].messages.pop(0)
-            self._logger.log_info(
-                f"---------------------------conversation of user {session_id}---------------------------\n{conversation}\n---------------------------end of conversation user {session_id}---------------------------"
-            )
+
+        # Only let 10 message in the chat history for context window efficiency
+        conversation = self._get_session_message_history(session_id)
+        while len(conversation.messages) > 10:
+            conversation.messages.pop(0)
+        self._logger.log_info(
+            f"---------------------------conversation of user {session_id}---------------------------\n{conversation}\n---------------------------end of conversation user {session_id}---------------------------"
+        )
 
         templates = self._templates["analyzer_template"]
         result: str = self._analyzer_prompt_parser.execute(
-            {"prompts": prompt, "conversations": conversation if conversation else ""},
+            {
+                "prompts": prompt,
+                "conversations": conversation if len(conversation.messages) > 0 else "",
+            },
             templates,
         )
-        result = result.strip()
+        result = result.strip("`").strip("json").strip("`").strip()
+        data_dict = json.loads(result)
 
-        # using string to avoid truthy context of boolean
-        self._logger.log_info(f"[{session_id}]: Is asking for boarding house: {result}")
-        if result == "True":
+        self._logger.log_info(
+            f"[{session_id}]: Is asking for boarding house: {data_dict}"
+        )
+        if (
+            data_dict.get("human_implied_task")
+            == "RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS"
+        ):
             templates = self._templates["filter_data_structurer_analyzer_template"]
             result: str = self._filter_data_structurer_prompt_parser.execute(
                 {
@@ -216,8 +187,8 @@ class LangchainAPI(LangchainAPIInterface):
                             )
                             lat_long = geocode_data[0]["geometry"]["location"]
                             filter_array["building_geolocation"] = (
-                                lambda distance: append_building_geolocation_filters(
-                                    lat_long, distance, []
+                                lambda distance: append_building_geolocation_filter(
+                                    lat_long, distance
                                 )
                             )
                 except Exception as e:
@@ -238,9 +209,6 @@ class LangchainAPI(LangchainAPIInterface):
                     building_proximity=buildings_filter.building_proximity,
                 )
                 location_query = self._query_parser.execute(building_instance.to_dict())
-                self._logger.log_debug(
-                    f"[{session_id}]: Location Query:{location_query}"
-                )
 
             if any(
                 [
@@ -256,9 +224,6 @@ class LangchainAPI(LangchainAPIInterface):
                 )
                 facility_query = self._query_parser.execute(
                     facility_query_instance.to_dict()
-                )
-                self._logger.log_debug(
-                    f"[{session_id}]: Facility Query:{facility_query}"
                 )
 
             output = self.vector_db_retrieval(
@@ -279,69 +244,30 @@ class LangchainAPI(LangchainAPIInterface):
         :param facility_query: query by facility to retrieve vector data from weaviate.
         :param location_query: query by location to retrieve vector data from weaviate.
         """
-        response = None
-        limit = 10
-        offset = 0
-        start_time = time.time()
-        building_list: list[Building] = []
-        seen_uuids = set()
-        retries = 0
-        max_retries = 3
-
-        # Geolocation radius stages
-        # Add more stages to use multiple stages
-        geolocation_stages = [3000]
-        geolocation_stage_index = 0
-
-        # Setup fixed filters
-        chunk_collection_filters = None
-        if len(filter_array["building_facility"]) > 0:
-            chunk_collection_filters = Filter.any_of(filter_array["building_facility"])
-        if len(filter_array["building_note"]) > 0:
-            chunk_collection_filters = (
-                chunk_collection_filters & Filter.any_of(filter_array["building_note"])
-                if chunk_collection_filters
-                else Filter.any_of(filter_array["building_note"])
-            )
+        limit, offset, retries, max_retries = 10, 0, 0, 3
+        start_time, building_list, seen_uuids = time.time(), [], set()
+        geolocation_stages, geolocation_stage_index = [3000], 0
 
         with WeaviateAPI(self._logger) as weaviate_client:
             while retries < max_retries:
                 try:
-                    connected = weaviate_client.connect_to_server(
-                        int(USE_MODULE), MODULE_USED
-                    )
-                    building_collection = connected.collections.get(
-                        BUILDINGS_COLLECTION_NAME
-                    )
-                    building_chunk_collection = connected.collections.get(
-                        BUILDING_CHUNKS_COLLECTION_NAME
-                    )
-                    is_geofilter_callable = callable(
-                        filter_array.get("building_geolocation")
+                    connected, building_collection, building_chunk_collection = (
+                        self._connect_to_collections(weaviate_client)
                     )
 
                     while len(building_list) < limit:
-                        filters = None
-                        with_geofilter = (
-                            is_geofilter_callable
-                            and geolocation_stage_index < len(geolocation_stages)
+                        filters, with_geofilter = None, self._geofilter_check(
+                            geolocation_stages, geolocation_stage_index, filter_array
                         )
 
                         if with_geofilter:
-                            housing_price_filter = filter_array["housing_price"](False)
-                            if len(housing_price_filter) > 0:
-                                filters = Filter.all_of(housing_price_filter)
-
-                            distance = geolocation_stages[geolocation_stage_index]
-                            geofilter = filter_array["building_geolocation"](distance)
-                            filters = (
-                                filters & Filter.any_of(geofilter)
-                                if filters
-                                else Filter.any_of(geofilter)
+                            filters = self._apply_geofilter_conditions(
+                                filter_array,
+                                distance=geolocation_stages[geolocation_stage_index],
                             )
 
-                            self._logger.log_info(
-                                f"[{session_id}]: Execute with facility query: {facility_query}\nLocation at: {distance}\nFilters: {filters}"
+                            self._logger.log_debug(
+                                f'[{session_id}]: Executing facility query "{facility_query}"'
                             )
                             response = query_building(
                                 building_collection,
@@ -351,15 +277,10 @@ class LangchainAPI(LangchainAPIInterface):
                                 offset,
                             )
                         else:
-                            housing_price_filter = filter_array["housing_price"](True)
-                            if len(housing_price_filter) > 0:
-                                filters = Filter.all_of(housing_price_filter)
-                            if filters and chunk_collection_filters:
-                                filters = filters & chunk_collection_filters
-                            elif not filters:
-                                filters = chunk_collection_filters
-                            self._logger.log_info(
-                                f"[{session_id}]: Execute with location query: {location_query}\nFilters: {filters}"
+                            filters = self._apply_non_geofilter_conditions(filter_array)
+
+                            self._logger.log_debug(
+                                f'[{session_id}]: Executing location query "{facility_query}"'
                             )
                             response = query_building_with_building_as_reference(
                                 building_chunk_collection,
@@ -370,102 +291,50 @@ class LangchainAPI(LangchainAPIInterface):
                             )
 
                         if not response.objects:
-                            if with_geofilter:
-                                self._logger.log_debug(
-                                    f"[{session_id}]: Failed to get location at: {distance} distance, with query {facility_query}"
-                                )
+                            if self._handle_empty_geosearch(
+                                session_id,
+                                with_geofilter,
+                                geolocation_stages,
+                                geolocation_stage_index,
+                                facility_query,
+                                location_query,
+                            ):
                                 geolocation_stage_index += 1
                                 offset = 0
                             else:
-                                self._logger.log_debug(
-                                    f"[{session_id}]: Failed to get location with query: {location_query}"
-                                )
                                 break
-
-                        self._logger.log_debug(
-                            f"[{session_id}]: Queried object found count: {len(response.objects)}"
-                        )
-                        for obj in response.objects:
-                            if with_geofilter:
-                                seen_uuids.add(obj.uuid)
-                                building_instance = Building(
-                                    building_title=obj.properties["buildingTitle"],
-                                    building_address=obj.properties["buildingAddress"],
-                                    building_description=obj.properties[
-                                        "buildingDescription"
-                                    ],
-                                    housing_price=obj.properties["housingPrice"],
-                                    owner_name=obj.properties["ownerName"],
-                                    owner_email=obj.properties["ownerEmail"],
-                                    owner_whatsapp=obj.properties["ownerWhatsapp"],
-                                    owner_phone_number=obj.properties[
-                                        "ownerPhoneNumber"
-                                    ],
-                                    image_url=obj.properties["imageURL"],
-                                )
-                                building_list.append(building_instance)
-                            else:
-                                for ref_obj in obj.references["hasBuilding"].objects:
-                                    if ref_obj.uuid in seen_uuids:
-                                        continue
-                                    seen_uuids.add(ref_obj.uuid)
-                                    building_instance = Building(
-                                        building_title=ref_obj.properties[
-                                            "buildingTitle"
-                                        ],
-                                        building_address=ref_obj.properties[
-                                            "buildingAddress"
-                                        ],
-                                        building_description=ref_obj.properties[
-                                            "buildingDescription"
-                                        ],
-                                        housing_price=ref_obj.properties[
-                                            "housingPrice"
-                                        ],
-                                        owner_name=ref_obj.properties["ownerName"],
-                                        owner_email=ref_obj.properties["ownerEmail"],
-                                        owner_whatsapp=ref_obj.properties[
-                                            "ownerWhatsapp"
-                                        ],
-                                        owner_phone_number=ref_obj.properties[
-                                            "ownerPhoneNumber"
-                                        ],
-                                        image_url=ref_obj.properties["imageURL"],
-                                    )
-                                    building_list.append(building_instance)
-                                    if len(building_list) >= limit:
-                                        break
-
+                        else:
+                            self._process_response(
+                                session_id,
+                                with_geofilter,
+                                response,
+                                building_list,
+                                seen_uuids,
+                                limit,
+                            )
                             if len(building_list) >= limit:
                                 break
-
                         offset += limit
 
-                    end_time = time.time()
-                    elapsed_time = end_time - start_time
-                    self._logger.log_info(
-                        f"[{session_id}]: Time taken to execute query and process results: {elapsed_time} seconds.\nTotal object count: {str(len(building_list))}"
+                    self._log_query_execution_time(
+                        session_id, start_time, building_list
                     )
                     break
+
                 except Exception as e:
-                    if retries == max_retries:
+                    if retries >= max_retries:
                         self._logger.log_exception(
-                            f"[{session_id}]: Failed do weaviate query, ERROR: {e}\nWeaviate operation failed after {max_retries} retries."
+                            f"[{session_id}]: Weaviate query failed after {max_retries} retries. {e}"
                         )
                     else:
                         self._logger.log_warning(
-                            f"[{session_id}]: Failed do weaviate query, ERROR: {e}\nAttempt {retries} failed: {e}."
+                            f"[{session_id}]: Query attempt {retries} failed. Error: {e}"
                         )
                         retries += 1
                 finally:
                     weaviate_client.close_connection_to_server(connected)
 
-        if len(building_list) == 0:
-            output = self.feedback_prompt(prompt, session_id, True)
-        else:
-            output = self.feedback_prompt(prompt, session_id, found=building_list)
-
-        return output
+        return self.feedback_prompt(prompt, session_id, found=building_list or True)
 
     def feedback_prompt(self, prompt, session_id, reask=False, found=None) -> Message:
         """
@@ -483,25 +352,30 @@ class LangchainAPI(LangchainAPIInterface):
             if reask
             else self._templates["default_reply_template"]
         )
-        if found:
-            template = self._templates["building_found_template"]
 
         input_variables = [
             "prompts",
             "service_pic_number",
             "advertising_pic_number",
+            "seen_buildings",
             "result",
         ]
         runnable_input = {
             "prompts": prompt,
             "service_pic_number": SERVICE_PIC_NUMBER,
             "advertising_pic_number": ADVERTISING_PIC_NUMBER,
+            "seen_buildings": "\n".join(
+                self._store[session_id]["session_buildings_seen"]
+            ),
         }
 
         if found:
+            template = self._templates["building_found_template"]
             runnable_input["result"] = found
 
-        output = self.respond(template, input_variables, runnable_input, session_id)
+        output = self.respond(
+            template, input_variables, runnable_input, session_id
+        ).replace("**", "")
         return Message(input=prompt, output=output, output_content=found)
 
     def respond(self, template, input_variables, runnable_input, session_id) -> str:
@@ -513,13 +387,19 @@ class LangchainAPI(LangchainAPIInterface):
         :param runnable_input: list of runnable template for langchain pipe.
         :param session_id: session id of the chat.
         """
-        system_message = SystemMessagePromptTemplate(
-            prompt=PromptTemplate(template=template, input_variables=input_variables)
-        )
-
         template = ChatPromptTemplate.from_messages(
             [
-                system_message,
+                SystemMessagePromptTemplate(
+                    prompt=PromptTemplate(
+                        template=self._templates["seen_buildings_template"],
+                        input_variables=input_variables,
+                    )
+                ),
+                SystemMessagePromptTemplate(
+                    prompt=PromptTemplate(
+                        template=template, input_variables=input_variables
+                    )
+                ),
                 MessagesPlaceholder(variable_name="history"),
                 ("human", "{prompts}"),
             ]
@@ -528,7 +408,7 @@ class LangchainAPI(LangchainAPIInterface):
         chain = template | self._client | StrOutputParser()
         with_message_history = RunnableWithMessageHistory(
             chain,
-            self.get_session_history,
+            self._get_session_message_history,
             input_messages_key="prompts",
             history_messages_key="history",
         )
@@ -538,3 +418,193 @@ class LangchainAPI(LangchainAPIInterface):
         )
 
         return result
+
+    # Helper functions
+    def _connect_llm(self) -> None:
+        """
+        Connect selected LLM and initialize prompt parsers
+        """
+        try:
+            if not self._client:
+                if self._llm_type == OPENAI:
+                    self._client = create_open_ai_llm(OPENAI_MODEL, OPENAI_API_KEY)
+                    self._analyzer_client = create_open_ai_llm(
+                        OPENAI_ANALYZER_MODEL, OPENAI_API_KEY
+                    )
+                    self._filter_data_structurer_client = create_open_ai_llm(
+                        OPENAI_FILTER_DATA_STRUCTURER_MODEL, OPENAI_API_KEY
+                    )
+                elif self._llm_type == GEMINI:
+                    self._client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
+                    self._analyzer_client = create_gemini_llm(
+                        GEMINI_MODEL, GEMINI_API_KEY
+                    )
+                    self._filter_data_structurer_client = create_gemini_llm(
+                        GEMINI_MODEL, GEMINI_API_KEY
+                    )
+                else:
+                    raise ValueError("No LLM Found")
+
+                self._prompt_parser = PromptParser(self._client)
+                self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
+                self._filter_data_structurer_prompt_parser = PromptParser(
+                    self._filter_data_structurer_client
+                )
+        except Exception as e:
+            self._logger.log_exception(f"Error connecting LLM: {e}")
+
+    def _create_session(self, session_id: str) -> dict:
+        """Create session along with its properties by session id
+        :param session_id: chat session id
+        :return: dict
+        """
+        return {
+            "session_id": session_id,
+            "session_messages_history": ChatMessageHistory(),
+            "session_buildings_seen": set(),
+        }
+
+    def _get_session_message_history(self, session_id: str) -> BaseChatMessageHistory:
+        """Get message history by session id
+        :param session_id: chat session id
+        :return: BaseChatMessageHistory
+        """
+        if session_id not in self._store:
+            self._store[session_id] = self._create_session(session_id)
+        return self._store[session_id]["session_messages_history"]
+
+    def _connect_to_collections(self, weaviate_client: WeaviateAPI):
+        """Connect to the necessary collections for querying."""
+        connected = weaviate_client.connect_to_server(int(USE_MODULE), MODULE_USED)
+        building_collection = connected.collections.get(BUILDINGS_COLLECTION_NAME)
+        building_chunk_collection = connected.collections.get(
+            BUILDING_CHUNKS_COLLECTION_NAME
+        )
+        return connected, building_collection, building_chunk_collection
+
+    def _geofilter_check(
+        self,
+        geolocation_stages: list[int],
+        geolocation_stage_index: int,
+        filter_array: dict[str, list],
+    ):
+        """Check if geolocation filter can be applied."""
+        return callable(
+            filter_array.get("building_geolocation")
+        ) and geolocation_stage_index < len(geolocation_stages)
+
+    def _apply_geofilter_conditions(
+        self, filter_array: dict[str, list], distance: float
+    ):
+        """Apply geolocation and housing price filters."""
+        housing_price_filter = filter_array["housing_price"](False)
+        filters = Filter.all_of(housing_price_filter) if housing_price_filter else None
+        geofilter = filter_array["building_geolocation"](distance)
+        return filters & geofilter if filters else geofilter
+
+    def _apply_non_geofilter_conditions(self, filter_array: dict[str, list]):
+        """Apply non-geolocation filters."""
+        facility_filters = (
+            Filter.any_of(filter_array["building_facility"])
+            if filter_array["building_facility"]
+            else None
+        )
+        note_filter = (
+            Filter.any_of(filter_array["building_note"])
+            if filter_array["building_note"]
+            else None
+        )
+
+        housing_price_filter = filter_array["housing_price"](True)
+        price_filters = (
+            Filter.all_of(housing_price_filter) if housing_price_filter else None
+        )
+        filters = facility_filters & note_filter if facility_filters else note_filter
+        filters = filters & price_filters if filters else price_filters
+        return filters
+
+    def _handle_empty_geosearch(
+        self,
+        session_id: str,
+        with_geofilter: bool,
+        geolocation_stages: list[int],
+        geolocation_stage_index: int,
+        facility_query: str,
+        location_query: str,
+    ):
+        """Handle cases with no results."""
+        if with_geofilter:
+            self._logger.log_debug(
+                f"[{session_id}]: No results at {geolocation_stages[geolocation_stage_index]} meters for query: {facility_query}"
+            )
+            return True
+        self._logger.log_debug(
+            f"[{session_id}]: No results for query: {location_query}"
+        )
+        return False
+
+    def _process_response(
+        self,
+        session_id: str,
+        with_geofilter: bool,
+        response: QueryReturn[WeaviateProperties, CrossReferences],
+        building_list: list,
+        seen_uuids: set,
+        limit: int,
+    ):
+        """Process each object in the response and add to building_list."""
+        for obj in response.objects:
+            if with_geofilter:
+                self._add_building_instance(session_id, obj, seen_uuids, building_list)
+            else:
+                for ref_obj in obj.references["hasBuilding"].objects:
+                    if ref_obj.uuid not in seen_uuids:
+                        self._add_building_instance(
+                            session_id,
+                            ref_obj,
+                            seen_uuids,
+                            building_list,
+                        )
+            if len(building_list) >= limit:
+                break
+
+    def _add_building_instance(
+        self,
+        session_id: str,
+        obj: Object[WeaviateProperties, CrossReferences],
+        seen_uuids: set,
+        building_list: list,
+    ):
+        """Add a building instance to the list after checking for duplicates."""
+        seen_uuids.add(obj.uuid)
+        building_instance = Building(
+            building_title=obj.properties["buildingTitle"],
+            building_address=obj.properties["buildingAddress"],
+            building_description=obj.properties["buildingDescription"],
+            housing_price=obj.properties["housingPrice"],
+            owner_name=obj.properties["ownerName"],
+            owner_email=obj.properties["ownerEmail"],
+            owner_whatsapp=obj.properties["ownerWhatsapp"],
+            owner_phone_number=obj.properties["ownerPhoneNumber"],
+            image_url=obj.properties["imageURL"],
+        )
+        formatted_info = building_object_template.format(
+            title=building_instance.building_title,
+            address=building_instance.building_address,
+            facilities=building_instance.building_description,
+            price=building_instance.housing_price,
+            name=building_instance.owner_name,
+            whatsapp=building_instance.owner_whatsapp,
+            phonenumber=building_instance.owner_phone_number,
+        )
+        self._store[session_id]["session_buildings_seen"].add(formatted_info)
+        building_list.append(building_instance)
+
+    def _log_query_execution_time(
+        self, session_id: str, start_time: float, building_list: list
+    ):
+        """Log the time taken for the query and total objects found."""
+        elapsed_time = time.time() - start_time
+        self._logger.log_info(
+            f"[{session_id}]: Query completed in {elapsed_time:.2f} seconds. Total buildings found: {len(building_list)}"
+        )

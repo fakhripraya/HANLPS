@@ -13,19 +13,6 @@ class LangchainAPIInterface(ABC):
     """LangchainAPIInterface class provides an interface for langchain API."""
 
     @abstractmethod
-    def connect_llm(self, llm_type: str) -> None:
-        """
-        Connect selected LLM and initialize prompt parsers
-        """
-
-    @abstractmethod
-    def get_session_history(self, session_id: str) -> BaseChatMessageHistory:
-        """Get message history by session id
-        :param session_id: chat session id
-        :return: BaseChatMessageHistory
-        """
-
-    @abstractmethod
     def analyze_prompt(self, session_id: str, prompt: str) -> Message:
         """
         Analyze prompt, define whether the prompt is a direct

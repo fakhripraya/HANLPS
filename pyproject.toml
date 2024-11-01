@@ -1,0 +1,17 @@
+[tool.towncrier]
+
+directory = "newsfragments"
+filename = "CHANGELOG.rst"
+template = "towncrier:default"
+
+[tool.towncrier.fragment.a]
+name = "General News"
+
+[tool.towncrier.fragment.b]
+name = "Incoming Updates"
+
+[tool.towncrier.fragment.e]
+name = "Bugfixes"
+
+[tool.towncrier.fragment.f]
+name = "Upcoming Features"

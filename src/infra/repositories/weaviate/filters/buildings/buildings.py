@@ -100,17 +100,11 @@ def append_building_note_filters(
     return filter_array
 
 
-def append_building_geolocation_filters(
-    lat_long: str, distance: float, filter_array: list
-) -> list:
+def append_building_geolocation_filter(lat_long: str, distance: float) -> list:
     if lat_long is not None:
-        filter_array.append(
-            Filter.by_property("buildingGeolocation").within_geo_range(
-                coordinate=GeoCoordinate(
-                    latitude=float(lat_long["lat"]), longitude=float(lat_long["lng"])
-                ),
-                distance=distance,
-            )
+        return Filter.by_property("buildingGeolocation").within_geo_range(
+            coordinate=GeoCoordinate(
+                latitude=float(lat_long["lat"]), longitude=float(lat_long["lng"])
+            ),
+            distance=distance,
         )
-
-    return filter_array
