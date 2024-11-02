@@ -280,7 +280,7 @@ class LangchainAPI(LangchainAPIInterface):
                             filters = self._apply_non_geofilter_conditions(filter_array)
 
                             self._logger.log_debug(
-                                f'[{session_id}]: Executing location query "{facility_query}"'
+                                f'[{session_id}]: Executing location query "{location_query}"'
                             )
                             response = query_building_with_building_as_reference(
                                 building_chunk_collection,
@@ -553,14 +553,17 @@ class LangchainAPI(LangchainAPIInterface):
         limit: int,
     ):
         """Process each object in the response and add to building_list."""
-        for obj in response.objects:
+        for index, obj in enumerate(response.objects):
             if with_geofilter:
-                self._add_building_instance(session_id, obj, seen_uuids, building_list)
+                self._add_building_instance(
+                    session_id, index, obj, seen_uuids, building_list
+                )
             else:
                 for ref_obj in obj.references["hasBuilding"].objects:
                     if ref_obj.uuid not in seen_uuids:
                         self._add_building_instance(
                             session_id,
+                            index,
                             ref_obj,
                             seen_uuids,
                             building_list,
@@ -571,6 +574,7 @@ class LangchainAPI(LangchainAPIInterface):
     def _add_building_instance(
         self,
         session_id: str,
+        obj_index: int,
         obj: Object[WeaviateProperties, CrossReferences],
         seen_uuids: set,
         building_list: list,
@@ -589,6 +593,7 @@ class LangchainAPI(LangchainAPIInterface):
             image_url=obj.properties["imageURL"],
         )
         formatted_info = building_object_template.format(
+            number=obj_index,
             title=building_instance.building_title,
             address=building_instance.building_address,
             facilities=building_instance.building_description,
