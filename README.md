@@ -61,7 +61,7 @@ python -m grpc_tools.protoc -I=proto --python_out=proto --grpc_python_out=proto 
 There are several ways to use HANLPS
 The easiest way to use the service is to install GUI API Platform such as Postman, Insomnia, and you name it
 
-If you want to use CLI, you could use app like grpcurl, evans, ghz, BloomRPC, and you name it
+If you want to use CLI, you could use app like grpcurl, evans, ghz, BloomRPC, and you name it.
 Personally i would go with grpcurl as it is the app that i always use
 
 Basic grpcurl command
