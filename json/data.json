@@ -28752,36 +28752,43 @@
       "isReady": false
     },
     {
-      "index": 879,
-      "building_title": "Hunian ",
-      "building_address": "",
+      "building_title": "Kost Novela",
+      "building_address": "Jl.Komplek DDN No. 50 Curug Kalimalang",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "Lokasi Strategis kendaraan Umum 24 Jam semua jurusan"
+      ],
+      "building_facility_string": "",
       "building_facility": [
         "Kamar AC/Non AC/Air Panas\nKamar Mandi Dalam\nTV",
         "Tempat Tidur",
         "Lemari lengkap\nCCTV Security 24 Jam\nWi-Fi (Free)\nDapur setiap Lantai\nL o b b y\nB a l k o n"
       ],
-      "building_proximity": [
-        "Lokasi Strategis kendaraan Umum 24 Jam semua jurusan"
+      "building_description": "Kost Jakarta Timur Wisma Novela\nLokasi Strategis kendaraan Umum 24 Jam semua jurusan\n\nFasilitas:\nKamar AC/Non AC/Air Panas\nKamar Mandi Dalam\nTV Tempat Tidur Lemari lengkap\nCCTV Security 24 Jam\nWi-Fi Free\nDapur setiap Lantai\nLobby\nBalkon\n\nFor more info, contact:\n081289222226 WA\n\nHarga Mulai \nNon AC 900 ribu Nett / Bulan \nAC 3 Juta Nett Bulan \n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 900000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081289222226",
+      "owner_whatsapp": "081289222226",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122165449_3326057934179434_7780756499631248522_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi40Njd4NDY3LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D110%26_nc_ohc%3DZ6DCdNnZy9UQ7kNvgG7FY2w%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjIzNjQzMDkyODY5ODk3NA%253D%253D.2-ccb7-5%26oh%3D00_AYC3zqPK3fNzWyQlafqQYZ02PGYcmv6gsHeYmIEvR15yJw%26oe%3D6696745A%26_nc_sid%3Df93d1f"
       ],
-      "building_description": "Kost Jakarta Timur Wisma Novela\nLokasi Strategis kendaraan Umum 24 Jam semua jurusan\nKamar AC/Non AC/Air Panas\nKamar Mandi Dalam\nTV Tempat Tidur Lemari lengkap\nCCTV Security 24 Jam\nWi-Fi Free\nDapur setiap Lantai\nL o b b y\nB a l k o n\n\nFor more info, contact:\n081289222226 WA\n\nHarga Mulai 900 ribu Nett Bulan Non AC 3 Juta Nett Bulan AC",
+      "isEdited": false,
+      "index": 879,
       "building_geolocation": {
         "latitude": 0,
         "longitude": 0
       },
-      "housing_price": 900000,
-      "owner_name": "",
-      "owner_whatsapp": "081289222226",
-      "owner_phone_number": "081289222226",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122165449_3326057934179434_7780756499631248522_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi40Njd4NDY3LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D110%26_nc_ohc%3DZ6DCdNnZy9UQ7kNvgG7FY2w%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjIzNjQzMDkyODY5ODk3NA%253D%253D.2-ccb7-5%26oh%3D00_AYC3zqPK3fNzWyQlafqQYZ02PGYcmv6gsHeYmIEvR15yJw%26oe%3D6696745A%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 880,
       "building_title": "Hunian Jln Kesadaran Gang Amanda 1 no 40",
-      "building_address": "Jln Kesadaran Gang Amanda 1 no 40",
+      "building_address": "Jl. Kesadaran No.40, RT.2/RW.1, Cipinang Muara, Kecamatan Jatinegara, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13420, Indonesia",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "Jln Kalimalang before Cipinang Mall"
+      ],
+      "building_facility_string": "",
       "building_facility": [
         "AC",
         "kmr mandi dalam",
@@ -28790,201 +28797,87 @@
         "dapur luas (sharing)",
         "kamar tamu luas"
       ],
-      "building_proximity": [
-        "Jln Kalimalang before Cipinang Mall"
-      ],
-      "building_description": "Ksmar kos cocok utk pasutri di sebuah rumah besar \n(serasa tinggal di rumah sendiri)\n\nluas 4.4 × 3.2m\nAC\nkmr mandi dalam\nair mandi jetpump gratis\nlistrik token, dapur luas (sharing)\nkamar tamu luas\n\nJln Kesadaran Gang Amanda 1 no 40 (masuk dari jln Kalimalang sebelum Cipinang Mall), peminat mhn hubungi nomor telpon di profil iklan",
-      "building_geolocation": {
-        "latitude": -6.2374667,
-        "longitude": 106.8853618
-      },
+      "building_description": "Kamar kos cocok utk pasutri di sebuah rumah besar \n(serasa tinggal di rumah sendiri)\n\nluas 4.4 × 3.2m\nAC\nkmr mandi dalam\nair mandi jetpump gratis\nlistrik token, dapur luas (sharing)\nkamar tamu luas\n\nJln Kesadaran Gang Amanda 1 no 40 (masuk dari jln Kalimalang sebelum Cipinang Mall)\n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
       "housing_price": 850000,
-      "owner_name": "",
-      "owner_whatsapp": "085921193462",
-      "owner_phone_number": "085921193462",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "085921193462",
+      "owner_whatsapp": "085921193462",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122105781_432298361502194_6156597208361888640_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43MzV4NzM1LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D102%26_nc_ohc%3DbkjL0SWE_DwQ7kNvgFl05vC%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNTU2MjY2MDI5OTczOTM4NQ%253D%253D.2-ccb7-5%26oh%3D00_AYCveX0_Ucqn9jEhZ1sy3CuiiunJuU91xglbbBtIDSsyAg%26oe%3D669699E0%26_nc_sid%3Df93d1f"
       ],
+      "isEdited": false,
+      "index": 880,
+      "building_geolocation": {
+        "latitude": "-6.237467",
+        "longitude": "106.885362"
+      },
       "isReady": false
     },
     {
-      "index": 881,
       "building_title": "Hunian Jl Haji Muala no 39B Kemanggisan Jakarta Barat",
-      "building_address": "Jl Haji Muala no 39B Kemanggisan Jakarta Barat",
-      "building_facility": [
-        "kosan baru renovasi\nlokasi strategis belakang univ Binus Syahdan\nbisa untuk pria dan wanita\nkamar luas dan adem\nsecurity kost full CCTV\nbisa parkir motor luar dan dalam\nnon ac kamar mandi luar\nfasilitas kasur lemari besar dan kipas hexos\ntempat cuci baju dan jemur luas\nBisa untuk berdua harga sama\nkosan bebas akses 24 jam"
-      ],
+      "building_address": "Jl. Haji Muala No.39, RT.2/RW.12, Palmerah, Kec. Palmerah, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11480, Indonesia",
+      "building_proximity_string": "",
       "building_proximity": [
         "belakang Kecamatan Palmerah belakang univ Binus Syahdan"
       ],
-      "building_description": "Disewakan kos kosan\nJl Haji Muala no 39B Kemanggisan Jakarta Barat belakang Kecamatan Palmerah\nLuas kamar 8 9M2\nkosan baru renovasi\nlokasi strategis belakang univ Binus Syahdan\nbisa untuk pria dan wanita\nkamar luas dan adem\nsecurity kost full CCTV\nbisa parkir motor luar dan dalam\nnon ac kamar mandi luar\nfasilitas kasur lemari besar dan kipas hexos\ntempat cuci baju dan jemur luas\nBisa untuk berdua harga sama\nkosan bebas akses 24 jam\nHubungi 0811133430\nHarga sewa Rp 750 000 bulan",
-      "building_geolocation": {
-        "latitude": -6.198865899999999,
-        "longitude": 106.786567
-      },
+      "building_facility_string": "",
+      "building_facility": [
+        "kosan baru renovasi\nlokasi strategis belakang univ Binus Syahdan\nbisa untuk pria dan wanita\nkamar luas dan adem\nsecurity kost full CCTV\nbisa parkir motor luar dan dalam\nnon ac kamar mandi luar\nfasilitas kasur lemari besar dan kipas hexos\ntempat cuci baju dan jemur luas\nBisa untuk berdua harga sama\nkosan bebas akses 24 jam"
+      ],
+      "building_description": "Disewakan kos kosan\nJl Haji Muala no 39B Kemanggisan Jakarta Barat belakang Kecamatan Palmerah\n\nFasilitas:\nLuas kamar 8 9M2\nkosan baru renovasi\nlokasi strategis belakang univ Binus Syahdan\nbisa untuk pria dan wanita\nkamar luas dan adem\nsecurity kost full CCTV\nbisa parkir motor luar dan dalam\nnon ac kamar mandi luar\nfasilitas kasur lemari besar dan kipas hexos\ntempat cuci baju dan jemur luas\nBisa untuk berdua harga sama\nkosan bebas akses 24 jam\n\nHubungi 0811133430\nHarga sewa Rp 750 000 bulan\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
       "housing_price": 750000,
-      "owner_name": "",
-      "owner_whatsapp": "0811133430",
-      "owner_phone_number": "0811133430",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "0811133430",
+      "owner_whatsapp": "0811133430",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122078649_374847647046761_1318607722282595221_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D105%26_nc_ohc%3DFQBJPEmcmb4Q7kNvgGLvEne%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDgzODc2MDIwNTA3NjAzNg%253D%253D.2-ccb7-5%26oh%3D00_AYBgdmO7qOIyzNOzNu5Cj7Q6s9-FGzgVbR1OXhLWNstMKw%26oe%3D66968FB4%26_nc_sid%3Df93d1f"
       ],
-      "isReady": false
-    },
-    {
-      "index": 882,
-      "building_title": "",
-      "building_address": "",
-      "building_facility": [
-        "Springbed single\nLemari pakaian\nKamar mandi didalam\nAir bersih 24 jam\nListrik"
-      ],
-      "building_proximity": [],
-      "building_description": "Kos kosan\n\nCocok untuk karyawan / karyawati / mahasiswa / pasutri sah\n\nTempat nyaman untuk istirahat\n\nSpringbed single\nLemari pakaian\nKamar mandi didalam\nAir bersih 24 jam\nListrik\n\n-----------------------------------------------------------------------------\nHubungi : 087889301597\n-----------------------------------------------------------------------------\n\nHarga sewa : Rp 900.000\n\n-----------------------------------------------------------------------------",
+      "isEdited": false,
+      "index": 881,
       "building_geolocation": {
-        "latitude": 0,
-        "longitude": 0
+        "latitude": "-6.198865899999999",
+        "longitude": 106.786567
       },
-      "housing_price": 900000,
-      "owner_name": "",
-      "owner_whatsapp": "087889301597",
-      "owner_phone_number": "087889301597",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122017192_3950834734930917_2210623825438879044_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3DygHk2rXOfJ4Q7kNvgFw4yRL%26gid%3De5912f18dc6d4d1ab95b4df844e8d4b1%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDgxMDQ1OTgwMTQyNjUwMg%253D%253D.2-ccb7-5%26oh%3D00_AYCj1egnELO0ZD4OfxcwqGw2Oea1cUnyBSLZ7h0B6PCenw%26oe%3D66969967%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 883,
-      "building_title": "",
-      "building_address": "",
-      "building_facility": ["Listrik", "Air Pam"],
-      "building_proximity": [
-        "International Hospital",
-        "International School",
-        "International Hotel",
-        "University",
-        "Thematic Mall",
-        "Entertainment Life Style Centre",
-        "Food Festival Walk",
-        "Waterpark",
-        "Rukan Crown (Green Lake City)",
-        "Sekolah IPEKA Puri",
-        "Notre Dame",
-        "Global Sevilla",
-        "Springfield",
-        "Tunas Muda",
-        "Tiara Kasih",
-        "Kalam Kudus",
-        "Narada School",
-        "Rumah Sakit Puri Indah",
-        "Siloam Kebon Jeruk",
-        "PIK",
-        "Hermina Daan Mogot",
-        "Tol JORR",
-        "Bandara Soetta",
-        "Kebon Jeruk",
-        "PIK",
-        "Tangerang Serpong",
-        "Stasiun Commuter Line KRL (Rawa Buaya Bojong Indah)",
-        "Railink Kereta Bandara Soetta",
-        "Pusat Kuliner Puri Indah",
-        "Taman Semanan Indah",
-        "Pantai Indah Kapuk",
-        "Green Lake City",
-        "Taman Palem",
-        "Pasar Laris",
-        "Apartemen Green Palm Residence @Puri"
-      ],
-      "building_description": "Disewakan Perbulan Sudah Inlcude Listrik dan Air Pam.\n\nLokasi strategis\n\nLingkungan bersih dan aman.\n\nFasilitas\n\n- Terdapat area International Hospital, International School\n- Terdapat area International Hotel, University, Thematic Mall\n- Terdapat area Entertainment Life Style Centre\n- Terdapat area Food Festival Walk, Waterpark\n- Terdapat area Rukan Crown yang merupakan area dari Green Lake City.\n- Dekat Sekolah IPEKA Puri, Notre Dame, Global Sevilla, Springfield, Tunas Muda, Tiara Kasih, Kalam Kudus,  Narada School, etc\n- Dekat Rumah Sakit Puri Indah, Siloam Kebon Jeruk, PIK, Hermina Daan Mogot, etc\n- Akses Tol JORR, Bandara Soetta, Kebon Jeruk, PIK, Tangerang Serpong\n- Dekat Stasiun Commuter Line KRL (Rawa Buaya Bojong Indah)\n- Akses Railink Kereta Bandara Soetta\n- Dekat Pusat Kuliner Puri Indah, Taman Semanan Indah, Pantai Indah Kapuk, Green Lake City, Taman Palem\n- Deket Pasar Laris , Apartemen Green Palm Residence @Puri\n\nHarga Sewa : Rp 1.400.000",
-      "building_geolocation": {
-        "latitude": 0,
-        "longitude": 0
-      },
-      "housing_price": 1400000,
-      "owner_name": "",
-      "owner_whatsapp": "",
-      "owner_phone_number": "",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122158989_413551856465852_2010676632479936925_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43ODB4NzgwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D108%26_nc_ohc%3D6ndFQR80vV8Q7kNvgEnBh51%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDc3ODcxNjU1Mzc1NDI3NQ%253D%253D.2-ccb7-5%26oh%3D00_AYCGMUniAVltrY4LtKpzRJPQTHDFOXH978cA8W27B4tNtg%26oe%3D66969A6F%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 884,
-      "building_title": "Hunian ",
-      "building_address": "",
-      "building_facility": [
-        "1. KAMAR FULL AC\n2. Kmr mandi dalam dg WC Duduk + Air Panas\n3. FULL FURNISHED (Ranjang 160cm",
-        "Meja",
-        "Kursi",
-        "Lemari",
-        "Rak Ambalan)\n4. INTERNET KENCANG SEPUASNYA\n5. LAUNDRY GRATIS\n6. AIR MINUM DISPENSER\n7. PANTRY Dapur bersama\n8. PARKIR Motor LUAS\n1. Kasur Spring Bed (BARUUU)\n2. Meja Kerja/Belajar (BARUUU)\n3. Kursi Sandar dgn Busa Empuk (BARUUU)\n4. Lampu Tidur/Baca (BARUUU)\n5. Lampu Meja Belajar (BARUUU)\n6. Bantal + Guling (BARUUU)\n7. Ambalan/ Rak Gantung (BARUUU)\n8. Lemari Pakaian dg Cermin (BARUUU)\n9. Rak Sepatu",
-        "Tong Sampah kamar\n10. Token Listrik pribadi",
-        "jd bebas mau bawa elektronik apapun\n11. Kamar Mandi DALAM dg Shower Air panas"
-      ],
-      "building_proximity": [
-        "10 MENIT JALAN KAKI DARI LOKASARI Kos Campur di lokasi Super Strategis Murah dekat Glodok",
-        "Hayam Wuruk",
-        "Mangga Besar",
-        "Gajah Mada",
-        "Jayakarta",
-        "LTC GLODOK"
-      ],
-      "building_description": "KOST EKSLUSIVE DENGAN FASILITAS LENGKAP , 10 MENIT JALAN KAKI DARI LOKASARI.\n\nKos Campur di lokasi Super Strategis Murah dekat Glodok, Hayam Wuruk, Mangga Besar, Gajah Mada, Jayakarta, LTC GLODOK.\n\n8 FASILITAS UTAMA GRATIS:\n\n1. KAMAR FULL AC\n\n2. Kmr mandi dalam dg WC Duduk + Air Panas\n\n3. FULL FURNISHED (Ranjang 160cm, Meja, Kursi, Lemari, Rak Ambalan)\n\n4. INTERNET KENCANG SEPUASNYA\n\n5. LAUNDRY GRATIS\n\n6. AIR MINUM DISPENSER\n\n7. PANTRY Dapur bersama\n\n8. PARKIR Motor LUAS\n\n11 Fasilitas Kamar:\n\n1. Kasur Spring Bed (BARUUU)\n\n2. Meja Kerja/Belajar (BARUUU)\n\n3. Kursi Sandar dgn Busa Empuk (BARUUU)\n\n4. Lampu Tidur/Baca (BARUUU)\n\n5. Lampu Meja Belajar (BARUUU)\n\n6. Bantal + Guling (BARUUU)\n\n7. Ambalan/ Rak Gantung (BARUUU)\n\n8. Lemari Pakaian dg Cermin (BARUUU)\n\n9. Rak Sepatu, Tong Sampah kamar\n\n10. Token Listrik pribadi, jd bebas mau bawa elektronik apapun\n\n11. Kamar Mandi DALAM dg Shower Air panas\n\n---------------------------------------------------------------------------\nHubungi : 085717623159\n---------------------------------------------------------------------------\n\nBiaya Kost hanya Rp 1.600.000\n\n---------------------------------------------------------------------------",
-      "building_geolocation": {
-        "latitude": 0,
-        "longitude": 0
-      },
-      "housing_price": 1600000,
-      "owner_name": "",
-      "owner_whatsapp": "085717623159",
-      "owner_phone_number": "085717623159",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121965929_3441487102575002_2931225672295819315_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D102%26_nc_ohc%3DI0OesZTlT3IQ7kNvgHuddID%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDE3NzM0Mjg2NjY0MTgwNw%253D%253D.2-ccb7-5%26oh%3D00_AYAclJVD4ofT83WjYpwGgEw-Yipyvun1wSAQPZfe7hF5jQ%26oe%3D66967669%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 885,
       "building_title": "Hunian Jl Danau Agung Tengah Sunter Jakarta Utara",
       "building_address": "Jl Danau Agung Tengah Sunter Jakarta Utara",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "kawasan komplek Elite di Jl Danau Agung Tengah",
+        "Sunter Jakarta Utara"
+      ],
+      "building_facility_string": "",
       "building_facility": [
         "INCLUDE BIAYA LISTRIK\nINCLUDE AQUA GALON bersama\nFree Parking Area (1Mobil / 1 motor)\nCermin Kaca\nFree WIFI INTERNET UNLIMITED\nBantal + Guling + Kasur +Sprei\nLemari\nPeralatan Dapur (Kompor",
         "gelas",
         "sendok",
         "dsb)\nInclude biaya Security 24 jam\ninclude keamanan babinsa/TNI\nMeja lipat\nLantai Kost Vinyl\nAC Baru\nKamar Mandi Luar\nMeja Lipat (Tentative)"
       ],
-      "building_proximity": [
-        "kawasan komplek Elite di Jl Danau Agung Tengah",
-        "Sunter Jakarta Utara"
+      "building_description": "Disewakan Kamar Kos Baru dibangun thn 2020 \n\nberada di kawasan komplek Elite di Jl Danau Agung Tengah Sunter Jakarta Utara\n\nFasilitas:\n\n1 INCLUDE BIAYA LISTRIK\n2 INCLUDE AQUA GALON bersama\n3 Free Parking Area (1Mobil / 1 motor)\n4 Cermin Kaca\n5 Free WIFI INTERNET UNLIMITED\n6 Bantal + Guling + Kasur +Sprei\n7 Lemari\n8 Peralatan Dapur (Kompor, gelas, sendok, dsb)\n9 Include biaya Security 24 jam\n10 include keamanan babinsa/TNI\n11 Meja lipat\n12 Lantai Kost Vinyl\n13 AC Baru\n14 Kamar Mandi Luar\n15 Meja Lipat (Tentative)\n\nNote:\n\nSemua fasilitas di atas seperti AC, Kasur, Bantal Guling, lemari, sprei, dsbnya dalam keadaan baru (belum pernah digunakan, karena kamar kost kami baru)\n\nKost tinggal masuk bawa badan saja Kost ini berada di daerah elite sehingga keamanan dan kenyamanan adalah prioritas penghuni kost\n\nHubungi  08999733872\n\nBiaya Kost hanya Rp 1280 jt saja perbulan\nAda deposit di awal 500 ribu\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": "1280000",
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "08999733872",
+      "owner_whatsapp": "08999733872",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121972084_348910422865164_6339786064378326285_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi41NDB4NTQwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D100%26_nc_ohc%3Dd0SBTJKmJuoQ7kNvgGKxwGu%26gid%3D65222d1b3bdf4d0d91d821a254825546%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDE3Mzc2MDUzNjcxOTM5Nw%253D%253D.2-ccb7-5%26oh%3D00_AYBaGv4BReAS0xWKJp5CkQOmfuWNqquM8P_tEc5tA7fe1w%26oe%3D669672A3%26_nc_sid%3Df93d1f"
       ],
-      "building_description": "Disewakan Kamar Kos Baru dibangun thn 2020 berada di kawasan komplek Elite di Jl Danau Agung Tengah Sunter Jakarta Utara\n\nFasilitas:\n\n1 INCLUDE BIAYA LISTRIK\n2 INCLUDE AQUA GALON bersama\n3 Free Parking Area (1Mobil / 1 motor)\n4 Cermin Kaca\n5 Free WIFI INTERNET UNLIMITED\n6 Bantal + Guling + Kasur +Sprei\n7 Lemari\n8 Peralatan Dapur (Kompor, gelas, sendok, dsb)\n9 Include biaya Security 24 jam\n10 include keamanan babinsa/TNI\n11 Meja lipat\n12 Lantai Kost Vinyl\n13 AC Baru\n14 Kamar Mandi Luar\n15 Meja Lipat (Tentative)\n\nNoted:\n\nSemua fasilitas di atas seperti AC, Kasur, Bantal Guling, lemari, sprei, dsbnya dalam keadaan baru (belum pernah digunakan, karena kamar kost kami baru)\n\nKost tinggal masuk bawa badan saja Kost ini berada di daerah elite sehingga keamanan dan kenyamanan adalah prioritas penghuni kost\n\n---------------------------------------------------------------------------\nHubungi  08999733872\n---------------------------------------------------------------------------\n\nBiaya Kost hanya Rp 1280 jt saja perbulan\n\nAda deposit di awal 500 ribu\n\n---------------------------------------------------------------------------",
+      "isEdited": false,
+      "index": 885,
       "building_geolocation": {
         "latitude": -6.14687,
         "longitude": 106.85805
       },
-      "housing_price": 1280,
-      "owner_name": "",
-      "owner_whatsapp": "08999733872",
-      "owner_phone_number": "08999733872",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121972084_348910422865164_6339786064378326285_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi41NDB4NTQwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D100%26_nc_ohc%3Dd0SBTJKmJuoQ7kNvgGKxwGu%26gid%3D65222d1b3bdf4d0d91d821a254825546%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDE3Mzc2MDUzNjcxOTM5Nw%253D%253D.2-ccb7-5%26oh%3D00_AYBaGv4BReAS0xWKJp5CkQOmfuWNqquM8P_tEc5tA7fe1w%26oe%3D669672A3%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 886,
-      "building_title": "",
-      "building_address": "",
-      "building_facility": [
-        "Kasur ukuran Queen Size\nWifi\nTv\nTv cable (Siaran luar)\nKamar mandi dalam\nWater Heater\nAC\nLemari Pakaian\nAir Minum\nSikat dan Pasta gigi\nSabun\nShampoo\nParkiran 1 Mobil dan Motor"
-      ],
+      "building_title": "Kamarkeluarga Timur",
+      "building_address": "Jl. Tanjung Duren Timur No.23 7, RT.7/RW.6, Tj. Duren Sel., Kec. Grogol petamburan, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11470",
+      "building_proximity_string": "",
       "building_proximity": [
         "Dekat dengan Universitas Tarumanegara (UNTAR)",
         "Universitas Trisakti",
@@ -28996,73 +28889,92 @@
         "Bebas banjir",
         "GOR lapangan Bulu Tangkis."
       ],
-      "building_description": "Fasilitas: \n\nKasur ukuran Queen Size\nWifi\nTv\nTv cable (Siaran luar)\nKamar mandi dalam\nWater Heater\nAC\nLemari Pakaian\nAir Minum\nSikat dan Pasta gigi\nSabun\nShampoo\n\nFasilitas Umum: Parkiran 1 Mobil dan Motor\n\nFasilitas Sekitar:\n\nBebas banjir\nLokasi aman\nKFC\nHokben\nBakmi lili\nBakso Jawir\nCafe strawberry\nSop Duren 88\nSpecial Sambal\nPisang ijo dan masih banyak lagi\nGOR lapangan Bulu Tangkis.\nDekat dengan Pusat Perbelanjaan Mall Taman Anggrek, Mall Central Plaza, Mall Neo Soho dan Mall Citra land.\nUntuk ATM juga tersedia, Alfamart dan Indomart dekat dengan lokasi.\n\nParkir Mobil: Ada\nParkir Motor: Ada\n\nWaktu Bertamu: –\n\nAkses Lokasi:\n\nLokasi sangat aman, ada gerbang\nLebar jalan depan sangat luas.\nLokasi strategis, Dekat dengan Universitas Tarumanegara (UNTAR), Universitas Trisakti, Universitas Ukrida, Universitas Bina Nusantara (Binus).\nAkses yg mudah untuk sampai tempat tujuan, jalan dilewati Metro mini no 91 yang melintasi daerah slipi, kemanggisan, roxy. Angkot no 45 (biru) melintasi univ BINUS, pasar slipi.\n\n---------------------------------------------------------------------------\nHubungi : 085880504162\n---------------------------------------------------------------------------\nLantai 3\n\nSendiri 1450 Berdua 1600\nListrik Token\n---------------------------------------------------------------------------\nLantai 1&2\n\nSendiri 1700 Berdua 1900\nSudah termasuk Listrik\nDeposit 500rb\n---------------------------------------------------------------------------",
-      "building_geolocation": {
-        "latitude": 0,
-        "longitude": 0
-      },
-      "housing_price": 1450,
-      "owner_name": "",
-      "owner_whatsapp": "085880504162",
-      "owner_phone_number": "085880504162",
+      "building_facility_string": "",
+      "building_facility": [
+        "Kasur ukuran Queen Size\nWifi\nTv\nTv cable (Siaran luar)\nKamar mandi dalam\nWater Heater\nAC\nLemari Pakaian\nAir Minum\nSikat dan Pasta gigi\nSabun\nShampoo\nParkiran 1 Mobil dan Motor"
+      ],
+      "building_description": "Fasilitas: \nKasur ukuran Queen Size\nWifi\nTv\nTv cable (Siaran luar)\nKamar mandi dalam\nWater Heater\nAC\nLemari Pakaian\nAir Minum\nSikat dan Pasta gigi\nSabun\nShampoo\n\nFasilitas Umum: \nParkiran 1 Mobil dan Motor\n\nFasilitas Sekitar:\nBebas banjir\nLokasi aman\nKFC\nHokben\nBakmi lili\nBakso Jawir\nCafe strawberry\nSop Duren 88\nSpecial Sambal\nPisang ijo dan masih banyak lagi\nGOR lapangan Bulu Tangkis.\nDekat dengan Pusat Perbelanjaan Mall Taman Anggrek, Mall Central Plaza, Mall Neo Soho dan Mall Citra land.\nUntuk ATM juga tersedia, Alfamart dan Indomart dekat dengan lokasi.\n\nParkir Mobil: Ada\nParkir Motor: Ada\n\nWaktu Bertamu: –\n\nAkses Lokasi:\n\nLokasi sangat aman, ada gerbang\nLebar jalan depan sangat luas.\nLokasi strategis, Dekat dengan Universitas Tarumanegara (UNTAR), Universitas Trisakti, Universitas Ukrida, Universitas Bina Nusantara (Binus).\n\nAkses yg mudah untuk sampai tempat tujuan, jalan dilewati Metro mini no 91 yang melintasi daerah slipi, kemanggisan, roxy. Angkot no 45 (biru) melintasi univ BINUS, pasar slipi.\n\nHubungi : 085880504162\n\nLantai 3\nSendiri 1450 \nBerdua 1600\nListrik Token\n\nLantai 1&2\nSendiri 1700 Berdua 1900\nSudah termasuk Listrik\n\nDeposit 500rb\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": "1450000",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "085880504162",
+      "owner_whatsapp": "085880504162",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121963924_354774202467919_2169542995459159694_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi40NDN4NDQzLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D107%26_nc_ohc%3DHz4vm9reMTYQ7kNvgGn94CE%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDE3MDQ4NzM5NDI1MTY4OA%253D%253D.2-ccb7-5%26oh%3D00_AYAbfSsEKRqDtU1ec9EsQODpF4pyeEXkBR-KZ35fPVfxFg%26oe%3D66969F6A%26_nc_sid%3Df93d1f"
       ],
+      "isEdited": false,
+      "index": 886,
+      "building_geolocation": {
+        "latitude": "-6.178887",
+        "longitude": "106.78817"
+      },
       "isReady": false
     },
     {
-      "index": 887,
-      "building_title": "Hunian Jl Cempaka Putih Barat 16 no 16 Jakarta Pusat",
-      "building_address": "Jl Cempaka Putih Barat 16 no 16 Jakarta Pusat",
+      "building_title": "Indekos Cempaka Residence",
+      "building_address": "Jl. Cemp. Putih Barat XVI No.16, RT.9/RW.7, Cemp. Putih Bar., Kec. Cemp. Putih, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10520, Indonesia",
+      "building_proximity_string": "",
+      "building_proximity": [],
+      "building_facility_string": "",
       "building_facility": [
         "Tempat single size bed dan queen size bed Kamar mandi luar dan kamar mandi dalam Wifi Air Conditioner ( AC ) Water Heater ( tidak semua ) Televisi Dapur dan ruang tamu bersama Parkir mobil dan pos keamanan setempat depan kosan Mesin cuci lemari es dan dispenser ( fasilitas bersama ) Listrik semua TOKEN"
       ],
-      "building_proximity": [],
-      "building_description": "Indekos Cempaka Residence\nLokasi : Jl Cempaka Putih Barat 16 no 16\nJakarta Pusat\n\nFasilitas kos :\n\n- Tempat single size bed dan queen size bed\n- Kamar mandi luar dan kamar mandi dalam\n- Wifi\n- Air Conditioner ( AC )\n- Water Heater ( tidak semua )\n- Televisi\n- Dapur dan ruang tamu bersama\n- Parkir mobil dan pos keamanan setempat depan kosan\n- Mesin cuci lemari es dan dispenser ( fasilitas bersama )\n- Listrik semua TOKEN\n\n--------------------------------------------------------------------------------------------------------------------------\nHubungi : 0818180916\n--------------------------------------------------------------------------------------------------------------------------\nHarga mulai dari Rp 1500000 sampai Rp 2500000\n\nKhusus harga Rp 1500000 hanya tersedia kamar dengan kamar mandi luar\n\nKamar dengan kamar mandi dalam mulai dari Rp 1650000 - Rp 2500000\n--------------------------------------------------------------------------------------------------------------------------",
+      "building_description": "Indekos Cempaka Residence\nLokasi : Jl Cempaka Putih Barat 16 no 16\nJakarta Pusat\n\nFasilitas kos :\n\n- Tempat single size bed dan queen size bed\n- Kamar mandi luar dan kamar mandi dalam\n- Wifi\n- Air Conditioner ( AC )\n- Water Heater ( tidak semua )\n- Televisi\n- Dapur dan ruang tamu bersama\n- Parkir mobil dan pos keamanan setempat depan kosan\n- Mesin cuci lemari es dan dispenser ( fasilitas bersama )\n- Listrik semua TOKEN\n\nHubungi : 0818180916\n\nHarga mulai dari Rp 1500000 sampai Rp 2500000\nKhusus harga Rp 1500000 hanya tersedia kamar dengan kamar mandi luar\nKamar dengan kamar mandi dalam mulai dari Rp 1650000 - Rp 2500000\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 1500000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "0818180916",
+      "owner_whatsapp": "0818180916",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121967225_373940893649311_9135354506714479091_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43ODB4NzgwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D107%26_nc_ohc%3Dni3Q7mp890oQ7kNvgFL-bc8%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDEzNTU5MjkwNzI0NzQ5OQ%253D%253D.2-ccb7-5%26oh%3D00_AYAmkt8libBXNpEqC_AqPbk9TDV5hlb9AvE_BKxTKQrubw%26oe%3D669695E1%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 887,
       "building_geolocation": {
         "latitude": -6.1822576,
         "longitude": 106.8660599
       },
-      "housing_price": 1500000,
-      "owner_name": "",
-      "owner_whatsapp": "0818180916",
-      "owner_phone_number": "0818180916",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121967225_373940893649311_9135354506714479091_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43ODB4NzgwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D107%26_nc_ohc%3Dni3Q7mp890oQ7kNvgFL-bc8%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDEzNTU5MjkwNzI0NzQ5OQ%253D%253D.2-ccb7-5%26oh%3D00_AYAmkt8libBXNpEqC_AqPbk9TDV5hlb9AvE_BKxTKQrubw%26oe%3D669695E1%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 888,
-      "building_title": "",
-      "building_address": "",
-      "building_facility": [
-        "WIFI 20 Mbps\nAC Baru\nAir Pam Gratis\nKamar mandi dalam\nKasur\nLemari\nMeja\nLaundry*\nWarkop"
-      ],
+      "building_title": "Hunian Jln Kp Bahari 3 A11 No.208 Tanjung Priok Jakarta Utara",
+      "building_address": "Jln Kp Bahari 3 A11 No.208 Tanjung Priok Jakarta Utara",
+      "building_proximity_string": "",
       "building_proximity": [
         "3 menit ke Ancol\n5 menit ke kemayoran\n3 menit ke Sunter Mall\n5 menit ke MOI\n10 menit ke Kelapa Gading\n7 menit ke Mangga Dua"
       ],
-      "building_description": "Disewakan kamar kos Bangunan baru.\nRoom Available on 13 Oct 2020.\nFast Response text me on WhatsApp.\n\nFasilitas :\n\nWIFI 20 Mbps\nAC Baru\nAir Pam Gratis\nKamar mandi dalam\nKasur\nLemari\nMeja\nLaundry*\nWarkop\n\nLokasi Strategis :\n\n3 menit ke Ancol\n5 menit ke kemayoran\n3 menit ke Sunter Mall\n5 menit ke MOI\n10 menit ke Kelapa Gading\n7 menit ke Mangga Dua\n\nUntuk survey Lokasi silahkan google maps :\n\nWarkop Santri Priok atau\nSMPN 55 TJ PRIOK\nWA sesuai Profile\n\n--------------------------------------------------------------------------------------------------------\nHubungi : 08111730035\n--------------------------------------------------------------------------------------------------------\n\nHarga sewa : 1500000",
-      "building_geolocation": {
-        "latitude": 0,
-        "longitude": 0
-      },
+      "building_facility_string": "",
+      "building_facility": [
+        "WIFI 20 Mbps\nAC Baru\nAir Pam Gratis\nKamar mandi dalam\nKasur\nLemari\nMeja\nLaundry*\nWarkop"
+      ],
+      "building_description": "Disewakan kamar kos Bangunan baru.\n\nFasilitas :\n\nWIFI 20 Mbps\nAC Baru\nAir Pam Gratis\nKamar mandi dalam\nKasur\nLemari\nMeja\nLaundry*\nWarkop\n\nLokasi Strategis :\n\n3 menit ke Ancol\n5 menit ke kemayoran\n3 menit ke Sunter Mall\n5 menit ke MOI\n10 menit ke Kelapa Gading\n7 menit ke Mangga Dua\n\nHubungi : 08111730035\nHarga sewa : 1500000\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
       "housing_price": 1500000,
-      "owner_name": "",
-      "owner_whatsapp": "08111730035",
-      "owner_phone_number": "08111730035",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "08111730035",
+      "owner_whatsapp": "08111730035",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122019580_1717798168374863_5417914952922156458_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi42MDh4NjA4LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D111%26_nc_ohc%3DC-b3tPEOS4sQ7kNvgF7g6e_%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDEyOTkxMDcxNTg1Mjk1OQ%253D%253D.2-ccb7-5%26oh%3D00_AYByK2WbPnQutB--esT_dx2EjAFJOcECicN-fhStqg-FzQ%26oe%3D66968832%26_nc_sid%3Df93d1f"
       ],
+      "isEdited": false,
+      "index": 888,
+      "building_geolocation": {
+        "latitude": "-6.117367",
+        "longitude": "106.873787"
+      },
       "isReady": false
     },
     {
-      "index": 889,
-      "building_title": "Hunian jln Kweni Ujung Rt 01 Rw 13 Nmr 77 Radio Dalam Kel Gandaria Utara Kec Kebayoran Baru Jakarta Selatan",
+      "building_title": "Kos Hijau 77",
       "building_address": "jln Kweni Ujung Rt 01 Rw 13 Nmr 77 Radio Dalam Kel Gandaria Utara Kec Kebayoran Baru Jakarta Selatan",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "Radio Dalam",
+        "Gandaria Utara",
+        "Kebayoran Baru",
+        "Jakarta Selatan"
+      ],
+      "building_facility_string": "",
       "building_facility": [
         "Kamar",
         "kasur",
@@ -29073,84 +28985,128 @@
         "kipas exhaust",
         "free wifi"
       ],
-      "building_proximity": [
-        "Radio Dalam",
-        "Gandaria Utara",
-        "Kebayoran Baru",
-        "Jakarta Selatan"
-      ],
-      "building_description": "Disewakan kamar kos murah bisa untuk pasutri utk pria wanita\nkos murah bebas tp wajib sopan\nkamar sangat luas\nbersih & terjamin keamanan nya\n\nFasilitas: Kamar, kasur, bantal guling, kipas angin, lemari, meja, kipas exhaust, free wifi\n\nNOTES:\n\nhanya bisa parkir motor saja\nkamar mandi toilet bersama diluar ada 4toilet bersih\ntoko sembako & warung makan 24jam nonstop\n\nAlamat kos:\n\nKOS HIJAU 77\njln Kweni Ujung Rt 01 Rw 13 Nmr 77\nRadio Dalam\nKel Gandaria Utara\nKec Kebayoran Baru\nJakarta Selatan\n\nHubungi: 08159393231\n\nBiaya sewa: 1200000 bulan\n\nbiaya tersebut free sdh termasuk listrik air & kebersihan serta keamanan",
-      "building_geolocation": {
-        "latitude": -6.2543012,
-        "longitude": 106.7865377
-      },
+      "building_description": "Disewakan kamar kos murah bisa untuk pasutri utk pria wanita\nkos murah bebas tp wajib sopan\nkamar sangat luas\nbersih & terjamin keamanan nya\n\nFasilitas: Kamar, kasur, bantal guling, kipas angin, lemari, meja, kipas exhaust, free wifi\n\nNOTES:\n\nhanya bisa parkir motor saja\nkamar mandi toilet bersama diluar ada 4toilet bersih\ntoko sembako & warung makan 24jam nonstop\n\nAlamat kos:\n\nKOS HIJAU 77\njln Kweni Ujung Rt 01 Rw 13 Nmr 77\nRadio Dalam\nKel Gandaria Utara\nKec Kebayoran Baru\nJakarta Selatan\n\nHubungi: 08159393231\n\nBiaya sewa: 1200000 bulan\nbiaya tersebut free sdh termasuk listrik air & kebersihan serta keamanan\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
       "housing_price": 1200000,
-      "owner_name": "",
-      "owner_whatsapp": "08159393231",
-      "owner_phone_number": "08159393231",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "08159393231",
+      "owner_whatsapp": "08159393231",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121832098_1702145079963989_3240728529751501965_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi42MDd4NjA3LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D105%26_nc_ohc%3DuHX9J_c_MeEQ7kNvgHN6_0f%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDA5ODU5NTIxMTczMjg3OA%253D%253D.2-ccb7-5%26oh%3D00_AYCjwmhF7JNT2XvoS40QzX3Zuk-okcST5BppotpIHVV2rA%26oe%3D66966FC1%26_nc_sid%3Df93d1f"
       ],
+      "isEdited": false,
+      "index": 889,
+      "building_geolocation": {
+        "latitude": "-6.254301",
+        "longitude": "106.786538"
+      },
       "isReady": false
     },
     {
-      "index": 890,
-      "building_title": "Hunian Jalan Rawa Lindung Gg Ralin Cipayung Setu Jakarta Timur",
+      "building_title": "Kost Taman Cempaka",
       "building_address": "Jalan Rawa Lindung Gg Ralin Cipayung Setu Jakarta Timur",
-      "building_facility": [
-        "- wifii\n- TV\n- ac baru merk Daikin 1/2pk low wat\n- kulkas untuk umum didapur taman\n- dapur taman..untuk umum\n- toilet tamu dihalaman..\n- kasur single 120x 200 + bantal2 baru.\n- loker / lemari\n- galon aqua\n- tempat jemuran\n- fasilitas kamar mandi..gayung ember..\n- air sangat bagus bersih tidak bau/TOREN\n\n- ada 3 kamar tidur",
-        "luas rata rata 3x4\n-full AC Daikin 1/2pk tiap kamar nya.\n-kamar mandi shower\n- dapur\n-ruang santai TV\n\n-kamar mandi\n-tempat cuci\n-balkon luas /taman atas\n-tempat santai ayunan..bermain\n-jemuran\n-dapur\n-menghap taman Cempaka.\n-air jetpum/toren"
-      ],
+      "building_proximity_string": "",
       "building_proximity": [
         "Deket dr taman mini Deket pintu tol jorr Mabes Hankam Cilangkap"
       ],
-      "building_description": "ASSALAMUALAIKUM UKHTI.\n\ndibaca sampai selesai ya\n\nKost Taman Cempaka\n\nkhusus muslimah/akhwat\n\nkost yg suka dengan kenyamanan dan ketenangan\n\nlokasi Cipayung Setu Jakarta timur..\n\nDeket dr taman mini Deket pintu tol jorr\n\nmabes hankam cilangkap\n\njln rawa lindung Gg ralin cipayung setu\n\nTAMAN CEMPAKA .\n\n*fasilitas yg tersedia*\n\n-wifii\n-TV\n-ac baru merk Daikin 1/2pk low wat\n-kulkas untuk umum didapur taman\n-dapur taman..untuk umum\n-toilet tamu dihalaman..\n-kasur single 120x 200 + bantal2 baru.\n-loker / lemari\n-galon aqua\n-tempat jemuran\n-fasilitas kamar mandi..gayung ember..\n-air sangat bagus bersih tidak bau/TOREN\n\nKETERANGAN\n\n-hanya ada 6 kamar Kusus muslimah/listrik token..\n-per bulan 1.3jt\n-jangan ditanya buat cowok bisa gak?(jelas tidak)maaf hanya muslimah..\n-bisa bebas ?.. astagfirullah nauzubilah kena azab Allah..\n\n# di lantai 2 #\n\n- ada 3 kamar tidur,,luas rata rata 3x4\n-full AC Daikin 1/2pk tiap kamar nya.\n-kamar mandi shower\n- dapur\n-ruang santai TV\n\ndi lantai 3 fasilitas santai\n\n-kamar mandi\n-tempat cuci\n-balkon luas /taman atas\n-tempat santai ayunan..bermain\n-jemuran\n-dapur\n-menghap taman Cempaka.\n-air jetpum/toren\n\nHubungi : 085311590590\n\n__________________________________\nRp.1.400.000 / Bulan\n__________________________________\n\nAnda punya kos-kosan atau kontrakan di jakarta ? iklankan di kami gratis!",
+      "building_facility_string": "",
+      "building_facility": [
+        "wifi",
+        "luas rata rata 3x4",
+        "ac baru merk Daikin 1/2pk low wat",
+        "TV",
+        "kulkas untuk umum",
+        "didapur taman",
+        "toilet tamu dihalaman",
+        "kasur single 120x 200",
+        "bantal",
+        "loker / lemari",
+        "galon aqua",
+        "tempat jemuran",
+        "fasilitas kamar mandi",
+        "gayung ember",
+        "kualitas air sangat bagus",
+        "TOREN"
+      ],
+      "building_description": "Kost Taman Cempaka\n\nkhusus muslimah/akhwat\nkost yg suka dengan kenyamanan dan ketenangan\n\nlokasi Cipayung Setu Jakarta timur..\nDeket dr taman mini Deket pintu tol jorr\nmabes hankam cilangkap\n\njln rawa lindung Gg ralin cipayung setu\nTAMAN CEMPAKA\n\nFasilitas yg tersedia\n- wifii\n- TV\n- ac baru merk Daikin 1/2pk low wat\n- kulkas untuk umum didapur taman\n- dapur taman..untuk umum\n- toilet tamu dihalaman..\n- kasur single 120x 200 + bantal2 baru.\n- loker / lemari\n- galon aqua\n- tempat jemuran\n- fasilitas kamar mandi..gayung ember..\n- air sangat bagus bersih tidak bau/TOREN\n\nKETERANGAN\n- hanya ada 6 kamar Kusus muslimah \n- listrik token\n- per bulan 1.3jt\n- tidak bisa bebas\n\nFasilitas lantai 2\n- ada 3 kamar tidur,,luas rata rata 3x4\n- full AC Daikin 1/2pk tiap kamar nya.\n- kamar mandi shower\n- dapur\n- ruang santai TV\n\nFasilitas lantai 3 \n- kamar mandi\n- tempat cuci\n- balkon luas /taman atas\n- tempat santai ayunan..bermain\n- jemuran\n- dapur\n- menghap taman Cempaka.\n- air jetpum/toren\n\nHubungi : 085311590590\n\nRp.1.400.000 / Bulan\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
+      "housing_price": 1300000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "085311590590",
+      "owner_whatsapp": "085311590590",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121995092_702532733693987_6300976141500347616_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43NTB4NzUwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D111%26_nc_ohc%3DhMuw1iZZT-oQ7kNvgH7Ov16%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDAyOTA1MDM0NjE5NzY4Ng%253D%253D.2-ccb7-5%26oh%3D00_AYBmPqwGXVIqsaKF0xeOT31oo3RlLx_5YKlIxo5Avxz5gg%26oe%3D66969C25%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 890,
       "building_geolocation": {
         "latitude": -6.3267089,
         "longitude": 106.9048078
       },
-      "housing_price": 1300000,
-      "owner_name": "",
-      "owner_whatsapp": "085311590590",
-      "owner_phone_number": "085311590590",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121995092_702532733693987_6300976141500347616_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43NTB4NzUwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D111%26_nc_ohc%3DhMuw1iZZT-oQ7kNvgH7Ov16%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNDAyOTA1MDM0NjE5NzY4Ng%253D%253D.2-ccb7-5%26oh%3D00_AYBmPqwGXVIqsaKF0xeOT31oo3RlLx_5YKlIxo5Avxz5gg%26oe%3D66969C25%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 891,
-      "building_title": "Hunian Pademangan",
-      "building_address": "Pademangan",
-      "building_facility": [
-        "+ Lobby\n+ Lift\n+ Ruang Fitness\n+ Dapur Bersama\n+ Ruang Makan\n+ Spring Bed Double Bed Full set\n+ Lampu Meja\n+ TV 32inch\n+ 1 set Bantal\n+ Lemari disetiap kamar\n+ Meja & Kursi Belajar\n+ Wifi 200mbps unlimited\n+ Water heater\n+ Cctv 24 jam\n+ Parkir Mobil\n+ Parkir motor\n+ Kamar Mandi dalam\n+ Wastafel\n+ Jendela setiap kamar\n+ Token Masing2"
-      ],
+      "building_title": "Maxi Kost Ampera V",
+      "building_address": "Jl. Ampera V No.20 6, RT.7/RW.9, Pademangan Bar., Kec. Pademangan, Jkt Utara, Daerah Khusus Ibukota Jakarta 25202",
+      "building_proximity_string": "",
       "building_proximity": [
         "50 meter from Gunung Sahari road",
         "15 minutes walk to Mangga Dua",
         "surrounded by many food centers"
       ],
-      "building_description": "Baru dibuka !!! Harga sampai DEAL !!!\nWelcome, Maxi Kost Ampera V, hunian co-living nyaman berkualitas tinggi di Pademangan, cocok untuk kamu yang sedang mencari kost eksklusif di Jakarta.\nBerjarak 50 meter dari jalan besar Gunung Sahari. 15 menit jalan kaki ke Mangga Dua dan dikelilingi banyak pusat makanan, Rumah Kost Ampera V memberikan kemudahan akses dan kenyamanan hidup bebas ribet baik bagi karyawan maupun pasangan suami istri.\nFasilitas yang diberikan :\n+ Lobby\n+ Lift\n+ Ruang Fitness\n+ Dapur Bersama\n+ Ruang Makan\n+ Spring Bed Double Bed Full set\n+ Lampu Meja\n+ TV 32inch\n+ 1 set Bantal\n+ Lemari disetiap kamar\n+ Meja & Kursi Belajar\n+ Wifi 200mbps unlimited\n+ Water heater\n+ Cctv 24 jam\n+ Parkir Mobil\n+ Parkir motor\n+ Kamar Mandi dalam\n+ Wastafel\n+ Jendela setiap kamar\n+ Token Masing2\nTerimakasih , harap hubungi kami terlebih dahulu bila ingin melihat dan tertarik\nManagement Maxi Kost Ampera V, Pademangan\nHubungi : 081287778286\n_______________\nHarga mulai dari 2.1 juta ranjang ukuran 140cm, Ranjang uk 160 cm harga 2.3 juta\n__________\nPunya kos-kosan dan kontrakan di jakarta ? iklankan di kami gratis ! dm sekarang",
-      "building_geolocation": {
-        "latitude": -6.1339405,
-        "longitude": 106.8383529
-      },
+      "building_facility_string": "",
+      "building_facility": [
+        "Lobby",
+        "Lift ",
+        "Ruang Fitness",
+        "Dapur Bersama",
+        "Ruang Makan",
+        "Spring Bed Double Bed Full set",
+        "Lampu Meja",
+        "TV 32inch",
+        "1 set Bantal",
+        "Lemari disetiap kamar",
+        "Meja & Kursi Belajar",
+        "Wifi 200mbps unlimited",
+        "Water heater",
+        "Cctv 24 jam",
+        "Parkir Mobil",
+        "Parkir motor",
+        "Kamar Mandi dalam",
+        "Wastafel",
+        "Jendela setiap kamar",
+        "Token Masing2"
+      ],
+      "building_description": "Maxi Kost Ampera V\nHunian co-living nyaman berkualitas tinggi di Pademangan, cocok untuk kamu yang sedang mencari kost eksklusif di Jakarta.\nRumah Kost Ampera V memberikan kemudahan akses dan kenyamanan hidup bebas ribet baik bagi karyawan maupun pasangan suami istri.\n\nBerjarak 50 meter dari jalan besar Gunung Sahari. \n15 menit jalan kaki ke Mangga Dua dan \nDikelilingi banyak pusat makanan, \n\nFasilitas yang diberikan :\n+ Lobby\n+ Lift\n+ Ruang Fitness\n+ Dapur Bersama\n+ Ruang Makan\n+ Spring Bed Double Bed Full set\n+ Lampu Meja\n+ TV 32inch\n+ 1 set Bantal\n+ Lemari disetiap kamar\n+ Meja & Kursi Belajar\n+ Wifi 200mbps unlimited\n+ Water heater\n+ Cctv 24 jam\n+ Parkir Mobil\n+ Parkir motor\n+ Kamar Mandi dalam\n+ Wastafel\n+ Jendela setiap kamar\n+ Token Masing2\n\nTerimakasih , harap hubungi kami terlebih dahulu bila ingin melihat dan tertarik\nManagement Maxi Kost Ampera V, Pademangan\n\nHubungi : 081287778286\n\nHarga\n2.1 juta - Ranjang ukuran 140cm \n2.3 juta - Ranjang uk 160 cm harga \n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
       "housing_price": 2100000,
-      "owner_name": "",
-      "owner_whatsapp": "081287778286",
-      "owner_phone_number": "081287778286",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081287778286",
+      "owner_whatsapp": "081287778286",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122191308_135767448266500_6159005950381571106_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43ODB4NzgwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D104%26_nc_ohc%3DJMSMkicy-MYQ7kNvgEQvIPn%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyMzk2MDI0NTYxNjA2ODg1Mw%253D%253D.2-ccb7-5%26oh%3D00_AYAfxp_ejRcbpfFOkf9QtmUdES3lVGJj1xWcSg9hWf50xQ%26oe%3D66968FC1%26_nc_sid%3Df93d1f"
       ],
+      "isEdited": false,
+      "index": 891,
+      "building_geolocation": {
+        "latitude": "-6.135409",
+        "longitude": "106.833152"
+      },
       "isReady": false
     },
     {
-      "index": 892,
       "building_title": "Hunian Jl Letjen Suprapto Belakang DPD Gerindra dekat Hotel Grand Cempaka",
       "building_address": "Jl Letjen Suprapto Belakang DPD Gerindra dekat Hotel Grand Cempaka",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "Jalan Letjen Suprapto ",
+        "Hotel Grand Cempaka",
+        "DPD Gerindra",
+        "ITC Cempaka Mas",
+        "Kelapa gading",
+        "Senen Jakarta Pusat"
+      ],
+      "building_facility_string": "",
       "building_facility": [
         "Kost dengan suasana bersih",
         "nyaman",
@@ -29161,28 +29117,39 @@
         "sarana transportasi",
         "Bank dan lain lain Bisa simpan motor di dalam rumah dengan aman Kamar mandi closet duduk + shower (sisa kamar mandi luar)"
       ],
-      "building_proximity": [
-        "15 M dari Jl Letjen Suprapto (Belakang DPD Gerindra dekat Hotel Grand Cempaka) 5 menit ke ITC Cempaka Mas 10 menit ke kelapa gading 10 menit ke Senen Jakarta Pusat"
+      "building_description": "Kost dengan suasana bersih, nyaman, tenang, & private\n\nLokasi kost strategis \nhanya 15 M dari Jl Letjen Suprapto \nBelakang DPD Gerindra dekat Hotel Grand Cempaka \n5 menit ke ITC Cempaka Mas \n10 menit ke kelapa gading \n10 menit ke Senen Jakarta Pusat\ndekat dengan Supermarket, minimarket, sarana transportasi, Bank dan lain lain\n\nFasilitas:\nKamar mandi closet duduk + shower (sisa kamar mandi luar)\nBisa simpan motor di dalam rumah dengan aman\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 1050000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081270260297",
+      "owner_whatsapp": "081270260297",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121972085_1414243502107176_4643048407573354802_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43Njh4NzY4LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D100%26_nc_ohc%3DTCQBK-Cv6zEQ7kNvgEJKHkP%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyMzk1NDAxNTY5ODk2NDkwMA%253D%253D.2-ccb7-5%26oh%3D00_AYCWYpY3S8IyBAUqhNrJt-Q79666YxrT_ZuQ9bHJiZvQag%26oe%3D66969A13%26_nc_sid%3Df93d1f"
       ],
-      "building_description": "Kost dengan suasana bersih, nyaman, tenang, & private\nLokasi kost strategis hanya 15 M dari Jl Letjen Suprapto (Belakang DPD Gerindra dekat Hotel Grand Cempaka) 5 menit ke ITC Cempaka Mas 10 menit ke kelapa gading 10 menit ke Senen Jakarta Pusat\nLokasi kost nyaman dan aman, dekat dengan Supermarket, minimarket, sarana transportasi, Bank dan lain lain\nBisa simpan motor di dalam rumah dengan aman\nKamar mandi closet duduk + shower (sisa kamar mandi luar)",
+      "isEdited": false,
+      "index": 892,
       "building_geolocation": {
         "latitude": -6.1737541,
         "longitude": 106.8608294
       },
-      "housing_price": 1050000,
-      "owner_name": "",
-      "owner_whatsapp": "081270260297",
-      "owner_phone_number": "081270260297",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121972085_1414243502107176_4643048407573354802_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43Njh4NzY4LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D100%26_nc_ohc%3DTCQBK-Cv6zEQ7kNvgEJKHkP%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyMzk1NDAxNTY5ODk2NDkwMA%253D%253D.2-ccb7-5%26oh%3D00_AYCWYpY3S8IyBAUqhNrJt-Q79666YxrT_ZuQ9bHJiZvQag%26oe%3D66969A13%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 893,
       "building_title": "Hunian Jl Rengas 3 No 8 RT03 RW02 Rawa Barat Kebayoran Baru Jakarta Selatan",
       "building_address": "Jl Rengas 3 No 8 RT03 RW02 Rawa Barat Kebayoran Baru Jakarta Selatan",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "SCBD",
+        "Senayan",
+        "Senopati",
+        "Blok M",
+        "Mampang",
+        "Kuningan Rasuna Said",
+        "Pasar Rengas",
+        "Lapangan Bola Blok S",
+        "Tendean Square"
+      ],
+      "building_facility_string": "",
       "building_facility": [
         "CCTV",
         "Dapur bersama",
@@ -29195,167 +29162,113 @@
         "Wi-Fi router",
         "Kipas angin remote"
       ],
-      "building_proximity": [
-        "SCBD",
-        "Senayan",
-        "Senopati",
-        "Blok M",
-        "Mampang",
-        "Kuningan Rasuna Said",
-        "Pasar Rengas",
-        "Lapangan Bola Blok S",
-        "Tendean Square"
+      "building_description": "ANF Guest - Kost Putri/Karyawati. Bangunan Baru jadi 2020. \n\nFasilitas Pribadi: \n-Kasur+ranjang (termasuk bantal dan guling) \n-Kamar mandi dalam (termasuk gayung dan ember) \n-Lemari dan meja kecil \n-1 Wi-Fi router per kamar (Sharing total 150 Mbps. Per kamar dijatah up to 20 Mbps, Unlimited kuota) \n-Kipas angin remote \n-Termasuk listrik dan air, listrik terbatas hanya untuk handphone dan laptop, perangkat elektronik tambahan dikenakan bulanan Rp.50.000,- \n\nFasilitas Umum: \n-Keamanan CCTV 1 outdoor dan 3 indoor (Direkam penuh online 24 jam dengan backup UPS) \n-Dapur bersama (Termasuk gas) \n-Dispenser bersama (Termasuk air galon) \n-Kulkas bersama \n-Parkir motor (5 motor). \n\nAkses kemana saja yang mudah dari ANF Guest? \nKamu bisa dengan mudah menuju SCBD, Senayan, Senopati, Blok M, Mampang, Kuningan Rasuna Said \n\nTransportasi umum apa yang dekat? \nTransportasi umum yang dekat adalah TransJakarta Koridor 13 (Halte Rawa Barat), MRT Blok M, Taksi/Ojek online selalu cepat jemputnya \n\nDimana tempat belanja kebutuhan dan makanan? \nUntuk belanja kebutuhan dan makanan juga mudah, ANF Guest dekat dengan Pasar Rengas yang ada tepat di belakang rumah.\nPenjual makanan juga banyak mulai dari Nasi padang, Nasi goreng, Bakso, Somay, Warteg, Warkop 24 Jam. \n\nApakah dekat dengan ATM dan minimarket? \nANF Guest juga dekat Circle K Kebalen dan Indomaret Birah Blok S. ATM BCA, Mandiri, BNI, BRI juga dekat. \n\nApakah ada fasilitas parkir kendaraan? \nANF Guest hanya menyediakan parkir motor dan terbatas hanya untuk 5 motor saja. \n\nBagaimana dengan keamanan? \nLokasi ANF Guest aman, juga menggunakan CCTV dengan 1 outdoor dan 3 indoor, direkam penuh 24 jam dengan backup UPS. \n\nApakah ada internet? \nAda\n\nAlamat: Jl. Rengas 3 No.8 RT03/RW02, Rawa Barat, Kebayoran Baru, Jakarta Selatan. \nPatokannya lapangan bola Blok S atau Tendean Square. \n\n-Harga kamar mandi luar 1jt dan 1.1jt \n-Harga kamar mandi dalam 1.3jt dan 1.6jt \n\nHubungi 085781478146 \n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 1000000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "085781478146",
+      "owner_whatsapp": "085781478146",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121738561_3583276035068573_1306837018662592371_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43MjB4NzIwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D105%26_nc_ohc%3D2ZOZq_xgcGwQ7kNvgEq2llF%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyMzk0NzAzMTc1NDg0NDUwMA%253D%253D.2-ccb7-5%26oh%3D00_AYCj9K8J5GCzL1rcKYVUL21AD40D8XA1X-1EbronMawE3A%26oe%3D669699E8%26_nc_sid%3Df93d1f"
       ],
-      "building_description": "ANF Guest - Kost Putri/Karyawati. Bangunan Baru jadi 2020. \n\nAkses kemana saja yang mudah dari ANF Guest? \n\nKamu bisa dengan mudah menuju SCBD, Senayan, Senopati, Blok M, Mampang, Kuningan Rasuna Said \n\nTransportasi umum apa yang dekat? \n\nTransportasi umum yang dekat adalah TransJakarta Koridor 13 (Halte Rawa Barat), MRT Blok M, Taksi/Ojek online selalu cepat jemputnya \n\nDimana tempat belanja kebutuhan dan makanan? \n\nUntuk belanja kebutuhan dan makanan juga mudah, ANF Guest dekat dengan Pasar Rengas yang ada tepat di belakang rumah. Penjual makanan juga banyak mulai dari Nasi padang, Nasi goreng, Bakso, Somay, Warteg, Warkop 24 Jam. \n\nApakah dekat dengan ATM dan minimarket? \n\nANF Guest juga dekat Circle K Kebalen dan Indomaret Birah Blok S. ATM BCA, Mandiri, BNI, BRI juga dekat. \n\nApakah ada fasilitas parkir kendaraan? \n\nANF Guest hanya menyediakan parkir motor dan terbatas hanya untuk 5 motor saja. \n\nBagaimana dengan keamanan? \n\nLokasi ANF Guest aman, juga menggunakan CCTV dengan 1 outdoor dan 3 indoor, direkam penuh 24 jam dengan backup UPS. \n\nApakah ada internet? \n\n\nFasilitas Pribadi: \n\n-Kasur+ranjang (termasuk bantal dan guling) \n\n-Kamar mandi dalam (termasuk gayung dan ember) \n\n-Lemari dan meja kecil \n\n-1 Wi-Fi router per kamar (Sharing total 150 Mbps. Per kamar dijatah up to 20 Mbps, Unlimited kuota) \n\n-Kipas angin remote \n\n-Termasuk listrik dan air, listrik terbatas hanya untuk handphone dan laptop, perangkat elektronik tambahan dikenakan bulanan Rp.50.000,- \n\nFasilitas Umum: \n\n-Keamanan CCTV 1 outdoor dan 3 indoor (Direkam penuh online 24 jam dengan backup UPS) \n\n-Dapur bersama (Termasuk gas) \n\n-Dispenser bersama (Termasuk air galon) \n\n-Kulkas bersama \n\n-Parkir motor (5 motor). \n\nAlamat: Jl. Rengas 3 No.8 RT03/RW02, Rawa Barat, Kebayoran Baru, Jakarta Selatan. \n\nPatokannya lapangan bola Blok S atau Tendean Square. \n\nHubungi 085781478146 \n\n________________________________________ \n\n-Harga kamar mandi luar 1jt dan 1.1jt \n\n-Harga kamar mandi dalam 1.3jt dan 1.6jt \n\n________________________________________ \n\nPunya kosan atau kontrakan di jakarta ? iklankan di kami gratis ! dm langsung",
+      "isEdited": false,
+      "index": 893,
       "building_geolocation": {
         "latitude": -6.236994,
         "longitude": 106.81789
       },
-      "housing_price": 1000000,
-      "owner_name": "",
-      "owner_whatsapp": "085781478146",
-      "owner_phone_number": "085781478146",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/121738561_3583276035068573_1306837018662592371_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43MjB4NzIwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D105%26_nc_ohc%3D2ZOZq_xgcGwQ7kNvgEq2llF%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyMzk0NzAzMTc1NDg0NDUwMA%253D%253D.2-ccb7-5%26oh%3D00_AYCj9K8J5GCzL1rcKYVUL21AD40D8XA1X-1EbronMawE3A%26oe%3D669699E8%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 894,
-      "building_title": "Hunian Jl Puskesmas No 35 22 RT 11 RW 7 Duri Kosambi Kecamatan Cengkareng Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11750",
+      "building_title": "MICASA Suites",
       "building_address": "Jl Puskesmas No 35 22 RT 11 RW 7 Duri Kosambi Kecamatan Cengkareng Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11750",
-      "building_facility": [
-        "fully furnished with AC Water Heater Wifi and private bathroom rooftop area co working space laundry room movie room kitchen with refrigerator and gallon parking area CCTV and security 24 7"
-      ],
+      "building_proximity_string": "",
       "building_proximity": [
         "Semanan Jakarta Barat 5 minutes walk to Stasiun Rawa Buaya"
       ],
-      "building_description": "MICASA Suites Kost Exclusive Jakarta Barat\nNikmati hunian nyaman dan aman di Semanan Jakarta Barat hanya 5 menit berjalan kaki ke Stasiun Rawa Buaya Setiap kamar fully furnished dengan AC Water Heater Wifi dan kamar mandi pribadi Anda juga bisa menikmati fasilitas tambahan seperti rooftop area co working space laundry room movie room dapur lengkap dengan kulkas dan galon serta area parkir yang luas\nKeamanan terjamin dengan CCTV dan security 24 7 tanpa ada jam malam MICASA Suites menawarkan kenyamanan tinggal yang modern dan lengkap Hubungi kami untuk informasi lebih lanjut\n\nHarga 2 000 000 2 800 000\nAlamat MICASA Suite Jl Puskesmas No 35 22 RT 11 RW 7 Duri Kosambi Kecamatan Cengkareng Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11750\nCP 0811 1234 777\n\nKos campur\nBoleh membawa kucing\nWASPADA TERHADAP PENIPUAN\nIngat tetap berhati hati terhadap penipuan Pastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer",
+      "building_facility_string": "",
+      "building_facility": [
+        "fully furnished with AC Water Heater Wifi and private bathroom rooftop area co working space laundry room movie room kitchen with refrigerator and gallon parking area CCTV and security 24 7"
+      ],
+      "building_description": "MICASA Suites Kost Exclusive Jakarta Barat\nNikmati hunian nyaman dan aman di Semanan Jakarta Barat hanya 5 menit berjalan kaki ke Stasiun Rawa Buaya Setiap kamar \n\nFasilitas:\nFully furnished \nAC \nWater Heater \nWifi\nKamar mandi pribadi \nRooftop \nArea co working space \nLaundry room \nMovie room \nDapur lengkap dengan kulkas dan \nGalon serta \nArea parkir yang luas\nKeamanan terjamin dengan CCTV dan security 24 7\nTidak ada jam malam\n\n\nHarga 2 000 000 2 800 000\nAlamat MICASA Suite Jl Puskesmas No 35 22 RT 11 RW 7 Duri Kosambi Kecamatan Cengkareng Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11750\n\nHubungi kami untuk informasi lebih lanjut\nCP 0811 1234 777\n\nKos campur\nBoleh membawa kucing\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer",
+      "housing_price": 2000000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "0811-1234-777",
+      "owner_whatsapp": "0811-1234-777",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/448329942_1044907984104429_5129771760611804869_n.jpg%3Fstp%3Dc0.55.1536.1939a_dst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNTM2eDIwNDguc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3DHmX-ySFKQXQQ7kNvgFP8qI0%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzM5NDMzMjc1NzU3MTc4NjQ5OA%253D%253D.2-ccb7-5%26oh%3D00_AYBROuPbuwCtmkm_abnrm9iB3_IMjNqOGRXYvbQ8rResUw%26oe%3D66968635%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 894,
       "building_geolocation": {
         "latitude": -6.1650637,
         "longitude": 106.7219309
       },
-      "housing_price": 2000000,
-      "owner_name": "",
-      "owner_whatsapp": "0811-1234-777",
-      "owner_phone_number": "0811-1234-777",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/448329942_1044907984104429_5129771760611804869_n.jpg%3Fstp%3Dc0.55.1536.1939a_dst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNTM2eDIwNDguc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3DHmX-ySFKQXQQ7kNvgFP8qI0%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzM5NDMzMjc1NzU3MTc4NjQ5OA%253D%253D.2-ccb7-5%26oh%3D00_AYBROuPbuwCtmkm_abnrm9iB3_IMjNqOGRXYvbQ8rResUw%26oe%3D66968635%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 895,
-      "building_title": "Hunian Jl Anggrek Neli Murni C no 11 Kemanggisan Palmerah Jakarta Barat 11480",
-      "building_address": "Jl Anggrek Neli Murni C no 11 Kemanggisan Palmerah Jakarta Barat 11480",
-      "building_facility": [
-        "FREE Listrik\nFREE Laundry 15kg\nFREE Parkir\nSecurity & CCTV 24 jam\nKm.Mandi dalam + Air Panas\nAC\nTV Channel\nWIFI"
-      ],
-      "building_proximity": [
-        "Slipi",
-        "Kemanggisan",
-        "Palmerah",
-        "Belakang Plaza Slipi Jaya"
-      ],
-      "building_description": "Kost Exclusive berlokasi diantara Slipi, Kemanggisan & Palmerah Belakang Plaza Slipi Jaya\n\nFlat Living Kemanggisan\n\n💎Flat Standard 3.800.000\n15m2\nFREE Listrik\nFREE Laundry 15kg\nFREE Parkir\nSecurity & CCTV 24 jam\nKm.Mandi dalam + Air Panas\nAC\nTV Channel\nKasur 160x200\nMeja Panjang + Kaca Rias\nKursi 1 pcs\nLemari\nWIFI\n\n💎💎Flat Executive 4.500.000\n20m2\nFREE Listrik\nFREE Laundry 15 kg\nFREE Parkir\nSecurity & CCTV 24 jam\nKm.Mandi dalam + Air Panas\nAC\nTV Channel\nKasur 180x200\nMeja Rias\nMeja Makan\nKursi 3 pcs\nLemari\nWIFI\n\nAlamat: Jl Anggrek Neli Murni C no 11 Kemanggisan Palmerah Jakarta Barat 11480\nCP: 085179864465\n\n*Kos campur\n**Hanya boleh membawa kucing\n⚠️WASPADA TERHADAP PENIPUAN⚠️\nIngat, tetap berhati-hati terhadap penipuan. Pastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer",
-      "building_geolocation": {
-        "latitude": -6.187490599999999,
-        "longitude": 106.7944982
-      },
-      "housing_price": 3800000,
-      "owner_name": "",
-      "owner_whatsapp": "085179864465",
-      "owner_phone_number": "085179864465",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/436120903_1022205283041366_2176545939309814374_n.jpg%3Fstp%3Dc0.55.1536.1939a_dst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNTM2eDIwNDguc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D106%26_nc_ohc%3DoFxvw9aHqNMQ7kNvgHirXwy%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzM3MTIzMDU3NDk1NjI3NTYxMw%253D%253D.2-ccb7-5%26oh%3D00_AYDk2qaRs7MNm2EhXQZsU-VK1u_zmRBUTkpljFxmagICVQ%26oe%3D66966815%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 896,
       "building_title": "Hunian Jalan kaca-kaca no 11-13, pasar baru, jakarta pusat",
-      "building_address": "Jalan kaca-kaca no 11-13, pasar baru, jakarta pusat",
-      "building_facility": [
-        "Ac Smart Tv 32 inch Interior design full furnish Kulkas pribadi tiap kamar Mesin cuci Water heater Parkir motor Dapur Smoking area Tempat bersantai CCTV 24jam Keamanan terjamin WIFI Minum gratis sepuasnya Smart gate system WC dalam"
-      ],
+      "building_address": "Jl. Kaca Kaca No.11, RT.13/RW.4, Ps. Baru, Kecamatan Sawah Besar, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10710, Indonesia",
+      "building_proximity_string": "",
       "building_proximity": [
         "Kost nyaman daerah tomang grogol roxy dan pasar baru Dekat dengan pusat perbelanjaan universitas dan perkantoran elite di jakarta"
       ],
-      "building_description": "Kost nyaman daerah tomang grogol roxy dan pasar baru\nDekat dengan pusat perbelanjaan universitas dan perkantoran elite di jakarta\nFasilitas Komplit seperti:\n1 Ac\n2 Smart Tv 32 inch \n3 Interior design full furnish\n4 Kulkas pribadi tiap kamar\n5 Mesin cuci \n6 Water heater\n7 Parkir motor\n8 Dapur\n9 Smoking area\n10 Tempat bersantai\n11 CCTV 24jam Keamanan terjamin\n12 WIFI\n13 Minum gratis sepuasnya\n14 Smart gate system\n15 WC dalam\n\nBonus:\n1 Voucher listrik senilai 100rb\n2 Gratis 1 bulan syarat ketentuan berlaku\n\nHarga 2500000\nAlamat Jalan kaca-kaca no 11-13 pasar baru jakarta pusat\nCP  8562232744\n\nKos campur\nDilarang membawa hewan\nWASPADA TERHADAP PENIPUAN\nIngat tetap berhati-hati terhadap penipuan Pastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
+      "building_facility_string": "",
+      "building_facility": [
+        "Ac Smart Tv 32 inch Interior design full furnish Kulkas pribadi tiap kamar Mesin cuci Water heater Parkir motor Dapur Smoking area Tempat bersantai CCTV 24jam Keamanan terjamin WIFI Minum gratis sepuasnya Smart gate system WC dalam"
+      ],
+      "building_description": "Kost nyaman daerah tomang grogol roxy dan pasar baru\nDekat dengan pusat perbelanjaan universitas dan perkantoran elite di jakarta\n\nFasilitas Komplit seperti:\nAc\nSmart Tv 32 inch \nInterior design full furnish\nKulkas pribadi tiap kamar\nMesin cuci \nWater heater\nParkir motor\nDapur\nSmoking area\nTempat bersantai\nCCTV 24jam Keamanan terjamin\nWIFI\nMinum gratis sepuasnya\nSmart gate system\nWC dalam\n\nBonus:\nVoucher listrik senilai 100rb\nGratis 1 bulan syarat ketentuan berlaku\n\nHarga 2500000\nAlamat Jalan kaca-kaca no 11-13 pasar baru jakarta pusat\nCP  8562232744\n\nKos campur\nDilarang membawa hewan\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 2500000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "+62 856-2232-744",
+      "owner_whatsapp": "+62 856-2232-744",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/439856422_1013370413924853_3983451634376376292_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMjY3eDEyNjcuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3Dd3ro8uU_C90Q7kNvgFwLFWH%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzM2NzQ4NTc5NTA0ODA3MDA4OA%253D%253D.2-ccb7-5%26oh%3D00_AYBtIycZ2TjhJP-bSJA8sg6IBeuHEpsIZGFzV-3wvdrj3g%26oe%3D669683BD%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 895,
       "building_geolocation": {
         "latitude": -6.1638679,
         "longitude": 106.836356
       },
-      "housing_price": 2500000,
-      "owner_name": "",
-      "owner_whatsapp": "+62 856-2232-744",
-      "owner_phone_number": "+62 856-2232-744",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/439856422_1013370413924853_3983451634376376292_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMjY3eDEyNjcuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3Dd3ro8uU_C90Q7kNvgFwLFWH%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzM2NzQ4NTc5NTA0ODA3MDA4OA%253D%253D.2-ccb7-5%26oh%3D00_AYBtIycZ2TjhJP-bSJA8sg6IBeuHEpsIZGFzV-3wvdrj3g%26oe%3D669683BD%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 897,
-      "building_title": "Hunian Komplek Unilever, Jl Cendrawasih RT 05008 No 17A Rempoa Ciputat Timur Tangerang Selatan Banten 15412",
-      "building_address": "Komplek Unilever, Jl Cendrawasih RT 05008 No 17A Rempoa Ciputat Timur Tangerang Selatan Banten 15412",
-      "building_facility": [
-        "Free parkir mobil dan motor Parkir mobil diprioritas khusus Kamar Sedang dan Kamar Besar FASILITAS Fasilitas Kamar Kasur Dipan Palet Bantal Sarung Sprei AC Lemari Pakaian Rak Dinding Jendela Tirai Meja Nakas Standing Mirror Laundry Bag Kamar Mandi Dalam Shower Exhaust Fasilitas Bersama Free Wifi Free Parkir Dispencer Kulkas Dapur Peralatan Masak Makan Jemuran Laundry 2 3pcs Hari Senin Jumat"
-      ],
-      "building_proximity": ["Komplek Unilever Rempoa"],
-      "building_description": "RResidence Rempoa\nKost Campur Asri Cat Friendly Lingkungan Aman Tenang\nDidalam Komplek Unilever Rempoa\n\nKomplek Unilever Jl Cendrawasih RT 05008 No 17A Rempoa Ciputat Timur Tangerang Selatan Banten 15412\n\nRResidence Rempoa memiliki 3 type kamar\nKamar Kecil\nKamar Sedang\nKamar Besar\n\nFree parkir mobil dan motor\nParkir mobil diprioritas khusus Kamar Sedang dan Kamar Besar\n\nFASILITAS\nFasilitas Kamar\nKasur\nDipan Palet\nBantal Sarung Sprei\nAC\nLemari Pakaian\nRak Dinding\nJendela Tirai\nMeja Nakas\nStanding Mirror\nLaundry Bag\nKamar Mandi Dalam Shower\nExhaust\nFasilitas Bersama\nFree Wifi\nFree Parkir\nDispencer\nKulkas\nDapur Peralatan Masak Makan\nJemuran\nLaundry 2 3pcs Hari Senin Jumat\n\nFor inquries private viewing\nPlease contact\nIG RResidence\n 62 851 7302 0187\nWA Available\n\nHarga 2100000\n\nCampur\nBoleh membawa kucing\nWASPADA TERHADAP PENIPUAN\nIngat tetap berhati hati terhadap penipuan Pastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer",
-      "building_geolocation": {
-        "latitude": -6.2906578,
-        "longitude": 106.7555744
-      },
-      "housing_price": 2100000,
-      "owner_name": "",
-      "owner_whatsapp": "62 851 7302 0187",
-      "owner_phone_number": "62 851 7302 0187",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/439121699_1006229574638937_5074478021174942049_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi43Mzh4NTUxLnNkci5mMzA4MDgifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3DaH_8PXNPolAQ7kNvgEOBLCR%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzM2MDQxOTM1NjkyMTUwNDAxMw%253D%253D.2-ccb7-5%26oh%3D00_AYADhVWTE_1eweYiZDDz7dke0I_hVXFJWX4y3KBGgcuMQw%26oe%3D6696976F%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 898,
-      "building_title": "Hunian JL SETIABUDI BARAT NO 5 JAKARTA SELATAN",
+      "building_title": "Flamingo Residence",
       "building_address": "JL SETIABUDI BARAT NO 5 JAKARTA SELATAN",
-      "building_facility": [
-        "Ada Alfamart di bawah Kmr luas 20 m2 Spring Bed 180 x 200 Kmr mandi dlm Water Heater Fully Furnished TV AC WIFI Kulkas di dlm kamar Dapur Lift FREE LAUNDRY 4 pcs / hari Bisa dihuni 2 ORANG  TANPA BIAYA TAMBAHAN Token Listrik dibeli sendiri Parkir motor  FREE  Parkir mobil sudah full"
-      ],
+      "building_proximity_string": "",
       "building_proximity": [
         "Kost eksklusif di daerah sangat strategis",
         "blkg Sudirman",
         "blkg Indofood Sudirman Dekat MRT Lokasi di jalan besar"
       ],
-      "building_description": "FLAMINGO RESIDENCE\nJL SETIABUDI BARAT NO 5 JAKARTA SELATAN\n\nKost eksklusif di daerah sangat strategis\nblkg Sudirman blkg Indofood Sudirman\nDekat MRT\nLokasi di jalan besar\n\nFasilitas :\nAda Alfamart di bawah\nKmr luas 20 m2\nSpring Bed 180 x 200\nKmr mandi dlm Water Heater\nFully Furnished TV AC WIFI Kulkas di dlm kamar\nDapur\nLift\nFREE LAUNDRY 4 pcs / hari\nBisa dihuni 2 ORANG \n TANPA BIAYA TAMBAHAN \nToken Listrik dibeli sendiri\nParkir motor  FREE \nParkir mobil sudah full\n\nHarga: RP 3500000 \nCP: 0819 3211 8850\n\nKos campur\nBoleh membawa hewan\nWASPADA TERHADAP PENIPUAN\nIngat tetap berhati hati terhadap penipuan Pastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
+      "building_facility_string": "",
+      "building_facility": [
+        "Ada Alfamart di bawah Kmr luas 20 m2 Spring Bed 180 x 200 Kmr mandi dlm Water Heater Fully Furnished TV AC WIFI Kulkas di dlm kamar Dapur Lift FREE LAUNDRY 4 pcs / hari Bisa dihuni 2 ORANG  TANPA BIAYA TAMBAHAN Token Listrik dibeli sendiri Parkir motor  FREE  Parkir mobil sudah full"
+      ],
+      "building_description": "Kost eksklusif di daerah sangat strategis\nblkg Sudirman blkg Indofood Sudirman\nDekat MRT\nLokasi di jalan besar\n\nFasilitas :\nAda Alfamart di bawah\nKmr luas 20 m2\nSpring Bed 180 x 200\nKmr mandi dlm Water Heater\nFully Furnished TV AC WIFI Kulkas di dlm kamar\nDapur\nLift\nFREE LAUNDRY 4 pcs / hari\nBisa dihuni 2 ORANG \nTANPA BIAYA TAMBAHAN \nToken Listrik dibeli sendiri\nParkir motor  FREE \nParkir mobil sudah full\n\nHarga: RP 3500000 \nCP: 0819 3211 8850\n\nKos campur\nBoleh membawa hewan\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 3500000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "0819 3211 8850",
+      "owner_whatsapp": "0819 3211 8850",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/439664818_1010081244253770_3514683520728210172_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNTM2eDE1MzYuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D106%26_nc_ohc%3DDccoE9mZRzAQ7kNvgGc1vYf%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzM1OTUxMzI0OTUwODU0MjA4OA%253D%253D.2-ccb7-5%26oh%3D00_AYDtAykPwP-6SsULvODcMrPimou9eaayyRs2eW0C9Hk4Iw%26oe%3D6696882C%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 896,
       "building_geolocation": {
         "latitude": -6.2115823,
         "longitude": 106.8256591
       },
-      "housing_price": 3500000,
-      "owner_name": "",
-      "owner_whatsapp": "0819 3211 8850",
-      "owner_phone_number": "0819 3211 8850",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/439664818_1010081244253770_3514683520728210172_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNTM2eDE1MzYuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D106%26_nc_ohc%3DDccoE9mZRzAQ7kNvgGc1vYf%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzM1OTUxMzI0OTUwODU0MjA4OA%253D%253D.2-ccb7-5%26oh%3D00_AYDtAykPwP-6SsULvODcMrPimou9eaayyRs2eW0C9Hk4Iw%26oe%3D6696882C%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 899,
       "building_title": "Hunian Jl Walang Timur No 32B RT 008 RW 012 Kel Tugu Utara Kec Koja Jakarta Utara",
       "building_address": "Jl Walang Timur No 32B RT 008 RW 012 Kel Tugu Utara Kec Koja Jakarta Utara",
-      "building_facility": [
-        "KAMAR LUAS\nKAMAR MANDI DALAM\nTEMPAT TIDUR NO 2\nLEMARI PAKAIAN\nMEJA KERJA\nKURSI\nFREE WIFI\nAIR GRATIS\nRUANG TAMU/TV\nRUANG MAKAN\nDAPUR\nMESIN CUCI\nPARKIR MOTOR"
-      ],
+      "building_proximity_string": "",
       "building_proximity": [
         "DEKAT KELAPA GADING",
         "CAKUNG",
@@ -29363,71 +29276,47 @@
         "SUNTER",
         "ANCOL dan SEKITARNYA"
       ],
-      "building_description": "DIKONTRAKAN!!!\n\nKHUSUS WANITA/KARYAWATI\n\nJl Walang Timur No 32B RT 008 RW 012 Kel Tugu Utara Kec Koja Jakarta Utara\n\nKAMAR LUAS\nKAMAR MANDI DALAM\nTEMPAT TIDUR NO 2\nLEMARI PAKAIAN\nMEJA KERJA\nKURSI\nFREE WIFI\nAIR GRATIS\nRUANG TAMU/TV\nRUANG MAKAN\nDAPUR\nMESIN CUCI\nPARKIR MOTOR\nLOKASI STRATEGIS DEKAT KELAPA GADING CAKUNG CILINCING SUNTER ANCOL dan SEKITARNYA\n\nHubungi!\n📞 0811830347\n@megowidihakoso \n\nHarga: Rp 1350000\n\nKhusus Perempuan\nDilarang membawa hewan\nWASPADA TERHADAP PENIPUAN\nIngat tetap berhati-hati terhadap penipuan Pastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran\n\n#jakut\n#jakartautara\n#koja",
+      "building_facility_string": "",
+      "building_facility": [
+        "TV",
+        "KAMAR MANDI DALAM",
+        "TEMPAT TIDUR",
+        "LEMARI PAKAIAN",
+        "MEJA KERJA",
+        "KURSI",
+        "FREE WIFI",
+        "AIR GRATIS",
+        "RUANG TAMU",
+        "RUANG MAKAN",
+        "DAPUR",
+        "MESIN CUCI",
+        "PARKIR MOTOR"
+      ],
+      "building_description": "DIKONTRAKAN\n\nKHUSUS WANITA/KARYAWATI\n\nJl Walang Timur No 32B RT 008 RW 012 Kel Tugu Utara Kec Koja Jakarta Utara\n\nKAMAR LUAS\nKAMAR MANDI DALAM\nTEMPAT TIDUR NO 2\nLEMARI PAKAIAN\nMEJA KERJA\nKURSI\nFREE WIFI\nAIR GRATIS\nRUANG TAMU/TV\nRUANG MAKAN\nDAPUR\nMESIN CUCI\nPARKIR MOTOR\nLOKASI STRATEGIS DEKAT KELAPA GADING CAKUNG CILINCING SUNTER ANCOL dan SEKITARNYA\n\nHubungi\n0811830347\n@megowidihakoso \n\nHarga: Rp 1350000\n\nKhusus Perempuan\nDilarang membawa hewan\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran\n",
+      "housing_price": 1350000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "0811830347",
+      "owner_whatsapp": "0811830347",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/436353083_1005448384717056_6767847785782727539_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4yMDB4MjAwLnNkci5mMzA4MDgifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D100%26_nc_ohc%3DCJVEewtlEAAQ7kNvgFKOYxa%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzM0OTQyNjI5MzY5NjU2NzA2NQ%253D%253D.2-ccb7-5%26oh%3D00_AYD_MHeNYd4ctarr4xxpxh_UqrOFYIDX4WDT07Jw7jmhVA%26oe%3D66968F74%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 899,
       "building_geolocation": {
         "latitude": -6.126939,
         "longitude": 106.906659
       },
-      "housing_price": 1350000,
-      "owner_name": "",
-      "owner_whatsapp": "0811830347",
-      "owner_phone_number": "0811830347",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/436353083_1005448384717056_6767847785782727539_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4yMDB4MjAwLnNkci5mMzA4MDgifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D100%26_nc_ohc%3DCJVEewtlEAAQ7kNvgFKOYxa%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzM0OTQyNjI5MzY5NjU2NzA2NQ%253D%253D.2-ccb7-5%26oh%3D00_AYD_MHeNYd4ctarr4xxpxh_UqrOFYIDX4WDT07Jw7jmhVA%26oe%3D66968F74%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 900,
-      "building_title": "Hunian Ruko Mutiara Taman Palem Blok B5 no 8 Cengkareng Tim Kecamatan Cengkareng Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11730 Indonesia",
-      "building_address": "Ruko Mutiara Taman Palem Blok B5 no 8 Cengkareng Tim Kecamatan Cengkareng Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11730 Indonesia",
-      "building_facility": [
-        "Kamar dinding bata Parkir 1 mobil motor aman jalan luas Area bebas banjir kendaraan aman dari terendam Listrik PLN tidak pakai token lagi Unlimited WIFI Internet Lingkungan AMAN CCTV 24 jam satpam portal komplek AC 24 jam tidak perlu repot maintenance AC sendiri Netflix youtube di Rung tamu Nobar layar lebar area bersama yang luas nyaman Air minum dispenser panas dingin Shower dalam aerator tekanan tinggi Fasilitas Dapur bersih lengkap Fasilitas Microwave kulkas kompor gas ricecooker Fasilitas Co working meja belajar kerja meeting luas nyaman Fasilitas Ruang serbaguna ibadah chill game relax healing Fasilitas Smoking BBQ Terrace area merokok bersantai Fasilitas shaft sampah agar tidak bau bersih Fasilitas area cuci jemur bersama Fasilitas Rooftop untuk olahraga Free DELIVERY laundry katering obat sembako Penerimaan Paket di lobby"
-      ],
-      "building_proximity": ["Samping Mall Taman Palem"],
-      "building_description": "Aku info fasilitas apa yang kaka dapet dulu ya berikut fasilitas kita:\n\nKamar dinding bata bukan sekat gipsum\nParkir 1 mobil motor aman jalan luas\nArea bebas banjir kendaraan aman dari terendam\nListrik PLN tidak pakai token lagi\nUnlimited WIFI Internet\nLingkungan AMAN CCTV 24 jam satpam portal komplek\nAC 24 jam tidak perlu repot maintenance AC sendiri\nNetflix youtube di Rung tamu\nNobar layar lebar area bersama yang luas nyaman\nAir minum dispenser panas dingin\nShower dalam aerator tekanan tinggi\nFasilitas Dapur bersih lengkap\nFasilitas Microwave kulkas kompor gas ricecooker\nFasilitas Co working meja belajar kerja meeting luas nyaman\nFasilitas Ruang serbaguna ibadah chill game relax healing\nFasilitas Smoking BBQ Terrace area merokok bersantai\nFasilitas shaft sampah agar tidak bau bersih\nFasilitas area cuci jemur bersama\nFasilitas Rooftop untuk olahraga\nFree DELIVERY laundry katering obat sembako\nPenerimaan Paket di lobby\n\nKosan awany ada empat tipe kamar yaaa Tipe 1 Ini tipe paling murah cocok buat kamu yang lagi hemat budget hanya kasur lemari dan kamar mandi dalam Rp 2000000 bulan Rp 750000 minggu Rp 130000 malam 1 orang Rp 150000 malam 2 orang Tipe 2 Extra meja dan cermin Cocok buat kamu yang suka nyimpen barang barang kecil dan menata diri Rp 2200000 bulan Tipe 3 Extra Smart TV free akun netflix cermin dan meja harganya cuman beda dikit aja cocok buat kamu yang suka nonton netflix n chill Rp 2300000 bulan Tipe 4 yang ini tipe paling cozy ada extra Smart TV free netflix cermin meja dan lemarinya pun lebih besar Rp 2400000 bulan Harga sudah termasuk listrik parkir air dan wifi yaaa\n\nBerikut alamat lengkap kami ya kak:\n\nAwany Coliving\nRuko Mutiara Taman Palem Blok B5 no 8 Cengkareng Tim Kecamatan Cengkareng Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11730 Indonesia\n https maps google com maps z 7 q 6 140595 106 732684 \n\nSamping Mall Taman Palem\n\nKos Campur\nDilarang membawa hewan",
-      "building_geolocation": {
-        "latitude": -6.140571,
-        "longitude": 106.732612
-      },
-      "housing_price": 2000000,
-      "owner_name": "",
-      "owner_whatsapp": "",
-      "owner_phone_number": "",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/432758434_984474533481108_2903156630021513627_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNjAweDEyMDAuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D100%26_nc_ohc%3DOd2Rkd2kpGkQ7kNvgEdajkR%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzMzMjA5MjYxNzMwNTM1NDc0Mg%253D%253D.2-ccb7-5%26oh%3D00_AYC1YqT-hIiKy1WDMWUYTnmumC-ZeUYBQ9-FOlBoLXrj0A%26oe%3D66968CF6%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 901,
-      "building_title": "Hunian Ruko Mutiara Taman Palem Blok B5 no 8 Cengkareng Tim Kecamatan Cengkareng Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11730 Indonesia",
-      "building_address": "Ruko Mutiara Taman Palem Blok B5 no 8 Cengkareng Tim Kecamatan Cengkareng Kota Jakarta Barat Daerah Khusus Ibukota Jakarta 11730 Indonesia",
-      "building_facility": [
-        "Kamar dinding bata (bukan sekat gipsum) Parkir 1 mobil / motor aman jalan luas Area bebas banjir kendaraan aman dari terendam Listrik PLN ( tidak pakai token lagi) Unlimited WIFI Internet Lingkungan AMAN CCTV 24 jam satpam & portal komplek AC 24 jam tidak perlu repot maintenance AC sendiri Netflix & youtube di Rung tamu Nobar layar lebar area bersama yang luas & nyaman Air minum dispenser panas dingin Shower dalam aerator tekanan tinggi Fasilitas Dapur bersih & lengkap Fasilitas Microwave kulkas kompor gas ricecooker Fasilitas Co-working = meja belajar kerja meeting luas & nyaman Fasilitas Ruang serbaguna ibadah chill game relax healing Fasilitas Smoking & BBQ Terrace area merokok / bersantai Fasilitas shaft sampah agar tidak bau & bersih Fasilitas area cuci jemur bersama Fasilitas Rooftop untuk olahraga Free DELIVERY laundry katering obat & sembako Penerimaan Paket di lobby"
-      ],
-      "building_proximity": ["Samping Mall Taman Palem"],
-      "building_description": "Aku info fasilitas & apa yang kaka dapet dulu ya , berikut fasilitas kita:\n\nKamar dinding bata (bukan sekat gipsum)\nParkir 1 mobil / motor, aman, jalan luas\nArea bebas banjir, kendaraan aman dari terendam\nListrik PLN ( tidak pakai token lagi)\nUnlimited WIFI Internet\nLingkungan AMAN, CCTV 24 jam, satpam & portal komplek\nAC 24 jam, tidak perlu repot maintenance AC sendiri\nNetflix & youtube di Rung tamu\nNobar layar lebar, area bersama yang luas & nyaman\nAir minum dispenser panas dingin\nShower dalam aerator tekanan tinggi\nFasilitas Dapur bersih & lengkap\nFasilitas Microwave, kulkas, kompor, gas, ricecooker\nFasilitas Co-working = meja belajar, kerja, meeting luas & nyaman\nFasilitas Ruang serbaguna, ibadah, chill, game, relax, healing\nFasilitas Smoking & BBQ Terrace, area merokok / bersantai\nFasilitas shaft sampah agar tidak bau & bersih\nFasilitas area cuci jemur bersama\nFasilitas Rooftop untuk olahraga\nFree DELIVERY laundry, katering, obat & sembako**\nPenerimaan Paket di lobby\n\nKosan awany ada empat tipe kamar yaaa... *Tipe 1*\nIni tipe paling murah, cocok buat kamu yang lagi hemat budget! (hanya kasur, lemari, dan kamar mandi dalam) Rp 2.000.000/bulan Rp 750.000/minggu  Rp 130.000/malam (1 orang) Rp 150.000/malam (2 orang) *Tipe 2*\nExtra meja dan cermin🧖🏻‍♀️🪞 Cocok buat kamu yang suka nyimpen barang barang kecil dan menata diri... Rp 2.200.000/bulan *Tipe 3*\nExtra Smart TV (free akun netflix), cermin, dan meja harganya cuman beda dikit aja, cocok buat kamu yang suka nonton netflix n chill 🍿  Rp 2.300.000/bulan *Tipe 4*\nyang ini tipe paling cozy, ada extra Smart TV (free netflix), cermin, meja, dan lemarinya pun lebih besar ✨ Rp 2.400.000/bulan *Harga sudah termasuk listrik, parkir, air, dan wifi yaaa* 🤗\n\nBerikut alamat lengkap kami ya kak:\n\nAwany Coliving\nRuko Mutiara Taman Palem Blok B5 no. 8, Cengkareng Tim., Kecamatan Cengkareng, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11730, Indonesia.\n https://maps.google.com/maps?z=7&q=-6.140595,106.732684 \n\nSamping Mall Taman Palem 👌\n\n*Kos Campur\n**Dilarang membawa hewan",
-      "building_geolocation": {
-        "latitude": -6.140571,
-        "longitude": 106.732612
-      },
-      "housing_price": 2000000,
-      "owner_name": "",
-      "owner_whatsapp": "",
-      "owner_phone_number": "",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/432758434_984474533481108_2903156630021513627_n.jpg%3Fstp%3Ddst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNjAweDEyMDAuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D100%26_nc_ohc%3DOd2Rkd2kpGkQ7kNvgEdajkR%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzMyNzc0NDA5NzQ0NjEyODEzOQ%253D%253D.2-ccb7-5%26oh%3D00_AYC1YqT-hIiKy1WDMWUYTnmumC-ZeUYBQ9-FOlBoLXrj0A%26oe%3D66968CF6%26_nc_sid%3Df93d1f"
-      ],
-      "isReady": false
-    },
-    {
-      "index": 902,
-      "building_title": "Hunian Jalan Menteng Atas Selatan No 16A Setiabudi Jakarta Selatan",
+      "building_title": "Kost Aviso Living",
       "building_address": "Jalan Menteng Atas Selatan No 16A Setiabudi Jakarta Selatan",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "Dekat ke Sudirman & Kuningan Jakarta"
+      ],
+      "building_facility_string": "",
       "building_facility": [
         "AC",
         "kamar mandi dalam",
@@ -29436,47 +29325,49 @@
         "dapur umum",
         "rooftop"
       ],
-      "building_proximity": [
-        "Dekat ke Sudirman & Kuningan Jakarta"
+      "building_description": "Kost Aviso Living\n\nDekat ke Sudirman & Kuningan Jakarta\nAC\nKamar mandi dalam\nWifi\nSmart tv bisa netflix\nDapur umum\nRooftop\n\nHarga: 2700000\nAlamat: Kost aviso living Jalan Menteng Atas Selatan No 16A Setiabudi Jakarta Selatan\n\nCP: 081288935889\n\nKhusus Perempuan\nDilarang membawa hewan\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
+      "housing_price": 2700000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081288935889",
+      "owner_whatsapp": "081288935889",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/423717108_950200220241873_7311845227439411677_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDY2eDEwNjYuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3DD0G8qhh-90MQ7kNvgFA7sUb%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzI5NjUxODE3OTMyMDc3OTIwNg%253D%253D.2-ccb7-5%26oh%3D00_AYD-9iFTAa13kAcCV1RmIgefZ-gLhNco7SjQnMZkderAMQ%26oe%3D669672D6%26_nc_sid%3Df93d1f"
       ],
-      "building_description": "Kost Aviso Living\nKhusus wanita\nDekat ke Sudirman & Kuningan Jakarta\nAC, kamar mandi dalam, wifi, smart tv bisa netflix, dapur umum, rooftop\nHarga: 2700000\nAlamat: Kost aviso living Jalan Menteng Atas Selatan No 16A Setiabudi Jakarta Selatan\nCP: 081288935889\nKhusus Perempuan\nDilarang membawa hewan\nWASPADA TERHADAP PENIPUAN\nIngat tetap berhati-hati terhadap penipuan Pastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran",
+      "isEdited": false,
+      "index": 898,
       "building_geolocation": {
         "latitude": -6.2142753,
         "longitude": 106.8412901
       },
-      "housing_price": 2700000,
-      "owner_name": "",
-      "owner_whatsapp": "081288935889",
-      "owner_phone_number": "081288935889",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/423717108_950200220241873_7311845227439411677_n.jpg%3Fstp%3Ddst-jpg_e15%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDY2eDEwNjYuc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3DD0G8qhh-90MQ7kNvgFA7sUb%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzI5NjUxODE3OTMyMDc3OTIwNg%253D%253D.2-ccb7-5%26oh%3D00_AYD-9iFTAa13kAcCV1RmIgefZ-gLhNco7SjQnMZkderAMQ%26oe%3D669672D6%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 903,
-      "building_title": "Hunian Jalan Otista III Dalam No 21 Rt 002 Rw 001 Kel Cipinang Cempedak Kec Jatinegara Jakarta Timur",
+      "building_title": "Kontrakan Cipinang Jalan Otista ",
       "building_address": "Jalan Otista III Dalam No 21 Rt 002 Rw 001 Kel Cipinang Cempedak Kec Jatinegara Jakarta Timur",
-      "building_facility": [
-        "Kamar Tidur Kamar Mandi Pribadi Dapur Pribadi Exhaust Van Tempat Parkir Motor Listrik Token Free Air"
-      ],
+      "building_proximity_string": "",
       "building_proximity": [
         "200 m from Halte Busway Kebon Nanas 400 m from Tol Kebon Nanas 3 km from Stasiun Tebet Jalan masuk luas bisa masuk mobil Lokasi strategis dekat pasar dekat jalan raya akses angkutan umum banyak"
       ],
-      "building_description": "Kontrakan petak ditengah kota cocok untuk mahasiswa mahasiswi karyawan karyawati pasutri.\n\nTersedia hanya 3 kamar available dengan lingkungan aman dan nyaman.\n\nGedung dan bangunan baru.\n\nFasilitas\nKamar Tidur\nKamar Mandi Pribadi\nDapur Pribadi\nExhaust Van\nTempat Parkir Motor\nListrik Token\nFree Air \n\nAlamat Jalan Otista III Dalam No 21 Rt 002 Rw 001 Kel Cipinang Cempedak Kec Jatinegara Jakarta Timur\n\n200 m from Halte Busway Kebon Nanas \n400 m from Tol Kebon Nanas\n3 km from Stasiun Tebet\nJalan masuk luas bisa masuk mobil\nLokasi strategis dekat pasar dekat jalan raya akses angkutan umum banyak\n\nInfo lebih lanjut hubungi +62 8119955554 (WA Available)\n\nHarga 1800000\n\nKos Campur\nDilarang membawa hewan\nWASPADA TERHADAP PENIPUAN\nIngat tetap berhati hati terhadap penipuan Pastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "building_facility_string": "",
+      "building_facility": [
+        "Kamar Tidur Kamar Mandi Pribadi Dapur Pribadi Exhaust Van Tempat Parkir Motor Listrik Token Free Air"
+      ],
+      "building_description": "Kontrakan petak ditengah kota cocok untuk mahasiswa mahasiswi karyawan karyawati pasutri.\nTersedia hanya 3 kamar available dengan lingkungan aman dan nyaman.\nGedung dan bangunan baru.\n\nFasilitas\nKamar Tidur\nKamar Mandi Pribadi\nDapur Pribadi\nExhaust Van\nTempat Parkir Motor\nListrik Token\nFree Air \n\nAlamat Jalan Otista III Dalam No 21 Rt 002 Rw 001 Kel Cipinang Cempedak Kec Jatinegara Jakarta Timur\n\n200 m from Halte Busway Kebon Nanas \n400 m from Tol Kebon Nanas\n3 km from Stasiun Tebet\nJalan masuk luas bisa masuk mobil\nLokasi strategis dekat pasar dekat jalan raya akses angkutan umum banyak\n\nInfo lebih lanjut hubungi +62 8119955554 (WA Available)\n\nHarga 1800000\n\nKos Campur\nDilarang membawa hewan\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 1800000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "+62 8119955554",
+      "owner_whatsapp": "+62 8119955554",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/423248587_949447153650513_248797075461305157_n.jpg%3Fstp%3Dc0.94.1474.1861a_cp6_dst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDc0eDIwNDguc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3DWIqWkcIXtI0Q7kNvgEDqXtg%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzI5MDc4MDQxNzQ2MDQzNTQ0OQ%253D%253D.2-ccb7-5%26oh%3D00_AYD1EttVZ76tfWfh1U99AMO9mkMwYN5S52ulOiTlK2jwjA%26oe%3D669696C9%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 899,
       "building_geolocation": {
         "latitude": -6.2314765,
         "longitude": 106.8754582
       },
-      "housing_price": 1800000,
-      "owner_name": "",
-      "owner_whatsapp": "+62 8119955554",
-      "owner_phone_number": "+62 8119955554",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t39.30808-6/423248587_949447153650513_248797075461305157_n.jpg%3Fstp%3Dc0.94.1474.1861a_cp6_dst-jpg_e35_s1080x1080_sh0.08%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDc0eDIwNDguc2RyLmYzMDgwOCJ9%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3DWIqWkcIXtI0Q7kNvgEDqXtg%26edm%3DAJgCAUAAAAAA%26ccb%3D7-5%26ig_cache_key%3DMzI5MDc4MDQxNzQ2MDQzNTQ0OQ%253D%253D.2-ccb7-5%26oh%3D00_AYD1EttVZ76tfWfh1U99AMO9mkMwYN5S52ulOiTlK2jwjA%26oe%3D669696C9%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     }
   ]
