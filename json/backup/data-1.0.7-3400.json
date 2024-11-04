@@ -28278,9 +28278,16 @@
       "isReady": false
     },
     {
-      "index": 862,
-      "building_title": "Hunian ",
-      "building_address": "",
+      "building_title": "Manna Residence",
+      "building_address": "Jl. A.M Sangaji No.14, RW.6, Petojo Utara, Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10130, Indonesia",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "Jakarta Pusat",
+        "Sewa Kos",
+        "lokasi strategis",
+        "mudah kendaraan umum"
+      ],
+      "building_facility_string": "",
       "building_facility": [
         "Kamar : ranjang-seprai-bantal",
         "meja-kursi",
@@ -28297,25 +28304,21 @@
         "parkir motor",
         "akses pintu 24 jam."
       ],
-      "building_proximity": [
-        "Jakarta Pusat",
-        "Sewa Kos",
-        "lokasi strategis",
-        "mudah kendaraan umum"
-      ],
       "building_description": "Sewa Kos Jakarta Pusat, Manna Residence, Kamar mandi dalam, harga terjangkau, lokasi strategis, mudah kendaraan umum.\nFasilitas kos :\nKamar :\nranjang-seprai-bantal\nmeja-kursi\n lemari baju\nkamar mandi\nWifii\nAC\nHexos fan.\nUmum :\ndapur (gas dan air minum disediakan terbatas, alat masak sumum, piring-gelas-sendok)\nruang tamu-TV berkabel\nKulkas\nPenjaga kos 24jam+CCTV\nparkir motor\nakses pintu 24 jam.\nHarga kos sudah termasuk laundry, belum termasuk listrik. Listrik menggunakan token.",
-      "building_geolocation": {
-        "latitude": 0,
-        "longitude": 0
-      },
       "housing_price": 1700000,
-      "owner_name": "",
-      "owner_whatsapp": "082112525073",
-      "owner_phone_number": "082112525073",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "082112525073",
+      "owner_whatsapp": "082112525073",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122646444_382827992766672_9153309369388422740_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi41MDZ4NTA2LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D100%26_nc_ohc%3DEKnxiK_tnroQ7kNvgFWxsnO%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyODkyNTA1NDkyMDk2NjExOA%253D%253D.2-ccb7-5%26oh%3D00_AYCeoevXdxxTRCBWzigc0XfchTCaN0hvaYRCmM8ZZ_06mA%26oe%3D669677F2%26_nc_sid%3Df93d1f"
       ],
+      "isEdited": false,
+      "index": 862,
+      "building_geolocation": {
+        "latitude": "-6.16691",
+        "longitude": "106.813773"
+      },
       "isReady": false
     },
     {
@@ -28365,10 +28368,9 @@
       "isReady": false
     },
     {
-      "index": 865,
-      "building_title": "",
-      "building_address": "",
-      "building_facility": [],
+      "building_title": "Kost Saikin 7",
+      "building_address": "Jl. H. Saikin No.7, RT.15/RW.8, Pd. Pinang, Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12310, Indonesia",
+      "building_proximity_string": "",
       "building_proximity": [
         "200 m ke jalan raya Pondok Pinang dilewati kendaraan umum",
         "300 m ke Carrefour",
@@ -28377,25 +28379,37 @@
         "250 m ke halte busway jurusan lb Bulus ke Harmoni",
         "350 m halte MRT"
       ],
-      "building_description": "200 m ke jalan raya Pondok Pinang dilewati kendaraan umum\n300 m ke Carrefour\n500 m ke RS Pondok Indah\n1 km arah Pondok Indah Mall\n250 m ke halte busway jurusan lb Bulus ke Harmoni\n350 m halte MRT\n\nHubungiWhatsapp\n0811961299\n\nHarga 700000/bulan",
-      "building_geolocation": {
-        "latitude": 0,
-        "longitude": 0
-      },
+      "building_facility_string": "",
+      "building_facility": [],
+      "building_description": "Kost saikin 7\n\n200 m ke jalan raya Pondok Pinang dilewati kendaraan umum\n300 m ke Carrefour\n500 m ke RS Pondok Indah\n1 km arah Pondok Indah Mall\n250 m ke halte busway jurusan lb Bulus ke Harmoni\n350 m halte MRT\n\nHubungiWhatsapp\n0811961299\n\nHarga 700000/bulan",
       "housing_price": 700000,
-      "owner_name": "",
-      "owner_whatsapp": "0811961299",
-      "owner_phone_number": "0811961299",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "0811961299",
+      "owner_whatsapp": "0811961299",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122547658_353947885711017_7781595559370188016_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi41MTJ4NTEyLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3DN91u7dWHO_wQ7kNvgHvwdyP%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNzgxOTA5OTUyNTM2NTE1Mw%253D%253D.2-ccb7-5%26oh%3D00_AYAau4coTF_t5V8ouPmmsj_ndamg9DFd2mfftc-XPAzdjQ%26oe%3D6696A1BA%26_nc_sid%3Df93d1f"
       ],
+      "isEdited": false,
+      "index": 865,
+      "building_geolocation": {
+        "latitude": "-6.284793",
+        "longitude": "106.769214"
+      },
       "isReady": false
     },
     {
-      "index": 866,
-      "building_title": "Hunian ",
-      "building_address": "",
+      "building_title": "ARRA Residence",
+      "building_address": "Jl. Cipinang Elok II No.6 blok BK 24, RT.6/RW.10, Cipinang Muara, Jatinegara, East Jakarta City, Jakarta 13420",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "Jakarta Timur",
+        "Casablanca",
+        "Rawamangun",
+        "Kelender",
+        "Pulo Gadung"
+      ],
+      "building_facility_string": "",
       "building_facility": [
         "Kamar kos bulanan/tahunan type studio (single bed) dengan AC",
         "Bangunan baru full Furnised",
@@ -28407,103 +28421,109 @@
         "Kamar Mandi Dalam dengan shower",
         "Fasilitas Olah Raga (badminton)"
       ],
-      "building_proximity": [
-        "Jakarta Timur",
-        "Casablanca",
-        "Rawamangun",
-        "Kelender",
-        "Pulo Gadung"
-      ],
       "building_description": "ARRA Residence\n\nAkan tersedia 1 unit kosong setelah tanggal 20 Mei 2019\n\nHunian nyaman dan asri berlokasi di Jakarta Timur\n\nLokasi dekat dengan Casablanca, Rawamangun, Kelender dan Pulo Gadung\n\nTersedia kamar kos bulanan/tahunan type studio (single bed) dengan AC\n\nBangunan baru full Furnised\n\nParkir Luas\n\nPenjagaan 24 jam\n\nDapur bersama\n\nCCTV\n\nWifi\n\nKamar Mandi Dalam dengan shower\n\nFasilitas Olah Raga (badminton)\n\nHarga sewa : Rp 2.000.000\n\nHarga sudah termasuk Parkir Motor namun untuk Mobil dikenakan tambahan 500rb per bulan.",
-      "building_geolocation": {
-        "latitude": 0,
-        "longitude": 0
-      },
       "housing_price": 2000000,
-      "owner_name": "",
-      "owner_whatsapp": "081311822822",
-      "owner_phone_number": "081311822822",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081311822822",
+      "owner_whatsapp": "081311822822",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122414414_129059168656853_4267704885774131979_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi42Njd4NjY3LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D105%26_nc_ohc%3DH8Jc9r9-T2wQ7kNvgHncde1%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNzcyNjg5MjIwNjIzMzU5NQ%253D%253D.2-ccb7-5%26oh%3D00_AYCzhhL3ELysTsT9vMd6xt_qODA4tayk_op497jhcWMn6Q%26oe%3D66969702%26_nc_sid%3Df93d1f"
       ],
+      "isEdited": false,
+      "index": 866,
+      "building_geolocation": {
+        "latitude": "-6.222105",
+        "longitude": "106.888068"
+      },
       "isReady": false
     },
     {
-      "index": 867,
-      "building_title": "Hunian Menteng Jakarta Pusat Jakarta D.K.I",
+      "building_title": "Kost Exclusive di Matraman",
       "building_address": "Menteng Jakarta Pusat Jakarta D.K.I",
+      "building_proximity_string": "",
+      "building_proximity": ["Matraman Jakarta Pusat"],
+      "building_facility_string": "",
       "building_facility": [
         "Spring Bed Lemari AC Split Kamar mandi dalam dilengkapi dengan air panas TV LED Free Wifi CCTV 24 jam Parkir Mobil"
       ],
-      "building_proximity": ["Matraman Jakarta Pusat"],
-      "building_description": "Kost Exclusive di Matraman - Jakarta Pusat\n\nBangunan Baru dengan fasilitas :\n\n- Spring Bed\n- Lemari\n- AC Split\n- Kamar mandi dalam dilengkapi dengan air panas\n- TV LED\n- Free Wifi\n- CCTV 24 jam\n- Parkir Mobil\n\nLokasi Aman Tenang Nyaman dan sangat Strategis\nMenteng Jakarta Pusat Jakarta D.K.I",
+      "building_description": "Kost Exclusive di Matraman - Jakarta Pusat\n\nBangunan Baru dengan fasilitas :\n\n- Spring Bed\n- Lemari\n- AC Split\n- Kamar mandi dalam dilengkapi dengan air panas\n- TV LED\n- Free Wifi\n- CCTV 24 jam\n- Parkir Mobil\n\nLokasi Aman Tenang Nyaman dan sangat Strategis\nMenteng Jakarta Pusat Jakarta D.K.I\n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 1500000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081317112396",
+      "owner_whatsapp": "081317112396",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122490013_402111650801194_3561853111866959089_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi41NjN4NTYzLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D110%26_nc_ohc%3DR5UZcb8p6jYQ7kNvgENRZkP%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNzYzNTg3MzQ1MjE1Mzg5Mw%253D%253D.2-ccb7-5%26oh%3D00_AYB3-78OCdoF49I1riPCKzF5-DIYHI27JGWVHNbdPuxpxg%26oe%3D66966EB1%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 867,
       "building_geolocation": {
         "latitude": -6.1937297,
         "longitude": 106.8392111
       },
-      "housing_price": 1500000,
-      "owner_name": "",
-      "owner_whatsapp": "081317112396",
-      "owner_phone_number": "081317112396",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122490013_402111650801194_3561853111866959089_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi41NjN4NTYzLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D110%26_nc_ohc%3DR5UZcb8p6jYQ7kNvgENRZkP%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNzYzNTg3MzQ1MjE1Mzg5Mw%253D%253D.2-ccb7-5%26oh%3D00_AYB3-78OCdoF49I1riPCKzF5-DIYHI27JGWVHNbdPuxpxg%26oe%3D66966EB1%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 868,
       "building_title": "",
       "building_address": "",
+      "building_proximity_string": "",
+      "building_proximity": [],
+      "building_facility_string": "",
       "building_facility": [
         "DIKONTRAKAN RUMAH posisi di bawah kamar mandi dalam parkir motor bisa bulanan atau pun tahunan"
       ],
-      "building_proximity": [],
-      "building_description": "DIKONTRAKAN RUMAH posisi di bawah kamar mandi dalam parkir motor bisa bulanan atau pun tahunan  Harga bersahabat  bisa nego  silahkan kepo2 ya WA aja 081510295222 mahendra\nHarga 18000000 bulan",
-      "building_geolocation": {
-        "latitude": 0,
-        "longitude": 0
-      },
+      "building_description": "DIKONTRAKAN RUMAH posisi di bawah kamar mandi dalam parkir motor bisa bulanan atau pun tahunan  Harga bersahabat  bisa nego  silahkan kepo2 ya \n\nWA 081510295222 mahendra\nHarga 18000000 bulan\n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
       "housing_price": 18000000,
-      "owner_name": "",
-      "owner_whatsapp": "081510295222",
-      "owner_phone_number": "081510295222",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081510295222",
+      "owner_whatsapp": "081510295222",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122531106_816056889167983_3186501334583287259_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D107%26_nc_ohc%3DkX6gzgH8jL4Q7kNvgETgQWU%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNzU0NzYzOTUyMzEzMTgxOA%253D%253D.2-ccb7-5%26oh%3D00_AYA_OBJErHwRade5xbdePbud16cQQToBKf4dN_mjmlRCzQ%26oe%3D669693F8%26_nc_sid%3Df93d1f"
       ],
-      "isReady": false
-    },
-    {
-      "index": 869,
-      "building_title": "Hunian ",
-      "building_address": "",
-      "building_facility": [
-        "- halaman \n- ruang tamu \n- 1 kamar tidur \n- dapur \n- kamar mandi \n- kloset duduk + shower \n- PLN menggunakan voucher \n- PAM"
-      ],
-      "building_proximity": [
-        "Dekat dengan sekolah dan pasar"
-      ],
-      "building_description": "Kontrakan Tanjung Priok\n\nfasilitas :\n\n- halaman , ruang tamu, 1 kamar tidur, dapur, kamar mandi\n\n- kloset duduk + shower\n\n- PLN menggunakan voucher\n\n- PAM\n\n- Dekat dengan sekolah dan pasar\n\nPosisi kontrakan yang kosong berada di belakang, masuk dari pagar samping.\n\nHarga Rp.1.500.000/bulan diluar tagihan air dan listrik\n\nhubungi : Martin 085890286745",
+      "isEdited": false,
+      "index": 868,
       "building_geolocation": {
         "latitude": 0,
         "longitude": 0
       },
-      "housing_price": 1500000,
-      "owner_name": "",
-      "owner_whatsapp": "085890286745",
-      "owner_phone_number": "085890286745",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122430399_800180344138035_7448940186039136281_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi40Njh4NDY4LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D103%26_nc_ohc%3DcCIAQnubh_8Q7kNvgFzu8_p%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNzU0NjEyMDQ4ODkzMDk2Mg%253D%253D.2-ccb7-5%26oh%3D00_AYB4SMEESSO57ekEO3IZq4mJdzDUf57cGqI786cjCxsbvg%26oe%3D6696A3D5%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 870,
+      "building_title": "Kontrakan Tanjung Priok",
+      "building_address": "Tanjung Priok",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "Dekat dengan sekolah dan pasar"
+      ],
+      "building_facility_string": "",
+      "building_facility": [
+        "- halaman \n- ruang tamu \n- 1 kamar tidur \n- dapur \n- kamar mandi \n- kloset duduk + shower \n- PLN menggunakan voucher \n- PAM"
+      ],
+      "building_description": "Kontrakan Tanjung Priok\n\nFasilitas :\n- halaman , ruang tamu, 1 kamar tidur, dapur, kamar mandi\n- kloset duduk + shower\n- PLN menggunakan voucher\n- PAM\n- Dekat dengan sekolah dan pasar\n\nPosisi kontrakan yang kosong berada di belakang, masuk dari pagar samping.\n\nHarga Rp.1.500.000/bulan diluar tagihan air dan listrik\n\nhubungi : Martin 085890286745\n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 1500000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "085890286745",
+      "owner_whatsapp": "085890286745",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122430399_800180344138035_7448940186039136281_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi40Njh4NDY4LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D103%26_nc_ohc%3DcCIAQnubh_8Q7kNvgFzu8_p%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNzU0NjEyMDQ4ODkzMDk2Mg%253D%253D.2-ccb7-5%26oh%3D00_AYB4SMEESSO57ekEO3IZq4mJdzDUf57cGqI786cjCxsbvg%26oe%3D6696A3D5%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 869,
+      "building_geolocation": {
+        "latitude": 0,
+        "longitude": 0
+      },
+      "isReady": false
+    },
+    {
       "building_title": "Hunian Jl Kebon Jeruk XV no 43 Jakarta Barat",
       "building_address": "Jl Kebon Jeruk XV no 43 Jakarta Barat",
+      "building_proximity_string": "",
+      "building_proximity": ["dekat kemana-mana"],
+      "building_facility_string": "",
       "building_facility": [
         "kamar mandi dalam",
         "lemari",
@@ -28512,29 +28532,27 @@
         "Listrik token",
         "Keamanan terjamin"
       ],
-      "building_proximity": ["dekat kemana-mana"],
-      "building_description": "Tersedia kamar kos baru renovasi dengan kondisi baru\n\nFULL FURNISHED\n\nSudah termasuk :\n\n- kamar mandi dalam\n- lemari\n- kasur\n- meja rias\n\nListrik token\n\nLokasi strategis dekat kemana-mana\n\nKeamanan terjamin\n\nTinggal masuk langsung bisa ditinggali\n\nLokasi\nJl Kebon Jeruk XV no 43 Jakarta Barat\n\nHarga sewa : Rp 2.000.000",
+      "building_description": "Tersedia kamar kos\n\nFasilitas:\n- FULL FURNISHED\n- kamar mandi dalam\n- lemari\n- kasur\n- meja rias\n\nListrik token\nLokasi strategis dekat kemana-mana\nKeamanan terjamin\nTinggal masuk langsung bisa ditinggali\n\nLokasi\nJl Kebon Jeruk XV no 43 Jakarta Barat\n\nHarga sewa : Rp 2.000.000\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 2000000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "087724240297",
+      "owner_whatsapp": "087724240297",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122398260_210909433791304_3131892487470430192_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D104%26_nc_ohc%3Duwnr--Lu2csQ7kNvgExZnyx%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNzUzODYzNzM4MDY5NTUzNA%253D%253D.2-ccb7-5%26oh%3D00_AYBwb6O3La7pfoemx1YK8vYZADhaAoGZvOHHnMPtKY3RwQ%26oe%3D66968F1D%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 870,
       "building_geolocation": {
         "latitude": -6.1533172,
         "longitude": 106.8207633
       },
-      "housing_price": 2000000,
-      "owner_name": "",
-      "owner_whatsapp": "087724240297",
-      "owner_phone_number": "087724240297",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122398260_210909433791304_3131892487470430192_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D104%26_nc_ohc%3Duwnr--Lu2csQ7kNvgExZnyx%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNzUzODYzNzM4MDY5NTUzNA%253D%253D.2-ccb7-5%26oh%3D00_AYBwb6O3La7pfoemx1YK8vYZADhaAoGZvOHHnMPtKY3RwQ%26oe%3D66968F1D%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 871,
       "building_title": "Hunian Jalan Jaya Mandala 1 No 5 Kecamatan Tebet",
-      "building_address": "Jalan Jaya Mandala 1 No 5 Kecamatan Tebet",
-      "building_facility": [
-        "AC Bagi yg mau\nKipas Angin\nKamar Mandi Di Tiap Lantainya\nRuang Tamu Nyaman\nLemari Baju\nTempat Tidur Empuk Berikut Bantal Guling\nMeja Kecil\nTempat Penyimpanan Diatas Langit2 Di Tiap Kamar\nAda Dapur Untuk Bersama\nAda Mesin Cuci Untuk Barengan\nAda Kulkas Untuk Barengan\nAda Kompor Gas\nAda rice cooker\nAda tempat cuci + setrikaannya\nAda tempat jemuran / Mau Laundry Jg Bisa"
-      ],
+      "building_address": "Jl. Jaya Mandala I No.1 no 5, RT.8/RW.1, Menteng Dalam, Kec. Tebet, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12870, Indonesia",
+      "building_proximity_string": "",
       "building_proximity": [
         "Dekat Dengan Halte Busway",
         "Trans 7",
@@ -28542,48 +28560,59 @@
         "Mampang",
         "Pancoran\nLokasi Jalan Masuknya Dekat Rumah Sakit Medistra Gatot Subroto"
       ],
-      "building_description": "Terima Kost 1 KAMAR HANYA BS 1 ORANG, KHUSUS WANITA BAIK2  TIDAK BEBAS  Murahh Jalan Jaya Mandala 1 No 5 Jalan Masuknya Dekat Rumah Sakit MEDISTRA yg HARGANYA SUDAH TERMASUK LISTRIK DAN AIR, Kostan Bersih Aman dan Nyaman 3 Lantai, 8 Kamar, Kamar Mandi Setiap Lantai Ada 1\nLokasi Sangat2 Strategis Dekat Dengan Halte Busway, Trans 7, Stasiun Tebet, Mampang, Pancoran\nFasilitas Sangat2 Lengkapp Kapp :\nAC Bagi yg mau\nKipas Angin\nHARGA SUDAH TERMASUK LISTRIK DAN AIR  Tgl Tidur Aja Gk Perlu Mikirin Listrik dan Air Lagi \nKamar Mandi Di Tiap Lantainya\nRuang Tamu Nyaman\nLemari Baju\nTempat Tidur Empuk Berikut Bantal Guling\nMeja Kecil\nTempat Penyimpanan Diatas Langit2 Di Tiap Kamar\nAda Dapur Untuk Bersama\nAda Mesin Cuci Untuk Barengan\nAda Kulkas Untuk Barengan\nAda Kompor Gas\nAda rice cooker\nAda tempat cuci + setrikaannya\nAda tempat jemuran / Mau Laundry Jg Bisa\nHarga Untuk NON Ac : Rp 900ribu Pass Termurahh\nHarga Untuk AC : Rp 1,400jt Termurahh\nApabila Berminat Mau Lihat Langsung / bertanya2 bs Hubungi Whatsapp / Telepon / SMS Saja Yaaa Dengan Bapak Pratignyo; Lokasi Tepatnya Di Jalan Jaya Mandala 1 No 5 Kecamatan Tebet, Posisi Jalan Masuknya Dekat Rumah Sakit Medistra Gatot Subroto\nHubungi :0811907478 Pratignyo Wa Only",
+      "building_facility_string": "",
+      "building_facility": [
+        "AC Bagi yg mau\nKipas Angin\nKamar Mandi Di Tiap Lantainya\nRuang Tamu Nyaman\nLemari Baju\nTempat Tidur Empuk Berikut Bantal Guling\nMeja Kecil\nTempat Penyimpanan Diatas Langit2 Di Tiap Kamar\nAda Dapur Untuk Bersama\nAda Mesin Cuci Untuk Barengan\nAda Kulkas Untuk Barengan\nAda Kompor Gas\nAda rice cooker\nAda tempat cuci + setrikaannya\nAda tempat jemuran / Mau Laundry Jg Bisa"
+      ],
+      "building_description": "Terima Kost 1 KAMAR HANYA BS 1 ORANG, KHUSUS WANITA BAIK2  TIDAK BEBAS  Murahh Jalan Jaya Mandala 1 No 5 Jalan Masuknya Dekat Rumah Sakit MEDISTRA yg HARGANYA SUDAH TERMASUK LISTRIK DAN AIR, Kostan Bersih Aman dan Nyaman 3 Lantai, 8 Kamar, Kamar Mandi Setiap Lantai Ada 1\n\nLokasi Sangat2 Strategis \nDekat Dengan Halte Busway\nTrans 7\nStasiun Tebet\nMampang\nPancoran\n\nFasilitas:\nAC Bagi yg mau\nKipas Angin\nHARGA SUDAH TERMASUK LISTRIK DAN AIR  Tgl Tidur Aja Gk Perlu Mikirin Listrik dan Air Lagi \nKamar Mandi Di Tiap Lantainya\nRuang Tamu Nyaman\nLemari Baju\nTempat Tidur Empuk Berikut Bantal Guling\nMeja Kecil\nTempat Penyimpanan Diatas Langit2 Di Tiap Kamar\nAda Dapur Untuk Bersama\nAda Mesin Cuci Untuk Barengan\nAda Kulkas Untuk Barengan\nAda Kompor Gas\nAda rice cooker\nAda tempat cuci + setrikaannya\nAda tempat jemuran / Mau Laundry Jg Bisa\n\nHarga Untuk NON Ac : Rp 900ribu Pass Termurahh\nHarga Untuk AC : Rp 1,400jt Termurahh\n\nApabila Berminat Mau Lihat Langsung / bertanya2 bs Hubungi Whatsapp / Telepon / SMS Saja Yaaa Dengan Bapak Pratignyo; \n\nLokasi Tepatnya Di Jalan Jaya Mandala 1 No 5 Kecamatan Tebet, Posisi Jalan Masuknya Dekat Rumah Sakit Medistra Gatot Subroto\n\nHubungi :0811907478 Pratignyo Wa Only\n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 900000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "0811907478",
+      "owner_whatsapp": "0811907478",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122372495_3432394356849827_1301385470133201120_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D111%26_nc_ohc%3DEm9QEsozCYAQ7kNvgHNzQhz%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNzA5Mjg4NjAyMDM4MTc3NQ%253D%253D.2-ccb7-5%26oh%3D00_AYCESYepagDixG3zhZrspvoBlNvq7uNqktBEKLkqrekhIA%26oe%3D669670B6%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 871,
       "building_geolocation": {
         "latitude": -6.2382934,
         "longitude": 106.8396882
       },
-      "housing_price": 900000,
-      "owner_name": "",
-      "owner_whatsapp": "0811907478",
-      "owner_phone_number": "0811907478",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122372495_3432394356849827_1301385470133201120_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D111%26_nc_ohc%3DEm9QEsozCYAQ7kNvgHNzQhz%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNzA5Mjg4NjAyMDM4MTc3NQ%253D%253D.2-ccb7-5%26oh%3D00_AYCESYepagDixG3zhZrspvoBlNvq7uNqktBEKLkqrekhIA%26oe%3D669670B6%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 872,
       "building_title": "Hunian Jl Gajah Mada 156 G Z RT001 RW008 Keagungan Taman Sari Jakarta Barat",
       "building_address": "Jl Gajah Mada 156 G Z RT001 RW008 Keagungan Taman Sari Jakarta Barat",
+      "building_proximity_string": "",
+      "building_proximity": [],
+      "building_facility_string": "",
       "building_facility": [
         "AC\nFree Wifi\nKasur\nRanjang\nMeja\nKursi\nLemari\nKamar Mandi Dalam"
       ],
-      "building_proximity": [],
-      "building_description": "Terima sewa kos pria dan wanita pasutri juga bisa\n\nfasilitas :\n\nAC\nFree Wifi\nKasur\nRanjang\nMeja\nKursi\nLemari\nKamar Mandi Dalam\n\nLokasi\nJl Gajah Mada 156 G Z RT001 RW008 Keagungan Taman Sari Jakarta Barat\n\n-----------------------------------------------------------------------------\nFor more info, contact:\n\n085771486452\n-----------------------------------------------------------------------------\n\nHarga sewa : Rp 1100000\n-----------------------------------------------------------------------------",
+      "building_description": "Terima sewa kos pria dan wanita pasutri juga bisa\n\nfasilitas :\n\nAC\nFree Wifi\nKasur\nRanjang\nMeja\nKursi\nLemari\nKamar Mandi Dalam\n\nLokasi\nJl Gajah Mada 156 G Z RT001 RW008 Keagungan Taman Sari Jakarta Barat\n\nFor more info, contact:\n085771486452\n\nHarga sewa : Rp 1100000\n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 1100000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "085771486452",
+      "owner_whatsapp": "085771486452",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122419430_192950619096083_922687010431084502_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D111%26_nc_ohc%3DSS27A8LXXIYQ7kNvgHPvsaa%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjkzNTA2MjExMTc3NzI0NQ%253D%253D.2-ccb7-5%26oh%3D00_AYDZsAo7vOWZ_RpVyJdtavNDyEztAGKfOHjeb-Vc7Z5zwg%26oe%3D669671F7%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 872,
       "building_geolocation": {
         "latitude": -6.1506275,
         "longitude": 106.8160287
       },
-      "housing_price": 1100000,
-      "owner_name": "",
-      "owner_whatsapp": "085771486452",
-      "owner_phone_number": "085771486452",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122419430_192950619096083_922687010431084502_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D111%26_nc_ohc%3DSS27A8LXXIYQ7kNvgHPvsaa%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjkzNTA2MjExMTc3NzI0NQ%253D%253D.2-ccb7-5%26oh%3D00_AYDZsAo7vOWZ_RpVyJdtavNDyEztAGKfOHjeb-Vc7Z5zwg%26oe%3D669671F7%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 873,
       "building_title": "Hunian Jl Masjid 2 No 5 Cengkareng Jakarta Barat",
       "building_address": "Jl Masjid 2 No 5 Cengkareng Jakarta Barat",
+      "building_proximity_string": "",
+      "building_proximity": [],
+      "building_facility_string": "",
       "building_facility": [
         "Kasur",
         "kipas angin",
@@ -28592,77 +28621,86 @@
         "Dapur",
         "Ruang tv"
       ],
-      "building_proximity": [],
-      "building_description": "Kos kosan khusus wanita\n\nlokasi: Jl Masjid 2 No 5 Cengkareng Jakarta Barat\n\nfasilitas kamar \n-kasur\n-kipas angin\n-eksos pan\n-lemari\n\nAda dapur dan ruang tv.\n\nHarga Rp 800000 bulan sudah berikut listrik dan air",
+      "building_description": "Kos kosan khusus wanita\n\nlokasi: Jl Masjid 2 No 5 Cengkareng Jakarta Barat\n\nfasilitas kamar \n-kasur\n-kipas angin\n-eksos pan\n-lemari\n\nAda dapur dan ruang tv.\n\nHarga Rp 800000 bulan sudah berikut listrik dan air\n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 800000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081387000941",
+      "owner_whatsapp": "081387000941",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122254747_3404211813136395_4803485859343966244_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D103%26_nc_ohc%3DM83bCHEhudAQ7kNvgF80CxN%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjg4NDU5NDgyMDA0MTY0MQ%253D%253D.2-ccb7-5%26oh%3D00_AYDsnm2zrBy_B25eRGVaOALXV-_I_6_mxMwN6R1Mrz5CIg%26oe%3D6696771E%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 873,
       "building_geolocation": {
         "latitude": -6.2793566,
         "longitude": 106.8080995
       },
-      "housing_price": 800000,
-      "owner_name": "",
-      "owner_whatsapp": "081387000941",
-      "owner_phone_number": "081387000941",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122254747_3404211813136395_4803485859343966244_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D103%26_nc_ohc%3DM83bCHEhudAQ7kNvgF80CxN%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjg4NDU5NDgyMDA0MTY0MQ%253D%253D.2-ccb7-5%26oh%3D00_AYDsnm2zrBy_B25eRGVaOALXV-_I_6_mxMwN6R1Mrz5CIg%26oe%3D6696771E%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 874,
       "building_title": "Hunian Jl Lebak Bulus Raya No 41 RT 004 004 Lebak Bulus Cilandak Jakarta Selatan",
       "building_address": "Jl Lebak Bulus Raya No 41 RT 004 004 Lebak Bulus Cilandak Jakarta Selatan",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "dekat stasiun MRT Lebak Bulus"
+      ],
+      "building_facility_string": "",
       "building_facility": [
         "fasilitas umum",
         "garasi motor"
       ],
-      "building_proximity": [
-        "dekat stasiun MRT Lebak Bulus"
+      "building_description": "Disewakan kos kosan di daerah Lebak Bulus tempat sangat nyaman dan strategis tidak jauh dari stasiun MRT Lebak Bulus banyak fasilitas umumnya dan tersedia garasi untuk motor dan aman \n\ntersedia dua kos kosan sudah terdapat ranjang kasur dan lemari listrik sudah dipasangkan bisa langsung menempati bagi yang berminat silahkan hubungi terima kasih\n\nWA: 085921139971\n\nLokasi Jl Lebak Bulus Raya No 41 RT 004 004 Lebak Bulus Cilandak Jakarta Selatan \n\nHarga: 800.000\n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 800000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "085921139971",
+      "owner_whatsapp": "085921139971",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122445465_828833724534832_2487765686870176085_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D104%26_nc_ohc%3DDbE0nWAEeNgQ7kNvgFRu9oT%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjg2MDY2NjMzMjYzMjEzMw%253D%253D.2-ccb7-5%26oh%3D00_AYAefH7l3_x-sxXU3DXOgV1Rv0U42vp_9OZzFBXRHFuTGg%26oe%3D66969438%26_nc_sid%3Df93d1f"
       ],
-      "building_description": "Disewakan kos kosan di daerah Lebak Bulus tempat sangat nyaman dan strategis tidak jauh dari stasiun MRT Lebak Bulus banyak fasilitas umumnya dan tersedia garasi untuk motor dan aman Lokasi Jl Lebak Bulus Raya No 41 RT 004 004 Lebak Bulus Cilandak Jakarta Selatan tersedia dua kos kosan sudah terdapat ranjang kasur dan lemari listrik sudah dipasangkan bisa langsung menempati bagi yang berminat silahkan hubungi terima kasih",
+      "isEdited": false,
+      "index": 874,
       "building_geolocation": {
         "latitude": -6.299381500000001,
         "longitude": 106.7779199
       },
-      "housing_price": 800000,
-      "owner_name": "",
-      "owner_whatsapp": "085921139971",
-      "owner_phone_number": "085921139971",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122445465_828833724534832_2487765686870176085_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D104%26_nc_ohc%3DDbE0nWAEeNgQ7kNvgFRu9oT%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjg2MDY2NjMzMjYzMjEzMw%253D%253D.2-ccb7-5%26oh%3D00_AYAefH7l3_x-sxXU3DXOgV1Rv0U42vp_9OZzFBXRHFuTGg%26oe%3D66969438%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 875,
       "building_title": "Hunian Jalan pupan no 2 rt 118 pondok pinang kebayoran lama Jaksel",
       "building_address": "Jalan pupan no 2 rt 118 pondok pinang kebayoran lama Jaksel",
-      "building_facility": [
-        "Ada di lantai 2 karna lantai 1 penuh semua"
-      ],
+      "building_proximity_string": "",
       "building_proximity": [
         "Dekat dengan sekolah MIN 4 Dekat dengan Indomart Alfamart Dekat dengan Halte busway pondok pinang"
       ],
-      "building_description": "Kost kosan JakSel guyss!!\n\nJalan pupan no 2 rt 118 pondok pinang, kebayoran lama. Jaksel\n\nDekat dengan sekolah MIN 4\n\nDekat dengan Indomart Alfamart\n\nDekat dengan Halte busway pondok pinang\n\nAda di lantai 2 karna lantai 1 penuh semua\n\n-----------------------------------------------------------------------------\nFor more info, contact:\n\n081808965128\n-----------------------------------------------------------------------------\n\nHarga sewa: Rp 800.000\n-----------------------------------------------------------------------------",
+      "building_facility_string": "",
+      "building_facility": [
+        "Ada di lantai 2 karna lantai 1 penuh semua"
+      ],
+      "building_description": "Kost kosan JakSel guyss!!\n\nJalan pupan no 2 rt 118 pondok pinang, kebayoran lama. Jaksel\n\nDekat dengan sekolah MIN 4\nDekat dengan Indomart Alfamart\nDekat dengan Halte busway pondok pinang\nAda di lantai 2 karna lantai 1 penuh semua\n\nFor more info, contact:\n081808965128\n\nHarga sewa: Rp 800.000\n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 800000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081808965128",
+      "owner_whatsapp": "081808965128",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122358293_388798185610471_9033956282855970088_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi42MDh4NjA4LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D107%26_nc_ohc%3DYU2wxQTKJnIQ7kNvgE_fKKe%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjc4OTU4MjA4MTkxNDgxOQ%253D%253D.2-ccb7-5%26oh%3D00_AYBnv4fUSXFYEAJA1g1IsZDyhfYs6e-S2JjXQ4CEqhju2w%26oe%3D66967229%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 875,
       "building_geolocation": {
         "latitude": -6.2828404,
         "longitude": 106.7702656
       },
-      "housing_price": 800000,
-      "owner_name": "",
-      "owner_whatsapp": "081808965128",
-      "owner_phone_number": "081808965128",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122358293_388798185610471_9033956282855970088_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi42MDh4NjA4LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D107%26_nc_ohc%3DYU2wxQTKJnIQ7kNvgE_fKKe%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjc4OTU4MjA4MTkxNDgxOQ%253D%253D.2-ccb7-5%26oh%3D00_AYBnv4fUSXFYEAJA1g1IsZDyhfYs6e-S2JjXQ4CEqhju2w%26oe%3D66967229%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 876,
-      "building_title": "Hunian Mangga Besar",
-      "building_address": "Mangga Besar",
+      "building_title": "White House Mansion",
+      "building_address": "Jl. Mangga Besar IV E No.32 6, RT.6/RW.8, Taman Sari, Kec. Taman Sari, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11150",
+      "building_proximity_string": "",
+      "building_proximity": [],
+      "building_facility_string": "",
       "building_facility": [
         "Spring bed (160*200)",
         "Water Heater (Setiap Kamar)",
@@ -28679,51 +28717,60 @@
         "Laundry",
         "Drop Off Lobby"
       ],
-      "building_proximity": [],
-      "building_description": "Kost Fasilitas Terbaru Di Mangga Besar !!!\n\nWhite House Mansion\n\nKos baru dengan semua peralatan baru\n\nCocok untuk Kamu yang ingin istirahat dengan berkualitas\n\nCocok untuk Kamu yg ingin memulai Hari-hari dengan suasana baru yg bersih, kasur baru dan mandi Air hangat di pagi hari.\n\nMemberikan anda feel segar, Happy dan Semangat Baru setiap hari.\n\n14 fasilitas TERBARU Kami :\n\n1. Spring bed (160*200)\n2. Water Heater (Setiap Kamar)\n3. Smart TV ( Netflix+Youtube)\n4. Full AC\n5. Kamar Mandi Dalam\n6. Meja+Kursi\n7. Lemari Pakaian\n8. Wifi High Speed\n9. LIFT\n10. Full CCTV\n11. Rooftop Cafe\n12. Parkir Kendaraan Luas\n13. Laundry\n14. Drop Off Lobby\n\nPastikan Kamu tidak ketinggalan\n\nFor more info, contact:\n\n081310007232\n\nDapatkan harga Promo Launching Rp.1.850.000,-/bulan unit kamar terbatas.",
-      "building_geolocation": {
-        "latitude": -6.145353000000001,
-        "longitude": 106.8185752
-      },
+      "building_description": "White House Mansion\n\nKos baru dengan semua peralatan baru\nCocok untuk Kamu yang ingin istirahat dengan berkualitas\nCocok untuk Kamu yg ingin memulai Hari-hari dengan suasana baru yg bersih, kasur baru dan mandi Air hangat di pagi hari.\nMemberikan anda feel segar, Happy dan Semangat Baru setiap hari.\n\nFasilitas :\n1. Spring bed (160*200)\n2. Water Heater (Setiap Kamar)\n3. Smart TV ( Netflix+Youtube)\n4. Full AC\n5. Kamar Mandi Dalam\n6. Meja+Kursi\n7. Lemari Pakaian\n8. Wifi High Speed\n9. LIFT\n10. Full CCTV\n11. Rooftop Cafe\n12. Parkir Kendaraan Luas\n13. Laundry\n14. Drop Off Lobby\n\nPastikan Kamu tidak ketinggalan\n\nFor more info, contact:\n081310007232\n\nRp.1.850.000,-/bulan \n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
       "housing_price": 1850000,
-      "owner_name": "",
-      "owner_whatsapp": "081310007232",
-      "owner_phone_number": "081310007232",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081310007232",
+      "owner_whatsapp": "081310007232",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122176049_202914527868759_7385827811510013779_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi42MDd4NjA3LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D103%26_nc_ohc%3DK63itEfSOo4Q7kNvgEB3nb0%26gid%3D3ef188a742594f08a9ee33cf060ca983%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjM0OTE1NDgxMTY1MTQxMw%253D%253D.2-ccb7-5%26oh%3D00_AYBYiy4rx8JrLcIbCoIafw97tzRYhPdhWQxRARQ1cUNZig%26oe%3D66967438%26_nc_sid%3Df93d1f"
       ],
+      "isEdited": false,
+      "index": 876,
+      "building_geolocation": {
+        "latitude": "-6.151103",
+        "longitude": "106.821364"
+      },
       "isReady": false
     },
     {
-      "index": 877,
       "building_title": "Hunian Bungur Besar 12 No 6F Rt1001 Kemayoran Jakarta Pusat",
       "building_address": "Bungur Besar 12 No 6F Rt1001 Kemayoran Jakarta Pusat",
-      "building_facility": [
-        "Kamar mandi di dalam semua Parkir motor di garasi Parkir mobil di depan kost langsung Jemur baju di rooftop lantai 3 Listrik token 1300 penyewa kost Air tanah ini yang bayar pemilik kost"
-      ],
+      "building_proximity_string": "",
       "building_proximity": [
         "Dekat dengan Stasiun Kemayoran Stasiun Senen Terminal Senen Mall Atrium Mushola Gereja Lapangan Banteng Monas Masjid Istiqlal Katedral Dll nya"
       ],
-      "building_description": "Kos kosan Jakarta Pusat\n\nBungur Besar 12 No 6F Rt1001 Kemayoran Jakarta Pusat\n\nDekat dengan\n\n1. Stasiun Kemayoran\n2. Stasiun Senen\n3. Terminal Senen\n4. Mall Atrium\n5. Mushola\n6. Gereja\n7. Lapangan Banteng\n8. Monas\n9. Masjid Istiqlal\n10. Katedral\n\nDll nya\n\nUntuk yang disewakan setiap kamar :\n\n1. Kamar mandi di dalam semua\n2. Parkir motor di garasi\n3. Parkir mobil di depan kost langsung\n4. Jemur baju di rooftop lantai 3\n5. Listrik token 1300 penyewa kost\n6. Air tanah ini yang bayar pemilik kost\n\nDi dalamnya hanya ada\n\n- kasur tidur\n- ember kamar mandi\n- gayung kamar mandi\n- keset kering\n\nTerima kasih\n\nFor more info, contact:\n\n081316674522 (WA)\n\nHarga Kos: Rp 1.200.000",
+      "building_facility_string": "",
+      "building_facility": [
+        "Kamar mandi di dalam semua Parkir motor di garasi Parkir mobil di depan kost langsung Jemur baju di rooftop lantai 3 Listrik token 1300 penyewa kost Air tanah ini yang bayar pemilik kost"
+      ],
+      "building_description": "Kos kosan Jakarta Pusat\n\nBungur Besar 12 No 6F Rt1001 Kemayoran Jakarta Pusat\n\nDekat dengan\n\n1. Stasiun Kemayoran\n2. Stasiun Senen\n3. Terminal Senen\n4. Mall Atrium\n5. Mushola\n6. Gereja\n7. Lapangan Banteng\n8. Monas\n9. Masjid Istiqlal\n10. Katedral\n\nDll nya\n\nUntuk yang disewakan setiap kamar :\n\n1. Kamar mandi di dalam semua\n2. Parkir motor di garasi\n3. Parkir mobil di depan kost langsung\n4. Jemur baju di rooftop lantai 3\n5. Listrik token 1300 penyewa kost\n6. Air tanah ini yang bayar pemilik kost\n\nDi dalamnya hanya ada\n\n- kasur tidur\n- ember kamar mandi\n- gayung kamar mandi\n- keset kering\n\nFor more info, contact:\n081316674522 (WA)\n\nHarga Kos: Rp 1.200.000\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
+      "housing_price": 1200000,
+      "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081316674522",
+      "owner_whatsapp": "081316674522",
+      "image_urls": [
+        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122429746_948522705677325_7694616954665104868_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3D1x_d5DJf4jMQ7kNvgE0bNLj%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjMyODgwNDE4MjkyMjc2NA%253D%253D.2-ccb7-5%26oh%3D00_AYCkBAqW_VfNpF9DtAkLfv63_VldOP4i_emhKDw_IMrJtg%26oe%3D6696731A%26_nc_sid%3Df93d1f"
+      ],
+      "isEdited": false,
+      "index": 877,
       "building_geolocation": {
         "latitude": -6.166690000000001,
         "longitude": 106.8427626
       },
-      "housing_price": 1200000,
-      "owner_name": "",
-      "owner_whatsapp": "081316674522",
-      "owner_phone_number": "081316674522",
-      "owner_email": "",
-      "image_urls": [
-        "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122429746_948522705677325_7694616954665104868_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi44MTB4ODEwLnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D109%26_nc_ohc%3D1x_d5DJf4jMQ7kNvgE0bNLj%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjMyODgwNDE4MjkyMjc2NA%253D%253D.2-ccb7-5%26oh%3D00_AYCkBAqW_VfNpF9DtAkLfv63_VldOP4i_emhKDw_IMrJtg%26oe%3D6696731A%26_nc_sid%3Df93d1f"
-      ],
       "isReady": false
     },
     {
-      "index": 878,
-      "building_title": "Hunian PT Truba pintu masuk ATM jalan buntunya",
-      "building_address": "PT Truba pintu masuk ATM jalan buntunya",
+      "building_title": "Hunian dekat PT Truba ",
+      "building_address": "Jalan Swadaya 2 No.7 6 5 6, Graha Truba, RT.5/RW.5, Tj. Bar., Kec. Jagakarsa, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12530, Indonesia",
+      "building_proximity_string": "",
+      "building_proximity": [
+        "PT Truba pintu masuk ATM",
+        "jalan buntunya"
+      ],
+      "building_facility_string": "",
       "building_facility": [
         "kamar mandi sendiri",
         "kasur",
@@ -28732,23 +28779,21 @@
         "meja",
         "kipas angin"
       ],
-      "building_proximity": [
-        "PT Truba pintu masuk ATM",
-        "jalan buntunya"
-      ],
-      "building_description": "Fasilitas tiap kamar:\n\nkamar mandi sendiri\n\nkasur, bantal dan guling\n\nlemari\n\nmeja\n\nkipas angin\n\nLokasi: percis depan PT Truba pintu masuk ATM, masuk jalan buntunya\n\nUntuk survei bisa langsung ke lokasi!\n\nHarga Kos: 800,000 dan 900,000\n\nHarga kos sudah termasuk listrik dan air",
-      "building_geolocation": {
-        "latitude": 0,
-        "longitude": 0
-      },
+      "building_description": "Fasilitas:\nkamar mandi sendiri\nkasur, bantal dan guling\nlemari\nmeja\nkipas angin\n\nLokasi: percis depan PT Truba pintu masuk ATM, masuk jalan buntunya\n\nUntuk survei bisa langsung ke lokasi!\n\nWA 081310978414\n\nHarga Kos: 800,000 dan 900,000\nHarga kos sudah termasuk listrik dan air\n\n\nPastikan untuk melakukan survey terlebih dahulu sebelum melakukan transfer pembayaran.",
       "housing_price": 800000,
-      "owner_name": "",
-      "owner_whatsapp": "081310978414",
-      "owner_phone_number": "081310978414",
       "owner_email": "",
+      "owner_name": "",
+      "owner_phone_number": "081310978414",
+      "owner_whatsapp": "081310978414",
       "image_urls": [
         "https://phosphor.ivanenko.workers.dev/?url=https%3A//scontent-lhr8-1.cdninstagram.com/v/t51.29350-15/122173598_773011960221590_3376364859436892695_n.jpg%3Fstp%3Ddst-jpg_e35%26efg%3DeyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi42MDh4NjA4LnNkci5mMjkzNTAifQ%26_nc_ht%3Dscontent-lhr8-1.cdninstagram.com%26_nc_cat%3D102%26_nc_ohc%3DCyRI3KQOFUQQ7kNvgHvLVhP%26edm%3DAJgCAUABAAAA%26ccb%3D7-5%26ig_cache_key%3DMjQyNjI4NDIzNTgyNzM5MTU4Mw%253D%253D.2-ccb7-5%26oh%3D00_AYDPhm4mqLeTJ14osMyOe29iy67LSnZRJFREuFtiVTQ23w%26oe%3D66966F83%26_nc_sid%3Df93d1f"
       ],
+      "isEdited": false,
+      "index": 878,
+      "building_geolocation": {
+        "latitude": "-6.302289",
+        "longitude": "106.84836"
+      },
       "isReady": false
     },
     {
