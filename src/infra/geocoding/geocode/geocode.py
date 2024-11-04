@@ -1,7 +1,9 @@
 """ This module is responsible for all geocoding method.
 """
 
+import backoff
 from googlemaps import Client, geocoding
+from googlemaps.exceptions import ApiError, TransportError, Timeout
 
 
 class GeocodeModules:
@@ -13,6 +15,11 @@ class GeocodeModules:
     ):
         self._client = client
 
+    @backoff.on_exception(
+        backoff.expo,
+        (ApiError, TransportError, Timeout),
+        max_tries=3,
+    )
     def execute(
         self,
         address: str,
