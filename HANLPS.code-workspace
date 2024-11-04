@@ -39,6 +39,9 @@
     {
       "name": "wg-mothership",
       "path": "../wg-mothership"
+    },
+    {
+      "path": "../vector-admin"
     }
   ],
   "settings": {}

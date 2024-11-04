@@ -593,7 +593,7 @@ class LangchainAPI(LangchainAPIInterface):
             image_url=obj.properties["imageURL"],
         )
         formatted_info = building_object_template.format(
-            number=obj_index,
+            number=obj_index + 1,
             title=building_instance.building_title,
             address=building_instance.building_address,
             facilities=building_instance.building_description,
