@@ -485,3 +485,19 @@ building_found_template = (
     4. IMPORTANT ! Don't give the list of the results, because the system already did it for you
     """
 )
+
+location_verifier_template = """
+    You are an AI helper to help verify location input
+    
+    The Input:
+    {prompts}
+
+    Your job is:
+    1. Identify the given input whether it is an area / places / address
+    2. If the given input is an area / places / etc except address, determine the address of the place
+
+    Rules:
+    1. Retrieve the data using the internet search
+    2. Output only in JSON, where applicable: "address"
+    3. If the address cannot be found, the value for address is "None"
+    """

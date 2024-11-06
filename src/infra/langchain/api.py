@@ -35,8 +35,10 @@ from src.domain.prompt_templates import (
     building_object_template,
     building_found_template,
 )
+from src.domain.constants import RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
 from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
+from src.infra.langchain.chat_completion.chat_completion import ChatCompletion
 from src.infra.langchain.llm.llm import create_open_ai_llm, create_gemini_llm
 from src.interactor.interfaces.langchain.api import LangchainAPIInterface
 from src.interactor.interfaces.logger.logger import LoggerInterface
@@ -86,21 +88,7 @@ class LangchainAPI(LangchainAPIInterface):
         self._analyzer_client = None
         self._filter_data_structurer_client = None
         self._query_parser = QueryParser()
-        self._templates = {
-            "filter_data_structurer_analyzer_template": [
-                ChatPromptTemplate.from_template(
-                    filter_data_structurer_analyzer_template
-                ),
-            ],
-            "analyzer_template": [
-                ChatPromptTemplate.from_template(analyzer_template),
-            ],
-            "seen_buildings_template": seen_buildings_template,
-            "default_reply_template": default_reply_template,
-            "reask_template": reask_template,
-            "building_found_template": building_found_template,
-        }
-
+        self._chat_completion = ChatCompletion()
         self._connect_llm()
 
     def __enter__(self):
@@ -128,36 +116,27 @@ class LangchainAPI(LangchainAPIInterface):
             f"---------------------------conversation of user {session_id}---------------------------\n{conversation}\n---------------------------end of conversation user {session_id}---------------------------"
         )
 
-        templates = self._templates["analyzer_template"]
-        result: str = self._analyzer_prompt_parser.execute(
+        task = self._chat_completion.execute(
             {
                 "prompts": prompt,
                 "conversations": conversation if len(conversation.messages) > 0 else "",
             },
-            templates,
-        )
-        result = result.strip("`").strip("json").strip("`").strip()
-        data_dict = json.loads(result)
+            self._analyzer_prompt_parser,
+            analyzer_template,
+        ).get("human_implied_task")
+        self._logger.log_info(f"[{session_id}]: User given task: {task}")
 
-        self._logger.log_info(
-            f"[{session_id}]: Is asking for boarding house: {data_dict}"
-        )
-        if (
-            data_dict.get("human_implied_task")
-            == "RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS"
-        ):
-            templates = self._templates["filter_data_structurer_analyzer_template"]
-            result: str = self._filter_data_structurer_prompt_parser.execute(
+        if task == RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS:
+            result = self._chat_completion.execute(
                 {
                     "prompts": prompt,
                     "conversations": conversation if conversation else "",
                 },
-                templates,
+                self._filter_data_structurer_prompt_parser,
+                filter_data_structurer_analyzer_template,
             )
 
-            json_result = result.strip("`").strip("json").strip("`").strip()
-            data_dict = json.loads(json_result)
-            buildings_filter = BuildingsFilter(**data_dict)
+            buildings_filter = BuildingsFilter(**result)
             self._logger.log_debug(f"[{session_id}]: Filters - {buildings_filter}")
 
             filter_array = None
@@ -190,6 +169,14 @@ class LangchainAPI(LangchainAPIInterface):
                                 lambda distance: append_building_geolocation_filter(
                                     lat_long, distance
                                 )
+                            )
+                        else:
+                            result = self._chat_completion.execute(
+                                {
+                                    "prompts": prompt,
+                                },
+                                self._filter_data_structurer_prompt_parser,
+                                filter_data_structurer_analyzer_template,
                             )
                 except Exception as e:
                     self._logger.log_exception(f"[{session_id}]: Error Geocode: {e}")
@@ -347,12 +334,8 @@ class LangchainAPI(LangchainAPIInterface):
         self._logger.log_info(
             f"[{session_id}]: Is reask for something is necessary: {reask}\nIs search found: {True if found else False}"
         )
-        template = (
-            self._templates["reask_template"]
-            if reask
-            else self._templates["default_reply_template"]
-        )
 
+        template = reask_template if reask else default_reply_template
         input_variables = [
             "prompts",
             "service_pic_number",
@@ -370,7 +353,7 @@ class LangchainAPI(LangchainAPIInterface):
         }
 
         if found:
-            template = self._templates["building_found_template"]
+            template = building_found_template
             runnable_input["result"] = found
 
         output = self.respond(
@@ -391,7 +374,7 @@ class LangchainAPI(LangchainAPIInterface):
             [
                 SystemMessagePromptTemplate(
                     prompt=PromptTemplate(
-                        template=self._templates["seen_buildings_template"],
+                        template=seen_buildings_template,
                         input_variables=input_variables,
                     )
                 ),
