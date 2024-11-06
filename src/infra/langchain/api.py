@@ -18,6 +18,7 @@ from configs.config import (
     OPENAI_API_KEY,
     OPENAI_ANALYZER_MODEL,
     OPENAI_FILTER_DATA_STRUCTURER_MODEL,
+    OPENAI_LOCATION_VERIFIER_MODEL
 )
 from src.domain.entities.message.message import Message
 from src.domain.constants import (
@@ -34,6 +35,7 @@ from src.domain.prompt_templates import (
     seen_buildings_template,
     building_object_template,
     building_found_template,
+    location_verifier_template
 )
 from src.domain.constants import RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
@@ -113,7 +115,9 @@ class LangchainAPI(LangchainAPIInterface):
         while len(conversation.messages) > 10:
             conversation.messages.pop(0)
         self._logger.log_info(
-            f"---------------------------conversation of user {session_id}---------------------------\n{conversation}\n---------------------------end of conversation user {session_id}---------------------------"
+            f"------------------- Conversation of User {session_id} -------------------\n"
+            f"{conversation}\n"
+            f"------------------- End of Conversation for User {session_id} -----------"
         )
 
         task = self._chat_completion.execute(
@@ -122,7 +126,7 @@ class LangchainAPI(LangchainAPIInterface):
                 "conversations": conversation if len(conversation.messages) > 0 else "",
             },
             self._analyzer_prompt_parser,
-            analyzer_template,
+            [analyzer_template],
         ).get("human_implied_task")
         self._logger.log_info(f"[{session_id}]: User given task: {task}")
 
@@ -133,22 +137,13 @@ class LangchainAPI(LangchainAPIInterface):
                     "conversations": conversation if conversation else "",
                 },
                 self._filter_data_structurer_prompt_parser,
-                filter_data_structurer_analyzer_template,
+                [filter_data_structurer_analyzer_template],
             )
 
             buildings_filter = BuildingsFilter(**result)
             self._logger.log_debug(f"[{session_id}]: Filters - {buildings_filter}")
 
-            filter_array = None
-            filter_array = {
-                "housing_price": lambda with_reference: append_housing_price_filters(
-                    buildings_filter, [], with_reference
-                ),
-                "building_facility": append_building_facility_filters(
-                    buildings_filter, []
-                ),
-                "building_note": append_building_note_filters(buildings_filter, []),
-            }
+            filter_array = self._prepare_filters(buildings_filter)
 
             building_instance = None
             with GeocodingAPI(self._logger) as obj:
@@ -159,7 +154,18 @@ class LangchainAPI(LangchainAPIInterface):
                         else buildings_filter.building_proximity
                     )
                     if query is not None:
-                        geocode_data = obj.execute_geocode_by_address(query)
+                        result = self._chat_completion.execute(
+                                {
+                                    "prompts": query,
+                                },
+                                self._location_verifier_prompt_parser,
+                                [location_verifier_template],
+                            ).get("address")
+                        
+                        self._logger.log_debug(
+                            f"[{session_id}]: Verified address: {result}"
+                        )
+                        geocode_data = obj.execute_geocode_by_address(result)
                         if len(geocode_data) > 0:
                             self._logger.log_debug(
                                 f"[{session_id}]: Got geocode data: {geocode_data}"
@@ -170,14 +176,7 @@ class LangchainAPI(LangchainAPIInterface):
                                     lat_long, distance
                                 )
                             )
-                        else:
-                            result = self._chat_completion.execute(
-                                {
-                                    "prompts": prompt,
-                                },
-                                self._filter_data_structurer_prompt_parser,
-                                filter_data_structurer_analyzer_template,
-                            )
+                            
                 except Exception as e:
                     self._logger.log_exception(f"[{session_id}]: Error Geocode: {e}")
 
@@ -237,11 +236,10 @@ class LangchainAPI(LangchainAPIInterface):
 
         with WeaviateAPI(self._logger) as weaviate_client:
             while retries < max_retries:
+                connected, building_collection, building_chunk_collection = (
+                    self._connect_to_collections(weaviate_client) or (None, None, None)
+                )
                 try:
-                    connected, building_collection, building_chunk_collection = (
-                        self._connect_to_collections(weaviate_client)
-                    )
-
                     while len(building_list) < limit:
                         filters, with_geofilter = None, self._geofilter_check(
                             geolocation_stages, geolocation_stage_index, filter_array
@@ -318,7 +316,7 @@ class LangchainAPI(LangchainAPIInterface):
                             f"[{session_id}]: Query attempt {retries} failed. Error: {e}"
                         )
                         retries += 1
-                finally:
+                finally: 
                     weaviate_client.close_connection_to_server(connected)
 
         return self.feedback_prompt(prompt, session_id, found=building_list or True)
@@ -417,6 +415,9 @@ class LangchainAPI(LangchainAPIInterface):
                     self._filter_data_structurer_client = create_open_ai_llm(
                         OPENAI_FILTER_DATA_STRUCTURER_MODEL, OPENAI_API_KEY
                     )
+                    self._location_verifier_client = create_open_ai_llm(
+                        OPENAI_LOCATION_VERIFIER_MODEL, OPENAI_API_KEY
+                    )
                 elif self._llm_type == GEMINI:
                     self._client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
                     self._analyzer_client = create_gemini_llm(
@@ -425,6 +426,9 @@ class LangchainAPI(LangchainAPIInterface):
                     self._filter_data_structurer_client = create_gemini_llm(
                         GEMINI_MODEL, GEMINI_API_KEY
                     )
+                    self._location_verifier_client = create_gemini_llm(
+                        GEMINI_MODEL, OPENAI_API_KEY
+                    )
                 else:
                     raise ValueError("No LLM Found")
 
@@ -432,6 +436,9 @@ class LangchainAPI(LangchainAPIInterface):
                 self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
                 self._filter_data_structurer_prompt_parser = PromptParser(
                     self._filter_data_structurer_client
+                )
+                self._location_verifier_prompt_parser = PromptParser(
+                    self._location_verifier_client
                 )
         except Exception as e:
             self._logger.log_exception(f"Error connecting LLM: {e}")
@@ -455,10 +462,27 @@ class LangchainAPI(LangchainAPIInterface):
         if session_id not in self._store:
             self._store[session_id] = self._create_session(session_id)
         return self._store[session_id]["session_messages_history"]
+    
+    def _prepare_filters(self, buildings_filter: BuildingsFilter):
+        filter_array = None
+        filter_array = {
+            "housing_price": lambda with_reference: append_housing_price_filters(
+                buildings_filter, [], with_reference
+            ),
+            "building_facility": append_building_facility_filters(
+                buildings_filter, []
+            ),
+            "building_note": append_building_note_filters(buildings_filter, []),
+        }
+
+        return filter_array
 
     def _connect_to_collections(self, weaviate_client: WeaviateAPI):
         """Connect to the necessary collections for querying."""
         connected = weaviate_client.connect_to_server(int(USE_MODULE), MODULE_USED)
+        if(connected is None):
+            raise RuntimeError(f"Runtime Error - 'connected' variable value is {connected}")
+        
         building_collection = connected.collections.get(BUILDINGS_COLLECTION_NAME)
         building_chunk_collection = connected.collections.get(
             BUILDING_CHUNKS_COLLECTION_NAME
