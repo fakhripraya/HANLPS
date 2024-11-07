@@ -3,7 +3,6 @@
 
 # Standard and third-party libraries
 import time
-import json
 import traceback
 
 # Source-specific imports
@@ -18,7 +17,7 @@ from configs.config import (
     OPENAI_API_KEY,
     OPENAI_ANALYZER_MODEL,
     OPENAI_FILTER_DATA_STRUCTURER_MODEL,
-    OPENAI_LOCATION_VERIFIER_MODEL
+    OPENAI_LOCATION_VERIFIER_MODEL,
 )
 from src.domain.entities.message.message import Message
 from src.domain.constants import (
@@ -35,7 +34,7 @@ from src.domain.prompt_templates import (
     seen_buildings_template,
     building_object_template,
     building_found_template,
-    location_verifier_template
+    location_verifier_template,
 )
 from src.domain.constants import RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
@@ -155,13 +154,13 @@ class LangchainAPI(LangchainAPIInterface):
                     )
                     if query is not None:
                         result = self._chat_completion.execute(
-                                {
-                                    "prompts": query,
-                                },
-                                self._location_verifier_prompt_parser,
-                                [location_verifier_template],
-                            ).get("address")
-                        
+                            {
+                                "prompts": query,
+                            },
+                            self._location_verifier_prompt_parser,
+                            [location_verifier_template],
+                        ).get("address")
+
                         self._logger.log_debug(
                             f"[{session_id}]: Verified address: {result}"
                         )
@@ -176,7 +175,7 @@ class LangchainAPI(LangchainAPIInterface):
                                     lat_long, distance
                                 )
                             )
-                            
+
                 except Exception as e:
                     self._logger.log_exception(f"[{session_id}]: Error Geocode: {e}")
 
@@ -316,7 +315,7 @@ class LangchainAPI(LangchainAPIInterface):
                             f"[{session_id}]: Query attempt {retries} failed. Error: {e}"
                         )
                         retries += 1
-                finally: 
+                finally:
                     weaviate_client.close_connection_to_server(connected)
 
         return self.feedback_prompt(prompt, session_id, found=building_list or True)
@@ -330,7 +329,7 @@ class LangchainAPI(LangchainAPIInterface):
         :param found: data found elements.
         """
         self._logger.log_info(
-            f"[{session_id}]: Is reask for something is necessary: {reask}\nIs search found: {True if found else False}"
+            f"[{session_id}]: Is reask for something is necessary: {reask}\n[{session_id}]: Is search found: {True if found else False}"
         )
 
         template = reask_template if reask else default_reply_template
@@ -462,16 +461,14 @@ class LangchainAPI(LangchainAPIInterface):
         if session_id not in self._store:
             self._store[session_id] = self._create_session(session_id)
         return self._store[session_id]["session_messages_history"]
-    
+
     def _prepare_filters(self, buildings_filter: BuildingsFilter):
         filter_array = None
         filter_array = {
             "housing_price": lambda with_reference: append_housing_price_filters(
                 buildings_filter, [], with_reference
             ),
-            "building_facility": append_building_facility_filters(
-                buildings_filter, []
-            ),
+            "building_facility": append_building_facility_filters(buildings_filter, []),
             "building_note": append_building_note_filters(buildings_filter, []),
         }
 
@@ -480,9 +477,11 @@ class LangchainAPI(LangchainAPIInterface):
     def _connect_to_collections(self, weaviate_client: WeaviateAPI):
         """Connect to the necessary collections for querying."""
         connected = weaviate_client.connect_to_server(int(USE_MODULE), MODULE_USED)
-        if(connected is None):
-            raise RuntimeError(f"Runtime Error - 'connected' variable value is {connected}")
-        
+        if connected is None:
+            raise RuntimeError(
+                f"Runtime Error - 'connected' variable value is {connected}"
+            )
+
         building_collection = connected.collections.get(BUILDINGS_COLLECTION_NAME)
         building_chunk_collection = connected.collections.get(
             BUILDING_CHUNKS_COLLECTION_NAME
@@ -560,6 +559,11 @@ class LangchainAPI(LangchainAPIInterface):
         limit: int,
     ):
         """Process each object in the response and add to building_list."""
+
+        # clear the existing seen buildings set
+        self._store[session_id]["session_buildings_seen"].clear()
+
+        # loop through the response objects along with filtering which object should be appended
         for index, obj in enumerate(response.objects):
             if with_geofilter:
                 self._add_building_instance(

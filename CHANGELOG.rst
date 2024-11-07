@@ -1,3 +1,33 @@
+0.2.3 (2024-11-07)
+==================
+
+General News
+------------
+
+- Update and bugfixes (#1)
+
+
+Incoming Updates
+----------------
+
+- Prompt enhancement (#1)
+- Add location verifier prompt (#2)
+
+
+Bugfixes
+--------
+
+- Fix context hallucination (#1)
+
+
+Upcoming Features
+-----------------
+
+- Retrieval Augmented Generation (RAG) support (#1)
+- STT support (#2)
+- Trailtokens implementation (#3)
+- Implementation of search engine like searchXNG (#4)
+
 0.2.2 (2024-11-02)
 ==================
 
