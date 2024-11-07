@@ -268,7 +268,7 @@ seen_buildings_template = """
     """
 
 building_object_template = """
-    List Number: {number}
+    No: {number}
     Building title: {title}
     Building address: {address}
     Building facilities: {facilities}
