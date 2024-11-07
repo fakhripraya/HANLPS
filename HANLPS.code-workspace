@@ -21,6 +21,10 @@
       "path": "../forefront-postgirl"
     },
     {
+      "name": "forefront-ares",
+      "path": "../forefront-ares"
+    },
+    {
       "name": "Littlecamp",
       "path": "../Littlecamp"
     },
@@ -41,6 +45,7 @@
       "path": "../wg-mothership"
     },
     {
+      "name": "vector-admin",
       "path": "../vector-admin"
     }
   ],
