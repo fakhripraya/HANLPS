@@ -1,3 +1,33 @@
+0.2.4 (2024-11-08)
+==================
+
+General News
+------------
+
+- Update and bugfixes (#1)
+
+
+Incoming Updates
+----------------
+
+- Prompt enhancement (#1)
+
+
+Bugfixes
+--------
+
+- Fix dependency to only verified address (#1)
+
+
+Upcoming Features
+-----------------
+
+- Retrieval Augmented Generation (RAG) support (#1)
+- STT support (#2)
+- Trailtokens implementation (#3)
+- Implementation of search engine like searchXNG (#4)
+
+
 0.2.3 (2024-11-07)
 ==================
 
@@ -27,6 +57,7 @@ Upcoming Features
 - STT support (#2)
 - Trailtokens implementation (#3)
 - Implementation of search engine like searchXNG (#4)
+
 
 0.2.2 (2024-11-02)
 ==================

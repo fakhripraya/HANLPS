@@ -164,7 +164,7 @@ class LangchainAPI(LangchainAPIInterface):
                         self._logger.log_debug(
                             f"[{session_id}]: Verified address: {result}"
                         )
-                        geocode_data = obj.execute_geocode_by_address(result)
+                        geocode_data = obj.execute_geocode_by_address(result or query)
                         if len(geocode_data) > 0:
                             self._logger.log_debug(
                                 f"[{session_id}]: Got geocode data: {geocode_data}"

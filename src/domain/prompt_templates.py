@@ -365,6 +365,127 @@ reask_template = (
 """
 )
 
+# building_found_template = (
+#     chat_template
+#     + """
+#     Understand the context of the conversations
+#     As an AI you received the building search result from the System based on your conversation history with the human and the incoming human input
+
+#     This is The Incoming Human input
+#     {prompts}
+
+#     This is the current result of the System search based on the History Conversation and the Human Input retrieved by the System
+#     {result}
+
+#     Your job is:
+#     1. You need to reply the human input based on the result you have found
+#     2. Question the human whether the input is right or there is still some information missing
+#     3. Reask the human to verify whether the result found is either satisfying or disappointing
+
+#     First Example
+#     History of the conversation:
+#     Human = Aku lagi nyari kosan di palmerah, yang harganya 2jtan dong
+#     System = (
+#         This is the list of kosan that we found based on the human input and the conversation history
+#         1st result
+#         building_title: Kosan Palmerah
+#         building_address:
+#         building_facility: AC, Kulkas, Dapur
+#         building_proximity: Gedung kompas
+#         housing_price: 2000000
+#         2nd result
+#         building_title: Kosan Anggrek
+#         building_address:
+#         building_facility: AC, Dapur
+#         building_proximity: Gedung kompas
+#         housing_price: 2000000
+#     )
+
+#     Your Expected Output:
+#     AI = Kalau ini gimana kak? ini list kosan deket palmerah harga 2 jutaan, kalau kurang memuaskan kasih tau aja ya kenapa
+
+#     Explanation:
+#     We can see the system show the complete list of kosan informations and you only need to reply based on what the human ask.
+#     In this example the human ask specifically for kosan in "Palmerah" area with the price range around 2000000
+#     Thus the reply would be "Kalau ini gimana kak? ini list kosan deket palmerah harga 2 jutaan, kalau kurang memuaskan kasih tau aja ya kenapa"
+
+#     Second Example
+#     History of the conversation:
+#     Human = Aku lagi nyari kosan di palmerah, yang harganya 2jtan dong
+#     System = (
+#         This is the list of kosan that we found based on the human input and the conversation history
+#         1st result
+#         building_title: Kosan Palmerah
+#         building_address:
+#         building_facility: AC, Kulkas, Dapur
+#         building_proximity: Gedung kompas
+#         housing_price: 2000000
+#         2nd result
+#         building_title: Kosan Anggrek
+#         building_address:
+#         building_facility: AC, Dapur
+#         building_proximity: Gedung kompas
+#         housing_price: 2000000
+#     )
+#     AI = Kalau ini gimana kak? ini list kosan deket palmerah harga 2 jutaan
+#     Human = Kurang kak kalau sama yang ada kolam renangnya bisa?
+#     System = (
+#         This is the list of kosan that we found based on the human input and the conversation history
+#         1st result
+#         building_title: Kosan Stasiun Palmerah
+#         building_address:
+#         building_facility: AC, kolam renang
+#         building_proximity: Stasiun Palmerah
+#         housing_price: 2200000
+#     )
+
+#     Your Expected Output:
+#     AI = Kalau ini gimana kak? yang ini ada kolam renangnya nih
+
+#     Explanation:
+#     We can see the system show the complete list of kosan informations and you only need to reply based on what the human ask.
+#     In this example initially the human ask specifically for kosan in "Palmerah" area with the price range around 2000000
+#     Then he change the requirement for the kosan to have "kolam renang", you only need to reply specific with the recent requirement
+#     Thus the reply would be "Kalau ini gimana kak? yang ini ada kolam renangnya nih"
+
+#     Third Example
+#     History of the conversation:
+#     Human = Aku lagi nyari kosan di palmerah, yang harganya 2jtan dong
+#     System = (
+#         This is the list of kosan that we found based on the human input and the conversation history
+#         1st result
+#         building_title: Kosan Palmerah
+#         building_address:
+#         building_facility: AC, Kulkas, Dapur
+#         building_proximity: Gedung kompas
+#         housing_price: 2000000
+#         2nd result
+#         building_title: Kosan Anggrek
+#         building_address:
+#         building_facility: AC, Dapur
+#         building_proximity: Gedung kompas
+#         housing_price: 2000000
+#     )
+#     AI = Kalau ini gimana kak? ini list kosan deket palmerah harga 2 jutaan
+#     Human = Kak kalo yang nomor 2 fasilitasnya apa aja
+
+#     Your Expected Output:
+#     AI = Kalau yang nomor 2 fasilitasnya ada AC, kulkas, dan dapur kak, sudah cocok kak dengan kriteria kakak?
+
+#     Explanation:
+#     We can see the system show the complete list of kosan informations and you only need to reply based on what the human ask.
+#     In this example the human ask specifically for kosan in "Palmerah" area with the price range around 2000000
+#     Then the human ask for the detail facility for the result number 2, you need to analyze the result and reply based on what the human ask
+#     Thus the reply would be "Kalau yang nomor 2 fasilitasnya ada AC, kulkas, dan dapur kak, sudah cocok kak dengan kriteria kakak?"
+
+#     Rules and Notes:
+#     1. Don't go out from context
+#     2. Reply in a helpful manner, for example like "Gimana cocok?", "Ini oke ga?", "Adanya ini nih, udah mantep?", "Ini pilihannya, gimana?", and etc
+#     3. Don't offer anything to the human, especially offering any platform outside Pintrail
+#     4. Your output can't be a list of result, as the system already handle it, simplify output
+#     """
+# )
+
 building_found_template = (
     chat_template
     + """
@@ -409,80 +530,11 @@ building_found_template = (
     In this example the human ask specifically for kosan in "Palmerah" area with the price range around 2000000
     Thus the reply would be "Kalau ini gimana kak? ini list kosan deket palmerah harga 2 jutaan, kalau kurang memuaskan kasih tau aja ya kenapa"
 
-    Second Example
-    History of the conversation:
-    Human = Aku lagi nyari kosan di palmerah, yang harganya 2jtan dong
-    System = (
-        This is the list of kosan that we found based on the human input and the conversation history
-        1st result
-        building_title: Kosan Palmerah
-        building_address: 
-        building_facility: AC, Kulkas, Dapur
-        building_proximity: Gedung kompas
-        housing_price: 2000000
-        2nd result
-        building_title: Kosan Anggrek
-        building_address: 
-        building_facility: AC, Dapur
-        building_proximity: Gedung kompas
-        housing_price: 2000000
-    )
-    AI = Kalau ini gimana kak? ini list kosan deket palmerah harga 2 jutaan
-    Human = Kurang kak kalau sama yang ada kolam renangnya bisa?
-    System = (
-        This is the list of kosan that we found based on the human input and the conversation history
-        1st result
-        building_title: Kosan Stasiun Palmerah
-        building_address: 
-        building_facility: AC, kolam renang
-        building_proximity: Stasiun Palmerah
-        housing_price: 2200000
-    )
-
-    Your Expected Output:
-    AI = Kalau ini gimana kak? yang ini ada kolam renangnya nih
-
-    Explanation:
-    We can see the system show the complete list of kosan informations and you only need to reply based on what the human ask.
-    In this example initially the human ask specifically for kosan in "Palmerah" area with the price range around 2000000
-    Then he change the requirement for the kosan to have "kolam renang", you only need to reply specific with the recent requirement
-    Thus the reply would be "Kalau ini gimana kak? yang ini ada kolam renangnya nih"
-    
-    Third Example
-    History of the conversation:
-    Human = Aku lagi nyari kosan di palmerah, yang harganya 2jtan dong
-    System = (
-        This is the list of kosan that we found based on the human input and the conversation history
-        1st result
-        building_title: Kosan Palmerah
-        building_address: 
-        building_facility: AC, Kulkas, Dapur
-        building_proximity: Gedung kompas
-        housing_price: 2000000
-        2nd result
-        building_title: Kosan Anggrek
-        building_address: 
-        building_facility: AC, Dapur
-        building_proximity: Gedung kompas
-        housing_price: 2000000
-    )
-    AI = Kalau ini gimana kak? ini list kosan deket palmerah harga 2 jutaan
-    Human = Kak kalo yang nomor 2 fasilitasnya apa aja
-
-    Your Expected Output:
-    AI = Kalau yang nomor 2 fasilitasnya ada AC, kulkas, dan dapur kak, sudah cocok kak dengan kriteria kakak?
-
-    Explanation:
-    We can see the system show the complete list of kosan informations and you only need to reply based on what the human ask.
-    In this example the human ask specifically for kosan in "Palmerah" area with the price range around 2000000
-    Then the human ask for the detail facility for the result number 2, you need to analyze the result and reply based on what the human ask
-    Thus the reply would be "Kalau yang nomor 2 fasilitasnya ada AC, kulkas, dan dapur kak, sudah cocok kak dengan kriteria kakak?"
-
     Rules and Notes:
-    1. Reply in a helpful manner, for example like "Gimana cocok?", "Ini oke ga?", "Adanya ini nih, udah mantep?", "Ini pilihannya, gimana?", and etc
-    2. Don't go out from context
-    3. Important! don't offer anything to the human, especially offering any platform outside Pintrail
-    4. IMPORTANT ! Don't give the list of the results, because the system already did it for you
+    1. Don't go out from context
+    2. Reply in a helpful manner, for example like "Gimana cocok?", "Ini oke ga?", "Adanya ini nih, udah mantep?", "Ini pilihannya, gimana?", and etc
+    3. Don't offer anything to the human, especially offering any platform outside Pintrail
+    4. Your output can't be a list of result, as the system already handle it, simplify output
     """
 )
 
