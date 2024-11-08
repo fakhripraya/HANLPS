@@ -161,10 +161,11 @@ class LangchainAPI(LangchainAPIInterface):
                             [location_verifier_template],
                         ).get("address")
 
+                        geo_query = query if result in [None, "None"] else result
                         self._logger.log_debug(
-                            f"[{session_id}]: Verified address: {result}"
+                            f"[{session_id}]: Verified address: {geo_query}"
                         )
-                        geocode_data = obj.execute_geocode_by_address(result or query)
+                        geocode_data = obj.execute_geocode_by_address(geo_query)
                         if len(geocode_data) > 0:
                             self._logger.log_debug(
                                 f"[{session_id}]: Got geocode data: {geocode_data}"
