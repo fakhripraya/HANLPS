@@ -29,99 +29,132 @@ analyzer_template = """
     
     Rules:
     1. Only provide the output in a JSON dict.
-    
-    These are the example of conversation using Bahasa Indonesia
-    First Conversation Example:
-    History conversation:
-    None
-    
-    Incoming human input:
-    Cariin aku kosan dong di daerah manggarai
-    
-    Expected output:
-    human_implied_task: "RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS"
-        
-    Explanation:
-    Based on the context of the conversation, the human does currently searching for boarding houses
-    The human implied that he want you to look for him a boarding house or a list of boarding houses in an area called manggarai
-    
-    Second Conversation Example:
-    History conversation:
-    Human: Cariin aku kosan dong di daerah manggarai, harga 2jtan
-    System: (Fetched some list of kosan)
-    AI: Ini gimana ? semua kosan ini berada di manggarai dengan harga 2 jutaan. cocok ?
-    
-    Incoming human input:
-    Coba kosan nomor 1 sama 3 fasilitasnya apa aja
-    
-    Expected output:
-    human_implied_task: "GIVE_AND_EXPLAIN_THE_IMPLIED_BUILDING_DETAILS"
-        
-    Explanation:
-    Based on the context of the conversation, the human does currently searching for boarding houses
-    The human implied that he want the detail facility of boarding house number 1 and number 3 based on the boarding houses that the system fetched
-    
-    Third Conversation Example:
-    History conversation:
-    Human: Cariin aku kosan dong di daerah manggarai, harga 2jtan
-    System: (Fetched some list of kosan)
-    AI: Ini gimana ? semua kosan ini berada di manggarai dengan harga 2 jutaan. cocok ?
-    
-    Incoming human input:
-    jarak kosan nomor 1 atau 3 ke manggarai berapaan kira - kira ?
-    
-    Expected output:
-    human_implied_task: "COMPARE_BETWEEN_BUILDINGS"
-        
-    Explanation:
-    Based on the context of the conversation, the human does currently searching for boarding houses
-    The human ask about how close manggarai to kosan number 1 and kosan number 3
-    
-    Fourth Conversation Example:
-    History conversation:
-    Human: Cariin aku kosan dong di daerah manggarai, harga 2jtan
-    System: (Fetched some list of kosan)
-    AI: Ini gimana ? semua kosan ini berada di manggarai dengan harga 2 jutaan. cocok ?
-    
-    Incoming human input:
-    Save kosan nomor 1 dong
-    
-    Expected output:
-    human_implied_task: "ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM"
-        
-    Explanation:
-    Based on the context of the conversation, the human does currently searching for boarding houses
-    The human ask you the AI to save the kosan number 1 to the system
-    
-    Fifth Conversation Example:
-    History conversation:
-    Human: cariin kosan di deket binus dong
-    System: (Fetched some list of kosan)
-    AI: Ini gimana ? semua kosan ini berada di binus. cocok ?
-    
-    Incoming human input:
-    Mantep, btw gua mau iklanin kostan gua sebenernya, bagi kontak personnya dong buat iklan
-    
-    Expected output:
-    human_implied_task: "CASUAL_CONVERSATION"
-        
-    Explanation:
-    Based on the context of the conversation, the human is asking about contact person for advertising his boarding house, not giving a specific task
-    
-    Sixth Conversation Example:
-    History conversation:
-    None
-    
-    Incoming human input:
-    Itu kosan nomor 3 dan nomor 4 fasilitasnya apa aja
-    
-    Expected output:
-    human_implied_task: "VAGUE"
-        
-    Explanation:
-    Based on the context of the conversation, the human is hallucinating because we can see that in the history of conversation, there are no existing conversation showing the human is asking to search for kosan/boarding houses
-    Hence why the value is "VAGUE"
     """
+
+# analyzer_template = """
+#     You are an AI chat analyzer 
+    
+#     Your job is:
+#     1. Analyze whether the incoming human input implies asking about kosan, kostan, kost, kos-kosan, kontrakan, apartments, or any kind of boarding houses based on the history conversation context
+#     2. Extract structured data based on the human input using the conversation context, Use Extracted Data Identifaction below for the output of this prompt
+    
+#     Understand the context of the conversation
+#     History conversation:
+#     {conversations}
+
+#     Incoming human input
+#     {prompts}
+
+#     Extracted Data Identification:
+#     human_implied_task: This is a string enum value in python, the value can only be one of these enums extracted based on your analysis:
+#         - RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS: This enum applied if the human ask you to retrieve for kosan/boarding houses based on the human input criteria 
+#         - GIVE_AND_EXPLAIN_THE_IMPLIED_BUILDING_DETAILS: This enum applied if the human ask you to give/explain the implied building details that the human ask, these detail could be:
+#             + title
+#             + address
+#             + facilities
+#             + proximities
+#             + owner whatsapp
+#             + owner phone number
+#         - COMPARE_BETWEEN_BUILDINGS: This enum applied if the human ask you to compare between fetched kosan/boarding houses
+#         - ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM: This enum applied if the human ask you to save kosan/boarding houses to the system
+#         - VAGUE: This enum applied if the human input implying human hallucination, lack of information, odd structure of conversation, etc
+#         - CASUAL_CONVERSATION: This enum applied if the human input is just having a normal conversation, inside or outside the context of searching boarding houses
+    
+#     Rules:
+#     1. Only provide the output in a JSON dict.
+    
+#     These are the example of conversation using Bahasa Indonesia
+#     First Conversation Example:
+#     History conversation:
+#     None
+    
+#     Incoming human input:
+#     Cariin aku kosan dong di daerah manggarai
+    
+#     Expected output:
+#     human_implied_task: "RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS"
+        
+#     Explanation:
+#     Based on the context of the conversation, the human does currently searching for boarding houses
+#     The human implied that he want you to look for him a boarding house or a list of boarding houses in an area called manggarai
+    
+#     Second Conversation Example:
+#     History conversation:
+#     Human: Cariin aku kosan dong di daerah manggarai, harga 2jtan
+#     System: (Fetched some list of kosan)
+#     AI: Ini gimana ? semua kosan ini berada di manggarai dengan harga 2 jutaan. cocok ?
+    
+#     Incoming human input:
+#     Coba kosan nomor 1 sama 3 fasilitasnya apa aja
+    
+#     Expected output:
+#     human_implied_task: "GIVE_AND_EXPLAIN_THE_IMPLIED_BUILDING_DETAILS"
+        
+#     Explanation:
+#     Based on the context of the conversation, the human does currently searching for boarding houses
+#     The human implied that he want the detail facility of boarding house number 1 and number 3 based on the boarding houses that the system fetched
+    
+#     Third Conversation Example:
+#     History conversation:
+#     Human: Cariin aku kosan dong di daerah manggarai, harga 2jtan
+#     System: (Fetched some list of kosan)
+#     AI: Ini gimana ? semua kosan ini berada di manggarai dengan harga 2 jutaan. cocok ?
+    
+#     Incoming human input:
+#     jarak kosan nomor 1 atau 3 ke manggarai berapaan kira - kira ?
+    
+#     Expected output:
+#     human_implied_task: "COMPARE_BETWEEN_BUILDINGS"
+        
+#     Explanation:
+#     Based on the context of the conversation, the human does currently searching for boarding houses
+#     The human ask about how close manggarai to kosan number 1 and kosan number 3
+    
+#     Fourth Conversation Example:
+#     History conversation:
+#     Human: Cariin aku kosan dong di daerah manggarai, harga 2jtan
+#     System: (Fetched some list of kosan)
+#     AI: Ini gimana ? semua kosan ini berada di manggarai dengan harga 2 jutaan. cocok ?
+    
+#     Incoming human input:
+#     Save kosan nomor 1 dong
+    
+#     Expected output:
+#     human_implied_task: "ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM"
+        
+#     Explanation:
+#     Based on the context of the conversation, the human does currently searching for boarding houses
+#     The human ask you the AI to save the kosan number 1 to the system
+    
+#     Fifth Conversation Example:
+#     History conversation:
+#     Human: cariin kosan di deket binus dong
+#     System: (Fetched some list of kosan)
+#     AI: Ini gimana ? semua kosan ini berada di binus. cocok ?
+    
+#     Incoming human input:
+#     Mantep, btw gua mau iklanin kostan gua sebenernya, bagi kontak personnya dong buat iklan
+    
+#     Expected output:
+#     human_implied_task: "CASUAL_CONVERSATION"
+        
+#     Explanation:
+#     Based on the context of the conversation, the human is asking about contact person for advertising his boarding house, not giving a specific task
+    
+#     Sixth Conversation Example:
+#     History conversation:
+#     None
+    
+#     Incoming human input:
+#     Itu kosan nomor 3 dan nomor 4 fasilitasnya apa aja
+    
+#     Expected output:
+#     human_implied_task: "VAGUE"
+        
+#     Explanation:
+#     Based on the context of the conversation, the human is hallucinating because we can see that in the history of conversation, there are no existing conversation showing the human is asking to search for kosan/boarding houses
+#     Hence why the value is "VAGUE"
+#     """
 
 filter_data_structurer_analyzer_template = """"
     You are an AI chat analyzer that extract structured output
