@@ -9,7 +9,13 @@ from langchain_core.prompts import ChatPromptTemplate
 class ChatCompletion:
     """ChatCompletion class."""
 
-    def execute(self, input: dict, parser: PromptParser, templates: list[str]) -> Any:
+    def execute(
+        self,
+        input: dict,
+        parser: PromptParser,
+        templates: list[str],
+        isJSON: bool = True,
+    ) -> Any | str:
         """Execute the incoming prompt.
         :param input: Prompt to be parse and execute.
         :param parser: Prompt parser.
@@ -22,10 +28,12 @@ class ChatCompletion:
             input,
             chat_prompt_templates,
         )
-        result = result.strip("`").strip("json").strip("`").strip()
-        data_dict = json.loads(result)
-
-        return data_dict
+        if isJSON:
+            result = result.strip("`").strip("json").strip("`").strip()
+            data_dict = json.loads(result)
+            return data_dict
+        else:
+            return result
 
     def _mapTemplates(self, templates: list[str]) -> list[ChatPromptTemplate]:
         chat_prompt_templates: list[ChatPromptTemplate] = []

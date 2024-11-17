@@ -1,3 +1,20 @@
+0.2.5 (2024-11-17)
+==================
+
+Incoming Updates
+----------------
+
+- Update training data (#1)
+
+
+Upcoming Features
+-----------------
+
+- Retrieval Augmented Generation (RAG) support (#1)
+- STT support (#2)
+- Trailtokens implementation (#3)
+- Implementation of search engine like searchXNG (#4)
+
 0.2.4 (2024-11-08)
 ==================
 

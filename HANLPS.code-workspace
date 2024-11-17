@@ -5,10 +5,6 @@
       "path": "."
     },
     {
-      "name": "forefront-zeus",
-      "path": "../forefront-zeus"
-    },
-    {
       "name": "forefront-hermes",
       "path": "../forefront-hermes"
     },
@@ -45,8 +41,10 @@
       "path": "../wg-mothership"
     },
     {
-      "name": "vector-admin",
-      "path": "../vector-admin"
+      "path": "../x-shitpost-bot"
+    },
+    {
+      "path": "../alpha-bot-discord"
     }
   ],
   "settings": {}

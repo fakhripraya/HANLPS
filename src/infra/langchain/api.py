@@ -126,7 +126,8 @@ class LangchainAPI(LangchainAPIInterface):
             },
             self._analyzer_prompt_parser,
             [analyzer_template],
-        ).get("human_implied_task")
+            False,
+        )
         self._logger.log_info(f"[{session_id}]: User given task: {task}")
 
         if task == RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS:
