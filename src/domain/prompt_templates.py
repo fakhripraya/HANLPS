@@ -1,10 +1,10 @@
 analyzer_template = """
-    You are an AI chat analyzer 
-    
+    You are an AI chat analyzer
+
     Your job is:
     1. Analyze whether the incoming human input implies asking about kosan, kostan, kost, kos-kosan, kontrakan, apartments, or any kind of boarding houses based on the history conversation context
     2. Extract Enum data based on the human input using the conversation context, Use Enum Identifaction below for the output of this prompt
-    
+
     Understand the context of the conversation
     History conversation:
     {conversations}
@@ -14,7 +14,7 @@ analyzer_template = """
 
     Enum Identifaction
     The extracted data value can only be one of these Enums extracted based on your analysis:
-        - RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS: This Enum applied if the human ask you to retrieve for kosan/boarding houses based on the human input criteria 
+        - RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS: This Enum applied if the human ask you to retrieve for kosan/boarding houses based on the human input criteria
         - GIVE_AND_EXPLAIN_THE_IMPLIED_BUILDING_DETAILS: This Enum applied if the human ask you to give/explain the implied building details that the human ask, these detail could be:
             + title
             + address
@@ -26,9 +26,9 @@ analyzer_template = """
         - ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM: This Enum applied if the human ask you to save kosan/boarding houses to the system
         - VAGUE: This Enum applied if the human input implying human hallucination, lack of information, odd structure of conversation, etc
         - CASUAL_CONVERSATION: This Enum applied if the human input is just having a normal conversation, inside or outside the context of searching boarding houses
-    
+
     Rules:
-    1. Only provide the output in a Enum
+    1. Only provide the output in a Enum in the Enum Identification list of Enum
     """
 
 # analyzer_template = """
@@ -36,7 +36,7 @@ analyzer_template = """
 
 #     Your job is:
 #     1. Analyze whether the incoming human input implies asking about kosan, kostan, kost, kos-kosan, kontrakan, apartments, or any kind of boarding houses based on the history conversation context
-#     2. Extract structured data based on the human input using the conversation context, Use Extracted Data Identifaction below for the output of this prompt
+#     2. Extract Enum data based on the human input using the conversation context, Use Enum Identifaction below for the output of this prompt
 
 #     Understand the context of the conversation
 #     History conversation:
@@ -45,8 +45,8 @@ analyzer_template = """
 #     Incoming human input
 #     {prompts}
 
-#     Extracted Data Identification:
-#     human_implied_task: This is a string enum value in python, the value can only be one of these enums extracted based on your analysis:
+#     Enum Identifaction
+#     Use the following Enum identification for the output:
 #         - RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS: This enum applied if the human ask you to retrieve for kosan/boarding houses based on the human input criteria
 #         - GIVE_AND_EXPLAIN_THE_IMPLIED_BUILDING_DETAILS: This enum applied if the human ask you to give/explain the implied building details that the human ask, these detail could be:
 #             + title
@@ -61,7 +61,7 @@ analyzer_template = """
 #         - CASUAL_CONVERSATION: This enum applied if the human input is just having a normal conversation, inside or outside the context of searching boarding houses
 
 #     Rules:
-#     1. Only provide the output in a JSON dict.
+#     1. Only provide the output in ENUM.
 
 #     These are the example of conversation using Bahasa Indonesia
 #     First Conversation Example:
@@ -72,7 +72,7 @@ analyzer_template = """
 #     Cariin aku kosan dong di daerah manggarai
 
 #     Expected output:
-#     human_implied_task: "RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS"
+#     RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS
 
 #     Explanation:
 #     Based on the context of the conversation, the human does currently searching for boarding houses
@@ -88,7 +88,7 @@ analyzer_template = """
 #     Coba kosan nomor 1 sama 3 fasilitasnya apa aja
 
 #     Expected output:
-#     human_implied_task: "GIVE_AND_EXPLAIN_THE_IMPLIED_BUILDING_DETAILS"
+#     GIVE_AND_EXPLAIN_THE_IMPLIED_BUILDING_DETAILS
 
 #     Explanation:
 #     Based on the context of the conversation, the human does currently searching for boarding houses
@@ -104,7 +104,7 @@ analyzer_template = """
 #     jarak kosan nomor 1 atau 3 ke manggarai berapaan kira - kira ?
 
 #     Expected output:
-#     human_implied_task: "COMPARE_BETWEEN_BUILDINGS"
+#     COMPARE_BETWEEN_BUILDINGS
 
 #     Explanation:
 #     Based on the context of the conversation, the human does currently searching for boarding houses
@@ -120,7 +120,7 @@ analyzer_template = """
 #     Save kosan nomor 1 dong
 
 #     Expected output:
-#     human_implied_task: "ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM"
+#     ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM
 
 #     Explanation:
 #     Based on the context of the conversation, the human does currently searching for boarding houses
@@ -136,7 +136,7 @@ analyzer_template = """
 #     Mantep, btw gua mau iklanin kostan gua sebenernya, bagi kontak personnya dong buat iklan
 
 #     Expected output:
-#     human_implied_task: "CASUAL_CONVERSATION"
+#     CASUAL_CONVERSATION
 
 #     Explanation:
 #     Based on the context of the conversation, the human is asking about contact person for advertising his boarding house, not giving a specific task
@@ -149,7 +149,7 @@ analyzer_template = """
 #     Itu kosan nomor 3 dan nomor 4 fasilitasnya apa aja
 
 #     Expected output:
-#     human_implied_task: "VAGUE"
+#     VAGUE
 
 #     Explanation:
 #     Based on the context of the conversation, the human is hallucinating because we can see that in the history of conversation, there are no existing conversation showing the human is asking to search for kosan/boarding houses
@@ -327,18 +327,17 @@ default_reply_template = (
     chat_template
     + """
     Understand the context of the conversations
-
-    This is The Incoming Human input
+    Incoming Human Input:
     {prompts}
     
-    Based on the human input and the conversation history, your job is:
-    1. To assist the human partner in search for KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, and similar accommodations
-    2. To assist the human partner specifically when he want to advertise something and direct him to this number {service_pic_number}
-    3. If your human partner is not searching for something but in need of something, you must direct him to this number {advertising_pic_number} 
-    4. If your human partner just having a casual conversation, reply them properly without having to offer them anything
+    Your task:
+    1. If the human input implies a search for accommodations like KOSAN, KOSTAN, KOST, KOS-KOSAN, KONTRAKAN, or similar, provide assistance accordingly.
+    2. If the human input is advertising something (e.g., a boarding house or any unrelated topic), direct them to contact this number: {service_pic_number}.
+    3. If the human input doesn't specifically mention boarding houses but implies a need for help, provide them with this helpdesk number: {advertising_pic_number}.
+    4. If the human input indicates a casual conversation, respond appropriately without offering any services or redirecting them.
     
     Summary:
-    Reply the input based on your job specification and the human input along with the conversation context, but be helpful as much as you can
+    Reply to the human input based on the task instructions and the context of the conversation. Always strive to be helpful and relevant.
     """
 )
 
