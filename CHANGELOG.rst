@@ -1,3 +1,21 @@
+0.2.6 (2024-11-29)
+==================
+
+Incoming Updates
+----------------
+
+- Trailtokens implementation (#1)
+- Clear message history functionality (#2)
+
+
+Upcoming Features
+-----------------
+
+- Retrieval Augmented Generation (RAG) support (#1)
+- STT support (#2)
+- Implementation of search engine like searchXNG (#3)
+
+
 0.2.5 (2024-11-17)
 ==================
 
@@ -14,6 +32,7 @@ Upcoming Features
 - STT support (#2)
 - Trailtokens implementation (#3)
 - Implementation of search engine like searchXNG (#4)
+
 
 0.2.4 (2024-11-08)
 ==================
