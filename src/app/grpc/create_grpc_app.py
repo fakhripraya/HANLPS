@@ -21,7 +21,9 @@ class GRPCApp:
             self._logger = logger
 
             grpc_max_workers = 10
-            self._logger.log_info(f"Creating GRPC server with {grpc_max_workers} workers")
+            self._logger.log_info(
+                f"Creating GRPC server with {grpc_max_workers} workers"
+            )
             self._grpc_server = grpc.server(
                 futures.ThreadPoolExecutor(max_workers=grpc_max_workers)
             )
@@ -31,7 +33,7 @@ class GRPCApp:
                 handler.add_MessagingServiceServicer_to_server(
                     MessagingServicer(self._logger, langchain_api), self._grpc_server
                 )
-            
+
         except Exception as e:
             self._logger.log_critical(f"Error initializing App Instance: {e}")
 
@@ -43,7 +45,7 @@ class GRPCApp:
             self._logger.log_error(f"[{exc_type}]: {exc_val}")
             self._logger.log_error(f"Traceback: {traceback.format_tb(exc_tb)}")
         self.stop_server()
-            
+
     def define_llm_type(self):
         """define llm type"""
         if LLM_USED == str(OPENAI):
@@ -65,7 +67,9 @@ class GRPCApp:
 
             self._grpc_server.wait_for_termination()
         except KeyboardInterrupt:
-            self._logger.log_exception("Server has been stopped with keyboard interaction")
+            self._logger.log_exception(
+                "Server has been stopped with keyboard interaction"
+            )
         except MemoryError as me:
             self._logger.log_critical(f"Ran out of memory: {me}")
         except grpc.RpcError as rpc_error:

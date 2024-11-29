@@ -1,6 +1,3 @@
-""" This module is responsible for messaging usecase.
-"""
-
 import json
 from src.interactor.dtos.messaging_dtos import MessagingInputDto, MessagingOutputDto
 from src.interactor.interfaces.presenters.message_presenter import (
@@ -16,7 +13,7 @@ from src.infra.langchain.api import LangchainAPI
 
 
 class MessagingUseCase:
-    """This class is responsible for everything needed to do the messaging flow"""
+    """Handles messaging operations, including message processing and history clearing."""
 
     def __init__(
         self,
@@ -30,16 +27,13 @@ class MessagingUseCase:
         self.repository = repository
         self.llm = llm
 
-    def execute(self, input_dto: MessagingInputDto) -> dict:
-        """This method is responsible for messaging.
-        :param input_dto: The input data transfer object.
-        :type input_dto: MessagingInputDto
-        :return: Dict
-        """
-
+    def process_message(self, input_dto: MessagingInputDto) -> dict:
+        """Processes a user message and returns the response."""
+        # Validate the input
         validator = MessagingInputDtoValidator(input_dto.to_dict())
         validator.validate()
 
+        # Use the LLM to analyze the prompt
         message_output = self.llm.analyze_prompt(input_dto.sessionId, input_dto.content)
         message = self.repository.create(
             input=message_output.input,
@@ -51,16 +45,27 @@ class MessagingUseCase:
             self.logger.log_error("Message creation failed")
             raise ItemNotCreatedException(input_dto.content, "Message")
 
+        # Convert building content to JSON (if applicable)
         buildings_dict = [
             building.to_dict() for building in (message_output.output_content or [])
         ]
         buildings_json = json.dumps(buildings_dict)
 
+        # Prepare the output DTO and presenter response
         output_dto = MessagingOutputDto(
             input=message_output.input,
             output=message_output.output,
             output_content=buildings_json,
         )
 
-        presenter_response = self.presenter.present(output_dto)
-        return presenter_response
+        return self.presenter.present(output_dto)
+
+    def clear_message_history(self, session_id: str):
+        """Clears the message history for a given session."""
+        cleared = self.llm.clear_messaging_history(session_id)
+        if cleared:
+            self.logger.log_info(f"Message history cleared for session: {session_id}")
+            return
+        else:
+            self.logger.log_error(f"Failed to clear history for session: {session_id}")
+            raise ItemNotCreatedException(session_id, "ClearHistory")

@@ -100,6 +100,16 @@ class LangchainAPI(LangchainAPIInterface):
             self._logger.log_error(f"[{exc_type}]: {exc_val}")
             self._logger.log_error(f"Traceback: {traceback.format_tb(exc_tb)}")
 
+    def clear_messaging_history(self, session_id) -> bool:
+        """
+        Clear message history
+        :param session_id: chat session id.
+        """
+        if session_id in self._store:
+            del self._store[session_id]
+            return True
+        return False
+
     def analyze_prompt(self, session_id, prompt) -> Message:
         """
         Analyze prompt, define whether the prompt is a direct

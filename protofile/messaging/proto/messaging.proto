@@ -2,6 +2,7 @@ syntax = "proto3";
 
 service MessagingService {
   rpc textMessaging (MessageRequest) returns (MessageResponse);
+  rpc clearMessageHistory (ClearHistoryRequest) returns (Empty);
 }
 
 message Empty {}
@@ -15,4 +16,8 @@ message MessageResponse {
   string input = 1;
   string output = 2;
   string output_content = 3;
+}
+
+message ClearHistoryRequest {
+  string sessionId = 1;
 }

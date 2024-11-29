@@ -1,44 +1,58 @@
-"""Create Messaging Controller Module"""
-
+from enum import Enum
+from src.interactor.dtos.messaging_dtos import MessagingInputDto
 from src.interactor.usecases.messaging_usecase import MessagingUseCase
 from src.infra.repositories.in_memory.messaging_in_memory_repository import (
     MessagingInMemoryRepository,
 )
-from src.interactor.dtos.messaging_dtos import MessagingInputDto
-from src.interactor.interfaces.controller.messaging_controller_interface import (
-    MessagingControllerInterface,
-)
-from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.app.grpc.presenters.messaging_presenter import MessagingPresenter
+from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.langchain.api import LangchainAPI
 
 
-class MessagingController(MessagingControllerInterface):
-    """Create Messaging Controller Class"""
+class ActionType(Enum):
+    SEND_MESSAGE = "send_message"
+    CLEAR_HISTORY = "clear_history"
 
+
+class MessagingController:
     def __init__(self, logger: LoggerInterface, langchain_api: LangchainAPI):
         self._logger = logger
         self._langchain_api = langchain_api
-        self._input_dto: MessagingInputDto
 
-    def get_message(self, grpc_message) -> None:
-        """Get Message packet from the GRPC Client
-        :param json_input: Input data
-        :raises: ValueError if message content are missing.
-        """
-        if grpc_message.content is not None:
-            sessionId = str(grpc_message.sessionId)
-            content = str(grpc_message.content)
-            self._input_dto = MessagingInputDto(sessionId, content)
+    def execute(self, grpc_message, action: ActionType) -> dict:
+        """Delegates actions to their respective methods."""
+        # Validate sessionId
+        if not grpc_message.sessionId:
+            raise ValueError("Session ID is required")
+
+        # Route to the correct method based on action
+        if action == ActionType.SEND_MESSAGE:
+            return self._handle_send_message(grpc_message)
+        elif action == ActionType.CLEAR_HISTORY:
+            return self._handle_clear_history(grpc_message.sessionId)
         else:
-            raise ValueError("Missing message content")
+            raise ValueError("Invalid action type")
 
-    def execute(self) -> dict:
-        """Executes the controller
-        :returns: Message processed and send responses
-        """
+    def _handle_send_message(self, grpc_message) -> dict:
+        """Handles sending a message."""
+        if not grpc_message.content:
+            raise ValueError("Content is required for sending a message")
+
+        input_dto = MessagingInputDto(grpc_message.sessionId, grpc_message.content)
+        use_case = self._create_use_case()
+        result = use_case.process_message(input_dto)
+        return result
+
+    def _handle_clear_history(self, session_id: str) -> dict:
+        """Handles clearing message history."""
+        use_case = self._create_use_case()
+        use_case.clear_message_history(session_id)
+        return
+
+    def _create_use_case(self) -> MessagingUseCase:
+        """Creates and returns an instance of the MessagingUseCase."""
         repository = MessagingInMemoryRepository()
         presenter = MessagingPresenter()
-        use_case = MessagingUseCase(self._logger, presenter, repository, self._langchain_api)
-        result = use_case.execute(self._input_dto)
-        return result
+        return MessagingUseCase(
+            self._logger, presenter, repository, self._langchain_api
+        )

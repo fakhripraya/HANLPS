@@ -19,12 +19,23 @@ class MessagingServiceStub(object):
             request_serializer=messaging__pb2.MessageRequest.SerializeToString,
             response_deserializer=messaging__pb2.MessageResponse.FromString,
         )
+        self.clearMessageHistory = channel.unary_unary(
+            "/MessagingService/clearMessageHistory",
+            request_serializer=messaging__pb2.ClearHistoryRequest.SerializeToString,
+            response_deserializer=messaging__pb2.Empty.FromString,
+        )
 
 
 class MessagingServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def textMessaging(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def clearMessageHistory(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
@@ -37,6 +48,11 @@ def add_MessagingServiceServicer_to_server(servicer, server):
             servicer.textMessaging,
             request_deserializer=messaging__pb2.MessageRequest.FromString,
             response_serializer=messaging__pb2.MessageResponse.SerializeToString,
+        ),
+        "clearMessageHistory": grpc.unary_unary_rpc_method_handler(
+            servicer.clearMessageHistory,
+            request_deserializer=messaging__pb2.ClearHistoryRequest.FromString,
+            response_serializer=messaging__pb2.Empty.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -68,6 +84,35 @@ class MessagingService(object):
             "/MessagingService/textMessaging",
             messaging__pb2.MessageRequest.SerializeToString,
             messaging__pb2.MessageResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )
+
+    @staticmethod
+    def clearMessageHistory(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/MessagingService/clearMessageHistory",
+            messaging__pb2.ClearHistoryRequest.SerializeToString,
+            messaging__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,

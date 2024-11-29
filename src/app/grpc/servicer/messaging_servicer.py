@@ -1,7 +1,11 @@
+import grpc
 from protofile.messaging.proto import messaging_pb2_grpc, messaging_pb2 as messaging
 from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.langchain.api import LangchainAPI
-from src.app.grpc.controller.messaging_controller import MessagingController
+from src.app.grpc.controller.messaging_controller import (
+    MessagingController,
+    ActionType,
+)  # Import ActionType
 
 
 class MessagingServicer(messaging_pb2_grpc.MessagingServiceServicer):
@@ -13,14 +17,27 @@ class MessagingServicer(messaging_pb2_grpc.MessagingServiceServicer):
     def textMessaging(self, request, context):
         try:
             controller = MessagingController(self._logger, self._langchain_api)
-            controller.get_message(request)
-            result = controller.execute()
+            result = controller.execute(request, ActionType.SEND_MESSAGE)
+            self._logger.log_info(f"Result generated for session {request.sessionId}")
 
-            self._logger.log_info("Result Generated")
             return messaging.MessageResponse(
                 input=result["input"],
                 output=result["output"],
                 output_content=result["output_content"],
             )
         except Exception as e:
-            self._logger.log_exception(f"Exception: {e}")
+            self._logger.log_exception(f"Exception in textMessaging: {e}")
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"Internal error: {e}")
+            return messaging.MessageResponse()  # Return empty response on error
+
+    def clearMessageHistory(self, request, context):
+        try:
+            controller = MessagingController(self._logger, self._langchain_api)
+            controller.execute(request, ActionType.CLEAR_HISTORY)
+            return messaging.Empty()
+        except Exception as e:
+            self._logger.log_exception(f"Exception in clearMessageHistory: {e}")
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(f"Internal error: {e}")
+            return messaging.Empty()
