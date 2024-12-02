@@ -241,7 +241,7 @@ class LangchainAPI(LangchainAPIInterface):
         :param facility_query: query by facility to retrieve vector data from weaviate.
         :param location_query: query by location to retrieve vector data from weaviate.
         """
-        limit, offset, retries, max_retries = 10, 0, 0, 3
+        limit, offset, retries, max_retries = 5, 0, 0, 3
         start_time, building_list, seen_uuids = time.time(), [], set()
         geolocation_stages, geolocation_stage_index = [3000], 0
 
