@@ -1,122 +1,187 @@
+import time
 import json
+import os
 from dotenv import load_dotenv
-
-load_dotenv()
-
-from langchain.agents import initialize_agent, AgentType, Tool
-from langchain.agents.output_parsers import ReActSingleInputOutputParser
-from langchain_openai.chat_models import ChatOpenAI
+from langchain.agents import create_react_agent, Tool, AgentExecutor
+from langchain_openai import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
-from langchain.agents import AgentExecutor, LLMSingleActionAgent
-from langchain.agents import create_react_agent
-from langchain.schema import HumanMessage
-from configs.config import OPENAI_API_KEY, OPENAI_MODEL
 
 
-# Placeholder function to simulate external API data
-def get_boarding_house(data):
-    formatted_json = json.dumps(data, indent=4, ensure_ascii=False)
-    return formatted_json
+# Load environment variables
+load_dotenv()
 
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-# Placeholder function for casual conversation
-def casual_chat(input):
-    return f"Just reply this input: {input}"
+# Initialize the LLM
+llm = ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=OPENAI_API_KEY, temperature=0.5)
 
+# Tool 1: Simulate boarding house search
+def search_boarding_house(data):
+    print(data)
+    return f"\n{json.dumps({
+        "results": [
+            {"name": "Cozy Stay", "location": "Semanggi", "price": 1500000},
+            {"name": "Kostey Kost", "location": "Bendungan hilir", "price": 1000000},
+        ],
+        "output_message": "<Agent message explaining the results>",
+    }, indent=4)}\n"
 
-boarding_house_tool = Tool(
-    name="GetBoardingHouse",
-    func=get_boarding_house,
-    description=("Get the user search specification for boarding house search."),
-)
+# Tool 2: Simulate boarding house search
+def compare_object(data):
+    print(data)
+    return f"\n{json.dumps({
+        "objects": [
+            {"name": "Cozy Stay", "location": "Semanggi, 2 KM dari senayan", "price": 1500000},
+            {"name": "Kostey Kost", "location": "Bendungan hilir, 4 KM dari senayan", "price": 1000000},
+        ],
+        "output_message": "<Agent message comparing the objects>",
+    }, indent=4)}\n"
 
+# Tool 3: Simulate boarding house search
+def save_location(data):
+    return f"\n{json.dumps({
+        "is_success": True,
+        "output_message": "<Agent message explaining that location has been saved>",
+    }, indent=4)}\n"
 
-casual_chat_tool = Tool(
-    name="CasualConversation",
-    func=casual_chat,
-    description="Use this tool for casual conversation or general questions that don't involve searching.",
-)
+# Define the tools
+tools = [
+    Tool(
+        name="SearchBoardingHouse",
+        func=search_boarding_house,
+        description="""
+        Search for boarding houses based on the search specification input.
+        
+        ### Important for SearchBoardingHouse input
+        This is the specification input, only provide the following fields in a JSON dict, where applicable:
+        building_title: This is the title of the building
+        building_address: This is the address or the area of where the building in
+        building_proximity: This is the proximity around the building or the building area
+        building_facility: This is the list of facility that the building has
+        building_note: This is some random note that need to be put in mind, this can be rules, or anything to be noted
+        filter_type: This is the filter type in enums [LESS_THAN, GREATER_THAN, AROUND] that is based on the chat context
+        less_than_price: This is the price value that follows the "filter_type" property value, the value is determined if the "filter_type" is either "LESS_THAN" or "AROUND"
+        greater_than_price: This is the price value that follows the "filter_type" property value, the value is determined if the "filter_type" is either "GREATER_THAN" or "AROUND"
+        is_next: If the user demand to continue the search with the same search specification
 
-# Initialize the LLM (using GPT-3.5 Turbo)
-llm = ChatOpenAI(
-    model_name=OPENAI_MODEL, temperature=0.5, openai_api_key=OPENAI_API_KEY
-)
+        ### Rules specific for SearchBoardingHouse input
+        - Default value is null
+        - Filter price can't be less than or equal 0 if the filter reach 0 or minus, give 0 value
+        - For filter type AROUND and is not a price range, make sure to adjust the price for greater_than_price: xxx subtracted by 250000 and less_than_price: xxx added by 250000
+        - Nullify previous asked filter price if building title provided
+        - Null value are not string 
+        - Numbers are float not string
+        - The price number are in floating number type as we won't accept any currency symbol
+        """
+    ),
+    Tool(
+        name="ObjectComparison",
+        func=compare_object,
+        description="""
+        Compare the given objects, can be more than 2 objects
+        
+        ### Input object specification
+        Only provide the following fields in a JSON dict, where applicable:
+        building_address: This is the address or the area of where the building in
+        building_proximity: This is the proximity around the building or the building area
+        building_facility: This is the list of facility that the building has
+        building_note: This is some random note that need to be put in mind, this can be rules, or anything to be noted
+        building_price: This is the building rent price
+        building_geolocation: This is the building geolocation coordinate
 
-# Create memory to allow the agent to remember previous interactions
-memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+        ### Rules specific for ObjectComparison input
+        - Default value is null
+        - Null value are not string 
+        - Numbers are float not string
+        - The price number are in floating number type as we won't accept any currency symbol
+        """
+    ),
+    Tool(
+        name="SaveLocation",
+        func=save_location,
+        description="Save the location to the database"
+    ),
+]
 
-prompt_template_string = """
-    You are an intelligent assistant capable of two tasks:
+# Advanced ReAct prompt template
+react_prompt_template = PromptTemplate(
+    input_variables=["input", "chat_history", "agent_scratchpad", "tools", "tool_names"],
+    template="""
+    You are Pintrail, a multi-tasking assistant who spoke mainly in Bahasa Indonesia language but can also understand and speak different language
+    You are capable of performing four main tasks:
 
-    Available tools:
-    {tools}
-
-    1. **Boarding House Search:** Use this task to find boarding houses based on criteria provided by the user.
-    - Use the 'GetBoardingHouse' tool when the input involves finding a boarding house.
-    - Follow these rules when preparing the input:
-        a. If the user mentions a low budget but does not specify a price, set 'less_than_price' to 1500000.
-        b. If the user mentions a high budget but does not specify a price, set 'greater_than_price' to 2000000.
-        c. Adjust the 'greater_than_price' and 'less_than_price' for 'AROUND' filters as follows:
-            - Subtract 250000 from 'greater_than_price'.
-            - Add 250000 to 'less_than_price'.
-        d. Ensure all prices are floating-point numbers and do not include currency symbols.
-        e. Null values should be represented as `null`, not as strings.
-
-    2. **Casual Conversation:** Use this task for general chat or any non-search-related input.
-    - Use the 'CasualConversation' tool for greetings, questions, or casual remarks.
+    1. **Boarding House Search:** Use the 'SearchBoardingHouse' tool when the user asks for boarding house information.
+    2. **Object Comparison:** Use the 'ObjectComparison' tool when the user asks for specific boarding house object comparison.
+    3. **Save Location:** Use the 'SaveLocation' tool when the user ask to save the boarding house.
+    4. **Casual Conversation:** reply casually if the user input is a casual chat.
+    
+    ### Important Guidelines for all tools:
+    - Always analyze the user input thoroughly to decide which tool to use.
+    - Structure your response strictly in the following format:
+    Thought: <Explain your reasoning>
+    Action: <Select the tool>
+    Action Input: <JSON-formatted input>
 
     ### Required Output Format:
     Your response must follow this format strictly:
-    Thought: <Explain your reasoning here> Action: Use one of the following tools: {tool_names}
-    Action Input: <JSON-formatted input for the tool>
-    
-    Current Context:
-    Chat History:
-    {chat_history}
+    Thought: <Explain your reasoning here>
+    Final Answer: <JSON-formatted output>
 
-    User Input:
-    {input}
+    ### Rules:
+    - Do not include a final answer if an action is being performed. Follow strictly: Thought, Action, Action Input.
+    - After successfully obtaining valid information from a tool, respond directly to the user without calling another tool.
+    - If the task is complete, return the results in a readable format and avoid unnecessary actions.
+    - Respond the conversations using the slang language of Indonesian Jaksel Gen Z.
+    - Be a cool Jaksel Gen Z friend who is fun to talk to and very helpful.
 
+    ### Context:
+    Chat History: {chat_history}
+    User Input: {input}
     {agent_scratchpad}
-    
-    ### Examples:
-    User: Saya mencari kos di Ciputat dengan harga sekitar 1.5 juta.
-    Thought: The user is looking for a boarding house in Ciputat with a price around 1.5 million. Use the GetBoardingHouse tool. Action: GetBoardingHouse Action Input: {{ "building_title": null, "building_address": "Ciputat", "building_proximity": null, "building_facility": null, "building_note": null, "filter_type": "AROUND", "less_than_price": 1750000, "greater_than_price": 1250000 }}
-    User: Apa kabar?
-    Thought: The user is engaging in a casual conversation. Use the CasualConversation tool. Action: CasualConversation Action Input: {{"input": "Apa kabar?"}}
-    """
 
-react_prompt_template = PromptTemplate(
-    input_variables=[
-        "input",
-        "chat_history",
-        "agent_scratchpad",
-        "tools",
-        "tool_names",
-    ],
-    template=prompt_template_string,
+    Available Tools:
+    {tools}
+
+    Available Tool Names:
+    {tool_names}
+    """
 )
 
-# Create a ReACT agent using the custom prompt template
+# Create the ReAct agent
 react_agent = create_react_agent(
     llm=llm,
-    tools=[boarding_house_tool, casual_chat_tool],
+    tools=tools,
     prompt=react_prompt_template,
-    output_parser=ReActSingleInputOutputParser(),
 )
 
 # Initialize the agent executor
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 agent_executor = AgentExecutor(
     agent=react_agent,
-    tools=[boarding_house_tool, casual_chat_tool],
+    tools=tools,
     verbose=True,
+    max_execution_time=10,
+    max_iterations=10,
     memory=memory,
-    handle_parsing_errors=True,  # Enable retry mechanism
-    max_steps=3,
+    allow_dangerous_code=True,
+    handle_parsing_errors=True
 )
 
-# Example query for boarding house search
-query1 = "deket2 semanggi tuh ada daerah apa aja si?"
-response1 = agent_executor.invoke({"input": query1})
-print(response1.get("output", "No output returned"))  # Use .get() to avoid KeyError
+# Record start time
+start_time = time.time()
+
+query = "kosan semanggi harga 1.5 dong"
+response = agent_executor.invoke({"input": query})
+print(response.get("output", "No output returned"))
+
+query = "ada lagi gak?"
+response = agent_executor.invoke({"input": query})
+print(response.get("output", "No output returned"))
+
+# Record end time
+end_time = time.time()
+
+# Calculate elapsed time
+elapsed_time = end_time - start_time
+print(f"Processing time: {elapsed_time} seconds")
