@@ -4,9 +4,9 @@ import os
 from dotenv import load_dotenv
 from langchain.agents import create_react_agent, Tool, AgentExecutor
 from langchain_openai import ChatOpenAI
-from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 
+from src.infra.langchain_v2.memory.memory import LimitedConversationBufferMemory
 
 # Load environment variables
 load_dotenv()
@@ -14,7 +14,10 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # Initialize the LLM
-llm = ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=OPENAI_API_KEY, temperature=0.5)
+llm = ChatOpenAI(
+    model_name="gpt-4o-mini", openai_api_key=OPENAI_API_KEY, temperature=0.5
+)
+
 
 # Tool 1: Simulate boarding house search
 def search_boarding_house(data):
@@ -24,7 +27,7 @@ def search_boarding_house(data):
     # Extract values from the dictionary
     building_address = jsonobj["building_address"]
 
-    if(building_address == "Semanggi"):
+    if building_address == "Semanggi":
         return f"\n{json.dumps({
         "searched_boarding_houses": [
             {"name": "Cozy Stay", "location": "Semanggi", "price": 1500000},
@@ -36,9 +39,11 @@ def search_boarding_house(data):
             "searched_boarding_houses": []
         }, indent=4)}\n"
 
+
 # Tool 3: Simulate boarding house search
 def save_location(data):
     return f"\n Is location successfully saved: {True}\n"
+
 
 # Define the tools
 tools = [
@@ -69,7 +74,7 @@ tools = [
 
         ### Output:
         Return the results in JSON format without additional actions.
-        """
+        """,
     ),
     Tool(
         name="SaveLocation",
@@ -102,13 +107,19 @@ tools = [
         ### Output:
         - If the action is successful, return a confirmation message in string format.
         - If unsuccessful, provide an error message explaining the issue.
-        """
+        """,
     ),
 ]
 
 # Advanced ReAct prompt template
 react_prompt_template = PromptTemplate(
-    input_variables=["input", "chat_history", "agent_scratchpad", "tools", "tool_names"],
+    input_variables=[
+        "input",
+        "chat_history",
+        "agent_scratchpad",
+        "tools",
+        "tool_names",
+    ],
     template="""
     You are Pintrail, a multi-tasking assistant who spoke mainly in Bahasa Indonesia language but can also understand and speak different language
     You are capable of performing Task with tools:
@@ -150,7 +161,7 @@ react_prompt_template = PromptTemplate(
     Chat History: {chat_history}
     User Input: {input}
     {agent_scratchpad}
-    """
+    """,
 )
 
 # Create the ReAct agent
@@ -160,8 +171,14 @@ react_agent = create_react_agent(
     prompt=react_prompt_template,
 )
 
+# Create the memory instance
+memory = LimitedConversationBufferMemory(
+    memory_key="chat_history",
+    return_messages=True,
+    k=10,  # Store only the last 10 messages
+)
+
 # Initialize the agent executor
-memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 agent_executor = AgentExecutor(
     agent=react_agent,
     tools=tools,
@@ -170,7 +187,7 @@ agent_executor = AgentExecutor(
     max_iterations=10,
     memory=memory,
     allow_dangerous_code=True,
-    handle_parsing_errors=True
+    handle_parsing_errors=True,
 )
 
 # Record start time

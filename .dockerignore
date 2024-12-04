@@ -1,2 +1,8 @@
 node_modules
-tools
+weaviate_compose
+playground.main.py
+migrate.py
+migrate_prod.py
+fine_tuning
+playground
+json

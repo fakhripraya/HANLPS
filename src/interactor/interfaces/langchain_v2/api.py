@@ -1,4 +1,4 @@
-""" Module provides a langchain API interface.
+""" Module provides a langchain API v2 interface.
 """
 
 from abc import ABC, abstractmethod
@@ -8,8 +8,8 @@ from src.domain.entities.message.message import Message
 from typing import Any
 
 
-class LangchainAPIInterface(ABC):
-    """LangchainAPIInterface class provides an interface for langchain API."""
+class LangchainAPIV2Interface(ABC):
+    """LangchainAPIV2Interface class provides an interface for langchain API v2."""
 
     @abstractmethod
     def analyze_prompt(self, session_id: str, prompt: str) -> Message:
