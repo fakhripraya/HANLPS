@@ -19,7 +19,6 @@ from src.domain.constants import (
 )
 from src.domain.prompt_templates import (
     default_reply_template,
-    filter_data_structurer_analyzer_template,
     reask_template,
     seen_buildings_template,
     building_object_template,
@@ -30,23 +29,17 @@ from src.domain.constants import RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
 from src.domain.entities.building.building import Building
 from src.infra.langchain_v2.agent.agent import create_agent
-from src.infra.langchain_v2.tools.tools import tools
+from src.infra.langchain_v2.tools.tools import BoardingHouseAgentTools
 from src.infra.langchain_v2.memory.memory import LimitedConversationBufferMemory
 from src.infra.geocoding.api import GeocodingAPI
-from src.infra.repositories.weaviate.filters.buildings.buildings import (
-    append_housing_price_filters,
-    append_building_facility_filters,
-    append_building_note_filters,
-    append_building_geolocation_filter,
-)
 from src.interactor.interfaces.langchain_v2.api import LangchainAPIV2Interface
 from src.interactor.interfaces.logger.logger import LoggerInterface
 
 # Langchain and related libraries
-from langchain.agents import AgentExecutor
-from langchain_core.prompts.chat import SystemMessagePromptTemplate
-from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain.agents import AgentExecutor, Tool
 from langchain_core.runnables import Runnable
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_core.prompts.chat import SystemMessagePromptTemplate
 from langchain_core.prompts import (
     ChatPromptTemplate,
     MessagesPlaceholder,
@@ -59,6 +52,12 @@ from src.infra.repositories.weaviate.api import WeaviateAPI
 from src.infra.repositories.weaviate.query.query import (
     query_building_with_building_as_reference,
     query_building,
+)
+from src.infra.repositories.weaviate.filters.buildings.buildings import (
+    append_housing_price_filters,
+    append_building_facility_filters,
+    append_building_note_filters,
+    append_building_geolocation_filter,
 )
 from weaviate.classes.query import Filter
 from weaviate.collections.collection import CrossReferences
@@ -109,9 +108,21 @@ class LangchainAPIV2(LangchainAPIV2Interface):
             f"------------------- End of Conversation for User {session_id} -----------"
         )
 
+        agent_tools = BoardingHouseAgentTools(self._logger)
         agent_executor = AgentExecutor(
             agent=self._agent,
-            tools=tools,
+            tools=[
+                Tool(
+                    name="SearchBoardingHouse",
+                    func=agent_tools.search_boarding_house,
+                    description="Search for boarding houses based on the specified criteria.",
+                ),
+                Tool(
+                    name="SaveLocation",
+                    func=agent_tools.save_location,
+                    description="Save the location to the database.",
+                ),
+            ],
             verbose=True,
             max_execution_time=60,
             max_iterations=15,

@@ -1,89 +1,90 @@
+import time
+import traceback
+
+from src.domain.entities.message.message import Message
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
 from src.domain.entities.building.building import Building
+from src.infra.geocoding.api import GeocodingAPI
+from src.interactor.interfaces.logger.logger import LoggerInterface
 
-from langchain.agents import Tool
+# Weaviate
+from src.infra.repositories.weaviate.api import WeaviateAPI
+from src.infra.repositories.weaviate.query_parser.query_parser import QueryParser
+from src.infra.repositories.weaviate.query.query import (
+    query_building_with_building_as_reference,
+    query_building,
+)
+from src.infra.repositories.weaviate.filters.buildings.buildings import (
+    append_housing_price_filters,
+    append_building_facility_filters,
+    append_building_note_filters,
+    append_building_geolocation_filter,
+)
+from weaviate.classes.query import Filter
+from weaviate.collections.collection import CrossReferences
+from weaviate.collections.classes.types import WeaviateProperties
+from weaviate.collections.classes.internal import QueryReturn, Object
 
 
-def search_boarding_house(input):
-    buildings_filter = BuildingsFilter(**input)
-    self._logger.log_debug(f"[{session_id}]: Filters - {buildings_filter}")
+class BoardingHouseAgentTools:
+    def __init__(self, logger: LoggerInterface, session_id: str):
+        self._logger = logger
+        self._session_id = session_id
+        self._query_parser = QueryParser()
 
-    filter_array = self._prepare_filters(buildings_filter)
+    def search_boarding_house(self, input):
+        buildings_filter = BuildingsFilter(**input)
+        self._logger.log_debug(f"[{self._session_id}]: Filters - {buildings_filter}")
+        filter_array = self._prepare_filters(buildings_filter)
 
-    building_instance = None
-    with GeocodingAPI(self._logger) as obj:
-        try:
-            query = (
-                buildings_filter.building_address
-                if buildings_filter.building_address
-                else buildings_filter.building_proximity
-            )
-            if query is not None:
-                result = self._chat_completion.execute(
-                    {
-                        "prompts": query,
-                    },
-                    self._location_verifier_prompt_parser,
-                    [location_verifier_template],
-                ).get("address")
-
-                geo_query = query if result in [None, "None"] else result
-                self._logger.log_debug(f"[{session_id}]: Verified address: {geo_query}")
-                geocode_data = obj.execute_geocode_by_address(geo_query)
-                if len(geocode_data) > 0:
-                    self._logger.log_debug(
-                        f"[{session_id}]: Got geocode data: {geocode_data}"
-                    )
-                    lat_long = geocode_data[0]["geometry"]["location"]
-                    filter_array["building_geolocation"] = (
-                        lambda distance: append_building_geolocation_filter(
-                            lat_long, distance
+        with GeocodingAPI(self._logger) as obj:
+            try:
+                geo_query = (
+                    buildings_filter.building_address
+                    if buildings_filter.building_address
+                    else buildings_filter.building_proximity
+                )
+                if geo_query:
+                    self._logger.log_debug(f"[{self._session_id}]: Verified address: {geo_query}")
+                    geocode_data = obj.execute_geocode_by_address(geo_query)
+                    if geocode_data:
+                        self._logger.log_debug(f"[{self._session_id}]: Got geocode data: {geocode_data}")
+                        lat_long = geocode_data[0]["geometry"]["location"]
+                        filter_array["building_geolocation"] = (
+                            lambda distance: append_building_geolocation_filter(lat_long, distance)
                         )
-                    )
 
-        except Exception as e:
-            self._logger.log_exception(f"[{session_id}]: Error Geocode: {e}")
+            except Exception as e:
+                self._logger.log_exception(f"[{self._session_id}]: Error Geocode: {e}")
 
-    location_query = None
-    facility_query = None
-    if any(
-        [
-            buildings_filter.building_title,
-            buildings_filter.building_address,
-            buildings_filter.building_proximity,
-        ]
-    ):
-        building_instance = Building(
-            building_title=buildings_filter.building_title,
-            building_address=buildings_filter.building_address,
-            building_proximity=buildings_filter.building_proximity,
+        location_query = None
+        facility_query = None
+        if any([buildings_filter.building_title, buildings_filter.building_address, buildings_filter.building_proximity]):
+            building_instance = Building(
+                building_title=buildings_filter.building_title,
+                building_address=buildings_filter.building_address,
+                building_proximity=buildings_filter.building_proximity,
+            )
+            location_query = self._query_parser.execute(building_instance.to_dict())
+
+        if any([buildings_filter.building_title, buildings_filter.building_facility, buildings_filter.building_note]):
+            facility_query_instance = Building(
+                building_title=buildings_filter.building_title,
+                building_facility=buildings_filter.building_facility,
+                building_note=buildings_filter.building_note,
+            )
+            facility_query = self._query_parser.execute(facility_query_instance.to_dict())
+
+        output = self._vector_db_retrieval(
+            filter_array, facility_query, location_query
         )
-        location_query = self._query_parser.execute(building_instance.to_dict())
+        return output
 
-    if any(
-        [
-            buildings_filter.building_title,
-            buildings_filter.building_facility,
-            buildings_filter.building_note,
-        ]
-    ):
-        facility_query_instance = Building(
-            building_title=buildings_filter.building_title,
-            building_facility=buildings_filter.building_facility,
-            building_note=buildings_filter.building_note,
-        )
-        facility_query = self._query_parser.execute(facility_query_instance.to_dict())
+    def save_location(self, input):
+        return "Location has been successfully saved"
 
-    output = self.vector_db_retrieval(
-        prompt, session_id, filter_array, facility_query, location_query
-    )
-
-
-def save_location(input):
-    return "Location has been sucessfully saved"
-
- def vector_db_retrieval(
-        self, prompt, session_id, filter_array, facility_query="", location_query=""
+    def _vector_db_retrieval(
+        self, filter_array, facility_query="", location_query=""
     ) -> Message:
         """
         Vector database data retrieval process
@@ -115,7 +116,7 @@ def save_location(input):
                             )
 
                             self._logger.log_debug(
-                                f'[{session_id}]: Executing facility query "{facility_query}"'
+                                f'[{self._session_id}]: Executing facility query "{facility_query}"'
                             )
                             response = query_building(
                                 building_collection,
@@ -128,7 +129,7 @@ def save_location(input):
                             filters = self._apply_non_geofilter_conditions(filter_array)
 
                             self._logger.log_debug(
-                                f'[{session_id}]: Executing location query "{location_query}"'
+                                f'[{self._session_id}]: Executing location query "{location_query}"'
                             )
                             response = query_building_with_building_as_reference(
                                 building_chunk_collection,
@@ -140,7 +141,7 @@ def save_location(input):
 
                         if not response.objects:
                             if self._handle_empty_geosearch(
-                                session_id,
+                                self._session_id,
                                 with_geofilter,
                                 geolocation_stages,
                                 geolocation_stage_index,
@@ -153,7 +154,7 @@ def save_location(input):
                                 break
                         else:
                             self._process_response(
-                                session_id,
+                                self._session_id,
                                 with_geofilter,
                                 response,
                                 building_list,
@@ -165,36 +166,184 @@ def save_location(input):
                         offset += limit
 
                     self._log_query_execution_time(
-                        session_id, start_time, building_list
+                        self._session_id, start_time, building_list
                     )
                     break
 
                 except Exception as e:
                     if retries >= max_retries:
                         self._logger.log_exception(
-                            f"[{session_id}]: Weaviate query failed after {max_retries} retries. {e}"
+                            f"[{self._session_id}]: Weaviate query failed after {max_retries} retries. {e}"
                         )
                     else:
                         self._logger.log_warning(
-                            f"[{session_id}]: Query attempt {retries} failed. Error: {e}"
+                            f"[{self._session_id}]: Query attempt {retries} failed. Error: {e}"
                         )
                         retries += 1
                 finally:
                     weaviate_client.close_connection_to_server(connected)
 
-        return self.feedback_prompt(prompt, session_id, found=building_list or True)
+        return "return here"
 
+    def _prepare_filters(self, buildings_filter: BuildingsFilter):
+        filter_array = None
+        filter_array = {
+            "housing_price": lambda with_reference: append_housing_price_filters(
+                buildings_filter, [], with_reference
+            ),
+            "building_facility": append_building_facility_filters(buildings_filter, []),
+            "building_note": append_building_note_filters(buildings_filter, []),
+        }
 
+        return filter_array
 
-tools = [
-    Tool(
-        name="SearchBoardingHouse",
-        func=search_boarding_house,
-        description="Search for boarding houses based on the specified criteria.",
-    ),
-    Tool(
-        name="SaveLocation",
-        func=save_location,
-        description="Save the location to the database",
-    ),
-]
+    def _connect_to_collections(self, weaviate_client: WeaviateAPI):
+        """Connect to the necessary collections for querying."""
+        connected = weaviate_client.connect_to_server(int(USE_MODULE), MODULE_USED)
+        if connected is None:
+            raise RuntimeError(
+                f"Runtime Error - 'connected' variable value is {connected}"
+            )
+
+        building_collection = connected.collections.get(BUILDINGS_COLLECTION_NAME)
+        building_chunk_collection = connected.collections.get(
+            BUILDING_CHUNKS_COLLECTION_NAME
+        )
+        return connected, building_collection, building_chunk_collection
+
+    def _geofilter_check(
+        self,
+        geolocation_stages: list[int],
+        geolocation_stage_index: int,
+        filter_array: dict[str, list],
+    ):
+        """Check if geolocation filter can be applied."""
+        return callable(
+            filter_array.get("building_geolocation")
+        ) and geolocation_stage_index < len(geolocation_stages)
+
+    def _apply_geofilter_conditions(
+        self, filter_array: dict[str, list], distance: float
+    ):
+        """Apply geolocation and housing price filters."""
+        housing_price_filter = filter_array["housing_price"](False)
+        filters = Filter.all_of(housing_price_filter) if housing_price_filter else None
+        geofilter = filter_array["building_geolocation"](distance)
+        return filters & geofilter if filters else geofilter
+
+    def _apply_non_geofilter_conditions(self, filter_array: dict[str, list]):
+        """Apply non-geolocation filters."""
+        facility_filters = (
+            Filter.any_of(filter_array["building_facility"])
+            if filter_array["building_facility"]
+            else None
+        )
+        note_filter = (
+            Filter.any_of(filter_array["building_note"])
+            if filter_array["building_note"]
+            else None
+        )
+
+        housing_price_filter = filter_array["housing_price"](True)
+        price_filters = (
+            Filter.all_of(housing_price_filter) if housing_price_filter else None
+        )
+        filters = facility_filters & note_filter if facility_filters else note_filter
+        filters = filters & price_filters if filters else price_filters
+        return filters
+
+    def _handle_empty_geosearch(
+        self,
+        session_id: str,
+        with_geofilter: bool,
+        geolocation_stages: list[int],
+        geolocation_stage_index: int,
+        facility_query: str,
+        location_query: str,
+    ):
+        """Handle cases with no results."""
+        if with_geofilter:
+            self._logger.log_debug(
+                f"[{session_id}]: No results at {geolocation_stages[geolocation_stage_index]} meters for query: {facility_query}"
+            )
+            return True
+        self._logger.log_debug(
+            f"[{session_id}]: No results for query: {location_query}"
+        )
+        return False
+
+    def _process_response(
+        self,
+        session_id: str,
+        with_geofilter: bool,
+        response: QueryReturn[WeaviateProperties, CrossReferences],
+        building_list: list,
+        seen_uuids: set,
+        limit: int,
+    ):
+        """Process each object in the response and add to building_list."""
+
+        # clear the existing seen buildings set
+        self._store[session_id]["session_buildings_seen"].clear()
+
+        # loop through the response objects along with filtering which object should be appended
+        for index, obj in enumerate(response.objects):
+            if with_geofilter:
+                self._add_building_instance(
+                    session_id, index, obj, seen_uuids, building_list
+                )
+            else:
+                for ref_obj in obj.references["hasBuilding"].objects:
+                    if ref_obj.uuid not in seen_uuids:
+                        self._add_building_instance(
+                            session_id,
+                            index,
+                            ref_obj,
+                            seen_uuids,
+                            building_list,
+                        )
+            if len(building_list) >= limit:
+                break
+
+    def _add_building_instance(
+        self,
+        session_id: str,
+        obj_index: int,
+        obj: Object[WeaviateProperties, CrossReferences],
+        seen_uuids: set,
+        building_list: list,
+    ):
+        """Add a building instance to the list after checking for duplicates."""
+        seen_uuids.add(obj.uuid)
+        building_instance = Building(
+            building_title=obj.properties["buildingTitle"],
+            building_address=obj.properties["buildingAddress"],
+            building_description=obj.properties["buildingDescription"],
+            housing_price=obj.properties["housingPrice"],
+            owner_name=obj.properties["ownerName"],
+            owner_email=obj.properties["ownerEmail"],
+            owner_whatsapp=obj.properties["ownerWhatsapp"],
+            owner_phone_number=obj.properties["ownerPhoneNumber"],
+            image_url=obj.properties["imageURL"],
+        )
+        formatted_info = building_object_template.format(
+            number=obj_index + 1,
+            title=building_instance.building_title,
+            address=building_instance.building_address,
+            facilities=building_instance.building_description,
+            price=building_instance.housing_price,
+            name=building_instance.owner_name,
+            whatsapp=building_instance.owner_whatsapp,
+            phonenumber=building_instance.owner_phone_number,
+        )
+        self._store[session_id]["session_buildings_seen"].add(formatted_info)
+        building_list.append(building_instance)
+
+    def _log_query_execution_time(
+        self, session_id: str, start_time: float, building_list: list
+    ):
+        """Log the time taken for the query and total objects found."""
+        elapsed_time = time.time() - start_time
+        self._logger.log_info(
+            f"[{session_id}]: Query completed in {elapsed_time:.2f} seconds. Total buildings found: {len(building_list)}"
+        )
