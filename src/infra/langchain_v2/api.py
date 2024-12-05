@@ -9,26 +9,16 @@ import traceback
 from configs.config import (
     ADVERTISING_PIC_NUMBER,
     SERVICE_PIC_NUMBER,
-    OPENAI_MODEL,
-    GEMINI_MODEL,
-    GEMINI_API_KEY,
     USE_MODULE,
     MODULE_USED,
-    OPENAI_API_KEY,
-    OPENAI_ANALYZER_MODEL,
-    OPENAI_FILTER_DATA_STRUCTURER_MODEL,
-    OPENAI_LOCATION_VERIFIER_MODEL,
 )
 from src.domain.entities.message.message import Message
 from src.domain.constants import (
-    OPENAI,
-    GEMINI,
     BUILDINGS_COLLECTION_NAME,
     BUILDING_CHUNKS_COLLECTION_NAME,
 )
 from src.domain.prompt_templates import (
     default_reply_template,
-    analyzer_template,
     filter_data_structurer_analyzer_template,
     reask_template,
     seen_buildings_template,
@@ -38,22 +28,22 @@ from src.domain.prompt_templates import (
 )
 from src.domain.constants import RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
-from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
-from src.infra.langchain.chat_completion.chat_completion import ChatCompletion
-from src.infra.langchain.llm.llm import create_open_ai_llm, create_gemini_llm
-from src.interactor.interfaces.langchain_v2.api import LangchainAPIV2Interface
-from src.interactor.interfaces.logger.logger import LoggerInterface
+from src.domain.entities.building.building import Building
+from src.infra.langchain_v2.agent.agent import create_agent
+from src.infra.langchain_v2.tools.tools import tools
+from src.infra.langchain_v2.memory.memory import LimitedConversationBufferMemory
+from src.infra.geocoding.api import GeocodingAPI
 from src.infra.repositories.weaviate.filters.buildings.buildings import (
     append_housing_price_filters,
     append_building_facility_filters,
     append_building_note_filters,
     append_building_geolocation_filter,
 )
-from src.domain.entities.building.building import Building
-from src.infra.geocoding.api import GeocodingAPI
+from src.interactor.interfaces.langchain_v2.api import LangchainAPIV2Interface
+from src.interactor.interfaces.logger.logger import LoggerInterface
 
 # Langchain and related libraries
-from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain.agents import AgentExecutor
 from langchain_core.prompts.chat import SystemMessagePromptTemplate
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.runnables import Runnable
@@ -63,11 +53,9 @@ from langchain_core.prompts import (
     PromptTemplate,
 )
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.chat_history import BaseChatMessageHistory
 
 # Weaviate
 from src.infra.repositories.weaviate.api import WeaviateAPI
-from src.infra.repositories.weaviate.query_parser.query_parser import QueryParser
 from src.infra.repositories.weaviate.query.query import (
     query_building_with_building_as_reference,
     query_building,
@@ -84,13 +72,7 @@ class LangchainAPIV2(LangchainAPIV2Interface):
     def __init__(self, llm_type: str, logger: LoggerInterface) -> None:
         self._logger = logger
         self._store = {}
-        self._llm_type = llm_type
-        self._client = None
-        self._analyzer_client = None
-        self._filter_data_structurer_client = None
-        self._query_parser = QueryParser()
-        self._chat_completion = ChatCompletion()
-        self._connect_llm()
+        self._agent = create_agent(llm_type, logger)
 
     def __enter__(self):
         return self
@@ -120,35 +102,29 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         self._logger.log_info(f"[{session_id}]: User prompt: {prompt}")
 
         # Only let 10 message in the chat history for context window efficiency
-        conversation = self._get_session_message_history(session_id)
-        while len(conversation.messages) > 10:
-            conversation.messages.pop(0)
+        memory = self._get_session_buffer_memory(session_id)
         self._logger.log_info(
             f"------------------- Conversation of User {session_id} -------------------\n"
-            f"{conversation}\n"
+            f"{memory.chat_memory.messages}\n"
             f"------------------- End of Conversation for User {session_id} -----------"
         )
 
-        task = self._chat_completion.execute(
-            {
-                "prompts": prompt,
-                "conversations": conversation if len(conversation.messages) > 0 else "",
-            },
-            self._analyzer_prompt_parser,
-            [analyzer_template],
-            False,
+        agent_executor = AgentExecutor(
+            agent=self._agent,
+            tools=tools,
+            verbose=True,
+            max_execution_time=60,
+            max_iterations=15,
+            memory=memory,
+            allow_dangerous_code=True,
+            handle_parsing_errors=True,
         )
-        self._logger.log_info(f"[{session_id}]: User given task: {task}")
+
+        query = "info kost semanggi harga 1.5 dong"
+        response = agent_executor.invoke({"input": query})
+        print(response.get("output", "No output returned"))
 
         if task == RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS:
-            result = self._chat_completion.execute(
-                {
-                    "prompts": prompt,
-                    "conversations": conversation if conversation else "",
-                },
-                self._filter_data_structurer_prompt_parser,
-                [filter_data_structurer_analyzer_template],
-            )
 
             buildings_filter = BuildingsFilter(**result)
             self._logger.log_debug(f"[{session_id}]: Filters - {buildings_filter}")
@@ -411,68 +387,29 @@ class LangchainAPIV2(LangchainAPIV2Interface):
 
         return result
 
-    # Helper functions
-    def _connect_llm(self) -> None:
-        """
-        Connect selected LLM and initialize prompt parsers
-        """
-        try:
-            if not self._client:
-                if self._llm_type == OPENAI:
-                    self._client = create_open_ai_llm(OPENAI_MODEL, OPENAI_API_KEY)
-                    self._analyzer_client = create_open_ai_llm(
-                        OPENAI_ANALYZER_MODEL, OPENAI_API_KEY
-                    )
-                    self._filter_data_structurer_client = create_open_ai_llm(
-                        OPENAI_FILTER_DATA_STRUCTURER_MODEL, OPENAI_API_KEY
-                    )
-                    self._location_verifier_client = create_open_ai_llm(
-                        OPENAI_LOCATION_VERIFIER_MODEL, OPENAI_API_KEY
-                    )
-                elif self._llm_type == GEMINI:
-                    self._client = create_gemini_llm(GEMINI_MODEL, GEMINI_API_KEY)
-                    self._analyzer_client = create_gemini_llm(
-                        GEMINI_MODEL, GEMINI_API_KEY
-                    )
-                    self._filter_data_structurer_client = create_gemini_llm(
-                        GEMINI_MODEL, GEMINI_API_KEY
-                    )
-                    self._location_verifier_client = create_gemini_llm(
-                        GEMINI_MODEL, OPENAI_API_KEY
-                    )
-                else:
-                    raise ValueError("No LLM Found")
-
-                self._prompt_parser = PromptParser(self._client)
-                self._analyzer_prompt_parser = PromptParser(self._analyzer_client)
-                self._filter_data_structurer_prompt_parser = PromptParser(
-                    self._filter_data_structurer_client
-                )
-                self._location_verifier_prompt_parser = PromptParser(
-                    self._location_verifier_client
-                )
-        except Exception as e:
-            self._logger.log_exception(f"Error connecting LLM: {e}")
-
-    def _create_session(self, session_id: str) -> dict:
-        """Create session along with its properties by session id
+    def _create_session_buffer_memory(
+        self, session_id: str
+    ) -> LimitedConversationBufferMemory:
+        """Create session buffer memory
         :param session_id: chat session id
-        :return: dict
+        :return: LimitedConversationBufferMemory
         """
-        return {
-            "session_id": session_id,
-            "session_messages_history": ChatMessageHistory(),
-            "session_buildings_seen": set(),
-        }
+        return LimitedConversationBufferMemory(
+            memory_key=f"chat_history-{session_id}",
+            return_messages=True,
+            k=10,
+        )
 
-    def _get_session_message_history(self, session_id: str) -> BaseChatMessageHistory:
-        """Get message history by session id
+    def _get_session_buffer_memory(
+        self, session_id: str
+    ) -> LimitedConversationBufferMemory:
+        """Get buffer memory by session id
         :param session_id: chat session id
-        :return: BaseChatMessageHistory
+        :return: LimitedConversationBufferMemory
         """
         if session_id not in self._store:
-            self._store[session_id] = self._create_session(session_id)
-        return self._store[session_id]["session_messages_history"]
+            self._store[session_id] = self._create_session_buffer_memory(session_id)
+        return self._store[session_id]
 
     def _prepare_filters(self, buildings_filter: BuildingsFilter):
         filter_array = None
