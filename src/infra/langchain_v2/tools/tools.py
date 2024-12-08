@@ -1,5 +1,13 @@
 import time
-import traceback
+from configs.config import (
+    USE_MODULE,
+    MODULE_USED,
+)
+from src.domain.entities.message.message import Message
+from src.domain.constants import (
+    BUILDINGS_COLLECTION_NAME,
+    BUILDING_CHUNKS_COLLECTION_NAME,
+)
 
 from src.domain.entities.message.message import Message
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
@@ -45,13 +53,19 @@ class BoardingHouseAgentTools:
                     else buildings_filter.building_proximity
                 )
                 if geo_query:
-                    self._logger.log_debug(f"[{self._session_id}]: Verified address: {geo_query}")
+                    self._logger.log_debug(
+                        f"[{self._session_id}]: Verified address: {geo_query}"
+                    )
                     geocode_data = obj.execute_geocode_by_address(geo_query)
                     if geocode_data:
-                        self._logger.log_debug(f"[{self._session_id}]: Got geocode data: {geocode_data}")
+                        self._logger.log_debug(
+                            f"[{self._session_id}]: Got geocode data: {geocode_data}"
+                        )
                         lat_long = geocode_data[0]["geometry"]["location"]
                         filter_array["building_geolocation"] = (
-                            lambda distance: append_building_geolocation_filter(lat_long, distance)
+                            lambda distance: append_building_geolocation_filter(
+                                lat_long, distance
+                            )
                         )
 
             except Exception as e:
@@ -59,7 +73,13 @@ class BoardingHouseAgentTools:
 
         location_query = None
         facility_query = None
-        if any([buildings_filter.building_title, buildings_filter.building_address, buildings_filter.building_proximity]):
+        if any(
+            [
+                buildings_filter.building_title,
+                buildings_filter.building_address,
+                buildings_filter.building_proximity,
+            ]
+        ):
             building_instance = Building(
                 building_title=buildings_filter.building_title,
                 building_address=buildings_filter.building_address,
@@ -67,17 +87,23 @@ class BoardingHouseAgentTools:
             )
             location_query = self._query_parser.execute(building_instance.to_dict())
 
-        if any([buildings_filter.building_title, buildings_filter.building_facility, buildings_filter.building_note]):
+        if any(
+            [
+                buildings_filter.building_title,
+                buildings_filter.building_facility,
+                buildings_filter.building_note,
+            ]
+        ):
             facility_query_instance = Building(
                 building_title=buildings_filter.building_title,
                 building_facility=buildings_filter.building_facility,
                 building_note=buildings_filter.building_note,
             )
-            facility_query = self._query_parser.execute(facility_query_instance.to_dict())
+            facility_query = self._query_parser.execute(
+                facility_query_instance.to_dict()
+            )
 
-        output = self._vector_db_retrieval(
-            filter_array, facility_query, location_query
-        )
+        output = self._vector_db_retrieval(filter_array, facility_query, location_query)
         return output
 
     def save_location(self, input):
@@ -281,12 +307,10 @@ class BoardingHouseAgentTools:
         seen_uuids: set,
         limit: int,
     ):
-        """Process each object in the response and add to building_list."""
-
-        # clear the existing seen buildings set
-        self._store[session_id]["session_buildings_seen"].clear()
-
-        # loop through the response objects along with filtering which object should be appended
+        """
+        Process each object in the response and add to building_list.
+        loop through the response objects along with filtering which object should be appended
+        """
         for index, obj in enumerate(response.objects):
             if with_geofilter:
                 self._add_building_instance(
@@ -326,17 +350,6 @@ class BoardingHouseAgentTools:
             owner_phone_number=obj.properties["ownerPhoneNumber"],
             image_url=obj.properties["imageURL"],
         )
-        formatted_info = building_object_template.format(
-            number=obj_index + 1,
-            title=building_instance.building_title,
-            address=building_instance.building_address,
-            facilities=building_instance.building_description,
-            price=building_instance.housing_price,
-            name=building_instance.owner_name,
-            whatsapp=building_instance.owner_whatsapp,
-            phonenumber=building_instance.owner_phone_number,
-        )
-        self._store[session_id]["session_buildings_seen"].add(formatted_info)
         building_list.append(building_instance)
 
     def _log_query_execution_time(
