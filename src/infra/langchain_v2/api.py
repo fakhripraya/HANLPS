@@ -6,23 +6,8 @@ import time
 import traceback
 
 # Source-specific imports
-from configs.config import (
-    ADVERTISING_PIC_NUMBER,
-    SERVICE_PIC_NUMBER,
-    USE_MODULE,
-    MODULE_USED,
-)
 from src.domain.entities.message.message import Message
-from src.domain.constants import (
-    BUILDINGS_COLLECTION_NAME,
-    BUILDING_CHUNKS_COLLECTION_NAME,
-)
 from src.domain.prompt_templates import (
-    default_reply_template,
-    reask_template,
-    seen_buildings_template,
-    building_object_template,
-    building_found_template,
     location_verifier_template,
 )
 from src.domain.constants import RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS
@@ -37,32 +22,11 @@ from src.interactor.interfaces.logger.logger import LoggerInterface
 
 # Langchain and related libraries
 from langchain.agents import AgentExecutor, Tool
-from langchain_core.runnables import Runnable
-from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_core.prompts.chat import SystemMessagePromptTemplate
-from langchain_core.prompts import (
-    ChatPromptTemplate,
-    MessagesPlaceholder,
-    PromptTemplate,
-)
-from langchain_core.output_parsers import StrOutputParser
 
 # Weaviate
-from src.infra.repositories.weaviate.api import WeaviateAPI
-from src.infra.repositories.weaviate.query.query import (
-    query_building_with_building_as_reference,
-    query_building,
-)
 from src.infra.repositories.weaviate.filters.buildings.buildings import (
-    append_housing_price_filters,
-    append_building_facility_filters,
-    append_building_note_filters,
     append_building_geolocation_filter,
 )
-from weaviate.classes.query import Filter
-from weaviate.collections.collection import CrossReferences
-from weaviate.collections.classes.types import WeaviateProperties
-from weaviate.collections.classes.internal import QueryReturn, Object
 
 
 class LangchainAPIV2(LangchainAPIV2Interface):
@@ -134,88 +98,7 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         query = "info kost semanggi harga 1.5 dong"
         response = agent_executor.invoke({"input": query})
         print(response.get("output", "No output returned"))
-
-        if task == RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS:
-
-            buildings_filter = BuildingsFilter(**result)
-            self._logger.log_debug(f"[{session_id}]: Filters - {buildings_filter}")
-
-            filter_array = self._prepare_filters(buildings_filter)
-
-            building_instance = None
-            with GeocodingAPI(self._logger) as obj:
-                try:
-                    query = (
-                        buildings_filter.building_address
-                        if buildings_filter.building_address
-                        else buildings_filter.building_proximity
-                    )
-                    if query is not None:
-                        result = self._chat_completion.execute(
-                            {
-                                "prompts": query,
-                            },
-                            self._location_verifier_prompt_parser,
-                            [location_verifier_template],
-                        ).get("address")
-
-                        geo_query = query if result in [None, "None"] else result
-                        self._logger.log_debug(
-                            f"[{session_id}]: Verified address: {geo_query}"
-                        )
-                        geocode_data = obj.execute_geocode_by_address(geo_query)
-                        if len(geocode_data) > 0:
-                            self._logger.log_debug(
-                                f"[{session_id}]: Got geocode data: {geocode_data}"
-                            )
-                            lat_long = geocode_data[0]["geometry"]["location"]
-                            filter_array["building_geolocation"] = (
-                                lambda distance: append_building_geolocation_filter(
-                                    lat_long, distance
-                                )
-                            )
-
-                except Exception as e:
-                    self._logger.log_exception(f"[{session_id}]: Error Geocode: {e}")
-
-            location_query = None
-            facility_query = None
-            if any(
-                [
-                    buildings_filter.building_title,
-                    buildings_filter.building_address,
-                    buildings_filter.building_proximity,
-                ]
-            ):
-                building_instance = Building(
-                    building_title=buildings_filter.building_title,
-                    building_address=buildings_filter.building_address,
-                    building_proximity=buildings_filter.building_proximity,
-                )
-                location_query = self._query_parser.execute(building_instance.to_dict())
-
-            if any(
-                [
-                    buildings_filter.building_title,
-                    buildings_filter.building_facility,
-                    buildings_filter.building_note,
-                ]
-            ):
-                facility_query_instance = Building(
-                    building_title=buildings_filter.building_title,
-                    building_facility=buildings_filter.building_facility,
-                    building_note=buildings_filter.building_note,
-                )
-                facility_query = self._query_parser.execute(
-                    facility_query_instance.to_dict()
-                )
-
-            output = self.vector_db_retrieval(
-                prompt, session_id, filter_array, facility_query, location_query
-            )
-            return output
-
-        return self.feedback_prompt(prompt, session_id)
+        return Message(input=prompt, output="output", output_content=None)
 
     def _create_session_buffer_memory(
         self, session_id: str

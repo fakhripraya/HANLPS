@@ -3,7 +3,7 @@ from configs.config import (
     USE_MODULE,
     MODULE_USED,
 )
-from src.domain.entities.message.message import Message
+from src.domain.entities.search.search import Search
 from src.domain.constants import (
     BUILDINGS_COLLECTION_NAME,
     BUILDING_CHUNKS_COLLECTION_NAME,
@@ -209,7 +209,7 @@ class BoardingHouseAgentTools:
                 finally:
                     weaviate_client.close_connection_to_server(connected)
 
-        return "return here"
+        return Search(output="output", output_content=building_list)
 
     def _prepare_filters(self, buildings_filter: BuildingsFilter):
         filter_array = None

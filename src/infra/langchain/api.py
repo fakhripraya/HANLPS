@@ -330,7 +330,7 @@ class LangchainAPI(LangchainAPIInterface):
                 finally:
                     weaviate_client.close_connection_to_server(connected)
 
-        return self.feedback_prompt(prompt, session_id, found=building_list or True)
+        return self.feedback_prompt(prompt, session_id, found=building_list)
 
     def feedback_prompt(self, prompt, session_id, reask=False, found=None) -> Message:
         """
