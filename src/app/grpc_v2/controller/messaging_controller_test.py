@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import MagicMock, patch
 from src.app.grpc.controller.messaging_controller import MessagingController, ActionType
 from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.infra.langchain.api import LangchainAPI
+from src.infra.langchain_v2.api import LangchainAPIV2
 
 
 # Fixture to provide sample messaging data
@@ -17,7 +17,7 @@ def fixture_messaging_data():
 # Test for sending messages
 def test_send_message(fixture_messaging_data):
     logger_mock = MagicMock(LoggerInterface)
-    langchain_api_mock = MagicMock(LangchainAPI)
+    langchain_api_mock = MagicMock(LangchainAPIV2)
 
     # Patch use case, repository, and presenter
     with patch(
@@ -54,7 +54,7 @@ def test_send_message(fixture_messaging_data):
 # Test for clearing message history
 def test_clear_message_history(fixture_messaging_data):
     logger_mock = MagicMock(LoggerInterface)
-    langchain_api_mock = MagicMock(LangchainAPI)
+    langchain_api_mock = MagicMock(LangchainAPIV2)
 
     with patch(
         "src.app.grpc.controller.messaging_controller.MessagingUseCase"
@@ -84,7 +84,7 @@ def test_clear_message_history(fixture_messaging_data):
 # Test for missing content in message
 def test_missing_message_content():
     logger_mock = MagicMock(LoggerInterface)
-    langchain_api_mock = MagicMock(LangchainAPI)
+    langchain_api_mock = MagicMock(LangchainAPIV2)
 
     controller = MessagingController(logger_mock, langchain_api_mock)
 

@@ -4,9 +4,9 @@ from src.interactor.usecases.messaging_usecase import MessagingUseCase
 from src.infra.repositories.in_memory.messaging_in_memory_repository import (
     MessagingInMemoryRepository,
 )
-from src.app.grpc.presenters.messaging_presenter import MessagingPresenter
+from src.app.grpc_v2.presenters.messaging_presenter import MessagingPresenter
 from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.infra.langchain.api import LangchainAPI
+from src.infra.langchain_v2.api import LangchainAPIV2
 
 
 class ActionType(Enum):
@@ -15,7 +15,7 @@ class ActionType(Enum):
 
 
 class MessagingController:
-    def __init__(self, logger: LoggerInterface, langchain_api: LangchainAPI):
+    def __init__(self, logger: LoggerInterface, langchain_api: LangchainAPIV2):
         self._logger = logger
         self._langchain_api = langchain_api
 

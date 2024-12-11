@@ -3,7 +3,7 @@
 # pylint: disable=missing-function-docstring
 
 import pytest
-from src.infra.langchain.api import LangchainAPI
+from src.infra.langchain_v2.api import LangchainAPIV2
 from src.interactor.usecases import messaging_usecase
 from src.domain.entities.message.message import Message
 from src.interactor.dtos.messaging_dtos import MessagingInputDto, MessagingOutputDto
@@ -26,7 +26,7 @@ def test_messaging_usecase_send_message(mocker, fixture_messaging_developer):
     presenter_mock = mocker.patch.object(MessagingPresenterInterface, "present")
     repository_mock = mocker.patch.object(MessagingRepositoryInterface, "create")
     logger_mock = mocker.patch.object(LoggerInterface, "log_info")
-    langchain_api_mock = mocker.patch.object(LangchainAPI, "analyze_prompt")
+    langchain_api_mock = mocker.patch.object(LangchainAPIV2, "analyze_prompt")
 
     repository_mock.create.return_value = message
     presenter_mock.present.return_value = "Test output"
@@ -81,7 +81,7 @@ def test_messaging_usecase_clear_history(mocker, fixture_messaging_developer):
     session_id = fixture_messaging_developer["session_id"]
     repository_mock = mocker.patch.object(MessagingRepositoryInterface, "clear_history")
     logger_mock = mocker.patch.object(LoggerInterface, "log_info")
-    langchain_api_mock = mocker.patch.object(LangchainAPI, "analyze_prompt")
+    langchain_api_mock = mocker.patch.object(LangchainAPIV2, "analyze_prompt")
 
     repository_mock.clear_history.return_value = True
     use_case = messaging_usecase.MessagingUseCase(
