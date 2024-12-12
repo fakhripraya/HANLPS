@@ -5,11 +5,11 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 
-class TestGRPCInMemoryProcessHandler(unittest.TestCase):
+class TestGRPCInMemoryProcessHandlerV2(unittest.TestCase):
 
     @patch("src.app.grpc_v2.create_grpc_app.GRPCAppV2")
     @patch("src.infra.logger.logger_default.LoggerDefault")
-    def test_grpc_in_memory_process_handler(self, MockLoggerDefault, MockGRPCAppV2):
+    def test_grpc_in_memory_process_handler_v2(self, MockLoggerDefault, MockGRPCAppV2):
         # Mock logger and GRPC app initialization
         mock_logger = MockLoggerDefault.return_value
         mock_grpc_app = MockGRPCAppV2.return_value

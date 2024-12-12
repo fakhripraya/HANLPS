@@ -13,6 +13,7 @@ from src.domain.entities.message.message import Message
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
 from src.domain.entities.building.building import Building
 from src.infra.geocoding.api import GeocodingAPI
+from src.infra.langchain_v2.formatter.formatter import JSONFormatter
 from src.interactor.interfaces.logger.logger import LoggerInterface
 
 # Weaviate
@@ -35,15 +36,17 @@ from weaviate.collections.classes.internal import QueryReturn, Object
 
 
 class BoardingHouseAgentTools:
-    def __init__(self, logger: LoggerInterface, session_id: str):
+    def __init__(self, logger: LoggerInterface, session_id: str, formatter: JSONFormatter):
         self._logger = logger
         self._session_id = session_id
         self._query_parser = QueryParser()
+        self._formatter = formatter
 
     def search_boarding_house(self, input):
-        buildings_filter = BuildingsFilter(**input)
-        self._logger.log_debug(f"[{self._session_id}]: Filters - {buildings_filter}")
+        result = self._formatter.execute(input)
+        buildings_filter = BuildingsFilter(**result)
         filter_array = self._prepare_filters(buildings_filter)
+        self._logger.log_debug(f"[{self._session_id}]: Filters - {buildings_filter}")
 
         with GeocodingAPI(self._logger) as obj:
             try:
@@ -71,42 +74,21 @@ class BoardingHouseAgentTools:
             except Exception as e:
                 self._logger.log_exception(f"[{self._session_id}]: Error Geocode: {e}")
 
-        location_query = None
-        facility_query = None
-        if any(
-            [
-                buildings_filter.building_title,
-                buildings_filter.building_address,
-                buildings_filter.building_proximity,
-            ]
-        ):
-            building_instance = Building(
-                building_title=buildings_filter.building_title,
-                building_address=buildings_filter.building_address,
-                building_proximity=buildings_filter.building_proximity,
-            )
-            location_query = self._query_parser.execute(building_instance.to_dict())
+        location_query = self._build_query(
+            ["building_title", "building_address", "building_proximity"],
+            buildings_filter.__dict__
+        )
 
-        if any(
-            [
-                buildings_filter.building_title,
-                buildings_filter.building_facility,
-                buildings_filter.building_note,
-            ]
-        ):
-            facility_query_instance = Building(
-                building_title=buildings_filter.building_title,
-                building_facility=buildings_filter.building_facility,
-                building_note=buildings_filter.building_note,
-            )
-            facility_query = self._query_parser.execute(
-                facility_query_instance.to_dict()
-            )
+        facility_query = self._build_query(
+            ["building_title", "building_facility", "building_note"],
+            buildings_filter.__dict__
+        )
 
         output = self._vector_db_retrieval(filter_array, facility_query, location_query)
         return output
 
     def save_location(self, input):
+        print(input)
         return "Location has been successfully saved"
 
     def _vector_db_retrieval(
@@ -180,7 +162,6 @@ class BoardingHouseAgentTools:
                                 break
                         else:
                             self._process_response(
-                                self._session_id,
                                 with_geofilter,
                                 response,
                                 building_list,
@@ -210,6 +191,11 @@ class BoardingHouseAgentTools:
                     weaviate_client.close_connection_to_server(connected)
 
         return Search(output="output", output_content=building_list)
+    
+    def _build_query(self, fields, filter_data):
+        if any(filter_data[field] for field in fields):
+            return self._query_parser.execute({field: filter_data[field] for field in fields})
+        return None
 
     def _prepare_filters(self, buildings_filter: BuildingsFilter):
         filter_array = None
@@ -300,7 +286,6 @@ class BoardingHouseAgentTools:
 
     def _process_response(
         self,
-        session_id: str,
         with_geofilter: bool,
         response: QueryReturn[WeaviateProperties, CrossReferences],
         building_list: list,
@@ -314,14 +299,12 @@ class BoardingHouseAgentTools:
         for index, obj in enumerate(response.objects):
             if with_geofilter:
                 self._add_building_instance(
-                    session_id, index, obj, seen_uuids, building_list
+                    obj, seen_uuids, building_list
                 )
             else:
                 for ref_obj in obj.references["hasBuilding"].objects:
                     if ref_obj.uuid not in seen_uuids:
                         self._add_building_instance(
-                            session_id,
-                            index,
                             ref_obj,
                             seen_uuids,
                             building_list,
@@ -331,8 +314,6 @@ class BoardingHouseAgentTools:
 
     def _add_building_instance(
         self,
-        session_id: str,
-        obj_index: int,
         obj: Object[WeaviateProperties, CrossReferences],
         seen_uuids: set,
         building_list: list,

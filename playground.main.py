@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 from langchain.agents import create_react_agent, Tool, AgentExecutor
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
-
 from src.infra.langchain_v2.memory.memory import LimitedConversationBufferMemory
 from configs.config import OPENAI_API_KEY, OPENAI_MODEL
 
@@ -23,13 +22,14 @@ llm = ChatOpenAI(
 
 
 # Tool 1: Simulate boarding house search
-def search_boarding_house(data):
-    print(data)
+def search_boarding_house(input):
     # Parse the JSON string into a Python dictionary
-    jsonobj = json.loads(data)
+    result = str(input).strip("`").strip("json").strip("`").strip()
+    data = json.loads(result)
+    print(data)
 
     # Extract values from the dictionary
-    building_address = jsonobj["building_address"]
+    building_address = data["building_address"]
 
     if building_address == "Semanggi":
         return f"\n{json.dumps({
