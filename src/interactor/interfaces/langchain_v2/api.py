@@ -12,54 +12,18 @@ class LangchainAPIV2Interface(ABC):
     """LangchainAPIV2Interface class provides an interface for langchain API v2."""
 
     @abstractmethod
-    def analyze_prompt(self, session_id: str, prompt: str) -> Message:
+    def clear_messaging_history(self, session_id) -> bool:
         """
-        Analyze prompt, define whether the prompt is a direct
-        command, a simple chat, etc.
+        Clear message history
         :param session_id: chat session id.
-        :param prompt: chat message to be analyzed.
+        :return: bool
         """
 
     @abstractmethod
-    def vector_db_retrieval(
-        self,
-        prompt: str,
-        session_id: str,
-        filter_array: dict[str, list],
-        facility_query: str,
-        location_query: str,
-    ) -> Message:
+    def execute_search_agent(self, session_id: str, prompt: str) -> Message:
         """
-        Vector database data retrieval process
-        :param prompt: chat message to be analyzed.
-        :param session_id: session id of the chat.
-        :param filter_array: filters that needed for prompt analysis.
-        :param facility_query: query by facility to retrieve vector data from weaviate.
-        :param location_query: query by location to retrieve vector data from weaviate.
-        """
-
-    @abstractmethod
-    def feedback_prompt(
-        self, prompt: str, session_id: str, reask: bool, found: list[Building] | None
-    ) -> Message:
-        """
-        Feedback the prompt, process the prompt with the LLM
-        :param prompt: chat message to be analyzed.
-        :param session_id: session id of the chat.
-        :param reask: reask flag.
-        :param found: data found elements.
-        """
-
-    @abstractmethod
-    def respond(
-        self,
-        template: Any,
-        input_variables: list[str],
-        runnable_input: dict[str, Any],
-        session_id: str,
-    ) -> Any | Runnable:
-        """
-        Respond the receiving prompt with the processed feedback
-        command, a simple chat, etc.
-        :param prompt: chat message to be analyzed.
+        Execute search agent boarding house search
+        :param session_id: chat session id.
+        :param prompt: the search prompt.
+        :return: Message
         """

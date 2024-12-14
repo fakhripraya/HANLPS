@@ -12,17 +12,19 @@ from src.infra.langchain_v2.memory.memory import LimitedConversationBufferMemory
 from src.infra.langchain_v2.formatter.formatter import JSONFormatter
 from src.interactor.interfaces.langchain_v2.api import LangchainAPIV2Interface
 from src.interactor.interfaces.logger.logger import LoggerInterface
+
 # Langchain and related libraries
 from langchain.agents import AgentExecutor, Tool
 from contextlib import contextmanager
+
 
 class LangchainAPIV2(LangchainAPIV2Interface):
     """LangchainAPIV2 class."""
 
     def __init__(self, llm_type: str, logger: LoggerInterface) -> None:
         self._logger = logger
+        self._llm_type = llm_type
         self._store = {}
-        self._agent = create_agent(llm_type, logger)
         self._formatter = JSONFormatter()
 
     def __enter__(self):
@@ -37,6 +39,7 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         """
         Clear message history
         :param session_id: chat session id.
+        :return: bool
         """
         if session_id in self._store:
             del self._store[session_id]
@@ -47,7 +50,8 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         """
         Execute search agent boarding house search
         :param session_id: chat session id.
-        :param prompt: chat message to be analyzed.
+        :param prompt: the search prompt.
+        :return: Message
         """
         self._logger.log_info(f"[{session_id}]: User prompt: {prompt}")
 
@@ -68,7 +72,10 @@ class LangchainAPIV2(LangchainAPIV2Interface):
 
     @contextmanager
     def _create_agent_executor(self, session_id: str):
-        """Context manager for creating and managing the AgentExecutor."""
+        """
+        Context manager for creating and managing the AgentExecutor.
+        :param session_id: chat session id.
+        """
         memory = self._get_session_buffer_memory(session_id)
 
         agent_tools = BoardingHouseAgentTools(self._logger, session_id, self._formatter)
@@ -86,7 +93,7 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         ]
 
         agent_executor = AgentExecutor(
-            agent=self._agent,
+            agent=create_agent(self._llm_type, tools, self._logger),
             tools=tools,
             verbose=True,
             max_execution_time=60,

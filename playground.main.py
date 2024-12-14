@@ -196,18 +196,6 @@ query = "info kost semanggi harga 1.5 dong"
 response = agent_executor.invoke({"input": query})
 print(response.get("output", "No output returned"))
 
-# query = "ada lagi gak?"
-# response = agent_executor.invoke({"input": query})
-# print(response.get("output", "No output returned"))
-
-# query = "di lebak bulus ada ga?"
-# response = agent_executor.invoke({"input": query})
-# print(response.get("output", "No output returned"))
-
-# query = "yaudah simpenin yang di semanggi ya"
-# response = agent_executor.invoke({"input": query})
-# print(response.get("output", "No output returned"))
-
 # Record end time
 end_time = time.time()
 

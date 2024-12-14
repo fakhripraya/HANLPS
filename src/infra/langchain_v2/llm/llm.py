@@ -5,6 +5,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 def create_open_ai_llm(llm_model, key) -> ChatOpenAI:
     """
     Create OpenAI LLM and register it as dependency
+    :param llm_model: the llm model for the client.
+    :return: ChatOpenAI
     """
     client = ChatOpenAI(
         model=llm_model,
@@ -20,6 +22,8 @@ def create_open_ai_llm(llm_model, key) -> ChatOpenAI:
 def create_gemini_llm(llm_model, key) -> ChatGoogleGenerativeAI:
     """
     Create Gemini LLM and register it as dependency
+    :param llm_model: the llm model for the client.
+    :return: ChatGoogleGenerativeAI
     """
     baseUrl = "https://generativelanguage.googleapis.com"
     version = "v1beta"

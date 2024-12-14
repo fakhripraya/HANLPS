@@ -8,16 +8,19 @@ from configs.config import (
 from src.domain.constants import OPENAI, GEMINI
 from src.domain.prompt_templates_v2 import react_prompt_template
 from src.infra.langchain_v2.llm.llm import create_open_ai_llm, create_gemini_llm
-from src.infra.langchain_v2.tools.tools import tools
 from src.interactor.interfaces.logger.logger import LoggerInterface
 
 # Langchain and related libraries
-from langchain.agents import create_react_agent
+from langchain.agents import create_react_agent, Tool
 
 
-def create_agent(llm_type: str, logger: LoggerInterface) -> None:
+def create_agent(llm_type: str, tools: list[Tool], logger: LoggerInterface) -> None:
     """
     Create a reACT agent
+    :param llm_type: llm type for agent base knowledge.
+    :param tools: the list of tools used by the agent.
+    :param logger: logger api.
+    :return: Message
     """
     try:
         client = None
