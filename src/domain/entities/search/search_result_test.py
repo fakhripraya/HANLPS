@@ -1,6 +1,6 @@
 import unittest
 from src.domain.entities.building.building import Building
-from src.domain.entities.search import Search
+from src.domain.entities.search.search_result import SearchResult
 
 
 class TestSearchEntity(unittest.TestCase):
@@ -25,7 +25,7 @@ class TestSearchEntity(unittest.TestCase):
             "output": "Search completed successfully",
             "output_content": [self.building_instance],
         }
-        self.search_instance = Search(**self.search_data)
+        self.search_instance = SearchResult(**self.search_data)
 
     def test_from_dict(self):
         """Test the from_dict method"""
@@ -33,7 +33,7 @@ class TestSearchEntity(unittest.TestCase):
             "output": "Search completed successfully",
             "output_content": [self.building_data],  # Dict version of Building
         }
-        search = Search.from_dict(data)
+        search = SearchResult.from_dict(data)
         self.assertEqual(search.output, "Search completed successfully")
         self.assertEqual(len(search.output_content), 1)
         self.assertEqual(search.output_content[0].building_title, "Sample Building")
@@ -53,7 +53,7 @@ class TestSearchEntity(unittest.TestCase):
             "output": "Search completed with no results",
             "output_content": None,
         }
-        search = Search.from_dict(data)
+        search = SearchResult.from_dict(data)
         self.assertEqual(search.output, "Search completed with no results")
         self.assertIsNone(search.output_content)
 
@@ -63,7 +63,7 @@ class TestSearchEntity(unittest.TestCase):
             "output": "Search completed with no results",
             "output_content": [],
         }
-        search = Search.from_dict(data)
+        search = SearchResult.from_dict(data)
         self.assertEqual(search.output, "Search completed with no results")
         self.assertEqual(search.output_content, [])
 

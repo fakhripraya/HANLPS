@@ -28,25 +28,22 @@ def search_boarding_house(input):
     data = json.loads(result)
     print(data)
 
-    # Extract values from the dictionary
-    building_address = data["building_address"]
-
-    if building_address == "Semanggi":
-        return f"\n{json.dumps({
-        "results": [
-            {"building_title": "Cozy Stay", "building_address": "Semanggi", "building_price": 1500000},
-            {"building_title": "Kostey Kost", "building_address": "Bendungan hilir", "building_price": 1000000},
-        ]
+    return f"\n{json.dumps({
+        "input_code": "SEARCH_BUILDING",
+        "input_field": data
     }, indent=4)}\n"
-    else:
-        return f"\n{json.dumps({
-            "results": []
-        }, indent=4)}\n"
 
 
 # Tool 2: Simulate boarding house search
 def save_location(data):
-    return "Location has been sucessfully saved"
+    result = str(input).strip("`").strip("json").strip("`").strip()
+    data = json.loads(result)
+    print(data)
+
+    return f"\n{json.dumps({
+        "input_code": "SAVE_BUILDING",
+        "input_field": data
+    }, indent=4)}\n"
 
 
 # Define the tools
@@ -54,12 +51,12 @@ tools = [
     Tool(
         name="SearchBoardingHouse",
         func=search_boarding_house,
-        description="Search for boarding houses based on the specified criteria.",
+        description="Tool to pass the required data for building search",
     ),
     Tool(
         name="SaveLocation",
         func=save_location,
-        description="Save the location to the database",
+        description="Tool to pass the required data for saving building",
     ),
 ]
 
@@ -84,7 +81,7 @@ react_prompt_template = PromptTemplate(
     {tools}
     
     Tools explanation:
-    1. Boarding House Search: Use the 'SearchBoardingHouse' tool when the user asks for boarding house information, return JSON-formatted object.
+    1. Boarding House Search: Use the 'SearchBoardingHouse' tool when the user asks for boarding house information.
     2. Save Location: Use the 'SaveLocation' tool when the user ask to save the boarding house.
     
     Tools Input Guidelines:
@@ -108,17 +105,8 @@ react_prompt_template = PromptTemplate(
             - Ensure numeric values are floats, not strings.
             - No currency symbols in price values.
             
-            Provide output only in JSON Formatted output. Example format:
-            {{
-                "results": [
-                    {{
-                        "building_title": "Cozy Stay",
-                        "building_address": "Semanggi",
-                        "building_price": 1500000
-                    }}
-                ]
-            }}
-            
+            This is the valid output in JSON Formatted output, stop when you recieve this value:
+            {{"input_code": "SEARCH_BUILDING", "input_field": <Tool input field value>}}     
             
         2. Save Location
             Input Fields (JSON format):
@@ -130,9 +118,8 @@ react_prompt_template = PromptTemplate(
             Input Field Rules:
             - Default values are null; if an input field is not provided, set the value to null.
             
-            Output (String only):
-            - If success, return a successful message
-            - If failed, return a failure message
+            Provide output only in JSON Formatted output, stop when you recieve this value:
+            {{"input_code": "SAVE_BUILDING", "input_field": <Tool input field value>}}
 
     You also capable of performing two main chat completions task:
     1. Object Comparison: when the user asks for specific boarding house objects comparison, explain the comparison between those objects.

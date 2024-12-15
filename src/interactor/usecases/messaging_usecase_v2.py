@@ -34,7 +34,9 @@ class MessagingUseCaseV2:
         validator.validate()
 
         # Use the LLM to analyze the prompt
-        message_output = self.llm.analyze_prompt(input_dto.sessionId, input_dto.content)
+        message_output = self.llm.execute_search_agent(
+            input_dto.sessionId, input_dto.content
+        )
         message = self.repository.create(
             input=message_output.input,
             output=message_output.output,

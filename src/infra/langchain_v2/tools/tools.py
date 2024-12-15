@@ -1,9 +1,11 @@
 import time
+import json
+
 from configs.config import (
     USE_MODULE,
     MODULE_USED,
 )
-from src.domain.entities.search.search import Search
+from src.domain.entities.search.search_result import SearchResult
 from src.domain.constants import (
     BUILDINGS_COLLECTION_NAME,
     BUILDING_CHUNKS_COLLECTION_NAME,
@@ -36,17 +38,38 @@ from weaviate.collections.classes.internal import QueryReturn, Object
 
 
 class BoardingHouseAgentTools:
-    def __init__(self, logger: LoggerInterface, session_id: str, formatter: JSONFormatter):
+    def __init__(
+        self, logger: LoggerInterface, session_id: str, formatter: JSONFormatter
+    ):
         self._logger = logger
         self._session_id = session_id
         self._query_parser = QueryParser()
         self._formatter = formatter
 
+    def analyze_boarding_house_search_input(self, input):
+        result = str(input).strip("`").strip("json").strip("`").strip()
+        data = json.loads(result)
+
+        return f"\n{json.dumps({
+            "input_code": "SEARCH_BUILDING",
+            "input_field": data
+        }, indent=4)}\n"
+
+    def analyze_boarding_house_save_input(self, input):
+        result = str(input).strip("`").strip("json").strip("`").strip()
+        data = json.loads(result)
+
+        return f"\n{json.dumps({
+            "input_code": "SAVE_BUILDING",
+            "input_field": data
+        }, indent=4)}\n"
+
     def search_boarding_house(self, input):
+        print("masuk")
         result = self._formatter.execute(input)
         buildings_filter = BuildingsFilter(**result)
         filter_array = self._prepare_filters(buildings_filter)
-        self._logger.log_debug(f"[{self._session_id}]: Filters - {buildings_filter}")
+        self._logger.log_debug(f"\n[{self._session_id}]: {buildings_filter}")
 
         with GeocodingAPI(self._logger) as obj:
             try:
@@ -76,20 +99,19 @@ class BoardingHouseAgentTools:
 
         location_query = self._build_query(
             ["building_title", "building_address", "building_proximity"],
-            buildings_filter.__dict__
+            buildings_filter.__dict__,
         )
 
         facility_query = self._build_query(
             ["building_title", "building_facility", "building_note"],
-            buildings_filter.__dict__
+            buildings_filter.__dict__,
         )
 
         output = self._vector_db_retrieval(filter_array, facility_query, location_query)
         return output
 
-    def save_location(self, input):
-        print(input)
-        return "Location has been successfully saved"
+    def save_boarding_house(self, input):
+        return "Saved"
 
     def _vector_db_retrieval(
         self, filter_array, facility_query="", location_query=""
@@ -190,11 +212,13 @@ class BoardingHouseAgentTools:
                 finally:
                     weaviate_client.close_connection_to_server(connected)
 
-        return Search(output="output", output_content=building_list)
-    
+        return SearchResult(results=building_list)
+
     def _build_query(self, fields, filter_data):
         if any(filter_data[field] for field in fields):
-            return self._query_parser.execute({field: filter_data[field] for field in fields})
+            return self._query_parser.execute(
+                {field: filter_data[field] for field in fields}
+            )
         return None
 
     def _prepare_filters(self, buildings_filter: BuildingsFilter):
@@ -296,11 +320,9 @@ class BoardingHouseAgentTools:
         Process each object in the response and add to building_list.
         loop through the response objects along with filtering which object should be appended
         """
-        for index, obj in enumerate(response.objects):
+        for _, obj in enumerate(response.objects):
             if with_geofilter:
-                self._add_building_instance(
-                    obj, seen_uuids, building_list
-                )
+                self._add_building_instance(obj, seen_uuids, building_list)
             else:
                 for ref_obj in obj.references["hasBuilding"].objects:
                     if ref_obj.uuid not in seen_uuids:

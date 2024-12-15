@@ -1,4 +1,4 @@
-""" This module has definition of the Search entity for Agent Tool
+""" This module has definition of the SearchResult entity for Agent Tool
 """
 
 from dataclasses import dataclass, asdict
@@ -6,11 +6,10 @@ from src.domain.entities.building.building import Building
 
 
 @dataclass
-class Search:
-    """Definition of the Search entity"""
+class SearchResult:
+    """Definition of the SearchResult entity"""
 
-    output: str
-    output_content: list[Building] | None
+    results: list[Building] | None
 
     @classmethod
     def from_dict(cls, data):

@@ -1,12 +1,12 @@
 from enum import Enum
-from src.interactor.dtos.messaging_dtos import MessagingInputDto
-from src.interactor.usecases.messaging_usecase import MessagingUseCase
+from src.app.grpc_v2.presenters.messaging_presenter import MessagingPresenter
+from src.infra.langchain_v2.api import LangchainAPIV2
 from src.infra.repositories.in_memory.messaging_in_memory_repository import (
     MessagingInMemoryRepository,
 )
-from src.app.grpc_v2.presenters.messaging_presenter import MessagingPresenter
+from src.interactor.dtos.messaging_dtos import MessagingInputDto
+from src.interactor.usecases.messaging_usecase_v2 import MessagingUseCaseV2
 from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.infra.langchain_v2.api import LangchainAPIV2
 
 
 class ActionType(Enum):
@@ -49,10 +49,10 @@ class MessagingController:
         use_case.clear_message_history(session_id)
         return
 
-    def _create_use_case(self) -> MessagingUseCase:
-        """Creates and returns an instance of the MessagingUseCase."""
+    def _create_use_case(self) -> MessagingUseCaseV2:
+        """Creates and returns an instance of the MessagingUseCaseV2."""
         repository = MessagingInMemoryRepository()
         presenter = MessagingPresenter()
-        return MessagingUseCase(
+        return MessagingUseCaseV2(
             self._logger, presenter, repository, self._langchain_api
         )

@@ -1,11 +1,12 @@
 import grpc
 from protofile.messaging.proto import messaging_pb2_grpc, messaging_pb2 as messaging
-from src.interactor.interfaces.logger.logger import LoggerInterface
-from src.infra.langchain_v2.api import LangchainAPIV2
-from src.app.grpc.controller.messaging_controller import (
+
+from src.app.grpc_v2.controller.messaging_controller import (
     MessagingController,
     ActionType,
 )
+from src.infra.langchain_v2.api import LangchainAPIV2
+from src.interactor.interfaces.logger.logger import LoggerInterface
 
 
 class MessagingServicer(messaging_pb2_grpc.MessagingServiceServicer):

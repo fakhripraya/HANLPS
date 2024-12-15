@@ -2,6 +2,8 @@
 """
 
 # Standard and third-party libraries
+import time
+import json
 import traceback
 
 # Source-specific imports
@@ -63,31 +65,48 @@ class LangchainAPIV2(LangchainAPIV2Interface):
             f"------------------- End of Conversation for User {session_id} -----------"
         )
 
-        with self._create_agent_executor(session_id) as agent_executor:
+        agent_tools = BoardingHouseAgentTools(self._logger, session_id, self._formatter)
+        with self._create_agent_executor(session_id, agent_tools) as agent_executor:
             response = agent_executor.invoke({"input": prompt})
-            output = response.get("output", "No output returned")
-            self._logger.log_info(f"[{session_id}]: {output}")
+            output = response.get("output", None)
 
-            return Message(input=prompt, output=output, output_content=None)
+            if output is None:
+                raise ValueError("Invalid agent response")
+
+            formatted_output = json.loads(output)
+            if formatted_output["input_code"] == "SEARCH_BUILDING":
+                result = agent_tools.search_boarding_house(
+                    formatted_output["input_field"]
+                )
+
+                return Message(input=prompt, output=output, output_content=None)
+            elif formatted_output["input_code"] == "SAVE_BUILDING":
+                result = agent_tools.save_boarding_house(
+                    formatted_output["input_field"]
+                )
+
+                return Message(input=prompt, output="aaaa", output_content=None)
 
     @contextmanager
-    def _create_agent_executor(self, session_id: str):
+    def _create_agent_executor(
+        self, session_id: str, agent_tools: BoardingHouseAgentTools
+    ):
         """
         Context manager for creating and managing the AgentExecutor.
         :param session_id: chat session id.
         """
-        memory = self._get_session_buffer_memory(session_id)
+        start_time = time.time()
 
-        agent_tools = BoardingHouseAgentTools(self._logger, session_id, self._formatter)
+        memory = self._get_session_buffer_memory(session_id)
         tools = [
             Tool(
                 name="SearchBoardingHouse",
-                func=agent_tools.search_boarding_house,
+                func=agent_tools.analyze_boarding_house_search_input,
                 description="Search for boarding houses based on the specified criteria.",
             ),
             Tool(
                 name="SaveLocation",
-                func=agent_tools.save_location,
+                func=agent_tools.analyze_boarding_house_save_input,
                 description="Save the location to the database.",
             ),
         ]
@@ -97,25 +116,25 @@ class LangchainAPIV2(LangchainAPIV2Interface):
             tools=tools,
             verbose=True,
             max_execution_time=60,
-            max_iterations=15,
+            max_iterations=3,
             memory=memory,
             allow_dangerous_code=True,
             handle_parsing_errors=True,
+            early_stopping_method="generate",
         )
         try:
             yield agent_executor
+        except Exception as e:
+            self._logger.log_exception(f"[{session_id}]: {e}")
         finally:
-            self._logger.log_info(f"AgentExecutor for session {session_id} cleaned up.")
+            self._log_agent_execution_time(session_id, start_time)
 
-    def _create_session_buffer_memory(
-        self, session_id: str
-    ) -> LimitedConversationBufferMemory:
+    def _create_buffer_memory(self) -> LimitedConversationBufferMemory:
         """Create session buffer memory
-        :param session_id: chat session id
         :return: LimitedConversationBufferMemory
         """
         return LimitedConversationBufferMemory(
-            memory_key=f"chat_history-{session_id}",
+            memory_key="chat_history",
             return_messages=True,
             k=10,
         )
@@ -128,5 +147,12 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         :return: LimitedConversationBufferMemory
         """
         if session_id not in self._store:
-            self._store[session_id] = self._create_session_buffer_memory(session_id)
+            self._store[session_id] = self._create_buffer_memory()
         return self._store[session_id]
+
+    def _log_agent_execution_time(self, session_id: str, start_time: float):
+        """Log the time taken for the query and total objects found."""
+        elapsed_time = time.time() - start_time
+        self._logger.log_info(
+            f"[{session_id}]: Agent execution completed in {elapsed_time:.2f} seconds."
+        )
