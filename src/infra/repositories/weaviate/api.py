@@ -79,17 +79,12 @@ class WeaviateAPI(WeaviateAPIInterface):
     def connect_to_server(
         self, with_modules, module_used
     ) -> weaviate_lib.WeaviateClient:
-        try:
-            if with_modules == 1 and module_used == OPENAI:
-                return self.connect_with_openai()
-            elif with_modules == 1 and module_used == GEMINI:
-                return self.connect_with_google()
-            else:
-                return self.connect_locally()
-        except Exception as e:
-            self._logger.log_critical(
-                f"Failed to connect to the weaviate instance, ERROR: {e}"
-            )
+        if with_modules == 1 and module_used == OPENAI:
+            return self.connect_with_openai()
+        elif with_modules == 1 and module_used == GEMINI:
+            return self.connect_with_google()
+        else:
+            return self.connect_locally()
 
     def connect_locally(self) -> weaviate_lib.WeaviateClient:
         """
