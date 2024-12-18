@@ -491,7 +491,7 @@ class LangchainAPI(LangchainAPIInterface):
         connected = weaviate_client.connect_to_server(int(USE_MODULE), MODULE_USED)
         if connected is None:
             raise RuntimeError(
-                f"Runtime Error - 'connected' variable value is {connected}"
+                f"Runtime Error - Failed to connect to Weaviate Server Instance"
             )
 
         building_collection = connected.collections.get(BUILDINGS_COLLECTION_NAME)

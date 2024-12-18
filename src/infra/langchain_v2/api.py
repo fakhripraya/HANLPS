@@ -3,15 +3,15 @@
 
 # Standard and third-party libraries
 import time
-import json
 import traceback
 
 # Source-specific imports
 from src.domain.entities.message.message import Message
+from src.domain.enum.tool_types.tool_types import ToolType
+from src.domain.pydantic_models.agent_tool_output.agent_tool_output import AgentToolOutput
 from src.infra.langchain_v2.agent.agent import create_agent
 from src.infra.langchain_v2.tools.tools import BoardingHouseAgentTools
 from src.infra.langchain_v2.memory.memory import LimitedConversationBufferMemory
-from src.infra.langchain_v2.formatter.formatter import JSONFormatter
 from src.interactor.interfaces.langchain_v2.api import LangchainAPIV2Interface
 from src.interactor.interfaces.logger.logger import LoggerInterface
 
@@ -27,7 +27,6 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         self._logger = logger
         self._llm_type = llm_type
         self._store = {}
-        self._formatter = JSONFormatter()
 
     def __enter__(self):
         return self
@@ -56,36 +55,27 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         :return: Message
         """
         self._logger.log_info(f"[{session_id}]: User prompt: {prompt}")
-
-        # Only let 10 messages in the chat history for context window efficiency
-        memory = self._get_session_buffer_memory(session_id)
-        self._logger.log_info(
-            f"------------------- Conversation of User {session_id} -------------------\n"
-            f"{memory.chat_memory.messages}\n"
-            f"------------------- End of Conversation for User {session_id} -----------"
-        )
-
-        agent_tools = BoardingHouseAgentTools(self._logger, session_id, self._formatter)
+        
+        agent_tools = BoardingHouseAgentTools(self._logger, session_id)
         with self._create_agent_executor(session_id, agent_tools) as agent_executor:
+            # We only let 10 messages in the chat history for context window efficiency
+            self._logger.log_info(agent_executor.memory.load_memory_variables({}).get('chat_history', []))
+
             response = agent_executor.invoke({"input": prompt})
             output = response.get("output", None)
 
             if output is None:
                 raise ValueError("Invalid agent response")
 
-            formatted_output = json.loads(output)
-            if formatted_output["input_code"] == "SEARCH_BUILDING":
-                result = agent_tools.search_boarding_house(
-                    formatted_output["input_field"]
-                )
-
-                return Message(input=prompt, output=output, output_content=None)
-            elif formatted_output["input_code"] == "SAVE_BUILDING":
-                result = agent_tools.save_boarding_house(
-                    formatted_output["input_field"]
-                )
-
-                return Message(input=prompt, output="aaaa", output_content=None)
+            formatted_output = AgentToolOutput(output)
+            if formatted_output.input_code == ToolType.SEARCH_BUILDING:
+                return agent_tools.search_boarding_house(
+                    formatted_output.input_field
+                ).input(prompt)
+            elif formatted_output.input_code == ToolType.SAVE_BUILDING:
+                return Message(input=prompt, output= agent_tools.save_boarding_house(
+                    formatted_output.input_field
+                ))
 
     @contextmanager
     def _create_agent_executor(

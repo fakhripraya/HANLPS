@@ -1,11 +1,16 @@
 import time
 import json
 from dotenv import load_dotenv
+from configs.config import OPENAI_API_KEY, OPENAI_MODEL
+
+from src.domain.pydantic_models.agent_tool_output.agent_tool_output import AgentToolOutput
+from src.infra.langchain_v2.memory.memory import LimitedConversationBufferMemory
+
 from langchain.agents import create_react_agent, Tool, AgentExecutor
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
-from src.infra.langchain_v2.memory.memory import LimitedConversationBufferMemory
-from configs.config import OPENAI_API_KEY, OPENAI_MODEL
+from langchain.schema import HumanMessage, AIMessage
+from langchain_community.utilities import SearxSearchWrapper
 
 # Load environment variables
 load_dotenv()
@@ -51,12 +56,12 @@ tools = [
     Tool(
         name="SearchBoardingHouse",
         func=search_boarding_house,
-        description="Tool to pass the required data for building search",
+        description="Tool to process building search input into advance structured input",
     ),
     Tool(
         name="SaveLocation",
         func=save_location,
-        description="Tool to pass the required data for saving building",
+        description="Tool to extract saving building input into advance structured input",
     ),
 ]
 
@@ -72,12 +77,7 @@ react_prompt_template = PromptTemplate(
     template="""
     You are Pintrail, a multi-tasking assistant who spoke mainly in Bahasa Indonesia language but can also understand and speak different language
 
-    You are capable of performing two main task with those tools:
-    
-    Available Tools:
-    {tool_names}
-
-    All Tools Details
+    You have access to the following tools:
     {tools}
     
     Tools explanation:
@@ -105,7 +105,7 @@ react_prompt_template = PromptTemplate(
             - Ensure numeric values are floats, not strings.
             - No currency symbols in price values.
             
-            This is the valid output in JSON Formatted output, stop when you recieve this value:
+            This is the valid output in JSON Formatted output, stop when you receieve this value:
             {{"input_code": "SEARCH_BUILDING", "input_field": <Tool input field value>}}     
             
         2. Save Location
@@ -118,7 +118,7 @@ react_prompt_template = PromptTemplate(
             Input Field Rules:
             - Default values are null; if an input field is not provided, set the value to null.
             
-            Provide output only in JSON Formatted output, stop when you recieve this value:
+            Provide output only in JSON Formatted output, stop when you receieve this value:
             {{"input_code": "SAVE_BUILDING", "input_field": <Tool input field value>}}
 
     You also capable of performing two main chat completions task:
@@ -128,14 +128,21 @@ react_prompt_template = PromptTemplate(
     Important Guidelines:
     - Carefully analyze the user's input to determine the most appropriate tool to use, or decide if a simple chat completion is sufficient to address the request.
     - Structure your response strictly in the following format:
-        Thought: <Mandatory. Explain your reasoning>
-        Action: <Mandatory. Your action>
-        Action Input: <Mandatory. This is your input, could be JSON-formatted input>
+        Thought: Do I need to use a tool? Yes
+        Action: the action to take, should be one of [{tool_names}]
+        Action Input: the input to the action
+        Observation: the result of the action
+        (this Thought/Action/Action Input/Observation can repeat 3 times)
 
-    Required Output Format:
-    Your response must follow this format strictly:
-        Thought: <Mandatory. Explain your reasoning here>
-        Final Answer: <Mandatory. Pure alphabet only String or JSON-formatted output>
+    Required Output Format For Tools:
+    Your response MUST follow this format strictly:
+        Thought: Do I need to use a tool? No
+        Final Answer: <your response here, please respond in the required JSON format>
+
+    Required Output Format For Chat Completions:
+    Your response MUST follow this format strictly:
+        Thought: Do I need to use a tool? No
+        Final Answer: <your response here>
 
     Rules:
     - Do not include a final answer if an action is being performed. Follow strictly: Thought, Action, Action Input.
@@ -145,8 +152,11 @@ react_prompt_template = PromptTemplate(
 
     Context:
     Chat History: {chat_history}
-    User Input: {input}
-    {agent_scratchpad}
+
+    Begin!
+
+    Question: {input}
+    Thought: {agent_scratchpad}
     """,
 )
 
@@ -179,9 +189,27 @@ agent_executor = AgentExecutor(
 # Record start time
 start_time = time.time()
 
-query = "info kost semanggi harga 1.5 dong"
-response = agent_executor.invoke({"input": query})
-print(response.get("output", "No output returned"))
+query = "info kost blok m harga 2.5 jtan dong"
+response = agent_executor.invoke({"input": query}).get("output", "No output returned")
+
+json_data = json.loads(response)
+
+agent_output = AgentToolOutput(**json_data)
+print(agent_output)
+
+query = "mahal"
+response = agent_executor.invoke({"input": query}).get("output", "No output returned")
+print(agent_executor.memory.load_memory_variables({}).get('chat_history', []))
+for message in agent_executor.memory.load_memory_variables({}).get('chat_history', []):
+    if isinstance(message, HumanMessage):
+        print(f"Human: {message.content}")
+    elif isinstance(message, AIMessage):
+        print(f"AI: {message.content}")
+    else:
+        print("Unknown message format:", message)
+
+# s = SearxSearchWrapper(searx_host="https://searx.be/")
+# s.run("what is a large language model?")
 
 # Record end time
 end_time = time.time()

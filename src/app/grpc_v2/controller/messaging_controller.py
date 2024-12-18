@@ -1,4 +1,4 @@
-from enum import Enum
+from src.domain.enum.action_types.action_types import ActionType
 from src.app.grpc_v2.presenters.messaging_presenter import MessagingPresenter
 from src.infra.langchain_v2.api import LangchainAPIV2
 from src.infra.repositories.in_memory.messaging_in_memory_repository import (
@@ -7,11 +7,6 @@ from src.infra.repositories.in_memory.messaging_in_memory_repository import (
 from src.interactor.dtos.messaging_dtos import MessagingInputDto
 from src.interactor.usecases.messaging_usecase_v2 import MessagingUseCaseV2
 from src.interactor.interfaces.logger.logger import LoggerInterface
-
-
-class ActionType(Enum):
-    SEND_MESSAGE = "send_message"
-    CLEAR_HISTORY = "clear_history"
 
 
 class MessagingController:

@@ -5,7 +5,7 @@ from configs.config import (
     USE_MODULE,
     MODULE_USED,
 )
-from src.domain.entities.search.search_result import SearchResult
+from src.domain.entities.message.message import Message
 from src.domain.constants import (
     BUILDINGS_COLLECTION_NAME,
     BUILDING_CHUNKS_COLLECTION_NAME,
@@ -15,7 +15,6 @@ from src.domain.entities.message.message import Message
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
 from src.domain.entities.building.building import Building
 from src.infra.geocoding.api import GeocodingAPI
-from src.infra.langchain_v2.formatter.formatter import JSONFormatter
 from src.interactor.interfaces.logger.logger import LoggerInterface
 
 # Weaviate
@@ -39,12 +38,11 @@ from weaviate.collections.classes.internal import QueryReturn, Object
 
 class BoardingHouseAgentTools:
     def __init__(
-        self, logger: LoggerInterface, session_id: str, formatter: JSONFormatter
+        self, logger: LoggerInterface, session_id: str
     ):
         self._logger = logger
         self._session_id = session_id
         self._query_parser = QueryParser()
-        self._formatter = formatter
 
     def analyze_boarding_house_search_input(self, input):
         result = str(input).strip("`").strip("json").strip("`").strip()
@@ -64,10 +62,7 @@ class BoardingHouseAgentTools:
             "input_field": data
         }, indent=4)}\n"
 
-    def search_boarding_house(self, input):
-        print("masuk")
-        result = self._formatter.execute(input)
-        buildings_filter = BuildingsFilter(**result)
+    def search_boarding_house(self, buildings_filter: BuildingsFilter):
         filter_array = self._prepare_filters(buildings_filter)
         self._logger.log_debug(f"\n[{self._session_id}]: {buildings_filter}")
 
@@ -212,7 +207,7 @@ class BoardingHouseAgentTools:
                 finally:
                     weaviate_client.close_connection_to_server(connected)
 
-        return SearchResult(results=building_list)
+        return Message(output_content=building_list)
 
     def _build_query(self, fields, filter_data):
         if any(filter_data[field] for field in fields):
@@ -238,7 +233,7 @@ class BoardingHouseAgentTools:
         connected = weaviate_client.connect_to_server(int(USE_MODULE), MODULE_USED)
         if connected is None:
             raise RuntimeError(
-                f"Runtime Error - 'connected' variable value is {connected}"
+                f"Runtime Error - Failed to connect to Weaviate Server Instance"
             )
 
         building_collection = connected.collections.get(BUILDINGS_COLLECTION_NAME)
