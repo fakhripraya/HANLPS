@@ -59,7 +59,11 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         agent_tools = BoardingHouseAgentTools(self._logger, session_id)
         with self._create_agent_executor(session_id, agent_tools) as agent_executor:
             # We only let 10 messages in the chat history for context window efficiency
-            self._logger.log_info(agent_executor.memory.load_memory_variables({}).get('chat_history', []))
+             self._logger.log_info(
+                f"------------------- Conversation of User {session_id} -------------------\n"
+                f"{agent_executor.memory.load_memory_variables({}).get('chat_history', [])}\n"
+                f"------------------- End of Conversation for User {session_id} -----------"
+            )
 
             response = agent_executor.invoke({"input": prompt})
             output = response.get("output", None)
