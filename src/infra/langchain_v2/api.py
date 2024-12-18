@@ -65,9 +65,7 @@ class LangchainAPIV2(LangchainAPIV2Interface):
                 f"------------------- End of Conversation for User {session_id} -----------"
             )
 
-            response = agent_executor.invoke({"input": prompt})
-            output = response.get("output", None)
-
+            output = agent_executor.invoke({"input": prompt}).get("output", None)
             if output is None:
                 raise ValueError("Invalid agent response")
 
