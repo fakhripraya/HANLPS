@@ -27,8 +27,5 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Set environment variables from the .env file in entrypoint script (or use runtime `--env-file` option)
 # ENTRYPOINT ["sh", "-c", "export $(cat .env.local | xargs) && exec python3 main.py"]
 
-# Expose port
-EXPOSE 51051
-
 # Specify the command to run your app
 CMD ["python", "main.py"]
