@@ -71,7 +71,7 @@ class LangchainAPIV2(LangchainAPIV2Interface):
             if output is None:
                 raise ValueError("Invalid agent response")
 
-            formatted_output = AgentToolOutput(output)
+            formatted_output = AgentToolOutput.model_validate_json(output)
             if formatted_output.input_code == ToolType.SEARCH_BUILDING:
                 return agent_tools.search_boarding_house(
                     formatted_output.input_field
