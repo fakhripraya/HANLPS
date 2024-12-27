@@ -8,7 +8,9 @@ import traceback
 # Source-specific imports
 from src.domain.entities.message.message import Message
 from src.domain.enum.tool_types.tool_types import ToolType
-from src.domain.pydantic_models.agent_tool_output.agent_tool_output import AgentToolOutput
+from src.domain.pydantic_models.agent_tool_output.agent_tool_output import (
+    AgentToolOutput,
+)
 from src.infra.langchain_v2.agent.agent import create_agent
 from src.infra.langchain_v2.tools.tools import BoardingHouseAgentTools
 from src.infra.langchain_v2.memory.memory import LimitedConversationBufferMemory
@@ -55,7 +57,7 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         :return: Message
         """
         self._logger.log_info(f"[{session_id}]: User prompt: {prompt}")
-        
+
         agent_tools = BoardingHouseAgentTools(self._logger, session_id)
         with self._create_agent_executor(session_id, agent_tools) as agent_executor:
             # We only let 10 messages in the chat history for context window efficiency
@@ -75,9 +77,12 @@ class LangchainAPIV2(LangchainAPIV2Interface):
                     formatted_output.input_field
                 ).input(prompt)
             elif formatted_output.input_code == ToolType.SAVE_BUILDING:
-                return Message(input=prompt, output= agent_tools.save_boarding_house(
-                    formatted_output.input_field
-                ))
+                return Message(
+                    input=prompt,
+                    output=agent_tools.save_boarding_house(
+                        formatted_output.input_field
+                    ),
+                )
 
     @contextmanager
     def _create_agent_executor(
@@ -86,6 +91,7 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         """
         Context manager for creating and managing the AgentExecutor.
         :param session_id: chat session id.
+        :param agent_tools: the tools of the agent.
         """
         start_time = time.time()
 
