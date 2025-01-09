@@ -14,7 +14,7 @@ from src.domain.constants import (
 from src.domain.entities.message.message import Message
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
 from src.domain.entities.building.building import Building
-from src.infra.geocoding.api import GeocodingAPI
+from src.infra.geocoding.api import GeocodingAPI, NominatimGeocodingAPI
 from src.interactor.interfaces.logger.logger import LoggerInterface
 
 # Weaviate
@@ -66,7 +66,33 @@ class BoardingHouseAgentTools:
         filter_array = self._prepare_filters(buildings_filter)
         self._logger.log_debug(f"\n[{self._session_id}]: {buildings_filter}")
 
-        with GeocodingAPI(self._logger) as obj:
+        # with GeocodingAPI(self._logger) as obj:
+        #     try:
+        #         geo_query = (
+        #             buildings_filter.building_address
+        #             if buildings_filter.building_address
+        #             else buildings_filter.building_proximity
+        #         )
+        #         if geo_query:
+        #             self._logger.log_debug(
+        #                 f"[{self._session_id}]: Verified address: {geo_query}"
+        #             )
+        #             geocode_data = obj.execute_geocode_by_address(geo_query)
+        #             if geocode_data:
+        #                 self._logger.log_debug(
+        #                     f"[{self._session_id}]: Got geocode data: {geocode_data}"
+        #                 )
+        #                 lat_long = geocode_data[0]["geometry"]["location"]
+        #                 filter_array["building_geolocation"] = (
+        #                     lambda distance: append_building_geolocation_filter(
+        #                         lat_long, distance
+        #                     )
+        #                 )
+
+        #     except Exception as e:
+        #         self._logger.log_exception(f"[{self._session_id}]: Error Geocode: {e}")
+
+        with NominatimGeocodingAPI(self._logger) as obj:
             try:
                 geo_query = (
                     buildings_filter.building_address
@@ -78,19 +104,27 @@ class BoardingHouseAgentTools:
                         f"[{self._session_id}]: Verified address: {geo_query}"
                     )
                     geocode_data = obj.execute_geocode_by_address(geo_query)
-                    if geocode_data:
+                    if geocode_data and "error" not in geocode_data:
                         self._logger.log_debug(
                             f"[{self._session_id}]: Got geocode data: {geocode_data}"
                         )
-                        lat_long = geocode_data[0]["geometry"]["location"]
+                        lat_long = {
+                            "lat": geocode_data[0]["lat"],
+                            "long": geocode_data[0]["long"]
+                        }
                         filter_array["building_geolocation"] = (
                             lambda distance: append_building_geolocation_filter(
                                 lat_long, distance
                             )
                         )
-
+                    else:
+                        self._logger.log_warning(
+                            f"[{self._session_id}]: No valid geocode data for query: {geo_query}"
+                        )
             except Exception as e:
-                self._logger.log_exception(f"[{self._session_id}]: Error Geocode: {e}")
+                self._logger.log_exception(
+                    f"[{self._session_id}]: Error during geocoding: {e}"
+                )
 
         location_query = self._build_query(
             ["building_title", "building_address", "building_proximity"],
