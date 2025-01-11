@@ -1,7 +1,7 @@
 import requests
 import backoff
 from requests.exceptions import RequestException
-
+from src.interactor.interfaces.logger.logger import LoggerInterface
 
 class OverpassAPI:
     """
@@ -10,7 +10,7 @@ class OverpassAPI:
 
     BASE_URL = "https://overpass-api.de/api/interpreter"
 
-    def __init__(self, logger) -> None:
+    def __init__(self, logger: LoggerInterface) -> None:
         """
         Initialize the Overpass API client.
         :param logger: LoggerInterface instance for logging
