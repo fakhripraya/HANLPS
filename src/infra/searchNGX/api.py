@@ -110,3 +110,30 @@ class SearchXNG:
             params["category"] = category
         
         return self._send_request("/items/top-rated", method="GET", params=params)
+    
+    def search_places(self, query: str, lat: float, lon: float, radius: int) -> dict:
+        """
+        Search for places using the SearchXNG API.
+        :param query: Search term
+        :param lat: Latitude of the central point
+        :param lon: Longitude of the central point
+        :param radius: Search radius in meters
+        :return: JSON response with the search results
+        """
+        endpoint = "search"
+        params = {
+            "query": query,
+            "latitude": lat,
+            "longitude": lon,
+            "radius": radius,
+        }
+        return self._send_request(endpoint, params)
+
+    def fetch_place_details(self, place_id: str) -> dict:
+        """
+        Fetch detailed information about a place by its ID.
+        :param place_id: Unique identifier for the place
+        :return: JSON response with place details
+        """
+        endpoint = f"places/{place_id}"
+        return self._send_request(endpoint, params={})
