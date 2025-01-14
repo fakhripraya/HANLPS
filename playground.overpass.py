@@ -18,8 +18,17 @@ if __name__ == "__main__":
 
         print("Fetching POIs by amenity...")
         try:
-            pois = overpass_api.fetch_pois_by_amenity(latitude, longitude, search_radius, amenity_type)
-            print("POIs found:", pois)
+            pois_by_amenity = overpass_api.fetch_pois_by_amenity(latitude, longitude, search_radius, amenity_type, 10)
+            pois = pois_by_amenity.get('elements', [])
+
+            for poi in pois:
+                print(f"ID: {poi['id']}")
+                print(f"Type: {poi['type']}")
+                print(f"Latitude: {poi['lat']}, Longitude: {poi['lon']}")
+                print("Tags:")
+                for key, value in poi.get('tags', {}).items():
+                    print(f"  {key}: {value}")
+                print("-" * 50)  # Separator for readability
         except Exception as e:
             print(f"Failed to fetch POIs by amenity: {e}")
 
@@ -27,7 +36,16 @@ if __name__ == "__main__":
         category_type = "tourism"  # Category to search for
         print("\nFetching POIs by category...")
         try:
-            pois_by_category = overpass_api.fetch_pois_by_category(latitude, longitude, search_radius, category_type)
-            print("POIs found by category:", pois_by_category)
+            pois_by_category = overpass_api.fetch_pois_by_category(latitude, longitude, search_radius, category_type, 10)
+            pois = pois_by_category.get('elements', [])
+
+            for poi in pois:
+                print(f"ID: {poi['id']}")
+                print(f"Type: {poi['type']}")
+                print(f"Latitude: {poi['lat']}, Longitude: {poi['lon']}")
+                print("Tags:")
+                for key, value in poi.get('tags', {}).items():
+                    print(f"  {key}: {value}")
+                print("-" * 50)  # Separator for readability
         except Exception as e:
             print(f"Failed to fetch POIs by category: {e}")

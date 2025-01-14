@@ -56,7 +56,7 @@ class OverpassAPI:
             self._logger.log_exception(f"Failed to execute Overpass query, ERROR: {e}")
             raise
 
-    def fetch_pois_by_amenity(self, lat: float, lon: float, radius: int, amenity: str) -> dict:
+    def fetch_pois_by_amenity(self, lat: float, lon: float, radius: int, amenity: str, limit: int) -> dict:
         """
         Fetch Points of Interest (POIs) by amenity type within a radius.
         :param lat: Latitude of the central point
@@ -65,16 +65,17 @@ class OverpassAPI:
         :param amenity: OSM amenity tag (e.g., 'restaurant', 'hospital')
         :return: JSON response containing matching POIs
         """
+        limit_clause = f" {limit}" if limit else ""
         query = f"""
         [out:json];
         node
           ["amenity"="{amenity}"]
           (around:{radius},{lat},{lon});
-        out;
+        out{limit_clause};
         """
         return self.execute_query(query)
 
-    def fetch_pois_by_category(self, lat: float, lon: float, radius: int, category: str) -> dict:
+    def fetch_pois_by_category(self, lat: float, lon: float, radius: int, category: str, limit: int) -> dict:
         """
         Fetch Points of Interest (POIs) by category (e.g., 'tourism', 'shop').
         :param lat: Latitude of the central point
@@ -83,11 +84,12 @@ class OverpassAPI:
         :param category: OSM category tag (e.g., 'tourism', 'shop')
         :return: JSON response containing matching POIs
         """
+        limit_clause = f" {limit}" if limit else ""
         query = f"""
         [out:json];
         node
           ["{category}"]
           (around:{radius},{lat},{lon});
-        out;
+        out{limit_clause};
         """
         return self.execute_query(query)
