@@ -1,34 +1,12 @@
-# Import the OverpassAPI class and any required dependencies
-from src.infra.geocoding.overpass.api import OverpassAPI
-from src.interactor.interfaces.logger.logger import LoggerInterface
+from dotenv import load_dotenv
+from src.infra.overpass.api import OverpassAPI
+from src.infra.logger.logger_default import LoggerDefault
 
-class SimpleLogger(LoggerInterface):
-    """
-    A simple implementation of LoggerInterface for testing.
-    """
-
-    def log_info(self, message: str) -> None:
-        print(f"[INFO]: {message}")
-    
-    def log_debug(self, message: str) -> None:
-        print(f"[DEBUG]: {message}")
-
-    def log_warning(self, message: str) -> None:
-        print(f"[WARNING]: {message}")
-
-    def log_error(self, message: str) -> None:
-        print(f"[ERROR]: {message}")
-
-    def log_exception(self, message: str) -> None:
-        print(f"[EXCEPTION]: {message}")
-
-    def log_critical(self, message: str) -> None:
-        print(f"[CRITICAL]: {message}")
-
-
+# Load environment variables
+load_dotenv()
 if __name__ == "__main__":
     # Initialize the logger
-    logger = SimpleLogger()
+    logger = LoggerDefault()
 
     # Use the OverpassAPI with a context manager
     with OverpassAPI(logger) as overpass_api:
