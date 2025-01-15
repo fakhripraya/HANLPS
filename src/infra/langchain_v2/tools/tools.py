@@ -45,52 +45,20 @@ class BoardingHouseAgentTools:
         self._query_parser = QueryParser()
 
     def analyze_boarding_house_search_input(self, input):
-        result = str(input).strip("`").strip("json").strip("`").strip()
-        data = json.loads(result)
+        return self._analyze_input(input, "SEARCH_BUILDING")
 
-        return f"\n{json.dumps({
-            "input_code": "SEARCH_BUILDING",
-            "input_field": data
-        }, indent=4)}\n"
+    def analyze_specific_search_input(self, input):
+        return self._analyze_input(input, "SEARCH_POINT_OF_INTEREST")
 
     def analyze_boarding_house_save_input(self, input):
-        result = str(input).strip("`").strip("json").strip("`").strip()
-        data = json.loads(result)
+        return self._analyze_input(input, "SAVE_BUILDING")
 
-        return f"\n{json.dumps({
-            "input_code": "SAVE_BUILDING",
-            "input_field": data
-        }, indent=4)}\n"
+    def analyze_get_direction(self, input):
+        return self._analyze_input(input, "GET_DIRECTION")
 
     def search_boarding_house(self, buildings_filter: BuildingsFilter):
         filter_array = self._prepare_filters(buildings_filter)
         self._logger.log_debug(f"\n[{self._session_id}]: {buildings_filter}")
-
-        # with GeocodingAPI(self._logger) as obj:
-        #     try:
-        #         geo_query = (
-        #             buildings_filter.building_address
-        #             if buildings_filter.building_address
-        #             else buildings_filter.building_proximity
-        #         )
-        #         if geo_query:
-        #             self._logger.log_debug(
-        #                 f"[{self._session_id}]: Verified address: {geo_query}"
-        #             )
-        #             geocode_data = obj.execute_geocode_by_address(geo_query)
-        #             if geocode_data:
-        #                 self._logger.log_debug(
-        #                     f"[{self._session_id}]: Got geocode data: {geocode_data}"
-        #                 )
-        #                 lat_long = geocode_data[0]["geometry"]["location"]
-        #                 filter_array["building_geolocation"] = (
-        #                     lambda distance: append_building_geolocation_filter(
-        #                         lat_long, distance
-        #                     )
-        #                 )
-
-        #     except Exception as e:
-        #         self._logger.log_exception(f"[{self._session_id}]: Error Geocode: {e}")
 
         with NominatimGeocodingAPI(self._logger) as obj:
             try:
@@ -109,8 +77,8 @@ class BoardingHouseAgentTools:
                             f"[{self._session_id}]: Got geocode data: {geocode_data}"
                         )
                         lat_long = {
-                            "lat": geocode_data[0]["lat"],
-                            "long": geocode_data[0]["long"]
+                            "lat": geocode_data["lat"],
+                            "long": geocode_data["lon"]
                         }
                         filter_array["building_geolocation"] = (
                             lambda distance: append_building_geolocation_filter(
@@ -139,8 +107,78 @@ class BoardingHouseAgentTools:
         output = self._vector_db_retrieval(filter_array, facility_query, location_query)
         return output
 
+    def search_specific_by_address(self, buildings_filter: BuildingsFilter):
+        """
+        Search for a specific place by address or proximity.
+
+        :param buildings_filter: Object containing address or proximity filter.
+        :return: Geocode data or an error response.
+        """
+        geo_query = (
+            buildings_filter.building_address
+            if buildings_filter.building_address
+            else buildings_filter.building_proximity
+        )
+
+        if not geo_query:
+            return self._log_and_return(
+                self._logger.log_warning, "No valid address or proximity provided.", {}
+            )
+
+        self._logger.log_debug(f"Verified address: {geo_query}")
+
+        try:
+            with NominatimGeocodingAPI(self._logger) as geocode_api:
+                geocode_data = geocode_api.execute_geocode_by_address(geo_query)
+
+                if geocode_data and "error" not in geocode_data:
+                    self._logger.log_debug(f"Got geocode data: {geocode_data}")
+                    return geocode_data
+
+                return self._log_and_return(
+                    self._logger.log_warning, f"No valid geocode data for query: {geo_query}", {}
+                )
+        except Exception as e:
+            return self._log_and_return(
+                self._logger.log_exception, f"Error during geocoding: {e}", {"error": str(e)}
+            )
+    
     def save_boarding_house(self, input):
         return "Saved"
+    
+    def get_direction(self, input):
+        return "Saved"
+    
+    def _log_and_return(self, log_method, message: str, return_value=None):
+        """
+        Helper method to log a message and return a value.
+
+        :param log_method: Logging method to use (e.g., log_debug, log_warning).
+        :param message: Message to log.
+        :param return_value: Value to return after logging.
+        :return: The return_value parameter.
+        """
+        log_method(f"[{self._session_id}]: {message}")
+        return return_value
+    
+    def _analyze_input(self, input, input_code):
+        """
+        Helper method to process input and format the output JSON.
+
+        :param input: The raw input to be processed.
+        :param input_code: The input code for the specific operation.
+        :return: Formatted JSON string.
+        """
+        result = str(input).strip("`").strip("json").strip("`").strip()
+        try:
+            data = json.loads(result)
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Invalid JSON input: {e}")
+
+        return json.dumps({
+            "input_code": input_code,
+            "input_field": data
+        }, indent=4)
 
     def _vector_db_retrieval(
         self, filter_array, facility_query="", location_query=""

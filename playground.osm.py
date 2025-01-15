@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # Use the NominatimGeocodingAPI with a context manager
     with NominatimGeocodingAPI(logger) as geocoding_api:
         # Example: Geocoding by address
-        address = "ikpn veteran"
+        address = "tokopedia"
         print("Fetching geocode by address...")
         try:
             geocode_data: dict = geocoding_api.execute_geocode_by_address(address)
