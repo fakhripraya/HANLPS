@@ -6,11 +6,10 @@ this service used GRPC Protocol to communicate
 
 ## Installation
 
-### Create the virtual environment:
+### Create the virtual environment using py version 3.12.2:
 
 ```
-python -m venv venv
-
+py -3.12 -m venv venv
 ```
 
 ### Run the virtual environment:
