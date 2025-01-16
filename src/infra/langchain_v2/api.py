@@ -10,6 +10,7 @@ from src.domain.entities.message.message import Message
 from src.domain.enum.tool_types.tool_types import ToolType
 from src.domain.pydantic_models.agent_tool_output.agent_tool_output import (
     AgentToolOutput,
+    BuildingsFilter
 )
 from src.infra.langchain_v2.agent.agent import create_agent
 from src.infra.langchain_v2.tools.tools import BoardingHouseAgentTools
@@ -72,17 +73,11 @@ class LangchainAPIV2(LangchainAPIV2Interface):
                 raise ValueError("Invalid agent response")
 
             formatted_output = AgentToolOutput.model_validate_json(output)
-            if formatted_output.input_code == ToolType.SEARCH_BUILDING:
-                return agent_tools.search_boarding_house(
-                    formatted_output.input_field
-                ).input(prompt)
-            elif formatted_output.input_code == ToolType.SAVE_BUILDING:
-                return Message(
-                    input=prompt,
-                    output=agent_tools.save_boarding_house(
-                        formatted_output.input_field
-                    ),
-                )
+            input_code = formatted_output.input_code
+            input_field = formatted_output.input_field
+
+            self._execute_agent_action(agent_tools, input_code, input_field)
+
 
     @contextmanager
     def _create_agent_executor(
@@ -154,3 +149,22 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         self._logger.log_info(
             f"[{session_id}]: Agent execution completed in {elapsed_time:.2f} seconds."
         )
+    
+    def _execute_agent_action(agent_tools: BoardingHouseAgentTools, input_code: str | None, input_field: BuildingsFilter | None, prompt: str):
+        action_map = {
+            ToolType.SEARCH_BUILDING: lambda: agent_tools.search_boarding_house(input_field), 
+            ToolType.SEARCH_POINT_OF_INTEREST: lambda: agent_tools.search_specific_by_address(input_field), 
+            ToolType.SAVE_BUILDING: lambda: agent_tools.save_building(input_field), 
+            ToolType.GET_DIRECTION: lambda: agent_tools.get_direction(input_field), 
+        } 
+        
+        try:
+            result = action_map[input_code]()
+            if isinstance(result, Message):
+                return result.input(prompt)
+            else:
+                raise ValueError("Invalid Message instance")
+        except KeyError:
+            raise ValueError("Invalid input code")
+        except Exception as e:
+            raise Exception(f"Error during agent action: {e}")

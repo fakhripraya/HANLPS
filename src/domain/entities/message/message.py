@@ -12,6 +12,7 @@ class Message:
     input: str
     output: str
     output_content: list[Building] | None
+    action: dict
 
     @classmethod
     def from_dict(cls, data):
