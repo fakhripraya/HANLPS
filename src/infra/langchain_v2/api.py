@@ -93,12 +93,12 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         memory = self._get_session_buffer_memory(session_id)
         tools = [
             Tool(
-                name="SearchPointOfInterestByAddress",
+                name="SearchPointOfInterest",
                 func=agent_tools.analyze_nearby_poi_by_address_input,
                 description="Search for nearby point of interest based on the specified address.",
             ),
             Tool(
-                name="SaveLocation",
+                name="SearchSpecificLocation",
                 func=agent_tools.analyze_specific_search_input,
                 description="Search for specific given address location.",
             ),
@@ -162,10 +162,10 @@ class LangchainAPIV2(LangchainAPIV2Interface):
     
     def _execute_agent_action(agent_tools: BoardingHouseAgentTools, input_code: str | None, input_field: BuildingsFilter | None, prompt: str):
         action_map = {
-            ToolType.SEARCH_POINT_OF_INTEREST: lambda: agent_tools.search_nearby_poi_by_address(input_field), 
-            ToolType.SEARCH_BUILDING: lambda: agent_tools.search_specific_by_address(input_field), 
-            ToolType.SAVE_LOCATION: lambda: agent_tools.save_location(input_field), 
-            ToolType.GET_DIRECTION: lambda: agent_tools.get_direction(input_field), 
+            ToolType.SEARCH_POINT_OF_INTEREST.value: lambda: agent_tools.search_nearby_poi_by_address(input_field), 
+            ToolType.SEARCH_BUILDING.value: lambda: agent_tools.search_specific_by_address(input_field), 
+            ToolType.SAVE_LOCATION.value: lambda: agent_tools.save_location(input_field), 
+            ToolType.GET_DIRECTION.value: lambda: agent_tools.get_direction(input_field), 
         } 
         
         try:
