@@ -3,6 +3,7 @@ import json
 from dotenv import load_dotenv
 from configs.config import OPENAI_API_KEY, OPENAI_MODEL
 
+from src.domain.enum.tool_types.tool_types import ToolType
 from src.domain.pydantic_models.agent_tool_output.agent_tool_output import AgentToolOutput
 from src.infra.langchain_v2.memory.memory import LimitedConversationBufferMemory
 
@@ -26,27 +27,49 @@ llm = ChatOpenAI(
 )
 
 
-# Tool 1: Simulate boarding house search
-def search_boarding_house(input):
+# Tool 1: Simulate nearby poi search
+def search_poi_by_address(input):
     # Parse the JSON string into a Python dictionary
     result = str(input).strip("`").strip("json").strip("`").strip()
     data = json.loads(result)
     print(data)
 
     return f"\n{json.dumps({
-        "input_code": "SEARCH_BUILDING",
+        "input_code": ToolType.SEARCH_POINT_OF_INTEREST.value,
         "input_field": data
     }, indent=4)}\n"
 
-
-# Tool 2: Simulate boarding house search
-def save_location(data):
+# Tool 2: Simulate specific building search
+def search_specific_by_address(input):
+    # Parse the JSON string into a Python dictionary
     result = str(input).strip("`").strip("json").strip("`").strip()
     data = json.loads(result)
     print(data)
 
     return f"\n{json.dumps({
-        "input_code": "SAVE_BUILDING",
+        "input_code": ToolType.SEARCH_BUILDING.value,
+        "input_field": data
+    }, indent=4)}\n"
+
+# Tool 3: Simulate save location
+def save_location(input):
+    result = str(input).strip("`").strip("json").strip("`").strip()
+    data = json.loads(result)
+    print(data)
+
+    return f"\n{json.dumps({
+        "input_code": ToolType.SAVE_LOCATION.value,
+        "input_field": data
+    }, indent=4)}\n"
+
+# Tool 4: Simulate directional navigation helper
+def get_direction(input):
+    result = str(input).strip("`").strip("json").strip("`").strip()
+    data = json.loads(result)
+    print(data)
+
+    return f"\n{json.dumps({
+        "input_code": ToolType.GET_DIRECTION.value,
         "input_field": data
     }, indent=4)}\n"
 
@@ -54,14 +77,24 @@ def save_location(data):
 # Define the tools
 tools = [
     Tool(
-        name="SearchBoardingHouse",
-        func=search_boarding_house,
-        description="Tool to process building search input into advance structured input",
+        name="SearchPointOfInterest",
+        func=search_poi_by_address,
+        description="Search for nearby point of interest based on the specified address.",
+    ),
+    Tool(
+        name="SearchSpecificLocation",
+        func=search_specific_by_address,
+        description="Search for specific given address location.",
     ),
     Tool(
         name="SaveLocation",
         func=save_location,
-        description="Tool to extract saving building input into advance structured input",
+        description="Save the location data temporarily.",
+    ),
+    Tool(
+        name="GetDirection",
+        func=get_direction,
+        description="Get the directional navigation start to end geocode data.",
     ),
 ]
 
@@ -75,54 +108,46 @@ react_prompt_template = PromptTemplate(
         "tool_names",
     ],
     template="""
-    You are Pintrail, a multi-tasking assistant who spoke mainly in Bahasa Indonesia language but can also understand and speak different language
+    You are Pintrail, a multi-tasking assistant mainly for maps, direction, and specific building search
 
     You have access to the following tools:
     {tools}
     
     Tools explanation:
-    1. Boarding House Search: Use the 'SearchBoardingHouse' tool when the user asks for boarding house information.
-    2. Save Location: Use the 'SaveLocation' tool when the user ask to save the boarding house.
+    1. Nearby POI Search: Use the 'SearchPointOfInterest' tool when the user asks for information nearby given address, either its a boarding house, hotel, or residence.
+    2. Specific Location Search: Use the 'SearchSpecificLocation' tool when the user asks for information of specific given address location.
+    3. Save Location: Use the 'SaveLocation' tool when the user ask to save the building data.
+    4. Get Directional Navigation: Use the 'GetDirection' tool when the user ask for directional navigation.
     
     Tools Input Guidelines:
-        1. Boarding House Search
-            Input Fields (JSON format):
-            - building_title: Title of the building.
-            - building_address: Building's address or area.
-            - building_proximity: Nearby landmarks, separated by commas.
-            - building_facility: List of facilities, separated by commas.
-            - building_note: Important notes or rules.
-            - filter_type: Filter type ("LESS_THAN", "GREATER_THAN", or "AROUND").
-            - less_than_price: Maximum price (required for "LESS_THAN" or "AROUND" filters).
-            - greater_than_price: Minimum price (required for "GREATER_THAN" or "AROUND" filters).
-            - is_next: Set to true if the user is asking for more option or continuing the search.
+        Input Fields (JSON format):
+        - building_title: Title of the building.
+        - building_address: Building's address or area.
+        - building_proximity: Nearby landmarks, separated by commas.
+        - building_facility: List of facilities, separated by commas.
+        - building_note: Important notes or rules.
+        - filter_type: Filter type ("LESS_THAN", "GREATER_THAN", or "AROUND").
+        - less_than_price: Maximum price (required for "LESS_THAN" or "AROUND" filters).
+        - greater_than_price: Minimum price (required for "GREATER_THAN" or "AROUND" filters).
+        - is_currently_ask_for_homestay: Set to true if the user is asking for homestay in this current prompt
+        - is_next: Set to true if the user is asking for more option or continuing the search.
 
-            Input Field Rules:
-            - Default values are null; if an input field is not provided, set the value to null.
-            - Prices must be positive; values <= 0 default to 0.
-            - For "AROUND" filters, adjust prices by ±250,000 units.
-            - Reset previous filters if a new building title is provided.
-            - Ensure numeric values are floats, not strings.
-            - No currency symbols in price values.
-            
-            This is the valid output in JSON Formatted output, stop when you receieve this value:
-            {{"input_code": "SEARCH_BUILDING", "input_field": <Tool input field value>}}     
-            
-        2. Save Location
-            Input Fields (JSON format):
-            - building_title: Title of the building.
-            - building_address: Building's address or area.
-            - building_proximity: Nearby landmarks, separated by commas.
-            - building_facility: List of facilities, separated by commas.
-
-            Input Field Rules:
-            - Default values are null; if an input field is not provided, set the value to null.
-            
-            Provide output only in JSON Formatted output, stop when you receieve this value:
-            {{"input_code": "SAVE_BUILDING", "input_field": <Tool input field value>}}
+        Input Field Rules:
+        - Default values are null; if an input field is not provided, set the value to null.
+        - Prices must be positive; values <= 0 default to 0.
+        - For "AROUND" filters, adjust prices by ±250,000 units.
+        - Reset previous filters if a new building title is provided.
+        - Ensure numeric values are floats, not strings.
+        - No currency symbols in price values.
+        
+        This is the valid output in JSON Formatted output, stop when you receieve this value:
+        1. {{"input_code": "SEARCH_POINT_OF_INTEREST", "input_field": <Tool input field value>}}     
+        2. {{"input_code": "SEARCH_BUILDING", "input_field": <Tool input field value>}}
+        3. {{"input_code": "SAVE_LOCATION", "input_field": <Tool input field value>}}
+        4. {{"input_code": "GET_DIRECTION", "input_field": <Tool input field value>}}
 
     You also capable of performing two main chat completions task:
-    1. Object Comparison: when the user asks for specific boarding house objects comparison, explain the comparison between those objects.
+    1. Object Comparison: when the user asks for specific building objects comparison, explain the comparison between those objects.
     2. Casual Conversation: reply casually if the user input is a casual chat.
     
     Important Guidelines:
@@ -137,7 +162,7 @@ react_prompt_template = PromptTemplate(
     Required Output Format For Tools:
     Your response MUST follow this format strictly:
         Thought: Do I need to use a tool? No
-        Final Answer: <your response here, please respond in the required JSON format>
+        Final Answer: <your response here, only response in the required structured JSON format>
 
     Required Output Format For Chat Completions:
     Your response MUST follow this format strictly:
@@ -146,9 +171,8 @@ react_prompt_template = PromptTemplate(
 
     Rules:
     - Do not include a final answer if an action is being performed. Follow strictly: Thought, Action, Action Input.
-    - After successfully obtaining valid information from a tool, respond directly to the user without calling another tool.
     - If the task is complete, avoid unnecessary actions.
-    - Respond the conversations using the slang language of Indonesian Jaksel Gen Z.
+    - If you use tools, don't give the output in string. only give the output in structured JSON format
 
     Context:
     Chat History: {chat_history}
@@ -189,6 +213,7 @@ agent_executor = AgentExecutor(
 # Record start time
 start_time = time.time()
 
+# search po query
 query = "info kost blok m harga 2.5 jtan dong"
 response = agent_executor.invoke({"input": query}).get("output", "No output returned")
 
@@ -197,6 +222,36 @@ json_data = json.loads(response)
 agent_output = AgentToolOutput(**json_data)
 print(agent_output)
 
+# search specific building query
+query = "eh kalo mall blok m dimana ya"
+response = agent_executor.invoke({"input": query}).get("output", "No output returned")
+
+json_data = json.loads(response)
+
+agent_output = AgentToolOutput(**json_data)
+print(agent_output)
+
+# save location
+query = "simpenin ya yang blok m"
+response = agent_executor.invoke({"input": query}).get("output", "No output returned")
+print(response)
+
+json_data = json.loads(response)
+
+agent_output = AgentToolOutput(**json_data)
+print(agent_output)
+
+# get direction
+query = "oh iya tunjukin jalannya dong"
+response = agent_executor.invoke({"input": query}).get("output", "No output returned")
+
+print(response)
+json_data = json.loads(response)
+
+agent_output = AgentToolOutput(**json_data)
+print(agent_output)
+
+# default response
 query = "mahal"
 response = agent_executor.invoke({"input": query}).get("output", "No output returned")
 print(agent_executor.memory.load_memory_variables({}).get('chat_history', []))

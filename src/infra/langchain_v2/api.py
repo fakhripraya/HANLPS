@@ -93,14 +93,24 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         memory = self._get_session_buffer_memory(session_id)
         tools = [
             Tool(
-                name="SearchBoardingHouse",
-                func=agent_tools.analyze_boarding_house_search_input,
-                description="Search for boarding houses based on the specified criteria.",
+                name="SearchPointOfInterestByAddress",
+                func=agent_tools.analyze_nearby_poi_by_address_input,
+                description="Search for nearby point of interest based on the specified address.",
             ),
             Tool(
                 name="SaveLocation",
-                func=agent_tools.analyze_boarding_house_save_input,
-                description="Save the location to the database.",
+                func=agent_tools.analyze_specific_search_input,
+                description="Search for specific given address location.",
+            ),
+            Tool(
+                name="SaveLocation",
+                func=agent_tools.analyze_save_location_input,
+                description="Save the location data temporarily.",
+            ),
+            Tool(
+                name="GetDirection",
+                func=agent_tools.analyze_get_direction,
+                description="Get the directional navigation start to end geocode data.",
             ),
         ]
 
@@ -152,9 +162,9 @@ class LangchainAPIV2(LangchainAPIV2Interface):
     
     def _execute_agent_action(agent_tools: BoardingHouseAgentTools, input_code: str | None, input_field: BuildingsFilter | None, prompt: str):
         action_map = {
-            ToolType.SEARCH_BUILDING: lambda: agent_tools.search_boarding_house(input_field), 
-            ToolType.SEARCH_POINT_OF_INTEREST: lambda: agent_tools.search_specific_by_address(input_field), 
-            ToolType.SAVE_BUILDING: lambda: agent_tools.save_building(input_field), 
+            ToolType.SEARCH_POINT_OF_INTEREST: lambda: agent_tools.search_nearby_poi_by_address(input_field), 
+            ToolType.SEARCH_BUILDING: lambda: agent_tools.search_specific_by_address(input_field), 
+            ToolType.SAVE_LOCATION: lambda: agent_tools.save_location(input_field), 
             ToolType.GET_DIRECTION: lambda: agent_tools.get_direction(input_field), 
         } 
         

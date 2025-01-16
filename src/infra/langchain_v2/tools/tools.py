@@ -45,50 +45,36 @@ class BoardingHouseAgentTools:
         self._session_id = session_id
         self._query_parser = QueryParser()
 
-    def analyze_boarding_house_search_input(self, input):
-        return self._analyze_input(input, ToolType.SEARCH_BUILDING)
+    def analyze_nearby_poi_by_address_input(self, input):
+        return self._analyze_input(input, ToolType.SEARCH_POINT_OF_INTEREST.value)
 
     def analyze_specific_search_input(self, input):
-        return self._analyze_input(input, ToolType.SEARCH_POINT_OF_INTEREST)
+        return self._analyze_input(input, ToolType.SEARCH_BUILDING.value)
 
-    def analyze_boarding_house_save_input(self, input):
-        return self._analyze_input(input, ToolType.SAVE_BUILDING)
+    def analyze_save_location_input(self, input):
+        return self._analyze_input(input, ToolType.SAVE_LOCATION.value)
 
     def analyze_get_direction(self, input):
-        return self._analyze_input(input, ToolType.GET_DIRECTION)
+        return self._analyze_input(input, ToolType.GET_DIRECTION.value)
 
-    def search_boarding_house(self, buildings_filter: BuildingsFilter):
+    def search_nearby_poi_by_address(self, buildings_filter: BuildingsFilter):
+        """
+        Search for nearby POI of the given address.
+
+        :param buildings_filter: Object containing address or proximity filter.
+        :return: Message.
+        """
         filter_array = self._prepare_filters(buildings_filter)
-        self._logger.log_debug(f"\n[{self._session_id}]: {buildings_filter}")
+        self._logger.log_debug(f"[{self._session_id}]: {buildings_filter}")
 
-        with NominatimGeocodingAPI(self._logger) as obj:
-            geo_query = (
-                buildings_filter.building_address
-                if buildings_filter.building_address
-                else buildings_filter.building_proximity
+        try:
+            geocode_data = self._perform_geocoding(buildings_filter)
+            lat_long = {"lat": geocode_data["lat"], "long": geocode_data["lon"]}
+            filter_array["building_geolocation"] = (
+                lambda distance: append_building_geolocation_filter(lat_long, distance)
             )
-            if geo_query:
-                self._logger.log_debug(
-                    f"[{self._session_id}]: Verified address: {geo_query}"
-                )
-                geocode_data = obj.execute_geocode_by_address(geo_query)
-                if geocode_data and "error" not in geocode_data:
-                    self._logger.log_debug(
-                        f"[{self._session_id}]: Got geocode data: {geocode_data}"
-                    )
-                    lat_long = {
-                        "lat": geocode_data["lat"],
-                        "long": geocode_data["lon"]
-                    }
-                    filter_array["building_geolocation"] = (
-                        lambda distance: append_building_geolocation_filter(
-                            lat_long, distance
-                        )
-                    )
-                else:
-                    self._logger.log_warning(
-                        f"[{self._session_id}]: No valid geocode data for query: {geo_query}"
-                    )
+        except ValueError as e:
+            self._logger.log_warning(f"[{self._session_id}]: {e}")
 
         location_query = self._build_query(
             ["building_title", "building_address", "building_proximity"],
@@ -102,38 +88,36 @@ class BoardingHouseAgentTools:
 
         return self._vector_db_retrieval(filter_array, facility_query, location_query)
 
+
     def search_specific_by_address(self, buildings_filter: BuildingsFilter):
         """
-        Search for a specific place by address or proximity.
+        Search for a specific place by address.
 
         :param buildings_filter: Object containing address or proximity filter.
-        :return: Geocode data or an error response.
+        :return: Message.
         """
-        geo_query = (
-            buildings_filter.building_address
-            if buildings_filter.building_address
-            else buildings_filter.building_proximity
-        )
+        geocode_data = self._perform_geocoding(buildings_filter)
+        return Message(output_content=geocode_data, action=ToolType.SEARCH_POINT_OF_INTEREST.value)
 
-        if not geo_query:
-            raise ValueError("No valid address or proximity provided.")
+    def save_location(self):
+        """
+        Temporarily save location data 
 
-        self._logger.log_debug(f"Verified address: {geo_query}")
-        with NominatimGeocodingAPI(self._logger) as geocode_api:
-            geocode_data = geocode_api.execute_geocode_by_address(geo_query)
+        :param buildings_filter: Object containing address or proximity filter.
+        :return: Message.
+        """
+        return Message(action=ToolType.SAVE_LOCATION.value)
 
-            if geocode_data and "error" not in geocode_data:
-                self._logger.log_debug(f"Got geocode data: {geocode_data}")
-                return Message(output_content=geocode_data, action=ToolType.SEARCH_POINT_OF_INTEREST)
-            else:
-                raise ValueError(f"No valid geocode data for query: {geo_query}")
-    
-    def save_building(self):
-        return Message(action=ToolType.SAVE_BUILDING)
-    
-    def get_direction(self):
-        return Message(action=ToolType.GET_DIRECTION)
-    
+    def get_direction(self, buildings_filter: BuildingsFilter):
+        """
+        Get the destination latitude longitude.
+
+        :param buildings_filter: Object containing address or proximity filter.
+        :return: Message.
+        """
+        geocode_data = self._perform_geocoding(buildings_filter)
+        return Message(output_content=geocode_data, action=ToolType.GET_DIRECTION.value)
+
     def _analyze_input(self, input, input_code):
         """
         Helper method to process input and format the output JSON.
@@ -152,6 +136,32 @@ class BoardingHouseAgentTools:
             "input_code": input_code,
             "input_field": data
         }, indent=4)
+
+    def _perform_geocoding(self, buildings_filter: BuildingsFilter) -> dict:
+        """
+        Perform geocoding using NominatimGeocodingAPI.
+
+        :param geo_query: The address or proximity to geocode.
+        :return: Geocode data as a dictionary or raises ValueError if no valid data is found.
+        """
+        geo_query = (
+            buildings_filter.building_address
+            if buildings_filter.building_address
+            else buildings_filter.building_proximity
+        )
+
+        if not geo_query:
+            raise ValueError("No valid address or proximity provided.")
+
+        self._logger.log_debug(f"[{self._session_id}]: Performing geocoding for: {geo_query}")
+        with NominatimGeocodingAPI(self._logger) as geocode_api:
+            geocode_data = geocode_api.execute_geocode_by_address(geo_query)
+
+            if geocode_data and "error" not in geocode_data:
+                self._logger.log_debug(f"[{self._session_id}]: Got geocode data: {geocode_data}")
+                return geocode_data
+            else:
+                raise ValueError(f"[{self._session_id}]: No valid geocode data for query: {geo_query}")
 
     def _vector_db_retrieval(
         self, filter_array, facility_query="", location_query=""
@@ -252,7 +262,7 @@ class BoardingHouseAgentTools:
                 finally:
                     weaviate_client.close_connection_to_server(connected)
 
-        return Message(output_content=building_list, action=ToolType.SEARCH_BUILDING)
+        return Message(output_content=building_list, action=ToolType.SEARCH_BUILDING.value)
 
     def _build_query(self, fields, filter_data):
         if any(filter_data[field] for field in fields):
