@@ -43,7 +43,7 @@ react_prompt_template = PromptTemplate(
         
         This is the valid output in JSON Formatted output, stop when you receieve this value:
         1. {{"input_code": "SEARCH_POINT_OF_INTEREST", "input_field": <Tool input field value>}}     
-        2. {{"input_code": "SEARCH_BUILDING", "input_field": <Tool input field value>}}
+        2. {{"input_code": "SEARCH_SPECIFIC_LOCATION", "input_field": <Tool input field value>}}
         3. {{"input_code": "SAVE_LOCATION", "input_field": <Tool input field value>}}
         4. {{"input_code": "GET_DIRECTION", "input_field": <Tool input field value>}}
 

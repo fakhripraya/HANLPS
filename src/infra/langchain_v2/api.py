@@ -3,7 +3,9 @@
 
 # Standard and third-party libraries
 import time
+import json
 import traceback
+from pydantic import ValidationError
 
 # Source-specific imports
 from src.domain.entities.message.message import Message
@@ -72,11 +74,14 @@ class LangchainAPIV2(LangchainAPIV2Interface):
             if output is None:
                 raise ValueError("Invalid agent response")
 
-            formatted_output = AgentToolOutput.model_validate_json(output)
-            input_code = formatted_output.input_code
-            input_field = formatted_output.input_field
+            formatted_output: AgentToolOutput | None
+            try:
+                formatted_json = json.load(output)
+                formatted_output = AgentToolOutput.model_validate_json(formatted_json)
+            except (json.JSONDecodeError, TypeError, ValidationError):
+                formatted_output = AgentToolOutput(chat_output=str(output))
 
-            self._execute_agent_action(agent_tools, input_code, input_field)
+            return self._execute_agent_action(agent_tools, formatted_output, prompt)
 
 
     @contextmanager
@@ -160,16 +165,21 @@ class LangchainAPIV2(LangchainAPIV2Interface):
             f"[{session_id}]: Agent execution completed in {elapsed_time:.2f} seconds."
         )
     
-    def _execute_agent_action(agent_tools: BoardingHouseAgentTools, input_code: str | None, input_field: BuildingsFilter | None, prompt: str):
+    def _execute_agent_action(self, agent_tools: BoardingHouseAgentTools, formatted_output: AgentToolOutput, prompt: str):
+        print(formatted_output)
         action_map = {
-            ToolType.SEARCH_POINT_OF_INTEREST.value: lambda: agent_tools.search_nearby_poi_by_address(input_field), 
-            ToolType.SEARCH_BUILDING.value: lambda: agent_tools.search_specific_by_address(input_field), 
-            ToolType.SAVE_LOCATION.value: lambda: agent_tools.save_location(input_field), 
-            ToolType.GET_DIRECTION.value: lambda: agent_tools.get_direction(input_field), 
+            ToolType.SEARCH_POINT_OF_INTEREST.value: lambda: agent_tools.search_nearby_poi_by_address(formatted_output.input_field), 
+            ToolType.SEARCH_SPECIFIC_LOCATION.value: lambda: agent_tools.search_specific_by_address(formatted_output.input_field), 
+            ToolType.SAVE_LOCATION.value: lambda: agent_tools.save_location(formatted_output.input_field), 
+            ToolType.GET_DIRECTION.value: lambda: agent_tools.get_direction(formatted_output.input_field), 
         } 
         
         try:
-            result = action_map[input_code]()
+            if formatted_output.input_code is None:
+                return Message(input=prompt, output=formatted_output.chat_output)
+            
+            result = action_map[formatted_output.input_code]()
+            print(result)
             if isinstance(result, Message):
                 return result.input(prompt)
             else:

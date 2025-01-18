@@ -1,6 +1,9 @@
+# Load environment variables
+from dotenv import load_dotenv
+load_dotenv()
+
 import time
 import json
-from dotenv import load_dotenv
 from configs.config import OPENAI_API_KEY, OPENAI_MODEL
 
 from src.domain.enum.tool_types.tool_types import ToolType
@@ -12,9 +15,6 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.schema import HumanMessage, AIMessage
 from langchain_community.utilities import SearxSearchWrapper
-
-# Load environment variables
-load_dotenv()
 
 # Initialize the LLM
 llm = ChatOpenAI(
@@ -47,7 +47,7 @@ def search_specific_by_address(input):
     print(data)
 
     return f"\n{json.dumps({
-        "input_code": ToolType.SEARCH_BUILDING.value,
+        "input_code": ToolType.SEARCH_SPECIFIC_LOCATION.value,
         "input_field": data
     }, indent=4)}\n"
 
@@ -142,7 +142,7 @@ react_prompt_template = PromptTemplate(
         
         This is the valid output in JSON Formatted output, stop when you receieve this value:
         1. {{"input_code": "SEARCH_POINT_OF_INTEREST", "input_field": <Tool input field value>}}     
-        2. {{"input_code": "SEARCH_BUILDING", "input_field": <Tool input field value>}}
+        2. {{"input_code": "SEARCH_SPECIFIC_LOCATION", "input_field": <Tool input field value>}}
         3. {{"input_code": "SAVE_LOCATION", "input_field": <Tool input field value>}}
         4. {{"input_code": "GET_DIRECTION", "input_field": <Tool input field value>}}
 

@@ -37,6 +37,7 @@ class MessagingUseCaseV2:
         message_output = self.llm.execute_search_agent(
             input_dto.sessionId, input_dto.content
         )
+
         message = self.repository.create(
             input=message_output.input,
             output=message_output.output,

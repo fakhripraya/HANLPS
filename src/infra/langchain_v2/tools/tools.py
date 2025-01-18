@@ -49,7 +49,7 @@ class BoardingHouseAgentTools:
         return self._analyze_input(input, ToolType.SEARCH_POINT_OF_INTEREST.value)
 
     def analyze_specific_search_input(self, input):
-        return self._analyze_input(input, ToolType.SEARCH_BUILDING.value)
+        return self._analyze_input(input, ToolType.SEARCH_SPECIFIC_LOCATION.value)
 
     def analyze_save_location_input(self, input):
         return self._analyze_input(input, ToolType.SAVE_LOCATION.value)
@@ -262,7 +262,7 @@ class BoardingHouseAgentTools:
                 finally:
                     weaviate_client.close_connection_to_server(connected)
 
-        return Message(output_content=building_list, action=ToolType.SEARCH_BUILDING.value)
+        return Message(output_content=building_list, action=ToolType.SEARCH_SPECIFIC_LOCATION.value)
 
     def _build_query(self, fields, filter_data):
         if any(filter_data[field] for field in fields):

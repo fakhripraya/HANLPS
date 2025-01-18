@@ -1,6 +1,7 @@
 """ This module has definition of the Message entity
 """
 
+from typing import List, Optional
 from dataclasses import dataclass, asdict
 from src.domain.entities.building.building import Building
 
@@ -11,8 +12,8 @@ class Message:
 
     input: str
     output: str
-    output_content: list[Building] | None
-    action: dict
+    output_content: Optional[List[Building]] = None
+    action: Optional[dict] = None
 
     @classmethod
     def from_dict(cls, data):
