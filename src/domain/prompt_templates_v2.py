@@ -40,40 +40,22 @@ react_prompt_template = PromptTemplate(
         - Reset previous filters if a new building title is provided.
         - Ensure numeric values are floats, not strings.
         - No currency symbols in price values.
-        
-        This is the valid output in JSON Formatted output, stop when you receieve this value:
-        1. {{"input_code": "SEARCH_POINT_OF_INTEREST", "input_field": <Tool input field value>}}     
-        2. {{"input_code": "SEARCH_SPECIFIC_LOCATION", "input_field": <Tool input field value>}}
-        3. {{"input_code": "SAVE_LOCATION", "input_field": <Tool input field value>}}
-        4. {{"input_code": "GET_DIRECTION", "input_field": <Tool input field value>}}
-
-    You also capable of performing two main chat completions task:
-    1. Object Comparison: when the user asks for specific building objects comparison, explain the comparison between those objects.
-    2. Casual Conversation: reply casually if the user input is a casual chat.
     
-    Important Guidelines:
-    - Carefully analyze the user's input to determine the most appropriate tool to use, or decide if a simple chat completion is sufficient to address the request.
+    Important reACT Guidelines:
+    - Carefully analyze the user's input to determine the most appropriate tool to use.
     - Structure your response strictly in the following format:
-        Thought: Do I need to use a tool? Yes
-        Action: the action to take, should be one of [{tool_names}]
-        Action Input: the input to the action
-        Observation: the result of the action
-        (this Thought/Action/Action Input/Observation can repeat 3 times)
+        Thought: <determine whether you should use tool or not>
+        Action: <the action to take, should be one of [{tool_names}]>
+        Action Input: <the input to the action>
+        (this Thought/Action/Action Input can repeat 3 times)
 
-    Required Output Format For Tools:
-    Your response MUST follow this format strictly:
+    Required Output:
         Thought: Do I need to use a tool? No
-        Final Answer: <your response here, only response in the required structured JSON format>
-
-    Required Output Format For Chat Completions:
-    Your response MUST follow this format strictly:
-        Thought: Do I need to use a tool? No
-        Final Answer: <your response here>
+        Final Answer: <{{"input_code": <can be formatted as key>, "input_field": <the action input value>}}>
 
     Rules:
-    - Do not include a final answer if an action is being performed. Follow strictly: Thought, Action, Action Input.
+    - Do not include a final answer if an action is being performed. Follow strictly: Thought, Action, Action Input, stop iteration only when final answer follow the format.
     - If the task is complete, avoid unnecessary actions.
-    - If you use tools, don't give the output in string. only give the output in structured JSON format
 
     Context:
     Chat History: {chat_history}

@@ -73,6 +73,7 @@ class LangchainAPIV2(LangchainAPIV2Interface):
             output = agent_executor.invoke({"input": prompt}).get("output", None)
             if output is None:
                 raise ValueError("Invalid agent response")
+            
 
             formatted_output: AgentToolOutput | None
             try:
@@ -128,7 +129,6 @@ class LangchainAPIV2(LangchainAPIV2Interface):
             memory=memory,
             allow_dangerous_code=True,
             handle_parsing_errors=True,
-            early_stopping_method="generate",
         )
         try:
             yield agent_executor
