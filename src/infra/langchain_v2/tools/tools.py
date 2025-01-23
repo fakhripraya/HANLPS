@@ -15,7 +15,7 @@ from src.domain.constants import (
 from src.domain.entities.message.message import Message
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
 from src.domain.entities.building.building import Building
-from src.infra.geocoding.api import GeocodingAPI, NominatimGeocodingAPI
+from src.infra.geocoding.api import NominatimGeocodingAPI
 from src.interactor.interfaces.logger.logger import LoggerInterface
 
 # Weaviate
@@ -97,7 +97,7 @@ class BoardingHouseAgentTools:
         :return: Message.
         """
         geocode_data = self._perform_geocoding(buildings_filter)
-        return Message(output_content=geocode_data, action=ToolType.SEARCH_POINT_OF_INTEREST.value)
+        return Message(output="", output_content=geocode_data, action=ToolType.SEARCH_POINT_OF_INTEREST.value)
 
     def save_location(self):
         """
@@ -106,7 +106,7 @@ class BoardingHouseAgentTools:
         :param buildings_filter: Object containing address or proximity filter.
         :return: Message.
         """
-        return Message(action=ToolType.SAVE_LOCATION.value)
+        return Message(output="", action=ToolType.SAVE_LOCATION.value)
 
     def get_direction(self, buildings_filter: BuildingsFilter):
         """
@@ -146,8 +146,8 @@ class BoardingHouseAgentTools:
         """
         geo_query = (
             buildings_filter.building_address
-            if buildings_filter.building_address
-            else buildings_filter.building_proximity
+            or buildings_filter.building_proximity
+            or buildings_filter.building_title
         )
 
         if not geo_query:

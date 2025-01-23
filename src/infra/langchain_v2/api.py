@@ -77,8 +77,9 @@ class LangchainAPIV2(LangchainAPIV2Interface):
 
             formatted_output: AgentToolOutput | None
             try:
-                formatted_json = json.load(output)
-                formatted_output = AgentToolOutput.model_validate_json(formatted_json)
+                formatted_json = json.loads(output)
+                formatted_output = AgentToolOutput.model_validate(formatted_json)
+                print("masuk formatted_output valid")
             except (json.JSONDecodeError, TypeError, ValidationError):
                 formatted_output = AgentToolOutput(chat_output=str(output))
 
@@ -125,7 +126,7 @@ class LangchainAPIV2(LangchainAPIV2Interface):
             tools=tools,
             verbose=True,
             max_execution_time=60,
-            max_iterations=3,
+            max_iterations=10,
             memory=memory,
             allow_dangerous_code=True,
             handle_parsing_errors=True,
@@ -181,7 +182,8 @@ class LangchainAPIV2(LangchainAPIV2Interface):
             result = action_map[formatted_output.input_code]()
             print(result)
             if isinstance(result, Message):
-                return result.input(prompt)
+                result.input = prompt
+                return result
             else:
                 raise ValueError("Invalid Message instance")
         except KeyError:

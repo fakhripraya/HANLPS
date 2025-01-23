@@ -2,7 +2,7 @@
 """
 
 from typing import List, Optional
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, field, asdict
 from src.domain.entities.building.building import Building
 
 
@@ -10,8 +10,8 @@ from src.domain.entities.building.building import Building
 class Message:
     """Definition of the Message entity"""
 
-    input: str
-    output: str
+    input: str = field(default="")
+    output: str = field(default="")
     output_content: Optional[List[Building]] = None
     action: Optional[dict] = None
 
