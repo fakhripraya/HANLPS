@@ -38,27 +38,25 @@ class MessagingUseCaseV2:
             input_dto.sessionId, input_dto.content
         )
 
-        message = self.repository.create(
-            input=message_output.input,
-            output=message_output.output,
-            output_content=message_output.output_content,
-        )
+        if message_output is None:
+            raise Exception("Invalid message output")
 
-        if message is None:
-            self.logger.log_error("Message creation failed")
-            raise ItemNotCreatedException(input_dto.content, "Message")
-
-        # Convert building content to JSON (if applicable)
+        # Convert building info content to JSON (if applicable)
         buildings_dict = [
-            building.to_dict() for building in (message_output.output_content or [])
+            building.to_dict() for building in (message_output.output_building_info or [])
         ]
         buildings_json = json.dumps(buildings_dict)
+
+         # Convert other content to JSON (if applicable)
+        info_json = json.dumps(message_output.output_info)
 
         # Prepare the output DTO and presenter response
         output_dto = MessagingOutputDto(
             input=message_output.input,
             output=message_output.output,
-            output_content=buildings_json,
+            output_building_info=buildings_json,
+            output_info=info_json,
+            action=message_output.action
         )
 
         return self.presenter.present(output_dto)

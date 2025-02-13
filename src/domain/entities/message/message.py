@@ -12,7 +12,8 @@ class Message:
 
     input: str = field(default="")
     output: str = field(default="")
-    output_content: Optional[List[Building]] = None
+    output_building_info: Optional[List[Building]] = None
+    output_info: Optional[dict] = None
     action: Optional[dict] = None
 
     @classmethod

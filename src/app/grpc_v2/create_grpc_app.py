@@ -7,7 +7,7 @@ import traceback
 
 sys.path.append("./protofile")
 from configs.config import INSECURE_PORT, LLM_USED
-from protofile.messaging.proto import messaging_pb2_grpc as handler
+from protofile.messaging.proto import messaging_v2_pb2_grpc as handler
 from concurrent import futures
 
 from src.app.grpc_v2.servicer.messaging_servicer import MessagingServicer

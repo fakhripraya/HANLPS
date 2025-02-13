@@ -70,18 +70,16 @@ class LangchainAPIV2(LangchainAPIV2Interface):
                 f"------------------- End of Conversation for User {session_id} -----------"
             )
 
-            output = agent_executor.invoke({"input": prompt}).get("output", None)
-            if output is None:
+            data = agent_executor.invoke({"input": prompt})
+            if data is None:
                 raise ValueError("Invalid agent response")
             
-
             formatted_output: AgentToolOutput | None
+            formatted_json = json.loads(data["output"])
             try:
-                formatted_json = json.loads(output)
                 formatted_output = AgentToolOutput.model_validate(formatted_json)
-                print("masuk formatted_output valid")
-            except (json.JSONDecodeError, TypeError, ValidationError):
-                formatted_output = AgentToolOutput(chat_output=str(output))
+            except:
+                formatted_output = AgentToolOutput(chat_output=formatted_json["input_field"])
 
             return self._execute_agent_action(agent_tools, formatted_output, prompt)
 
@@ -167,7 +165,6 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         )
     
     def _execute_agent_action(self, agent_tools: BoardingHouseAgentTools, formatted_output: AgentToolOutput, prompt: str):
-        print(formatted_output)
         action_map = {
             ToolType.SEARCH_POINT_OF_INTEREST.value: lambda: agent_tools.search_nearby_poi_by_address(formatted_output.input_field), 
             ToolType.SEARCH_SPECIFIC_LOCATION.value: lambda: agent_tools.search_specific_by_address(formatted_output.input_field), 
@@ -176,11 +173,10 @@ class LangchainAPIV2(LangchainAPIV2Interface):
         } 
         
         try:
-            if formatted_output.input_code is None:
+            if formatted_output.input_code not in action_map:
                 return Message(input=prompt, output=formatted_output.chat_output)
             
             result = action_map[formatted_output.input_code]()
-            print(result)
             if isinstance(result, Message):
                 result.input = prompt
                 return result

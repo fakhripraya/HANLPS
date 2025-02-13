@@ -97,16 +97,16 @@ class BoardingHouseAgentTools:
         :return: Message.
         """
         geocode_data = self._perform_geocoding(buildings_filter)
-        return Message(output="", output_content=geocode_data, action=ToolType.SEARCH_POINT_OF_INTEREST.value)
+        return Message(output_info=geocode_data, action=ToolType.SEARCH_POINT_OF_INTEREST.value)
 
-    def save_location(self):
+    def save_location(self, buildings_filter: BuildingsFilter):
         """
         Temporarily save location data 
 
         :param buildings_filter: Object containing address or proximity filter.
         :return: Message.
         """
-        return Message(output="", action=ToolType.SAVE_LOCATION.value)
+        return Message(output_building_info=buildings_filter, action=ToolType.SAVE_LOCATION.value)
 
     def get_direction(self, buildings_filter: BuildingsFilter):
         """
@@ -116,7 +116,7 @@ class BoardingHouseAgentTools:
         :return: Message.
         """
         geocode_data = self._perform_geocoding(buildings_filter)
-        return Message(output_content=geocode_data, action=ToolType.GET_DIRECTION.value)
+        return Message(output_info=geocode_data, action=ToolType.GET_DIRECTION.value)
 
     def _analyze_input(self, input, input_code):
         """
@@ -262,7 +262,7 @@ class BoardingHouseAgentTools:
                 finally:
                     weaviate_client.close_connection_to_server(connected)
 
-        return Message(output_content=building_list, action=ToolType.SEARCH_SPECIFIC_LOCATION.value)
+        return Message(output_building_info=building_list, action=ToolType.SEARCH_SPECIFIC_LOCATION.value)
 
     def _build_query(self, fields, filter_data):
         if any(filter_data[field] for field in fields):

@@ -53,6 +53,9 @@ these can install the package aswell as immediately write it in the requirement.
 
 ```
 python -m grpc_tools.protoc -I=proto --python_out=proto --grpc_python_out=proto your/proto/path/your_new_service.proto
+
+example:
+python -m grpc_tools.protoc -I=protofile/messaging/proto --python_out=protofile/messaging/proto --grpc_python_out=protofile/messaging/proto protofile/messaging/proto/messaging_v2.proto
 ```
 
 ### How to
