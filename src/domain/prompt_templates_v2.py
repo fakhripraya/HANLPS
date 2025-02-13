@@ -51,7 +51,7 @@ react_prompt_template = PromptTemplate(
 
     Required Output:
         Thought: Do I need to use a tool? No
-        Final Answer: <{{"input_code": <can be formatted as key>, "input_field": <the action input value>}}>
+        Final Answer: <{{"input_code": <can be formatted as key>, "input_field": <the action input value>, "chat_output": <the chat output based on what you should reply from the prompt>}}>
 
     Rules:
     - Do not include a final answer if an action is being performed. Follow strictly: Thought, Action, Action Input, stop iteration only when final answer follow the format.

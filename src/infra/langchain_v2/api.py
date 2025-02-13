@@ -79,7 +79,7 @@ class LangchainAPIV2(LangchainAPIV2Interface):
             try:
                 formatted_output = AgentToolOutput.model_validate(formatted_json)
             except:
-                formatted_output = AgentToolOutput(chat_output=formatted_json["input_field"])
+                formatted_output = AgentToolOutput(chat_output=formatted_json["chat_output"])
 
             return self._execute_agent_action(agent_tools, formatted_output, prompt)
 
