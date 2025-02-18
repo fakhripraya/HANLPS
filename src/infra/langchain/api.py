@@ -38,19 +38,19 @@ from src.domain.prompt_templates import (
 )
 from src.domain.constants import RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
+from src.domain.entities.building.building import Building
 from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
 from src.infra.langchain.chat_completion.chat_completion import ChatCompletion
 from src.infra.langchain.llm.llm import create_open_ai_llm, create_gemini_llm
-from src.interactor.interfaces.langchain.api import LangchainAPIInterface
-from src.interactor.interfaces.logger.logger import LoggerInterface
 from src.infra.repositories.weaviate.filters.buildings.buildings import (
     append_housing_price_filters,
     append_building_facility_filters,
     append_building_note_filters,
     append_building_geolocation_filter,
 )
-from src.domain.entities.building.building import Building
-from src.infra.geocoding.api import GeocodingAPI
+from src.infra.geocoding.api import GeocodingAPI, NominatimGeocodingAPI
+from src.interactor.interfaces.langchain.api import LangchainAPIInterface
+from src.interactor.interfaces.logger.logger import LoggerInterface
 
 # Langchain and related libraries
 from langchain_community.chat_message_histories import ChatMessageHistory
@@ -154,43 +154,17 @@ class LangchainAPI(LangchainAPIInterface):
             self._logger.log_debug(f"[{session_id}]: Filters - {buildings_filter}")
 
             filter_array = self._prepare_filters(buildings_filter)
+            try:
+                geocode_data = self._perform_geocoding(session_id, buildings_filter)
+                lat_long = {"lat": geocode_data["lat"], "long": geocode_data["lon"]}
+                filter_array["building_geolocation"] = (
+                    lambda distance: append_building_geolocation_filter(lat_long, distance)
+                )
+            except ValueError as e:
+                self._logger.log_warning(f"[{session_id}]: {e}")
+                return self.feedback_prompt(prompt, session_id, failed=True)
 
             building_instance = None
-            with GeocodingAPI(self._logger) as obj:
-                try:
-                    query = (
-                        buildings_filter.building_address
-                        if buildings_filter.building_address
-                        else buildings_filter.building_proximity
-                    )
-                    if query is not None:
-                        result = self._chat_completion.execute(
-                            {
-                                "prompts": query,
-                            },
-                            self._location_verifier_prompt_parser,
-                            [location_verifier_template],
-                        ).get("address")
-
-                        geo_query = query if result in [None, "None"] else result
-                        self._logger.log_debug(
-                            f"[{session_id}]: Verified address: {geo_query}"
-                        )
-                        geocode_data = obj.execute_geocode_by_address(geo_query)
-                        if len(geocode_data) > 0:
-                            self._logger.log_debug(
-                                f"[{session_id}]: Got geocode data: {geocode_data}"
-                            )
-                            lat_long = geocode_data[0]["geometry"]["location"]
-                            filter_array["building_geolocation"] = (
-                                lambda distance: append_building_geolocation_filter(
-                                    lat_long, distance
-                                )
-                            )
-
-                except Exception as e:
-                    self._logger.log_exception(f"[{session_id}]: Error Geocode: {e}")
-
             location_query = None
             facility_query = None
             if any(
@@ -332,7 +306,7 @@ class LangchainAPI(LangchainAPIInterface):
 
         return self.feedback_prompt(prompt, session_id, found=building_list)
 
-    def feedback_prompt(self, prompt, session_id, reask=False, found=None) -> Message:
+    def feedback_prompt(self, prompt, session_id, reask=False, found=None, failed=False) -> Message:
         """
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
@@ -344,7 +318,11 @@ class LangchainAPI(LangchainAPIInterface):
             f"[{session_id}]: Is reask for something is necessary: {reask}\n[{session_id}]: Is search found: {True if found else False}"
         )
 
-        template = reask_template if reask else default_reply_template
+        if failed is not True:
+            template = reask_template if reask else default_reply_template
+        else:
+            template = ""
+        
         input_variables = [
             "prompts",
             "service_pic_number",
@@ -485,6 +463,32 @@ class LangchainAPI(LangchainAPIInterface):
         }
 
         return filter_array
+    
+    def _perform_geocoding(self, session_id: str, buildings_filter: BuildingsFilter) -> dict:
+        """
+        Perform geocoding using NominatimGeocodingAPI.
+
+        :param geo_query: The address or proximity to geocode.
+        :return: Geocode data as a dictionary or raises ValueError if no valid data is found.
+        """
+        geo_query = (
+            buildings_filter.building_address
+            or buildings_filter.building_proximity
+            or buildings_filter.building_title
+        )
+
+        if not geo_query:
+            raise ValueError("No valid address or proximity provided.")
+
+        self._logger.log_debug(f"[{session_id}]: Performing geocoding for: {geo_query}")
+        with NominatimGeocodingAPI(self._logger) as geocode_api:
+            geocode_data = geocode_api.execute_geocode_by_address(geo_query)
+
+            if geocode_data and "error" not in geocode_data:
+                self._logger.log_debug(f"[{session_id}]: Got geocode data: {geocode_data}")
+                return geocode_data
+            else:
+                raise ValueError(f"[{session_id}]: No valid geocode data for query: {geo_query}")
 
     def _connect_to_collections(self, weaviate_client: WeaviateAPI):
         """Connect to the necessary collections for querying."""
