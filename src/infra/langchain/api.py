@@ -34,7 +34,6 @@ from src.domain.prompt_templates import (
     seen_buildings_template,
     building_object_template,
     building_found_template,
-    location_verifier_template,
 )
 from src.domain.constants import RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS
 from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
@@ -50,7 +49,7 @@ from src.infra.repositories.weaviate.filters.buildings.buildings import (
     append_building_geolocation_filter,
 )
 from src.domain.entities.building.building import Building
-from src.infra.geocoding.api import GeocodingAPI
+from src.infra.geocoding.api import NominatimGeocodingAPI
 
 # Langchain and related libraries
 from langchain_community.chat_message_histories import ChatMessageHistory
