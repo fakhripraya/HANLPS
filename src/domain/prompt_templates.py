@@ -24,6 +24,7 @@ analyzer_template = """
             + owner phone number
         - COMPARE_BETWEEN_BUILDINGS: This Enum applied if the human ask you to compare between fetched kosan/boarding houses
         - ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM: This Enum applied if the human ask you to save kosan/boarding houses to the system
+        - GET_DIRECTION: This Enum applied if the human ask you to show the way to the location that he want
         - VAGUE: This Enum applied if the human input implying human hallucination, lack of information, odd structure of conversation, etc
         - CASUAL_CONVERSATION: This Enum applied if the human input is just having a normal conversation, inside or outside the context of searching boarding houses
 
