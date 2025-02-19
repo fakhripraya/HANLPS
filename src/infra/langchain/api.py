@@ -461,6 +461,33 @@ class LangchainAPI(LangchainAPIInterface):
         }
 
         return filter_array
+    
+    def _perform_geocoding(self, session_id: str, buildings_filter: BuildingsFilter) -> dict:
+        """
+        Perform geocoding using NominatimGeocodingAPI.
+
+        :param geo_query: The address or proximity to geocode.
+        :return: Geocode data as a dictionary or raises ValueError if no valid data is found.
+        """
+        geo_query = (
+            buildings_filter.building_address
+            or buildings_filter.building_proximity
+            or buildings_filter.building_title
+        )
+
+        if not geo_query:
+            raise ValueError("No valid address or proximity provided.")
+
+        self._logger.log_debug(f"[{session_id}]: Performing geocoding for: {geo_query}")
+        with NominatimGeocodingAPI(self._logger) as geocode_api:
+            geocode_data = geocode_api.execute_geocode_by_address(geo_query)
+
+            if geocode_data and "error" not in geocode_data:
+                self._logger.log_debug(f"[{session_id}]: Got geocode data: {geocode_data}")
+                return geocode_data
+            else:
+                raise ValueError(f"[{session_id}]: No valid geocode data for query: {geo_query}")
+
 
     def _connect_to_collections(self, weaviate_client: WeaviateAPI):
         """Connect to the necessary collections for querying."""
