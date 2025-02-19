@@ -23,7 +23,9 @@ class MessagingServicer(messaging_pb2_grpc.MessagingServiceServicer):
             return messaging.MessageResponse(
                 input=result["input"],
                 output=result["output"],
-                output_content=result["output_content"],
+                output_building_info=result["output_building_info"],
+                output_info=result["output_info"],
+                action=result["action"],
             )
         except Exception as e:
             self._logger.log_exception(f"Exception in textMessaging: {e}")

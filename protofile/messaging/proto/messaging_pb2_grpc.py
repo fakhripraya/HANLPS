@@ -15,15 +15,15 @@ class MessagingServiceStub(object):
             channel: A grpc.Channel.
         """
         self.textMessaging = channel.unary_unary(
-            "/MessagingService/textMessaging",
-            request_serializer=messaging__pb2.MessageRequest.SerializeToString,
-            response_deserializer=messaging__pb2.MessageResponse.FromString,
-        )
+                '/MessagingService/textMessaging',
+                request_serializer=messaging__pb2.MessageRequest.SerializeToString,
+                response_deserializer=messaging__pb2.MessageResponse.FromString,
+                )
         self.clearMessageHistory = channel.unary_unary(
-            "/MessagingService/clearMessageHistory",
-            request_serializer=messaging__pb2.ClearHistoryRequest.SerializeToString,
-            response_deserializer=messaging__pb2.Empty.FromString,
-        )
+                '/MessagingService/clearMessageHistory',
+                request_serializer=messaging__pb2.ClearHistoryRequest.SerializeToString,
+                response_deserializer=messaging__pb2.Empty.FromString,
+                )
 
 
 class MessagingServiceServicer(object):
@@ -32,93 +32,68 @@ class MessagingServiceServicer(object):
     def textMessaging(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def clearMessageHistory(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details("Method not implemented!")
-        raise NotImplementedError("Method not implemented!")
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
 
 def add_MessagingServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        "textMessaging": grpc.unary_unary_rpc_method_handler(
-            servicer.textMessaging,
-            request_deserializer=messaging__pb2.MessageRequest.FromString,
-            response_serializer=messaging__pb2.MessageResponse.SerializeToString,
-        ),
-        "clearMessageHistory": grpc.unary_unary_rpc_method_handler(
-            servicer.clearMessageHistory,
-            request_deserializer=messaging__pb2.ClearHistoryRequest.FromString,
-            response_serializer=messaging__pb2.Empty.SerializeToString,
-        ),
+            'textMessaging': grpc.unary_unary_rpc_method_handler(
+                    servicer.textMessaging,
+                    request_deserializer=messaging__pb2.MessageRequest.FromString,
+                    response_serializer=messaging__pb2.MessageResponse.SerializeToString,
+            ),
+            'clearMessageHistory': grpc.unary_unary_rpc_method_handler(
+                    servicer.clearMessageHistory,
+                    request_deserializer=messaging__pb2.ClearHistoryRequest.FromString,
+                    response_serializer=messaging__pb2.Empty.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "MessagingService", rpc_method_handlers
-    )
+            'MessagingService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
-# This class is part of an EXPERIMENTAL API.
+ # This class is part of an EXPERIMENTAL API.
 class MessagingService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def textMessaging(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def textMessaging(request,
             target,
-            "/MessagingService/textMessaging",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/MessagingService/textMessaging',
             messaging__pb2.MessageRequest.SerializeToString,
             messaging__pb2.MessageResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def clearMessageHistory(
-        request,
-        target,
-        options=(),
-        channel_credentials=None,
-        call_credentials=None,
-        insecure=False,
-        compression=None,
-        wait_for_ready=None,
-        timeout=None,
-        metadata=None,
-    ):
-        return grpc.experimental.unary_unary(
-            request,
+    def clearMessageHistory(request,
             target,
-            "/MessagingService/clearMessageHistory",
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/MessagingService/clearMessageHistory',
             messaging__pb2.ClearHistoryRequest.SerializeToString,
             messaging__pb2.Empty.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-        )
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

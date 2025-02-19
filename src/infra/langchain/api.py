@@ -163,7 +163,6 @@ class LangchainAPI(LangchainAPIInterface):
                 )
             except ValueError as e:
                 self._logger.log_warning(f"[{session_id}]: {e}")
-                return self.feedback_prompt(prompt, session_id, failed=True)
 
             building_instance = None
 
@@ -200,14 +199,14 @@ class LangchainAPI(LangchainAPIInterface):
                 )
 
             output = self.vector_db_retrieval(
-                prompt, session_id, filter_array, facility_query, location_query
+                prompt, session_id, filter_array, facility_query, location_query, task=task
             )
             return output
 
-        return self.feedback_prompt(prompt, session_id)
+        return self.feedback_prompt(prompt, session_id, task=task)
 
     def vector_db_retrieval(
-        self, prompt, session_id, filter_array, facility_query="", location_query=""
+        self, prompt, session_id, filter_array, facility_query="", location_query="", task=None
     ) -> Message:
         """
         Vector database data retrieval process
@@ -306,9 +305,9 @@ class LangchainAPI(LangchainAPIInterface):
                 finally:
                     weaviate_client.close_connection_to_server(connected)
 
-        return self.feedback_prompt(prompt, session_id, found=building_list)
+        return self.feedback_prompt(prompt, session_id, found=building_list, task=task)
 
-    def feedback_prompt(self, prompt, session_id, reask=False, found=None) -> Message:
+    def feedback_prompt(self, prompt, session_id, reask=False, found=None, task=None) -> Message:
         """
         Feedback the prompt, process the prompt with the LLM
         :param prompt: chat message to be analyzed.
@@ -344,7 +343,7 @@ class LangchainAPI(LangchainAPIInterface):
         output = self.respond(
             template, input_variables, runnable_input, session_id
         ).replace("**", "")
-        return Message(input=prompt, output=output, output_content=found)
+        return Message(input=prompt, output=output, output_building_info=found, action=task)
 
     def respond(self, template, input_variables, runnable_input, session_id) -> str:
         """

@@ -18,5 +18,7 @@ class MessagingPresenter(MessagingPresenterInterface):
         return {
             "input": output_dto.input,
             "output": output_dto.output,
-            "output_content": output_dto.output_content,
+            "output_building_info": output_dto.output_building_info,
+            "output_info": output_dto.output_info,
+            "action": output_dto.action,
         }

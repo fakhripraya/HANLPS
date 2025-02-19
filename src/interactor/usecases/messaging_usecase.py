@@ -35,19 +35,13 @@ class MessagingUseCase:
 
         # Use the LLM to analyze the prompt
         message_output = self.llm.analyze_prompt(input_dto.sessionId, input_dto.content)
-        message = self.repository.create(
-            input=message_output.input,
-            output=message_output.output,
-            output_content=message_output.output_content,
-        )
 
-        if message is None:
-            self.logger.log_error("Message creation failed")
-            raise ItemNotCreatedException(input_dto.content, "Message")
+        if message_output is None:
+            raise Exception("Invalid message output")
 
         # Convert building content to JSON (if applicable)
         buildings_dict = [
-            building.to_dict() for building in (message_output.output_content or [])
+            building.to_dict() for building in (message_output.output_building_info or [])
         ]
         buildings_json = json.dumps(buildings_dict)
 
@@ -55,7 +49,9 @@ class MessagingUseCase:
         output_dto = MessagingOutputDto(
             input=message_output.input,
             output=message_output.output,
-            output_content=buildings_json,
+            output_building_info=buildings_json,
+            output_info=None,
+            action=None
         )
 
         return self.presenter.present(output_dto)
@@ -68,4 +64,3 @@ class MessagingUseCase:
             return
         else:
             self.logger.log_error(f"Failed to clear history for session: {session_id}")
-            raise ItemNotCreatedException(session_id, "ClearHistory")

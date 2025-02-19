@@ -6,7 +6,7 @@ def create_open_ai_llm(llm_model, key) -> ChatOpenAI:
     """
     Create OpenAI LLM and register it as dependency
     """
-    client = ChatOpenAI(model=llm_model, api_key=key, temperature=0.5)
+    client = ChatOpenAI(model=llm_model, api_key=key)
     return client
 
 

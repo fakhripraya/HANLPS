@@ -5,14 +5,12 @@
 import time
 import json
 import traceback
-from pydantic import ValidationError
 
 # Source-specific imports
 from src.domain.entities.message.message import Message
 from src.domain.enum.tool_types.tool_types import ToolType
 from src.domain.pydantic_models.agent_tool_output.agent_tool_output import (
     AgentToolOutput,
-    BuildingsFilter
 )
 from src.infra.langchain_v2.agent.agent import create_agent
 from src.infra.langchain_v2.tools.tools import BoardingHouseAgentTools
