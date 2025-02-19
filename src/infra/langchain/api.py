@@ -2,6 +2,7 @@
 """
 
 # Standard and third-party libraries
+import json
 import time
 import traceback
 
@@ -36,7 +37,7 @@ from src.domain.prompt_templates import (
     building_found_template,
 )
 from src.domain.constants import RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS
-from src.domain.pydantic_models.buildings_filter.buildings_filter import BuildingsFilter
+from src.domain.pydantic_models.user_prompt.user_prompt import UserPrompt, BuildingsFilter
 from src.infra.langchain.prompt_parser.prompt_parser import PromptParser
 from src.infra.langchain.chat_completion.chat_completion import ChatCompletion
 from src.infra.langchain.llm.llm import create_open_ai_llm, create_gemini_llm
@@ -128,30 +129,20 @@ class LangchainAPI(LangchainAPIInterface):
             f"------------------- End of Conversation for User {session_id} -----------"
         )
 
-        task = self._chat_completion.execute(
+        result = self._chat_completion.execute(
             {
                 "prompts": prompt,
                 "conversations": conversation if len(conversation.messages) > 0 else "",
             },
             self._analyzer_prompt_parser,
             [analyzer_template_v2],
-            False,
         )
-        self._logger.log_info(f"[{session_id}]: User given task: {task}")
+        user_extracted_data = UserPrompt(**result)
+        self._logger.log_info(f"[{session_id}]: User extracted prompt data: {user_extracted_data}")
 
-        if task == RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS:
-            result = self._chat_completion.execute(
-                {
-                    "prompts": prompt,
-                    "conversations": conversation if conversation else "",
-                },
-                self._filter_data_structurer_prompt_parser,
-                [filter_data_structurer_analyzer_template],
-            )
-
-            buildings_filter = BuildingsFilter(**result)
+        if user_extracted_data.action_code == RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS:
+            buildings_filter = user_extracted_data.input_field
             self._logger.log_debug(f"[{session_id}]: Filters - {buildings_filter}")
-
             filter_array = self._prepare_filters(buildings_filter)
 
             try:
@@ -198,11 +189,11 @@ class LangchainAPI(LangchainAPIInterface):
                 )
 
             output = self.vector_db_retrieval(
-                prompt, session_id, filter_array, facility_query, location_query, task=task
+                prompt, session_id, filter_array, facility_query, location_query, task=user_extracted_data.action_code
             )
             return output
 
-        return self.feedback_prompt(prompt, session_id, task=task)
+        return self.feedback_prompt(prompt, session_id, task=user_extracted_data.action_code)
 
     def vector_db_retrieval(
         self, prompt, session_id, filter_array, facility_query="", location_query="", task=None
