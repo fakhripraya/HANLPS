@@ -28,7 +28,7 @@ from src.domain.constants import (
 )
 from src.domain.prompt_templates import (
     default_reply_template,
-    analyzer_template,
+    analyzer_template_v2,
     filter_data_structurer_analyzer_template,
     reask_template,
     seen_buildings_template,
@@ -134,7 +134,7 @@ class LangchainAPI(LangchainAPIInterface):
                 "conversations": conversation if len(conversation.messages) > 0 else "",
             },
             self._analyzer_prompt_parser,
-            [analyzer_template],
+            [analyzer_template_v2],
             False,
         )
         self._logger.log_info(f"[{session_id}]: User given task: {task}")
