@@ -30,6 +30,7 @@ class ChatCompletion:
         )
         if isJSON:
             result = result.strip("`").strip("json").strip("`").strip()
+            result = result.strip(">").strip("<").strip()
             data_dict = json.loads(result)
             return data_dict
         else:
