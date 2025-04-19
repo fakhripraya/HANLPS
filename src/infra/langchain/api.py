@@ -147,7 +147,7 @@ class LangchainAPI(LangchainAPIInterface):
 
             try:
                 geocode_data = self._perform_geocoding(session_id, buildings_filter)
-                lat_long = {"lat": geocode_data["lat"], "long": geocode_data["lon"]}
+                lat_long = {"lat": geocode_data["lat"], "lng": geocode_data["lon"]}
                 filter_array["building_geolocation"] = (
                     lambda distance: append_building_geolocation_filter(lat_long, distance)
                 )

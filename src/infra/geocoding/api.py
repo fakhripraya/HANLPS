@@ -58,7 +58,7 @@ class NominatimGeocodingAPI(GeocodingAPIInterface):
             self._logger.log_info("Initializing Nominatim Geocoding API")
             self._session = requests.Session()
             self._session.headers.update({
-                "User-Agent": "YourAppName/1.0 (your_email@example.com)"  # Replace with your app details
+                "User-Agent": "Pintrail/1.0 (pintrail@gmail.com)"  # Replace with your app details
             })
         except Exception as e:
             self._logger.log_critical(f"Failed to initialize Nominatim API, ERROR: {e}")

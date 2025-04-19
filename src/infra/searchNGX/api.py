@@ -23,7 +23,7 @@ class SearchXNG:
             self._session.headers.update({
                 "Authorization": "Bearer YOUR_API_KEY",  # Replace with your API key
                 "Content-Type": "application/json",
-                "User-Agent": "YourAppName/1.0 (your_email@example.com)"  # Replace with your app details
+                "User-Agent": "Pintrail/1.0 (pintrail@gmail.com)"  # Replace with your app details
             })
         except Exception as e:
             self._logger.log_critical(f"Failed to initialize SearchXNG client, ERROR: {e}")
