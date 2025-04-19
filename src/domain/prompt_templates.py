@@ -38,7 +38,7 @@ analyzer_template_v2 = """
         - No currency symbols in price values.
 
     Required JSON Output:
-        <{{"action_code": <this should be the action code in enum>, "input_field": <the action input value>, "chat_output": <the chat output based on what you should reply from the prompt>}}>
+        {{"action_code": <this should be the action code in enum>, "input_field": <the action input value>, "chat_output": <the chat output based on what you should reply from the prompt>}}
 
     Context:
     Chat History: {conversations}
