@@ -250,6 +250,10 @@ class LangchainAPI(LangchainAPIInterface):
                 connected, building_collection, building_chunk_collection = (
                     self._connect_to_collections(weaviate_client) or (None, None, None)
                 )
+
+                self._logger.log_debug(
+                    f'[{session_id}]: Is Weaviate connected: {"True" if connected else "False"}'
+                )
                 try:
                     while len(building_list) < limit:
                         filters, with_geofilter = None, self._geofilter_check(
