@@ -279,12 +279,13 @@ class WeaviateAPI(WeaviateAPIInterface):
             weaviate_client.close()
 
     def _log_migrate_error_failed_details(self, failed_objects: list[ErrorObject]) -> None:
-        for error in failed_objects:
-            message = error.get('message', 'No message available')
-            uuid = error.get('object_', {}).get('uuid', 'No UUID available')
-            building_title = error.get('object_', {}).get('properties', {}).get('buildingTitle', 'No buildingTitle available')
+        for index, error in enumerate(failed_objects):
+            message = error.message
+            uuid = error.object_.uuid
+            building_title = error.object_.properties.get('buildingTitle', 'No buildingTitle available')
 
             # Log setiap property
+            self._logger.log_info(f"Number: {index + 1}")
             self._logger.log_info(f"Message: {message}")
             self._logger.log_info(f"UUID: {uuid}")
             self._logger.log_info(f"Building Title: {building_title}")
