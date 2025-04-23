@@ -2,6 +2,7 @@
 """
 
 import weaviate as weaviate_lib
+from weaviate.collections.classes.batch import ErrorObject
 from abc import ABC, abstractmethod
 
 
@@ -61,3 +62,7 @@ class WeaviateAPIInterface(ABC):
         self, weaviate_client: weaviate_lib.WeaviateClient
     ) -> None:
         """Close the connection to Weaviate server"""
+
+    @abstractmethod
+    def _log_migrate_error_failed_details(failed_objects: list[ErrorObject]) -> None:
+        """Log migrate error related to object details"""

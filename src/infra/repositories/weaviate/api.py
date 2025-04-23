@@ -4,6 +4,7 @@
 import json
 import weaviate as weaviate_lib
 import traceback
+from weaviate.collections.classes.batch import ErrorObject
 from weaviate.config import AdditionalConfig, ConnectionConfig, Timeout
 from configs.config import (
     OPENAI_API_KEY,
@@ -216,7 +217,8 @@ class WeaviateAPI(WeaviateAPIInterface):
                     self._logger.log_info(f"[{uuid}]: Document Loaded")
                     self._logger.log_info(f"{idx + 1}/{len(docs)} Loaded")
             failed_objs = buildings_collection.batch.failed_objects
-            self._logger.log_info(f"Document failed batch objects load: {failed_objs}")
+            self._logger.log_info(f"Document failed batch objects load: \n")
+            self._log_migrate_error_failed_details(failed_objs)
 
             temp_building_to_be_refered = []
             self._logger.log_info("Inserting Chunks")
@@ -245,8 +247,9 @@ class WeaviateAPI(WeaviateAPIInterface):
                     self._logger.log_info(f"{[doc["id"]]}: Loaded chunks")
             failed_chunk_objs = building_chunks_collection.batch.failed_objects
             self._logger.log_info(
-                f"Chunks failed batch objects load: {failed_chunk_objs}"
+                f"Chunks failed batch objects load: \n"
             )
+            self._log_migrate_error_failed_details(failed_chunk_objs)
 
             self._logger.log_info("Adding chunks as document references")
             with building_chunks_collection.batch.dynamic() as reference_batch:
@@ -274,3 +277,14 @@ class WeaviateAPI(WeaviateAPIInterface):
         """Close the connection to Weaviate server"""
         if weaviate_client and weaviate_client.is_live:
             weaviate_client.close()
+
+    def _log_migrate_error_failed_details(self, failed_objects: list[ErrorObject]) -> None:
+        for error in failed_objects:
+            message = error.get('message', 'No message available')
+            uuid = error.get('object_', {}).get('uuid', 'No UUID available')
+            building_title = error.get('object_', {}).get('properties', {}).get('buildingTitle', 'No buildingTitle available')
+
+            # Log setiap property
+            self._logger.log_info(f"Message: {message}")
+            self._logger.log_info(f"UUID: {uuid}")
+            self._logger.log_info(f"Building Title: {building_title}")
