@@ -56,6 +56,8 @@ def create_buildings_vectordb_schema(
     if not client.collections.exists(collection_name):
         new_collection = client.collections.create(
             name=collection_name,
+            vectorizer_config=define_transformers(),
+            generative_config=define_generative(),
             properties=[
                 wvc.config.Property(
                     name="buildingTitle",

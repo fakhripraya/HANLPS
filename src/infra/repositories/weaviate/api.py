@@ -192,12 +192,21 @@ class WeaviateAPI(WeaviateAPIInterface):
             self._logger.log_info("Inserting documents")
             with buildings_collection.batch.dynamic() as building_batch:
                 for idx, doc in enumerate(docs):
+                    geolocation = doc["building_geolocation"]
+                    
+                    # Ensure latitude and longitude are floats, with error handling if not
+                    try:
+                        geolocation["latitude"] = float(geolocation.get("latitude", 0.0))
+                        geolocation["longitude"] = float(geolocation.get("longitude", 0.0))
+                    except (TypeError, ValueError) as e:
+                        self._logger.log_error(f"Error converting geolocation for UUID {doc.get('uuid')}: {e}")
+
                     uuid = building_batch.add_object(
                         properties={
                             "buildingTitle": doc["building_title"],
                             "buildingAddress": doc["building_address"],
                             "buildingDescription": doc["building_description"],
-                            "buildingGeolocation": doc["building_geolocation"],
+                            "buildingGeolocation": geolocation,
                             "housingPrice": float(doc["housing_price"]),
                             "ownerName": doc["owner_name"],
                             "ownerWhatsapp": doc["owner_whatsapp"],
