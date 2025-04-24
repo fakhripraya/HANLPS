@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  ipfs:
+    image: ipfs/go-ipfs:latest
+    container_name: ipfs_node
+    volumes:
+      - ipfs_data:/data/ipfs
+    ports:
+      - "5001:5001"  # API port
+      - "9090:8080"  # Change gateway port to 9090
+    restart: unless-stopped
+
+volumes:
+  ipfs_data:
