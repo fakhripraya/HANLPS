@@ -20,6 +20,7 @@ from configs.config import (
     OPENAI_LOCATION_VERIFIER_MODEL,
 )
 from src.domain.entities.message.message import Message
+from src.domain.entities.action.action import Action
 from src.domain.constants import (
     OPENAI,
     GEMINI,
@@ -110,7 +111,7 @@ class LangchainAPI(LangchainAPIInterface):
             return True
         return False
 
-    def analyze_prompt(self, session_id, prompt) -> Message:
+    def analyze_prompt(self, session_id, prompt) -> tuple[Action, Message]:
         """
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.
@@ -226,9 +227,9 @@ class LangchainAPI(LangchainAPIInterface):
             output = self.vector_db_retrieval(
                 prompt, session_id, filter_array, facility_query, location_query
             )
-            return output
+            return Action(action=task), output
 
-        return self.feedback_prompt(prompt, session_id)
+        return Action(action=task), self.feedback_prompt(prompt, session_id)
 
     def vector_db_retrieval(
         self, prompt, session_id, filter_array, facility_query="", location_query=""

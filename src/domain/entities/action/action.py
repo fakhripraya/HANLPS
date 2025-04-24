@@ -1,17 +1,14 @@
-""" This module has definition of the Message entity
+""" This module has definition of the Action entity
 """
 
 from dataclasses import dataclass, asdict
-from src.domain.entities.building.building import Building
 
 
 @dataclass
-class Message:
-    """Definition of the Message entity"""
+class Action:
+    """Definition of the Action entity"""
 
-    input: str
-    output: str
-    output_content: list[Building] | None
+    action: str
 
     @classmethod
     def from_dict(cls, data):

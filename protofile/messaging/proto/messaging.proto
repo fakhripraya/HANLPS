@@ -16,6 +16,7 @@ message MessageResponse {
   string input = 1;
   string output = 2;
   string output_content = 3;
+  string action = 4;
 }
 
 message ClearHistoryRequest {

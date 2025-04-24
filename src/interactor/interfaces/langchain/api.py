@@ -2,10 +2,10 @@
 """
 
 from abc import ABC, abstractmethod
-from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables import Runnable
 from src.domain.entities.building.building import Building
 from src.domain.entities.message.message import Message
+from src.domain.entities.action.action import Action
 from typing import Any
 
 
@@ -13,7 +13,7 @@ class LangchainAPIInterface(ABC):
     """LangchainAPIInterface class provides an interface for langchain API."""
 
     @abstractmethod
-    def analyze_prompt(self, session_id: str, prompt: str) -> Message:
+    def analyze_prompt(self, session_id: str, prompt: str) -> tuple[Action, Message]:
         """
         Analyze prompt, define whether the prompt is a direct
         command, a simple chat, etc.

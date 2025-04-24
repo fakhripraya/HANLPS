@@ -1,9 +1,10 @@
 analyzer_template = """
-    You are an AI chat analyzer
+    You are an AI chat analyzer, you can analyze chat and extract enum
+    Enum is a key of actions that will be used to execute actions in the system
 
-    Your job is:
+    Your objective is:
     1. Analyze whether the incoming human input implies asking about kosan, kostan, kost, kos-kosan, kontrakan, apartments, or any kind of boarding houses based on the history conversation context
-    2. Extract Enum data based on the human input using the conversation context, Use Enum Identifaction below for the output of this prompt
+    2. With your analysis. Extract Enum data based on the analysis using the conversation context, Use Enum Identifaction below for the output of this prompt
 
     Understand the context of the conversation
     History conversation:
@@ -14,7 +15,8 @@ analyzer_template = """
 
     Enum Identifaction
     The extracted data value can only be one of these Enums extracted based on your analysis:
-        - RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS: This Enum applied if the human ask you to retrieve for kosan/boarding houses based on the human input criteria
+        - RETRIEVE_BOARDING_HOUSES_OR_BUILDINGS: This Enum applied if the human ask you to retrieve for kosan/boarding houses
+        - SHOW_MAP_AND_DIRECTIONS: This Enum applied if the human ask you to show the map or directions details for kosan/boarding house
         - GIVE_AND_EXPLAIN_THE_IMPLIED_BUILDING_DETAILS: This Enum applied if the human ask you to give/explain the implied building details that the human ask, these detail could be:
             + title
             + address
@@ -23,12 +25,12 @@ analyzer_template = """
             + owner whatsapp
             + owner phone number
         - COMPARE_BETWEEN_BUILDINGS: This Enum applied if the human ask you to compare between fetched kosan/boarding houses
-        - ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM: This Enum applied if the human ask you to save kosan/boarding houses to the system
-        - VAGUE: This Enum applied if the human input implying human hallucination, lack of information, odd structure of conversation, etc
-        - CASUAL_CONVERSATION: This Enum applied if the human input is just having a normal conversation, inside or outside the context of searching boarding houses
+        - SAVE_BUILDINGS_TO_THE_SYSTEM: This Enum applied if the human ask you to save kosan/boarding houses to the system
+        - REPLY_VAGUE_CONVERSATION: This Enum applied if the human input implying human hallucination, lack of information, odd structure of conversation, etc
+        - REPLY_CASUAL_CONVERSATION: This Enum applied if the human input is just having a normal conversation, inside or outside the context of searching boarding houses
 
     Rules:
-    1. Only provide the output in a Enum in the Enum Identification list of Enum
+    1. Only provide the output in a Enum in the Enum Identification list
     """
 
 # analyzer_template = """
@@ -56,9 +58,9 @@ analyzer_template = """
 #             + owner whatsapp
 #             + owner phone number
 #         - COMPARE_BETWEEN_BUILDINGS: This enum applied if the human ask you to compare between fetched kosan/boarding houses
-#         - ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM: This enum applied if the human ask you to save kosan/boarding houses to the system
-#         - VAGUE: This enum applied if the human input implying human hallucination, lack of information, odd structure of conversation, etc
-#         - CASUAL_CONVERSATION: This enum applied if the human input is just having a normal conversation, inside or outside the context of searching boarding houses
+#         - SAVE_BUILDINGS_TO_THE_SYSTEM: This enum applied if the human ask you to save kosan/boarding houses to the system
+#         - REPLY_VAGUE_CONVERSATION: This enum applied if the human input implying human hallucination, lack of information, odd structure of conversation, etc
+#         - REPLY_CASUAL_CONVERSATION: This enum applied if the human input is just having a normal conversation, inside or outside the context of searching boarding houses
 
 #     Rules:
 #     1. Only provide the output in ENUM.
@@ -120,7 +122,7 @@ analyzer_template = """
 #     Save kosan nomor 1 dong
 
 #     Expected output:
-#     ASK_TO_SAVE_BUILDINGS_TO_THE_SYSTEM
+#     SAVE_BUILDINGS_TO_THE_SYSTEM
 
 #     Explanation:
 #     Based on the context of the conversation, the human does currently searching for boarding houses
@@ -136,7 +138,7 @@ analyzer_template = """
 #     Mantep, btw gua mau iklanin kostan gua sebenernya, bagi kontak personnya dong buat iklan
 
 #     Expected output:
-#     CASUAL_CONVERSATION
+#     REPLY_CASUAL_CONVERSATION
 
 #     Explanation:
 #     Based on the context of the conversation, the human is asking about contact person for advertising his boarding house, not giving a specific task
@@ -149,11 +151,11 @@ analyzer_template = """
 #     Itu kosan nomor 3 dan nomor 4 fasilitasnya apa aja
 
 #     Expected output:
-#     VAGUE
+#     REPLY_VAGUE_CONVERSATION
 
 #     Explanation:
 #     Based on the context of the conversation, the human is hallucinating because we can see that in the history of conversation, there are no existing conversation showing the human is asking to search for kosan/boarding houses
-#     Hence why the value is "VAGUE"
+#     Hence why the value is "REPLY_VAGUE_CONVERSATION"
 #     """
 
 filter_data_structurer_analyzer_template = """"

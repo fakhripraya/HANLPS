@@ -24,3 +24,4 @@ class MessagingOutputDto:
     input: str
     output: str
     output_content: str | None
+    action: str

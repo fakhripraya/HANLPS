@@ -34,7 +34,7 @@ class MessagingUseCase:
         validator.validate()
 
         # Use the LLM to analyze the prompt
-        message_output = self.llm.analyze_prompt(input_dto.sessionId, input_dto.content)
+        action_output, message_output = self.llm.analyze_prompt(input_dto.sessionId, input_dto.content)
         message = self.repository.create(
             input=message_output.input,
             output=message_output.output,
@@ -56,6 +56,7 @@ class MessagingUseCase:
             input=message_output.input,
             output=message_output.output,
             output_content=buildings_json,
+            action=action_output.action
         )
 
         return self.presenter.present(output_dto)
